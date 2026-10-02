@@ -187,8 +187,8 @@ fieldset[disabled] { opacity: 0.45; }
 .fields { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 @media (max-width: 680px) { .fields { grid-template-columns: 1fr 1fr; } }
 .field label { display: block; font-size: 0.92rem; font-weight: 500; margin-bottom: 4px; }
-.field input { width: 100%; font: inherit; padding: 10px 12px; border: 1px solid #B8C8C5; border-radius: var(--radius-s); background: #fff; }
-.field input:focus { border-color: var(--pine); outline: 2px solid var(--pine-tint); }
+.field input, .field select { width: 100%; font: inherit; padding: 10px 12px; border: 1px solid #B8C8C5; border-radius: var(--radius-s); background: #fff; }
+.field input:focus, .field select:focus { border-color: var(--pine); outline: 2px solid var(--pine-tint); }
 .field small { color: var(--muted); font-size: 0.8rem; }
 .btn { font: inherit; font-weight: 600; background: var(--pine); color: #fff; border: 0; border-radius: 999px; padding: 11px 24px; cursor: pointer; margin-top: 18px; text-decoration: none; display: inline-block; }
 .btn:hover { background: var(--pine-2); color: #fff; }
@@ -300,3 +300,14 @@ th { background: var(--pine-tint); font-weight: 600; }
 .record dt { color: var(--muted); }
 .record dd { margin: 0; }
 .record p { margin: 0; }
+
+/* Institution */
+.eyebrow { text-transform: uppercase; letter-spacing: .06em; font-size: .78rem; font-weight: 600; color: var(--pine); margin: 0 0 4px; }
+.about-band { display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px; align-items: start; }
+.panel.region { text-decoration: none; color: var(--ink); }
+.panel.region .big-num { font-size: 2.4rem; font-weight: 600; color: var(--pine); margin: 6px 0 0; line-height: 1.1; }
+.panel.region .muted { margin: 0 0 8px; }
+.panel.join { margin-top: 14px; border-color: var(--amber); }
+@media (max-width: 780px) { .about-band { grid-template-columns: 1fr; } }
+.unit-row { display: flex; gap: 6px; }
+.unit-row select { width: auto; flex: none; }

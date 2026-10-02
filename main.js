@@ -29,9 +29,9 @@
   /* ---------- Header ---------- */
   var page = document.body.getAttribute('data-page') || '';
   var nav = [
-    ['patients', 'patients.html', 'Patients', 'المرضى'],
+    ['patients', 'patients.html', 'Patient Portal', 'بوابة المرضى'],
     ['learn', 'learn.html', 'Q&A', 'أسئلة وأجوبة'],
-    ['academy', 'academy.html', 'Academy', 'الأكاديمية'],
+    ['academy', 'academy.html', 'Physician Portal', 'بوابة الأطباء'],
     ['guidance', 'guidance.html', 'Guidance', 'الإرشادات'],
     ['ref', 'ref.html', 'Reference', 'المرجع'],
     ['news', 'news.html', 'News & Events', 'الأخبار والفعاليات'],
@@ -283,6 +283,70 @@
         notes.map(function (n) { return '<p>' + n + '</p>'; }).join('') +
         '<p class="fine">' + t('Cut-offs: below ' + low.toFixed(1) + ' low, 2.67 and above high. Supports, but never replaces, clinical judgement. Nothing you type is stored or sent. <a href="' + ROOT + 'ref/fib4-method.html">Method and limits</a>',
           'الحدود: أقل من ' + low.toFixed(1) + ' منخفض، و2.67 فأكثر مرتفع. أداة مساعدة لا تغني أبدًا عن التقييم السريري. لا يُحفظ أو يُرسل أي شيء تكتبه. <a href="' + ROOT + 'ref/fib4-method.html">الطريقة والحدود</a>') + '</p>';
+      out.focus();
+    });
+  }
+
+  /* ---------- NFS calculator (for clinicians) ----------
+     NFS = -1.675 + 0.037*age + 0.094*BMI + 1.13*IFG/DM + 0.99*AST/ALT - 0.013*platelets - 0.66*albumin(g/dL)
+     Rule-out < -1.455 (use < 0.12 from age 65); rule-in > 0.676.
+  */
+  var nf = document.getElementById('nfs-form');
+  if (nf) {
+    nf.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var out = document.getElementById('nfs-result');
+      function num(id) { var v = parseFloat(String(document.getElementById(id).value).replace(',', '.')); return isFinite(v) ? v : NaN; }
+      var age = num('n-age'), wt = num('n-wt'), ht = num('n-ht'), ast = num('n-ast'), alt = num('n-alt'), plt = num('n-plt'), alb = num('n-alb');
+      var dm = document.getElementById('n-dm').value;
+      var unit = document.getElementById('n-alb-unit').value;
+      var bad = [];
+      if (!(age >= 18 && age <= 100)) bad.push(t('age (18 to 100 years)', 'العمر (18 إلى 100 سنة)'));
+      if (!(wt >= 25 && wt <= 350)) bad.push(t('weight (kg)', 'الوزن (كغ)'));
+      if (!(ht >= 120 && ht <= 230)) bad.push(t('height (cm)', 'الطول (سم)'));
+      if (dm !== '0' && dm !== '1') bad.push(t('diabetes (yes or no)', 'السكري (نعم أو لا)'));
+      if (!(ast > 0 && ast < 5000)) bad.push('AST');
+      if (!(alt > 0 && alt < 5000)) bad.push('ALT');
+      if (!(plt > 0 && plt < 2000)) bad.push(t('platelets (×10⁹/L)', 'الصفائح (×10⁹/لتر)'));
+      var albDl = unit === 'gL' ? alb / 10 : alb;
+      if (!(albDl >= 1 && albDl <= 7)) bad.push(t('albumin (check the unit)', 'الألبومين (راجع الوحدة)'));
+      out.hidden = false;
+      if (bad.length) {
+        out.className = 'result';
+        out.innerHTML = '<p class="error">' + t('Check these values: ', 'راجع هذه القيم: ') + esc(bad.join(t(', ', '، '))) + '</p>';
+        out.focus();
+        return;
+      }
+      var bmi = wt / Math.pow(ht / 100, 2);
+      var score = -1.675 + 0.037 * age + 0.094 * bmi + 1.13 * (+dm) + 0.99 * (ast / alt) - 0.013 * plt - 0.66 * albDl;
+      var low = age >= 65 ? 0.12 : -1.455;
+      var cls, head, body;
+      if (score < low) {
+        cls = 'low';
+        head = t('Low risk of advanced fibrosis', 'خطر منخفض للتليف المتقدّم');
+        body = t('Advanced fibrosis is unlikely. Manage metabolic risk and repeat a fibrosis score in 1 to 3 years.',
+          'التليف المتقدّم غير مرجّح. عالج عوامل الخطر الأيضية وأعد حساب مؤشر التليّف خلال سنة إلى ثلاث سنوات.');
+      } else if (score > 0.676) {
+        cls = 'high';
+        head = t('High risk of advanced fibrosis', 'خطر مرتفع للتليف المتقدّم');
+        body = t('Refer to a liver specialist. Confirm with elastography.',
+          'أحِل المريض إلى أخصائي الكبد، وأكّد النتيجة بفحص قياس مرونة الكبد.');
+      } else {
+        cls = 'mid';
+        head = t('Indeterminate', 'نتيجة غير حاسمة');
+        body = t('Second-line test needed: transient elastography (e.g. FibroScan) or ELF.',
+          'يلزم فحص من الخط الثاني: قياس مرونة الكبد العابر (مثل فيبروسكان) أو اختبار ELF.');
+      }
+      var notes = [t('BMI used: ' + bmi.toFixed(1) + ' kg/m².', 'مؤشر كتلة الجسم المستخدم: ' + bmi.toFixed(1) + ' كغ/م².')];
+      if (age < 35) notes.push(t('NFS is not reliable under age 35. Interpret with care.', 'مؤشر NFS غير موثوق تحت سن 35. فسّر النتيجة بحذر.'));
+      if (age >= 65) notes.push(t('Age 65 or over: lower cut-off of 0.12 used.', 'العمر 65 سنة أو أكثر: استُخدم الحد الأدنى 0.12.'));
+      if (bmi >= 35 || dm === '1') notes.push(t('Severe obesity or diabetes raises NFS; a high score may overestimate risk. Confirm with a second-line test.', 'السمنة الشديدة أو السكري ترفع NFS، وقد تبالغ النتيجة المرتفعة في تقدير الخطر. أكّدها بفحص من الخط الثاني.'));
+      out.className = 'result ' + cls;
+      out.innerHTML = '<div class="score">' + score.toFixed(2) + '</div>' +
+        '<h3>' + head + '</h3><p>' + body + '</p>' +
+        notes.map(function (n) { return '<p>' + n + '</p>'; }).join('') +
+        '<p class="fine">' + t('Cut-offs: below ' + low + ' low, above 0.676 high. Supports, but never replaces, clinical judgement. Nothing you type is stored or sent. <a href="' + ROOT + 'ref/nfs-method.html">Method and limits</a>',
+          'الحدود: أقل من ' + low + ' منخفض، وأعلى من 0.676 مرتفع. أداة مساعدة لا تغني أبدًا عن التقييم السريري. لا يُحفظ أو يُرسل أي شيء تكتبه. <a href="' + ROOT + 'ref/nfs-method.html">الطريقة والحدود</a>') + '</p>';
       out.focus();
     });
   }

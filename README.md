@@ -22,17 +22,17 @@ Do not edit the generated `*.html` files directly; they are overwritten by the b
 
 `REVIEW.md` is the medical review checklist.
 
-`tests/test_fib4.py` checks the FIB-4 calculator (known values and cut-off edges). Run it before changing the calculator.
+`tests/test_fib4.py` and `tests/test_nfs.py` check the calculators (known values and cut-off edges). Run them before changing a calculator.
 
 Fonts are self-hosted in `fonts/` (IBM Plex, SIL Open Font License), so pages make no requests to Google.
 
 | Source | Page |
 | --- | --- |
 | `src/index.html` | Home: two doors (patient / doctor), fibrosis scale, events, news, videos |
-| `src/patients.html` | Plain guide, risk check, liver journey, questions, urgent care |
+| `src/patients.html` | Patient Portal: plain guide, risk check, liver journey, questions, urgent care |
 | `content/learn.py` | Patient Q&A: `learn.html` plus one page per question |
 | `content/ref.py` | Doctors' reference: `ref.html` plus 11 topic pages |
-| `src/academy.html` | For doctors: hubs, learning by role, FIB-4 calculator, lectures |
+| `src/academy.html` | Physician Portal: hubs, learning by role, FIB-4 and NFS calculators, lectures |
 | `src/guidance.html` | Fibrosis pathway, lifestyle, drugs, surgery, heart risk, special groups, sources |
 | `src/guides.html` | Printable patient guides: plate, shopping, walking plan, Ramadan |
 | `src/news.html` | News and events with filters |

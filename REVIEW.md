@@ -95,3 +95,10 @@ AASLD children 2025, APASL 2025, Chinese 2024, Egyptian 2022, global consensus 2
 - [ ] NEW: Guidelines side by side (ref/guidelines-compared.html) — check the Egyptian and Saudi rows
 - [ ] NEW: Fatty liver in Saudi Arabia and the Middle East (ref/middle-east.html)
 - [ ] Patient Q&A: "How common" now has MENA and Saudi figures; "Children" has the age-10 ALT test
+
+## Institution update (2026-10-03)
+
+- [ ] NFS calculator and its method page (ref/nfs-method.html). APRI left out on purpose.
+- [ ] About page: mission, principles, "Our people", advisory board / faculty invitation
+- [ ] Home page: "About the Academy" and "Why our region" box
+- [ ] Portal names: Patient Portal / Physician Portal (بوابة المرضى / بوابة الأطباء)
