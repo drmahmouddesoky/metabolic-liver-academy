@@ -84,3 +84,14 @@ Check these first: drug table (doses, label interactions), Baveno VII cut-offs, 
 
 How to mark a page as reviewed: in content/learn.py or content/ref.py, add the page to REVIEWED,
 e.g.  "drugs": "2026-10-20",  then run python3 build.py. The page record will show your name and date.
+
+## Update from your MASH folder (2026-10-03)
+
+Checked against the full texts in your folder (EASL 2024, AASLD 2023, AASLD resmetirom update 2024,
+AASLD children 2025, APASL 2025, Chinese 2024, Egyptian 2022, global consensus 2025, EASL NIT 2021).
+
+- [ ] Drugs page: resmetirom selection (8–15 kPa), dose cuts with clopidogrel, statin caps, 3/6/12-month monitoring, 12-month response table
+- [ ] Special groups: children now follow AASLD 2025 (screen from age 10, ALT >22 girls / >26 boys)
+- [ ] NEW: Guidelines side by side (ref/guidelines-compared.html) — check the Egyptian and Saudi rows
+- [ ] NEW: Fatty liver in Saudi Arabia and the Middle East (ref/middle-east.html)
+- [ ] Patient Q&A: "How common" now has MENA and Saudi figures; "Children" has the age-10 ALT test

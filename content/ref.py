@@ -18,7 +18,7 @@ Fields
   src       source keys (SOURCES here, or learn.SOURCES)
 """
 
-UPDATED = "2026-10-02"
+UPDATED = "2026-10-03"
 NEXT_REVIEW = "2027-10"
 # Medical review record. When you have reviewed a page, add:  "slug": "YYYY-MM-DD",
 # The page will then show "Medically reviewed by Dr. Mahmoud Desoky on <date>".
@@ -32,6 +32,7 @@ GROUPS = [
     ("diagnose", {"en": "Diagnose and stage", "ar": "التشخيص وتقييم المرحلة"}),
     ("treat",    {"en": "Treat",              "ar": "العلاج"}),
     ("follow",   {"en": "Follow up and special groups", "ar": "المتابعة والفئات الخاصة"}),
+    ("context",  {"en": "Guidelines and our region", "ar": "الإرشادات ومنطقتنا"}),
 ]
 
 # Extra sources for doctors (all checked on PubMed). Keys from content/learn.py also work.
@@ -50,6 +51,20 @@ SOURCES = {
     "aace2022": ("Cusi K, et al. AACE clinical practice guideline for the diagnosis and management of NAFLD in primary care and endocrinology clinical settings. Endocr Pract 2022;28:528–62.", "https://doi.org/10.1016/j.eprac.2022.03.010"),
     "naspghan": ("Vos MB, et al. NASPGHAN clinical practice guideline for the diagnosis and treatment of NAFLD in children. J Pediatr Gastroenterol Nutr 2017;64:319–34.", "https://doi.org/10.1097/MPG.0000000000001482"),
     "lassailly": ("Lassailly G, et al. Bariatric surgery provides long-term resolution of NASH and regression of fibrosis. Gastroenterology 2020;159:1290–1301.", "https://doi.org/10.1053/j.gastro.2020.06.006"),
+    "resm2024": ("Chen VL, et al. Resmetirom therapy for MASLD: October 2024 updates to AASLD Practice Guidance. Hepatology 2025;81(1):312–20.", "https://doi.org/10.1097/HEP.0000000000001112"),
+    "noureddin2024": ("Noureddin M, et al. Expert panel recommendations: practical clinical applications for initiating and monitoring resmetirom in patients with MASH and moderate to noncirrhotic advanced fibrosis. Clin Gastroenterol Hepatol 2024;22(12):2367–77.", "https://doi.org/10.1016/j.cgh.2024.07.003"),
+    "peds2025": ("Xanthakos SA, et al. AASLD Practice Statement on the evaluation and management of MASLD in children. Hepatology 2025;82(5):1352–94.", "https://doi.org/10.1097/HEP.0000000000001368"),
+    "apasl2025": ("Eslam M, et al. APASL clinical practice guidelines for the diagnosis and management of metabolic dysfunction-associated fatty liver disease. Hepatol Int 2025;19(2):261–301.", "https://doi.org/10.1007/s12072-024-10774-3"),
+    "china2024": ("Fan JG, et al. Guideline for the prevention and treatment of metabolic dysfunction-associated fatty liver disease (version 2024). J Clin Transl Hepatol 2024;12(11):955–74.", "https://doi.org/10.14218/JCTH.2024.00311"),
+    "egypt2022": ("Fouad Y, et al. The Egyptian clinical practice guidelines for the diagnosis and management of metabolic associated fatty liver disease. Saudi J Gastroenterol 2022;28(1):3–20.", "https://doi.org/10.4103/sjg.sjg_357_21"),
+    "braves2023": ("Verrastro O, et al. Bariatric–metabolic surgery versus lifestyle intervention plus best medical care in NASH (BRAVES): a multicentre, open-label, randomised trial. Lancet 2023;401(10390):1786–97.", "https://doi.org/10.1016/S0140-6736(23)00634-7"),
+    "sanai2021": ("Sanai FM, et al. Clinical and economic burden of NASH in Saudi Arabia, United Arab Emirates and Kuwait. Hepatol Int 2021;15(4):912–21.", "https://doi.org/10.1007/s12072-021-10182-x"),
+    "mena2024": ("Younossi ZM, et al. Prevalence of MASLD in the Middle East and North Africa. Liver Int 2024;44(4):1061–70.", "https://doi.org/10.1111/liv.15852"),
+    "ksaburden2024": ("Alqahtani SA, et al. The burden of MASLD and viral hepatitis in Saudi Arabia. Saudi J Gastroenterol 2024;30(5):310–8.", "https://doi.org/10.4103/sjg.sjg_62_24"),
+    "stigma2024": ("Alqahtani SA, et al. Stigma in steatotic liver disease: a survey of patients from Saudi Arabia. Saudi J Gastroenterol 2024;30(5):335–41.", "https://doi.org/10.4103/sjg.sjg_122_24"),
+    "menaknow2025": ("Alqahtani SA, et al. Knowledge about MASLD among medical professionals from countries in the MENA region. Ann Hepatol 2025;30(1):101569.", "https://doi.org/10.1016/j.aohep.2024.101569"),
+    "menagbd2025": ("Sarkoohi Z, et al. Epidemiological trends and burden of MASLD in the Middle East and North Africa region: a 32-year analysis. J Health Popul Nutr 2025;44(1):207.", "https://doi.org/10.1186/s41043-025-00973-5"),
+    "arabbiblio2025": ("Alhazzani W, et al. A bibliometric analysis of a decade's research on MASLD in the Arab world. Saudi J Gastroenterol 2025;31(3):157–67.", "https://doi.org/10.4103/sjg.sjg_431_24"),
     "asmbs2022": ("Eisenberg D, et al. 2022 ASMBS and IFSO indications for metabolic and bariatric surgery. Surg Obes Relat Dis 2022;18:1345–56.", "https://doi.org/10.1016/j.soard.2022.08.013"),
 }
 
@@ -76,7 +91,7 @@ PAGES = [
           "يكفي معيار واحد. ويُحتسب المعيار أيضًا إذا كان المريض يتلقى علاجًا له.")],
    "table": {"head": [("Criterion", "المعيار"), ("Threshold", "الحد")],
              "rows": [
-              [("Weight", "الوزن"), ("BMI ≥25 kg/m² (≥23 in Asian people), or waist >94 cm men / >80 cm women", "مؤشر كتلة الجسم ≥25 كغ/م² (≥23 للآسيويين)، أو محيط الخصر >94 سم للرجال و>80 سم للنساء")],
+              [("Weight", "الوزن"), ("BMI ≥25 kg/m² (≥23 in Asian people), or waist >94 cm men / >80 cm women (>90 cm men in South Asian and Chinese people)", "مؤشر كتلة الجسم ≥25 كغ/م² (≥23 للآسيويين)، أو محيط الخصر >94 سم للرجال و>80 سم للنساء (>90 سم للرجال من جنوب آسيا والصين)")],
               [("Glucose", "السكر"), ("Fasting glucose ≥5.6 mmol/L (100 mg/dL), 2-h glucose ≥7.8 mmol/L (140 mg/dL), HbA1c ≥5.7%, or type 2 diabetes", "سكر صائم ≥5.6 مليمول/ل (100 ملغ/دل)، أو سكر بعد ساعتين ≥7.8 مليمول/ل (140 ملغ/دل)، أو HbA1c ≥5.7%، أو سكري من النوع الثاني")],
               [("Blood pressure", "ضغط الدم"), ("≥130/85 mmHg", "≥130/85 ملم زئبق")],
               [("Triglycerides", "الدهون الثلاثية"), ("≥1.70 mmol/L (150 mg/dL)", "≥1.70 مليمول/ل (150 ملغ/دل)")],
@@ -339,24 +354,46 @@ PAGES = [
               [("Fibrosis improved ≥1 stage", "تحسّن التليّف مرحلة أو أكثر"), ("24.2% and 25.9% vs 14.2%", "24.2% و25.9% مقابل 14.2%"), ("36.8% vs 22.4%", "36.8% مقابل 22.4%")],
               [("Weight", "الوزن"), ("Neutral", "لا تأثير يُذكر"), ("−10.5% vs −2.0%", "−10.5% مقابل −2.0%")],
               [("Main side effects", "أهم الآثار الجانبية"), ("Diarrhoea, nausea", "إسهال، غثيان"), ("Nausea, vomiting, diarrhoea, constipation", "غثيان، قيء، إسهال، إمساك")],
-              [("Watch for", "انتبه إلى"), ("Drug interactions: avoid strong CYP2C8 inhibitors (e.g. gemfibrozil); some statin doses are capped. Check the label.", "التداخلات الدوائية: تجنّب مثبطات CYP2C8 القوية (مثل الجمفيبروزيل)، وبعض جرعات الستاتين لها حد أعلى. راجع النشرة."), ("Gallstones, pancreatitis history, muscle loss; not in pregnancy", "حصى المرارة، تاريخ التهاب البنكرياس، فقدان العضلات؛ لا يُستخدم في الحمل")],
+              [("Watch for", "انتبه إلى"), ("Interactions: avoid strong CYP2C8 inhibitors (e.g. gemfibrozil). With a CYP2C8 inhibitor such as clopidogrel, lower the dose (80 mg if ≥100 kg, 60 mg if <100 kg). Statin caps: rosuvastatin and simvastatin 20 mg, atorvastatin and pravastatin 40 mg. Check TSH and free T4 if on levothyroxine.", "التداخلات: تجنّب مثبطات CYP2C8 القوية (مثل الجمفيبروزيل). ومع مثبط لـ CYP2C8 مثل الكلوبيدوغريل تُخفّض الجرعة (80 ملغ لمن وزنه ≥100 كغ، و60 ملغ لمن وزنه <100 كغ). الحد الأعلى للستاتين: روزوفاستاتين وسيمفاستاتين 20 ملغ، وأتورفاستاتين وبرافاستاتين 40 ملغ. افحص TSH وfree T4 لمن يتناول الليفوثيروكسين."), ("Gallstones, pancreatitis history, muscle loss; not in pregnancy", "حصى المرارة، تاريخ التهاب البنكرياس، فقدان العضلات؛ لا يُستخدم في الحمل")],
              ]},
    "note": ("Approved in the US (resmetirom 2024, semaglutide 2025), the EU (resmetirom, conditional, 2025) and the UK (both, 2026). Long-term outcome trials are ongoing.",
             "معتمدان في الولايات المتحدة (الريسميتيروم 2024، والسيماغلوتايد 2025)، والاتحاد الأوروبي (الريسميتيروم، اعتماد مشروط، 2025)، والمملكة المتحدة (كلاهما، 2026). وما زالت تجارب المآلات طويلة المدى جارية.")},
+  {"h": ("Who qualifies for resmetirom (AASLD 2024)", "مَن يناسبه الريسميتيروم (AASLD 2024)"),
+   "table": {"head": [("Recommended", "يوصى به"), ("Not recommended", "لا يوصى به")],
+             "rows": [
+              [("MASLD with VCTE 8–15 kPa, or MRE 3.1–4.4 kPa, or biopsy-proven MASH F2–F3", "MASLD مع صلابة VCTE ‏8–15 كيلوباسكال، أو MRE ‏3.1–4.4 كيلوباسكال، أو MASH مؤكد بالخزعة F2–F3"),
+               ("Cirrhosis, including VCTE >20 kPa or MRE >5 kPa", "التشمّع، ومنه صلابة VCTE >20 كيلوباسكال أو MRE >5 كيلوباسكال")],
+              [("Values outside these ranges: individual decision by a liver specialist", "القيم خارج هذه النطاقات: قرار فردي من طبيب كبد متمرّس"),
+               ("Other active liver disease; alcohol >20 g/day (women) or >30 g/day (men); active thyroid disease", "مرض كبدي نشط آخر؛ كحول >20 غ/يوم (نساء) أو >30 غ/يوم (رجال)؛ مرض درقي نشط")],
+             ]},
+   "note": ("The 2025 global consensus also allows treatment at 16–20 kPa if a second test excludes cirrhosis and there are no signs of portal hypertension.",
+            "ويسمح الإجماع العالمي لعام 2025 أيضًا بالعلاج عند 16–20 كيلوباسكال إذا نفى فحص ثانٍ التشمّع ولم توجد علامات لارتفاع ضغط الوريد البابي.")},
   {"h": ("Choosing between them", "الاختيار بينهما"),
    "ul": [
     ("Obesity or type 2 diabetes needing treatment anyway: semaglutide treats both.", "سمنة أو سكري يحتاج علاجًا في كل الأحوال: السيماغلوتايد يعالج الاثنين."),
     ("Normal weight, GLP-1 not tolerated, or already on a GLP-1 drug: resmetirom is an option.", "وزن طبيعي، أو عدم تحمّل GLP-1، أو يتناول دواء GLP-1 أصلًا: الريسميتيروم خيار."),
     ("Data on using both together are still limited.", "البيانات عن الجمع بينهما ما زالت محدودة."),
    ]},
-  {"h": ("Monitoring response", "متابعة الاستجابة"),
-   "p": [("There is no single agreed stopping rule yet. Reassess about once a year with weight, ALT/AST and a non-invasive test (LSM, ELF or FIB-4). A clear fall in ALT and liver stiffness suggests benefit. The 2026 global consensus gives a framework for this.",
-          "لا توجد حتى الآن قاعدة متفق عليها لإيقاف العلاج. أعد التقييم مرة في السنة تقريبًا بالوزن وALT/AST وفحص غير جراحي (الصلابة أو ELF أو FIB-4). والانخفاض الواضح في ALT وصلابة الكبد يشير إلى الفائدة. ويقدّم الإجماع العالمي لعام 2026 إطارًا لذلك.")]},
+  {"h": ("Monitoring resmetirom", "متابعة العلاج بالريسميتيروم"),
+   "ul": [
+    ("Safety: liver panel at 3, 6 and 12 months.", "السلامة: تحاليل الكبد بعد 3 و6 و12 شهرًا."),
+    ("Stop for liver injury: AST or ALT >5× the upper limit, or bilirubin >2.5 mg/dL with raised enzymes, among other label criteria.", "أوقف الدواء عند إصابة الكبد: AST أو ALT أكثر من 5 أضعاف الحد الأعلى، أو البيليروبين >2.5 ملغ/دل مع ارتفاع الإنزيمات، إضافة إلى معايير أخرى في النشرة."),
+    ("Response at 12 months, using the same test as at baseline (image-based stiffness preferred).", "تقييم الاستجابة بعد 12 شهرًا بالفحص نفسه المستخدم في البداية (ويفضَّل قياس الصلابة بالتصوير)."),
+   ]},
+  {"h": ("Response at 12 months", "الاستجابة بعد 12 شهرًا"),
+   "table": {"head": [("Finding", "النتيجة"), ("Action", "الإجراء")],
+             "rows": [
+              [("LSM falls ≥25% on VCTE (≥20% on MRE), or ALT normalises or clearly improves", "انخفاض الصلابة ≥25% بـ VCTE (≥20% بـ MRE)، أو تطبّع ALT أو تحسّنه بوضوح"), ("Benefit: continue", "فائدة: استمر")],
+              [("Small fall in LSM, no clear ALT change", "انخفاض بسيط في الصلابة دون تغيّر واضح في ALT"), ("Uncertain: re-optimise lifestyle, consider other options", "غير مؤكد: حسّن نمط الحياة، وفكّر في خيارات أخرى")],
+              [("Non-invasive tests worsen, or ALT keeps rising", "تدهور الفحوص غير الجراحية أو استمرار ارتفاع ALT"), ("No response: stop", "لا استجابة: أوقف الدواء")],
+             ]},
+   "note": ("Based on the AASLD October 2024 update. The 2025 global consensus uses a ≥30% change in VCTE stiffness, and says ALT alone should not decide response.",
+            "وفق تحديث AASLD في أكتوبر 2024. ويستخدم الإجماع العالمي لعام 2025 تغيّرًا ≥30% في صلابة VCTE، ويرى ألا يُعتمد على ALT وحده لتقييم الاستجابة.")},
   {"h": ("Other medicines", "أدوية أخرى"),
    "table": {"head": [("Drug", "الدواء"), ("Place in MASLD", "مكانه في MASLD")],
              "rows": [
-              [("Pioglitazone", "البيوغليتازون"), ("Improves MASH histology. Consider in type 2 diabetes. Weight gain and fluid retention.", "يحسّن نسيج MASH. يُنظر فيه مع السكري من النوع الثاني. يسبب زيادة الوزن واحتباس السوائل.")],
-              [("Vitamin E", "فيتامين E"), ("Older option in non-diabetic biopsy-proven MASH (AASLD). EASL 2024 does not recommend it as liver treatment.", "خيار قديم في MASH المؤكد بالخزعة لدى غير المصابين بالسكري (AASLD). ولا توصي به EASL 2024 علاجًا للكبد.")],
+              [("Pioglitazone", "البيوغليتازون"), ("Improved histology in trials. AASLD: can be considered with type 2 diabetes. EASL and the global consensus: safe, but use it for diabetes, not as a MASH treatment. Weight gain and fluid retention.", "حسّن النسيج في التجارب. AASLD: يمكن النظر فيه مع السكري من النوع الثاني. وEASL والإجماع العالمي: آمن، لكن يُستخدم للسكري لا علاجًا لـ MASH. يسبب زيادة الوزن واحتباس السوائل.")],
+              [("Vitamin E", "فيتامين E"), ("AASLD: can be considered in selected people. Global consensus: only in selected people without diabetes or cirrhosis. EASL 2024: not recommended as MASH treatment.", "AASLD: يمكن النظر فيه لدى أشخاص مختارين. والإجماع العالمي: فقط لدى أشخاص مختارين دون سكري أو تشمّع. وEASL 2024: لا يوصى به علاجًا لـ MASH.")],
               [("Tirzepatide, other GLP-1 drugs", "التيرزيباتايد وأدوية GLP-1 الأخرى"), ("Use for diabetes or obesity. Liver data promising, not yet approved for MASH.", "تُستخدم للسكري أو السمنة. بيانات الكبد واعدة لكنها غير معتمدة لـ MASH بعد.")],
               [("SGLT2 inhibitors", "مثبطات SGLT2"), ("Use for diabetes, heart and kidney benefit. Not a liver treatment.", "تُستخدم للسكري ولفائدتها القلبية والكلوية، وليست علاجًا للكبد.")],
               [("Metformin", "الميتفورمين"), ("Safe; no effect on histology.", "آمن، ولا تأثير له على النسيج.")],
@@ -365,7 +402,7 @@ PAGES = [
              ]}},
  ],
  "see": ["lifestyle", "cardiometabolic", "fibrosis-pathway"],
- "src": ["maestro", "essence", "easl2024", "aasld2023", "global2026", "blt2026", "ec2025", "aace2022"],
+ "src": ["resm2024", "global2025", "maestro", "essence", "easl2024", "aasld2023", "noureddin2024", "global2026", "blt2026", "ec2025"],
 },
 {
  "slug": "cardiometabolic", "group": "treat",
@@ -403,7 +440,8 @@ PAGES = [
           "ar": "تحقق الجراحة أكبر تحسّن وأطوله أثرًا في MASH، إذا اختير المريض المناسب."},
  "key": [
   ("Consider in MASLD with BMI ≥35, or 30–34.9 with metabolic disease (lower thresholds in Asian people).", "يُنظر فيها في MASLD مع مؤشر كتلة ≥35، أو 30–34.9 مع مرض أيضي (حدود أقل للآسيويين)."),
-  ("At 5 years: MASH resolved in 84%, fibrosis reduced in 70% of re-biopsied patients.", "بعد 5 سنوات: زال MASH لدى 84% وتراجع التليّف لدى 70% ممن أُعيدت لهم الخزعة."),
+  ("Randomised trial (BRAVES): MASH resolved at 1 year in 56–57% after surgery vs 16% with lifestyle and medical care.", "تجربة عشوائية (BRAVES): زال MASH بعد سنة لدى 56–57% بعد الجراحة مقابل 16% مع نمط الحياة والرعاية الطبية."),
+  ("Long term: at 5 years, MASH resolved in 84% and fibrosis fell in 70% of re-biopsied patients.", "على المدى الطويل: بعد 5 سنوات زال MASH لدى 84% وتراجع التليّف لدى 70% ممن أُعيدت لهم الخزعة."),
   ("Compensated cirrhosis without portal hypertension: possible in expert centres.", "التشمّع المعاوَض دون ارتفاع ضغط بابي: ممكنة في المراكز المتخصصة."),
   ("Avoid in decompensated cirrhosis.", "تُتجنّب في التشمّع غير المعاوَض."),
  ],
@@ -422,7 +460,7 @@ PAGES = [
    ]},
  ],
  "see": ["lifestyle", "cirrhosis", "drugs"],
- "src": ["easl2024", "lassailly", "asmbs2022", "baveno7"],
+ "src": ["easl2024", "braves2023", "lassailly", "asmbs2022", "baveno7"],
 },
 # =================================================================== FOLLOW UP
 {
@@ -502,16 +540,18 @@ PAGES = [
  "lead": {"en": "Children, lean patients, older adults, young adults and people who drink alcohol.",
           "ar": "الأطفال، وذوو الوزن الطبيعي، وكبار السن، والشباب، ومن يتناولون الكحول."},
  "key": [
-  ("Children: screen with ALT from age 9–11 in obesity. FIB-4 is not valid.", "الأطفال: الفحص بـ ALT من سن 9–11 في حالة السمنة. FIB-4 غير صالح."),
+  ("Children: screen with ALT from age 10 with obesity, or overweight plus risk factors. FIB-4 is not valid.", "الأطفال: الفحص بـ ALT من عمر 10 سنوات مع السمنة، أو زيادة الوزن مع عوامل خطر. FIB-4 غير صالح."),
   ("Lean MASLD (BMI <25, <23 Asian) can still progress. Use the same pathway.", "MASLD لدى ذوي الوزن الطبيعي (مؤشر الكتلة <25، و<23 للآسيويين) قد يتطور أيضًا. استخدم المسار نفسه."),
   ("Age 65+: FIB-4 lower cut-off 2.0; NFS 0.12.", "65 سنة فأكثر: الحد الأدنى لـ FIB-4 هو 2.0، ولـ NFS هو 0.12."),
   ("MetALD: treat both the alcohol use and the metabolic risk.", "MetALD: عالج تعاطي الكحول والخطر الأيضي معًا."),
  ],
  "sections": [
-  {"h": ("Children and adolescents", "الأطفال والمراهقون"),
+  {"h": ("Children and adolescents (AASLD 2025)", "الأطفال والمراهقون (AASLD 2025)"),
    "ul": [
-    ("Screen with ALT from age 9–11 in children with obesity, or overweight with extra risk factors.", "الفحص بـ ALT من سن 9–11 لدى الأطفال المصابين بالسمنة، أو زيادة الوزن مع عوامل خطر إضافية."),
-    ("Interpret ALT with child ranges (about 22 U/L girls, 26 U/L boys). More than twice that persistently needs work-up.", "فسّر ALT وفق قيم الأطفال (نحو 22 وحدة/ل للبنات و26 للأولاد)، وارتفاعه المستمر لأكثر من ضعف ذلك يستدعي التقييم."),
+    ("Screen from age 10 in children with obesity, or with overweight plus cardiometabolic risk factors or a family history. Some guidelines screen younger children with risk factors.", "افحص من عمر 10 سنوات الأطفال المصابين بالسمنة، أو بزيادة الوزن مع عوامل خطر قلبية أيضية أو تاريخ عائلي. وبعض الإرشادات تفحص أطفالًا أصغر عند وجود عوامل خطر."),
+    ("Use ALT, not ultrasound, to screen. Abnormal: above 22 U/L in girls and 26 U/L in boys.", "استخدم ALT لا الأشعة الصوتية للفحص. ويُعد غير طبيعي إذا تجاوز 22 وحدة/ل للبنات و26 للأولاد."),
+    ("A single high ALT in a well child: repeat within 3 months. Persistently high: evaluate or refer. Do not wait for ALT to reach twice normal.", "ارتفاع ALT مرة واحدة لدى طفل سليم: أعد الفحص خلال 3 أشهر. وإذا استمر الارتفاع فقيّم أو أحِل، ولا تنتظر حتى يبلغ ضعف الطبيعي."),
+    ("Diagnosis needs steatosis on imaging or biopsy plus a cardiometabolic risk factor. ALT alone is not enough.", "يحتاج التشخيص إلى إثبات التشحّم بالتصوير أو الخزعة مع عامل خطر قلبي أيضي، وALT وحده لا يكفي."),
     ("Look harder for other causes (Wilson disease, autoimmune hepatitis, genetic disorders).", "ابحث بعناية أكبر عن الأسباب الأخرى (داء ويلسون، والتهاب الكبد المناعي، والاضطرابات الوراثية)."),
     ("Family-based lifestyle change is the main treatment. No drug is approved for MASH in children.", "تعديل نمط حياة الأسرة كلها هو العلاج الأساسي، ولا يوجد دواء معتمد لـ MASH لدى الأطفال."),
    ]},
@@ -526,6 +566,87 @@ PAGES = [
           "اسأل عن الكحول بالغرامات أسبوعيًا، واستخدم أداة معتمدة (AUDIT-C)، وقدّم الدعم لتعاطي الكحول. ويتطور التليّف أسرع عند اجتماع السببين.")]},
  ],
  "see": ["definitions", "fibrosis-pathway", "lifestyle"],
- "src": ["naspghan", "easl2024", "aasld2023", "mcpherson", "delphi2023"],
+ "src": ["peds2025", "naspghan", "easl2024", "aasld2023", "mcpherson", "delphi2023"],
+},
+# =================================================================== CONTEXT
+{
+ "slug": "guidelines-compared", "group": "context",
+ "title": {"en": "MASLD guidelines side by side", "ar": "إرشادات MASLD جنبًا إلى جنب"},
+ "lead": {"en": "Where the main international and regional guidelines agree, and where they differ.",
+          "ar": "أين تتفق الإرشادات الدولية والإقليمية الرئيسية، وأين تختلف."},
+ "key": [
+  ("All agree: FIB-4 first (1.3 and 2.67), then elastography. A liver stiffness below 8 kPa is low risk.", "تتفق جميعها على: FIB-4 أولًا (1.3 و2.67)، ثم قياس المرونة. والصلابة الأقل من 8 كيلوباسكال خطر منخفض."),
+  ("Names differ: Western and global documents use MASLD; Asian, Chinese and Egyptian guidelines use MAFLD. The patients are largely the same.", "تختلف الأسماء: تستخدم الوثائق الغربية والعالمية MASLD، وتستخدم الإرشادات الآسيوية والصينية والمصرية MAFLD، والمرضى متقاربون إلى حد كبير."),
+  ("They differ most on drugs: how to select patients for resmetirom, and whether vitamin E or pioglitazone count as liver treatment.", "أكثر ما تختلف فيه الأدوية: كيفية اختيار المرضى للريسميتيروم، وهل يُعدّ فيتامين E أو البيوغليتازون علاجًا للكبد."),
+  ("Always check the full guideline and your local drug approvals.", "راجع دائمًا الإرشادات كاملة وموافقات الأدوية المحلية."),
+ ],
+ "sections": [
+  {"h": ("Diagnosis and staging", "التشخيص وتقييم المرحلة"),
+   "table": {"head": [("Guideline", "الإرشادات"), ("Name", "التسمية"), ("First step", "الخطوة الأولى"), ("Second step", "الخطوة الثانية"), ("Retest if low risk", "إعادة الفحص عند الخطر المنخفض")],
+             "rows": [
+              ["EASL–EASD–EASO 2024", "MASLD", ("FIB-4 <1.3 / ≥1.3", "FIB-4 ‏<1.3 / ≥1.3"), ("VCTE <8 / ≥12 kPa, or ELF <7.7 / ≥9.8", "VCTE ‏<8 / ≥12 كيلوباسكال، أو ELF ‏<7.7 / ≥9.8"), ("Every 1–3 years", "كل 1–3 سنوات")],
+              ["AASLD 2023", ("NAFLD, renamed MASLD in 2023", "NAFLD، وأعيدت تسميته MASLD عام 2023"), ("FIB-4 <1.3 / 1.3–2.67 / >2.67", "FIB-4 ‏<1.3 / 1.3–2.67 / >2.67"), ("VCTE <8 / 8–12 / >12 kPa, or ELF <7.7 / ≥9.8", "VCTE ‏<8 / 8–12 / >12 كيلوباسكال، أو ELF ‏<7.7 / ≥9.8"), ("2–3 years; 1–2 years with diabetes or ≥2 risk factors", "2–3 سنوات؛ و1–2 سنة مع السكري أو ≥2 عوامل خطر")],
+              [("Global consensus 2025", "الإجماع العالمي 2025"), "MASLD", ("FIB-4 <1.3 (<2.0 if ≥65)", "FIB-4 ‏<1.3 (<2.0 لمن ≥65)"), ("VCTE ≥8 kPa = at risk", "VCTE ‏≥8 كيلوباسكال = معرّض للخطر"), "—"],
+              ["APASL 2025", "MAFLD", ("FIB-4 <1.3 / 1.3–2.67 / >2.67", "FIB-4 ‏<1.3 / 1.3–2.67 / >2.67"), ("VCTE <8 kPa rules out; ELF as an option", "VCTE ‏<8 كيلوباسكال ينفي؛ وELF خيار"), ("2–3 years", "2–3 سنوات")],
+              [("Chinese 2024", "الصينية 2024"), "MAFLD", ("FIB-4 <1.3 / ≥2.67", "FIB-4 ‏<1.3 / ≥2.67"), ("VCTE <8 / >12 kPa (advanced fibrosis); <10 / >15 kPa (cirrhosis)", "VCTE ‏<8 / >12 (تليّف متقدّم)؛ <10 / >15 كيلوباسكال (تشمّع)"), "—"],
+              [("Egyptian 2022", "المصرية 2022"), "MAFLD", ("FIB-4 1.3 / 2.67, NFS, or APRI 0.5 / 1.5", "FIB-4 ‏1.3 / 2.67، أو NFS، أو APRI ‏0.5 / 1.5"), ("Elastography; LSM >15 kPa suggests cirrhosis", "قياس المرونة؛ والصلابة >15 كيلوباسكال تشير إلى التشمّع"), "—"],
+              [("Saudi consensus 2026", "الإجماع السعودي 2026"), "MASLD", ("Adapts international standards to Saudi practice. See the full text.", "يكيّف المعايير الدولية مع الممارسة السعودية. راجع النص الكامل."), "—", "—"],
+             ]},
+   "note": ("\"—\" means we have not summarised that point yet. It does not mean the guideline is silent.", "تعني \"—\" أننا لم نلخّص هذه النقطة بعد، ولا تعني أن الإرشادات لا تتناولها.")},
+  {"h": ("Medicines", "الأدوية"),
+   "table": {"head": [("Guideline", "الإرشادات"), ("Resmetirom", "الريسميتيروم"), ("Vitamin E", "فيتامين E"), ("Pioglitazone", "البيوغليتازون")],
+             "rows": [
+              ["EASL–EASD–EASO 2024", ("Consider where approved, in non-cirrhotic MASH with significant fibrosis (e.g. VCTE ≥10 kPa, MRE ≥5 kPa or ELF ≥9.8, without cirrhosis)", "يُنظر فيه حيث يُعتمد، في MASH دون تشمّع مع تليّف ملحوظ (مثل VCTE ‏≥10 أو MRE ‏≥5 كيلوباسكال أو ELF ‏≥9.8، دون تشمّع)"), ("Not as MASH treatment", "ليس علاجًا لـ MASH"), ("Safe; not as MASH treatment", "آمن؛ وليس علاجًا لـ MASH")],
+              [("AASLD 2023 + 2024 update", "AASLD 2023 + تحديث 2024"), ("VCTE 8–15 kPa or MRE 3.1–4.4 kPa; not if VCTE >20 kPa", "VCTE ‏8–15 أو MRE ‏3.1–4.4 كيلوباسكال؛ ولا يُعطى إذا تجاوزت VCTE ‏20"), ("Consider in selected people", "يُنظر فيه لأشخاص مختارين"), ("Consider with type 2 diabetes", "يُنظر فيه مع السكري من النوع الثاني")],
+              [("Global consensus 2025", "الإجماع العالمي 2025"), ("VCTE 8–<16 kPa; 16–20 kPa if a second test excludes cirrhosis; not if >20 kPa", "VCTE ‏8 إلى أقل من 16؛ و16–20 إذا نفى فحص ثانٍ التشمّع؛ ولا يُعطى فوق 20"), ("Only selected people without diabetes or cirrhosis", "فقط لأشخاص مختارين دون سكري أو تشمّع"), ("For diabetes, not as MASH treatment", "للسكري، وليس علاجًا لـ MASH")],
+              ["APASL 2025", ("Improves inflammation and fibrosis; prescribe within a specialist team", "يحسّن الالتهاب والتليّف؛ ويوصف ضمن فريق متخصص"), ("May improve histology", "قد يحسّن النسيج"), ("Improves histology", "يحسّن النسيج")],
+              [("Egyptian 2022", "المصرية 2022"), ("Before approval", "قبل اعتماده"), ("May improve histology", "قد يحسّن النسيج"), ("Improves histology", "يحسّن النسيج")],
+             ]},
+   "note": ("Summaries of each document's own words, checked against the full texts in October 2026.", "ملخصات لنصوص كل وثيقة، رُوجعت مقابل النصوص الكاملة في أكتوبر 2026.")},
+ ],
+ "see": ["fibrosis-pathway", "drugs", "middle-east"],
+ "src": ["easl2024", "aasld2023", "resm2024", "global2025", "apasl2025", "china2024", "egypt2022", "saudi2026"],
+},
+{
+ "slug": "middle-east", "group": "context",
+ "title": {"en": "Fatty liver in Saudi Arabia and the Middle East", "ar": "الكبد الدهني في السعودية والشرق الأوسط"},
+ "lead": {"en": "The numbers behind our mission: how common MASLD is in our region, and the gaps we need to close.",
+          "ar": "الأرقام وراء رسالتنا: مدى انتشار MASLD في منطقتنا، والفجوات التي نحتاج إلى سدّها."},
+ "key": [
+  ("About 39% of people in the Middle East and North Africa have MASLD, and about 69% of people with type 2 diabetes.", "نحو 39% من سكان الشرق الأوسط وشمال أفريقيا لديهم MASLD، ونحو 69% من مرضى السكري من النوع الثاني."),
+  ("In Saudi Arabia, estimated adult prevalence rose from 41% (2012) to 44% (2019).", "في السعودية ارتفع الانتشار المقدّر لدى البالغين من 41% (2012) إلى 44% (2019)."),
+  ("Models predict cirrhosis and liver cancer from MASH in Saudi Arabia will roughly triple from 2018 to 2030.", "تتوقع النماذج أن تتضاعف حالات التشمّع وسرطان الكبد الناتجة عن MASH في السعودية نحو ثلاث مرات بين 2018 و2030."),
+  ("Doctors' knowledge varies, and the region produces only about 3% of world MASLD research.", "تتفاوت معرفة الأطباء، ولا تُنتج المنطقة سوى نحو 3% من أبحاث MASLD في العالم."),
+ ],
+ "sections": [
+  {"h": ("How common it is", "مدى الانتشار"),
+   "table": {"head": [("Population", "الفئة"), ("Estimate", "التقدير"), ("Source", "المصدر")],
+             "rows": [
+              [("MENA, general population", "الشرق الأوسط وشمال أفريقيا، عامة السكان"), "39.4%", ("Meta-analysis, Younossi 2024", "تحليل تجميعي، Younossi 2024")],
+              [("MENA, type 2 diabetes", "الشرق الأوسط وشمال أفريقيا، مرضى السكري"), "68.7%", ("Meta-analysis, Younossi 2024", "تحليل تجميعي، Younossi 2024")],
+              [("MENA, trend", "الشرق الأوسط وشمال أفريقيا، الاتجاه"), ("35.4% (2008–16) → 46.2% (2017–20)", "35.4% (2008–2016) ← 46.2% (2017–2020)"), ("Younossi 2024", "Younossi 2024")],
+              [("Saudi Arabia, adults", "السعودية، البالغون"), ("40.6% (2012) → 44.0% (2019)", "40.6% (2012) ← 44.0% (2019)"), ("Global Burden of Disease, Alqahtani 2024", "العبء العالمي للأمراض، Alqahtani 2024")],
+              [("Saudi Arabia, all ages", "السعودية، جميع الأعمار"), ("28.0% → 33.1% (about 11.8 million people)", "28.0% ← 33.1% (نحو 11.8 مليون شخص)"), ("Alqahtani 2024", "Alqahtani 2024")],
+             ]},
+   "note": ("Modelled and pooled estimates. Local studies vary with the test used and the group studied.", "تقديرات مبنية على نماذج وتحليلات تجميعية، وتختلف الدراسات المحلية حسب الفحص المستخدم والفئة المدروسة.")},
+  {"h": ("Where it is heading", "إلى أين يتجه"),
+   "ul": [
+    ("A Saudi model (2018–2030) predicts people with F0–F3 fibrosis doubling to 2.5 million, and cirrhosis plus liver cancer cases tripling to about 212,000.", "يتوقع نموذج سعودي (2018–2030) أن يتضاعف عدد المصابين بتليّف F0–F3 إلى 2.5 مليون، وأن تتضاعف حالات التشمّع وسرطان الكبد ثلاث مرات إلى نحو 212 ألفًا."),
+    ("The same model estimated NASH-related costs at about 5.8% of national health spending in 2019.", "وقدّر النموذج نفسه تكلفة NASH بنحو 5.8% من الإنفاق الصحي الوطني في 2019."),
+    ("In Saudi Arabia, MASLD is rising while hepatitis B is falling and hepatitis C is stable. Fatty liver is becoming the main chronic liver disease.", "في السعودية يرتفع MASLD بينما ينخفض التهاب الكبد B ويستقر C، فيصبح الكبد الدهني المرض الكبدي المزمن الرئيسي."),
+    ("Across the region, high fasting blood glucose is the largest risk factor driving the MASLD burden.", "وعلى مستوى المنطقة، يُعد ارتفاع سكر الدم الصائم أكبر عامل خطر يقود عبء MASLD."),
+   ]},
+  {"h": ("What patients tell us", "ماذا يقول المرضى"),
+   "p": [("In a survey of 804 Saudi patients, 79% called their condition \"fatty liver\" frequently or always, and only 17% had told family or friends about it. Few reported stigma, but 43% had missed or avoided a primary care visit because of their liver disease.",
+          "في استبيان شمل 804 مرضى سعوديين، استخدم 79% عبارة \"الكبد الدهني\" غالبًا أو دائمًا، ولم يُخبر سوى 17% أسرهم أو أصدقاءهم. وقلّة أبلغوا عن وصمة، لكن 43% فوّتوا زيارة للرعاية الأولية أو تجنّبوها بسبب مرض الكبد."),
+         ("This is why our patient pages say \"fatty liver\" (الكبد الدهني) first and explain MASLD second.", "لذلك تبدأ صفحات المرضى لدينا بعبارة \"الكبد الدهني\" ثم تشرح MASLD.")]},
+  {"h": ("The gaps", "الفجوات"),
+   "ul": [
+    ("Knowledge: in a survey of 584 doctors from Saudi Arabia, Egypt and Türkiye, guideline adherence was 81–84% among specialists but 38–51% among non-specialists.", "المعرفة: في استبيان شمل 584 طبيبًا من السعودية ومصر وتركيا، بلغ الالتزام بالإرشادات 81–84% لدى المختصين و38–51% فقط لدى غيرهم."),
+    ("Research: from 2014 to 2023, Arab countries produced 844 MASLD papers, about 3.3% of the world total, despite some of the highest prevalence.", "البحث: بين 2014 و2023 أنتجت الدول العربية 844 بحثًا عن MASLD، أي نحو 3.3% من الإجمالي العالمي، رغم أن انتشاره فيها من الأعلى."),
+   ]},
+ ],
+ "see": ["guidelines-compared", "case-finding", "fibrosis-pathway"],
+ "src": ["mena2024", "ksaburden2024", "sanai2021", "menagbd2025", "stigma2024", "menaknow2025", "arabbiblio2025", "saudi2026"],
 },
 ]

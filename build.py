@@ -288,7 +288,7 @@ def ref_index():
                   bi("Read the full guidelines before making decisions. Links open the official publication.",
                      "اقرأ الإرشادات كاملة قبل اتخاذ القرار. تفتح الروابط النشر الرسمي.")))
     src = all_sources()
-    for k in ("easl2024", "aasld2023", "aga2021", "aace2022", "delphi2023", "global2025", "global2026", "saudi2026", "baveno7", "nit2021", "naspghan"):
+    for k in ("easl2024", "aasld2023", "resm2024", "aga2021", "aace2022", "apasl2025", "china2024", "egypt2022", "delphi2023", "global2025", "global2026", "saudi2026", "baveno7", "nit2021", "peds2025"):
         text, url = src[k]
         out.append('<li><a href="%s" target="_blank" rel="noopener">%s</a></li>' % (url, esc(text)))
     out.append("</ul></div>")

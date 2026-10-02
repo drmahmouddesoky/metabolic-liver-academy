@@ -15,7 +15,7 @@ Fields
   src      source keys (see SOURCES)
 """
 
-UPDATED = "2026-10-02"
+UPDATED = "2026-10-03"
 NEXT_REVIEW = "2027-10"
 # Medical review record. When you have reviewed a page, add:  "slug": "YYYY-MM-DD",
 # The page will then show "Medically reviewed by Dr. Mahmoud Desoky on <date>".
@@ -45,6 +45,9 @@ SOURCES = {
     "riazi2022": ("Riazi K, et al. The prevalence and incidence of NAFLD worldwide: a systematic review and meta-analysis. Lancet Gastroenterol Hepatol 2022;7:851–61.", "https://doi.org/10.1016/S2468-1253(22)00165-0"),
     "nhsfibro": ("North Cumbria Integrated Care NHS Foundation Trust. What is a Fibroscan and why do I need it? Patient leaflet.", "https://www.ncic.nhs.uk/patients-visitors/patient-information-leaflets/fibroscan-ultrasound"),
     "blt2026": ("British Liver Trust. Two MASH treatments receive MHRA approval, 2026.", "https://britishlivertrust.org.uk/new-hope-for-people-living-with-mash-as-two-treatments-receive-mhra-approval/"),
+    "mena2024": ("Younossi ZM, et al. Prevalence of metabolic dysfunction-associated steatotic liver disease in the Middle East and North Africa. Liver Int 2024;44(4):1061–70.", "https://doi.org/10.1111/liv.15852"),
+    "ksaburden2024": ("Alqahtani SA, et al. The burden of metabolic dysfunction-associated steatotic liver disease and viral hepatitis in Saudi Arabia. Saudi J Gastroenterol 2024;30(5):310–8.", "https://doi.org/10.4103/sjg.sjg_62_24"),
+    "peds2025": ("Xanthakos SA, et al. AASLD Practice Statement on the evaluation and management of MASLD in children. Hepatology 2025;82(5):1352–94.", "https://doi.org/10.1097/HEP.0000000000001368"),
     "ec2025": ("Madrigal Pharmaceuticals. European Commission approval of Rezdiffra, 19 August 2025.", "https://ir.madrigalpharma.com/node/16716"),
 }
 
@@ -106,16 +109,18 @@ ITEMS = [
 {
  "slug": "how-common", "cat": "basics",
  "q": {"en": "How common is fatty liver?", "ar": "ما مدى انتشار الكبد الدهني؟"},
- "short": {"en": "Very common. About 1 in 3 adults worldwide has fatty liver, and the number is higher in people with diabetes or obesity.",
-           "ar": "شائع جدًا. نحو بالغ من كل ثلاثة حول العالم لديه كبد دهني، والنسبة أعلى لدى مرضى السكري والسمنة."},
+ "short": {"en": "Very common. About 1 in 3 adults worldwide has fatty liver. In the Middle East it is closer to 4 in 10, and about 7 in 10 people with type 2 diabetes.",
+           "ar": "شائع جدًا. نحو بالغ من كل ثلاثة حول العالم لديه كبد دهني، وفي الشرق الأوسط تقترب النسبة من 4 من كل 10، ونحو 7 من كل 10 من مرضى السكري من النوع الثاني."},
  "body": {"en": ["A large review of studies from around the world found fatty liver in about a third of adults.",
-                 "Rates are high in the Middle East, where obesity and type 2 diabetes are common. More than half of people with type 2 diabetes have fatty liver.",
+                 "Rates are high in the Middle East and North Africa, where obesity and type 2 diabetes are common. A 2024 study estimated fatty liver in about 39% of the general population there, and in about 69% of people with type 2 diabetes.",
+                 "In Saudi Arabia, the Global Burden of Disease data suggest that about 44% of adults had fatty liver in 2019, and the number is rising every year.",
                  "Being common does not mean it is harmless. Only some people develop serious scarring, and finding them early is the goal."],
           "ar": ["وجدت مراجعة كبيرة لدراسات من أنحاء العالم أن نحو ثلث البالغين لديهم كبد دهني.",
-                 "النسب مرتفعة في الشرق الأوسط حيث تنتشر السمنة والسكري من النوع الثاني. وأكثر من نصف مرضى السكري من النوع الثاني لديهم كبد دهني.",
+                 "النسب مرتفعة في الشرق الأوسط وشمال أفريقيا حيث تنتشر السمنة والسكري من النوع الثاني. وقدّرت دراسة عام 2024 انتشار الكبد الدهني هناك بنحو 39% من عامة السكان، ونحو 69% من مرضى السكري من النوع الثاني.",
+                 "وفي السعودية تشير بيانات العبء العالمي للأمراض إلى أن نحو 44% من البالغين كان لديهم كبد دهني في عام 2019، والعدد يزداد كل عام.",
                  "انتشاره لا يعني أنه غير ضار. قلة فقط يصابون بتليّف شديد، والهدف هو اكتشافهم مبكرًا."]},
  "see": ["what-causes-it", "is-fatty-liver-serious"],
- "src": ["riazi2022", "easl2024", "saudi2026"],
+ "src": ["riazi2022", "mena2024", "ksaburden2024", "saudi2026"],
 },
 {
  "slug": "what-causes-it", "cat": "basics",
@@ -405,12 +410,14 @@ ITEMS = [
  "q": {"en": "Can children get fatty liver?", "ar": "هل يصاب الأطفال بالكبد الدهني؟"},
  "short": {"en": "Yes, especially children with obesity. It needs care from a paediatric specialist and the whole family's help.",
            "ar": "نعم، خاصة الأطفال المصابون بالسمنة، ويحتاج ذلك إلى رعاية أخصائي أطفال ومساعدة الأسرة كلها."},
- "body": {"en": ["Children's tests are different: adult scores like FIB-4 are not used for them.",
+ "body": {"en": ["Doctors suggest a simple ALT blood test from about age 10 for children with obesity, or with overweight plus other risks such as diabetes in the family.",
+                 "Children's tests are different: adult scores like FIB-4 are not used for them.",
                  "Family changes work best: fewer sugary drinks at home, more active play, less screen time, and regular family meals."],
-          "ar": ["فحوص الأطفال مختلفة، ولا تُستخدم لهم مؤشرات البالغين مثل FIB-4.",
+          "ar": ["ينصح الأطباء بتحليل دم بسيط (ALT) ابتداءً من عمر 10 سنوات تقريبًا للأطفال المصابين بالسمنة، أو بزيادة الوزن مع عوامل خطر أخرى مثل وجود السكري في العائلة.",
+                 "فحوص الأطفال مختلفة، ولا تُستخدم لهم مؤشرات البالغين مثل FIB-4.",
                  "التغييرات على مستوى الأسرة هي الأنجح: مشروبات سكرية أقل في المنزل، ولعب أكثر نشاطًا، ووقت أقل أمام الشاشات، ووجبات عائلية منتظمة."]},
  "see": ["what-to-eat", "drinks"],
- "src": ["easl2024"],
+ "src": ["peds2025", "easl2024"],
 },
 {
  "slug": "pregnancy", "cat": "groups",
