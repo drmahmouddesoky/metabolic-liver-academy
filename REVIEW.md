@@ -57,3 +57,20 @@ Live site: https://drmahmouddesoky.github.io/metabolic-liver-academy/
 - Drugs section in guidance.html: approval dates, and whether SFDA has approved resmetirom or semaglutide in Saudi Arabia.
 - FIB-4 and FibroScan cut-offs (guidance.html, academy.html, learn/what-is-fib4.html, learn/fibroscan.html).
 - Ramadan advice (guides.html, learn/ramadan.html).
+
+
+## Doctors' reference library (added 2026-10-02)
+
+Check these first: drug table (doses, label interactions), Baveno VII cut-offs, children's ALT values, referral triggers.
+
+- [ ] Definitions and diagnosis of MASLD (ref/definitions.html)
+- [ ] Who to test for liver fibrosis (ref/case-finding.html)
+- [ ] The two-step fibrosis pathway (ref/fibrosis-pathway.html)
+- [ ] Non-invasive tests at a glance (ref/nit-reference.html)
+- [ ] Lifestyle treatment: the targets (ref/lifestyle.html)
+- [ ] Drug treatment for MASH (ref/drugs.html)
+- [ ] Heart and metabolic care in MASLD (ref/cardiometabolic.html)
+- [ ] Metabolic and bariatric surgery (ref/surgery.html)
+- [ ] Follow-up and referral (ref/follow-up.html)
+- [ ] MASLD cirrhosis: key care (ref/cirrhosis.html)
+- [ ] Special groups (ref/special-groups.html)

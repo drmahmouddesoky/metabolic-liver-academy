@@ -33,6 +33,7 @@
     ['learn', 'learn.html', 'Q&A', 'أسئلة وأجوبة'],
     ['academy', 'academy.html', 'Academy', 'الأكاديمية'],
     ['guidance', 'guidance.html', 'Guidance', 'الإرشادات'],
+    ['ref', 'ref.html', 'Reference', 'المرجع'],
     ['news', 'news.html', 'News & Events', 'الأخبار والفعاليات'],
     ['about', 'about.html', 'About', 'من نحن']
   ];

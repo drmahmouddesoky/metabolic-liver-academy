@@ -283,3 +283,10 @@ th { background: var(--pine-tint); font-weight: 600; }
 .qlist a:hover { text-decoration: underline; }
 .searchbox { max-width: 520px; margin-bottom: 8px; }
 [hidden] { display: none !important; }
+
+/* Doctors' reference library */
+.tag.pro { background: var(--amber-tint); color: #7A5410; margin: 4px 0 0; }
+.shortbox ul.ticks { margin: 8px 0 0; font-size: 1rem; }
+.wrap.read > .table-wrap { max-width: 980px; margin: 12px 0 8px; }
+.ref-table th[scope="row"] { font-weight: 600; white-space: normal; min-width: 7em; }
+.ref-table td, .ref-table th { vertical-align: top; }

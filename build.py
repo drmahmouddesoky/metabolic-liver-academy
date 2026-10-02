@@ -4,10 +4,11 @@ Build the Metabolic Liver Academy site.
 
   src/*.html          bilingual page sources (English + Arabic side by side)
   content/learn.py    patient Q&A library (English + Arabic)
+  content/ref.py      physician reference library (English + Arabic)
 
 Output (what GitHub Pages serves):
-  *.html, learn/*.html            English pages
-  ar/*.html, ar/learn/*.html      Arabic pages (right-to-left)
+  *.html, learn/*.html, ref/*.html     English pages
+  ar/...                              Arabic pages (right-to-left)
   sitemap.xml, robots.txt
 
 Run:  python3 build.py
@@ -22,6 +23,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = "https://drmahmouddesoky.github.io/metabolic-liver-academy/"
 sys.path.insert(0, os.path.join(ROOT, "content"))
 import learn as L  # noqa: E402
+import ref as R  # noqa: E402
 
 LANGS = ("en", "ar")
 OTHER = {"en": "ar", "ar": "en"}
@@ -50,7 +52,7 @@ HEAD = """<!doctype html>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{up}style.css">
 </head>
-<body data-page="learn" data-root="{up}">
+<body data-page="{page}" data-root="{up}">
 <main id="main">
 """
 FOOT = """
@@ -76,7 +78,7 @@ def learn_page(it):
     out = [HEAD.format(
         t_en=esc(it["q"]["en"]) + " | Metabolic Liver Academy",
         t_ar=esc(it["q"]["ar"]) + " | أكاديمية الكبد الأيضي",
-        d_en=esc(it["short"]["en"]), d_ar=esc(it["short"]["ar"]), up="../")]
+        d_en=esc(it["short"]["en"]), d_ar=esc(it["short"]["ar"]), up="../", page="learn")]
     out.append('<header class="page-head"><div class="wrap read">')
     out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../learn.html">%s</a> › <a href="../learn.html#%s">%s</a></nav>'
                % (bi("Patient Q&amp;A", "أسئلة وأجوبة للمرضى"), it["cat"], bi(esc(c["en"]), esc(c["ar"]))))
@@ -117,7 +119,7 @@ def learn_index():
         t_ar="أسئلة وأجوبة عن الكبد الدهني | أكاديمية الكبد الأيضي",
         d_en="Plain answers to %d common questions about fatty liver (MASLD and MASH), based on international and Saudi guidelines." % len(L.ITEMS),
         d_ar="إجابات مبسطة عن %d سؤالًا شائعًا حول الكبد الدهني، مبنية على الإرشادات الدولية والسعودية." % len(L.ITEMS),
-        up="").replace('data-page="learn"', 'data-page="learn"')]
+        up="", page="learn")]
     out.append('<header class="page-head"><div class="wrap">')
     out.append("<h1>%s</h1>" % bi("Patient questions and answers", "أسئلة وأجوبة للمرضى"))
     out.append("<p>%s</p>" % bi(
@@ -159,6 +161,115 @@ def learn_index():
   });
 })();
 </script>""")
+    out.append("</div></section>")
+    out.append(FOOT.format(up=""))
+    return "".join(out)
+
+
+# ------------------------------------------------------------------ physician reference library
+def all_sources():
+    d = dict(L.SOURCES)
+    d.update(R.SOURCES)
+    return d
+
+
+def cell(c):
+    if isinstance(c, tuple):
+        return bi(esc(c[0]), esc(c[1]))
+    return '<span dir="ltr">%s</span>' % esc(c)
+
+
+def pair(p, tag="span"):
+    return bi(esc(p[0]), esc(p[1]), tag)
+
+
+def ref_page(pg):
+    by = {p["slug"]: p for p in R.PAGES}
+    g = dict(R.GROUPS)[pg["group"]]
+    src = all_sources()
+    out = [HEAD.format(
+        t_en=esc(pg["title"]["en"]) + " | MLA Reference",
+        t_ar=esc(pg["title"]["ar"]) + " | مرجع أكاديمية الكبد الأيضي",
+        d_en=esc(pg["lead"]["en"]), d_ar=esc(pg["lead"]["ar"]), up="../", page="ref")]
+    out.append('<header class="page-head"><div class="wrap read">')
+    out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../ref.html">%s</a> › <a href="../ref.html#%s">%s</a></nav>'
+               % (bi("Doctors&#39; reference", "مرجع الأطباء"), pg["group"], bi(esc(g["en"]), esc(g["ar"]))))
+    out.append("<h1>%s</h1>" % bi(esc(pg["title"]["en"]), esc(pg["title"]["ar"])))
+    out.append("<p>%s</p>" % bi(esc(pg["lead"]["en"]), esc(pg["lead"]["ar"])))
+    out.append('<p class="tag pro">%s</p>' % bi("For healthcare professionals", "للعاملين في المجال الصحي"))
+    out.append("</div></header>")
+    out.append('<article class="section"><div class="wrap read">')
+    out.append('<div class="shortbox"><p class="small"><strong>%s</strong></p><ul class="ticks">' % bi("Key points", "النقاط الأساسية"))
+    for k in pg["key"]:
+        out.append("<li>%s</li>" % pair(k))
+    out.append("</ul></div>")
+    for sec in pg["sections"]:
+        out.append("<h2>%s</h2>" % pair(sec["h"]))
+        for p in sec.get("p", []):
+            out.append("<p>%s</p>" % pair(p))
+        if sec.get("ul"):
+            out.append('<ul class="ticks">' + "".join("<li>%s</li>" % pair(x) for x in sec["ul"]) + "</ul>")
+        t = sec.get("table")
+        if t:
+            out.append('<div class="table-wrap"><table class="ref-table"><thead><tr>')
+            out.append("".join('<th scope="col">%s</th>' % cell(c) for c in t["head"]))
+            out.append("</tr></thead><tbody>")
+            for row in t["rows"]:
+                out.append("<tr>" + "".join(('<th scope="row">%s</th>' if i == 0 else "<td>%s</td>") % cell(c) for i, c in enumerate(row)) + "</tr>")
+            out.append("</tbody></table></div>")
+        if sec.get("note"):
+            out.append('<p class="fine">%s</p>' % pair(sec["note"]))
+    if pg.get("see"):
+        out.append('<h2 class="h-small">%s</h2><ul class="qlist">' % bi("Related topics", "موضوعات ذات صلة"))
+        for s_ in pg["see"]:
+            out.append('<li><a href="%s.html">%s</a></li>' % (s_, bi(esc(by[s_]["title"]["en"]), esc(by[s_]["title"]["ar"]))))
+        out.append("</ul>")
+    out.append('<h2 class="h-small">%s</h2><ol class="pubs small" lang="en" dir="ltr">' % bi("References", "المراجع"))
+    for k in pg["src"]:
+        text, url = src[k]
+        out.append('<li>%s <a href="%s" target="_blank" rel="noopener">Link</a></li>' % (esc(text), url))
+    out.append("</ol>")
+    out.append('<p class="fine">%s</p>' % bi(
+        "Last updated %s. A summary of published guidelines for healthcare professionals. It does not replace clinical judgement, the full guidelines or local drug labels. <a href=\"../legal.html#disclaimer\">Read the disclaimer</a>." % R.UPDATED,
+        "آخر تحديث %s. ملخص للإرشادات المنشورة موجّه للعاملين في المجال الصحي، ولا يغني عن التقدير السريري أو الإرشادات الكاملة أو نشرات الأدوية المحلية. <a href=\"../legal.html#disclaimer\">اقرأ إخلاء المسؤولية</a>." % R.UPDATED))
+    out.append("</div></article>")
+    out.append(FOOT.format(up="../"))
+    return "".join(out)
+
+
+def ref_index():
+    out = [HEAD.format(
+        t_en="Doctors&#39; reference library on MASLD and MASH | Metabolic Liver Academy",
+        t_ar="مرجع الأطباء عن الكبد الدهني | أكاديمية الكبد الأيضي",
+        d_en="Guideline-based summaries for clinicians: diagnosis, fibrosis tests, drugs, cirrhosis care, follow-up and special groups.",
+        d_ar="ملخصات مبنية على الإرشادات للأطباء: التشخيص، وفحوص التليّف، والأدوية، ورعاية التشمّع، والمتابعة، والفئات الخاصة.",
+        up="", page="ref")]
+    out.append('<header class="page-head"><div class="wrap">')
+    out.append("<h1>%s</h1>" % bi("Doctors&#39; reference library", "مرجع الأطباء"))
+    out.append("<p>%s</p>" % bi(
+        "Short, practical summaries of the main MASLD and MASH guidelines, with cut-offs, tables and references. For healthcare professionals.",
+        "ملخصات قصيرة وعملية لأهم إرشادات الكبد الدهني والتهابه، مع الحدود والجداول والمراجع. للعاملين في المجال الصحي."))
+    out.append("</div></header>")
+    out.append('<section class="section"><div class="wrap"><div class="grid three">')
+    for key, name in R.GROUPS:
+        out.append('<section class="panel" id="%s"><h2 class="h-small">%s</h2><ul class="qlist">' % (key, pair((name["en"], name["ar"]))))
+        for pg in [p for p in R.PAGES if p["group"] == key]:
+            out.append('<li><a href="ref/%s.html">%s</a><br><span class="muted small">%s</span></li>'
+                       % (pg["slug"], pair((pg["title"]["en"], pg["title"]["ar"])), pair((pg["lead"]["en"], pg["lead"]["ar"]))))
+        out.append("</ul></section>")
+    out.append("</div>")
+    out.append('<div class="panel" style="margin-top:32px"><h2 class="h-small">%s</h2><p class="muted small">%s</p><ul class="plain" lang="en" dir="ltr">'
+               % (bi("Guidelines we follow", "الإرشادات التي نعتمد عليها"),
+                  bi("Read the full guidelines before making decisions. Links open the official publication.",
+                     "اقرأ الإرشادات كاملة قبل اتخاذ القرار. تفتح الروابط النشر الرسمي.")))
+    src = all_sources()
+    for k in ("easl2024", "aasld2023", "aga2021", "aace2022", "delphi2023", "global2025", "global2026", "saudi2026", "baveno7", "nit2021", "naspghan"):
+        text, url = src[k]
+        out.append('<li><a href="%s" target="_blank" rel="noopener">%s</a></li>' % (url, esc(text)))
+    out.append("</ul></div>")
+    out.append('<p class="fine">%s</p>' % bi(
+        "Last updated %s. Summaries only; they do not replace clinical judgement or the full guidelines." % R.UPDATED,
+        "آخر تحديث %s. ملخصات فقط، ولا تغني عن التقدير السريري أو الإرشادات الكاملة." % R.UPDATED))
     out.append("</div></section>")
     out.append(FOOT.format(up=""))
     return "".join(out)
@@ -229,6 +340,9 @@ def main():
     pages["learn.html"] = learn_index()
     for it in L.ITEMS:
         pages["learn/%s.html" % it["slug"]] = learn_page(it)
+    pages["ref.html"] = ref_index()
+    for pg in R.PAGES:
+        pages["ref/%s.html" % pg["slug"]] = ref_page(pg)
 
     for rel, src in pages.items():
         write(rel, split(src, rel, "en"))

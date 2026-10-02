@@ -9,6 +9,7 @@ Live at: https://drmahmouddesoky.github.io/metabolic-liver-academy/
 
 - `src/*.html`: the page sources, with English and Arabic side by side.
 - `content/learn.py`: the patient Q&A library (English + Arabic).
+- `content/ref.py`: the doctors' reference library (English + Arabic).
 - `build.py`: turns these into the real pages.
   - English pages at the site root (e.g. `patients.html`, `learn/fibroscan.html`)
   - Arabic pages under `ar/` (e.g. `ar/patients.html`), so Google can find them in Arabic
@@ -26,6 +27,7 @@ Do not edit the generated `*.html` files directly; they are overwritten by the b
 | `src/index.html` | Home: two doors (patient / doctor), fibrosis scale, events, news, videos |
 | `src/patients.html` | Plain guide, risk check, liver journey, questions, urgent care |
 | `content/learn.py` | Patient Q&A: `learn.html` plus one page per question |
+| `content/ref.py` | Doctors' reference: `ref.html` plus 11 topic pages |
 | `src/academy.html` | For doctors: hubs, learning by role, FIB-4 calculator, lectures |
 | `src/guidance.html` | Fibrosis pathway, lifestyle, drugs, surgery, heart risk, special groups, sources |
 | `src/guides.html` | Printable patient guides: plate, shopping, walking plan, Ramadan |
