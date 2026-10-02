@@ -8,24 +8,18 @@
 (function () {
   'use strict';
 
-  /* ---------- Language ---------- */
+  /* ---------- Language ----------
+     Each page is built in one language: English pages at the site root,
+     Arabic pages under /ar/. The page's own <html lang> decides. */
   var html = document.documentElement;
-  function savedLang() {
-    try { return localStorage.getItem('mla-lang'); } catch (e) { return null; }
+  if (html.lang !== 'ar') html.lang = 'en';
+  html.dir = html.lang === 'ar' ? 'rtl' : 'ltr';
+  /* Path from this page back to its language root ("" or "../") */
+  var ROOT = document.body.getAttribute('data-root') || '';
+  function twinUrl() {
+    var l = document.querySelector('link[rel="alternate"][hreflang="' + (html.lang === 'ar' ? 'en' : 'ar') + '"]');
+    return l ? l.getAttribute('href') : (html.lang === 'ar' ? ROOT + '../index.html' : ROOT + 'ar/index.html');
   }
-  function setLang(l, remember) {
-    html.lang = l;
-    html.dir = l === 'ar' ? 'rtl' : 'ltr';
-    if (remember) { try { localStorage.setItem('mla-lang', l); } catch (e) {} }
-    var b = document.querySelector('.lang-btn');
-    if (b) b.textContent = l === 'ar' ? 'English' : 'العربية';
-    document.querySelectorAll('[data-title-' + l + ']').forEach(function (n) {
-      document.title = n.getAttribute('data-title-' + l);
-    });
-    document.dispatchEvent(new CustomEvent('mla:lang'));
-  }
-  var q = new URLSearchParams(location.search).get('lang');
-  setLang(q === 'ar' || q === 'en' ? q : (savedLang() || 'en'), false);
 
   function t(en, ar) { return html.lang === 'ar' ? ar : en; }
   function bi(en, ar) {
@@ -36,6 +30,7 @@
   var page = document.body.getAttribute('data-page') || '';
   var nav = [
     ['patients', 'patients.html', 'Patients', 'المرضى'],
+    ['learn', 'learn.html', 'Q&A', 'أسئلة وأجوبة'],
     ['academy', 'academy.html', 'Academy', 'الأكاديمية'],
     ['guidance', 'guidance.html', 'Guidance', 'الإرشادات'],
     ['news', 'news.html', 'News & Events', 'الأخبار والفعاليات'],
@@ -53,24 +48,19 @@
   header.innerHTML =
     '<a class="skip" href="#main">' + bi('Skip to content', 'انتقل إلى المحتوى') + '</a>' +
     '<div class="wrap">' +
-      '<a class="brand" href="index.html">' + mark +
+      '<a class="brand" href="' + ROOT + 'index.html">' + mark +
         '<span>' + bi('Metabolic Liver Academy', 'أكاديمية الكبد الأيضي') +
         '<small>' + bi('Healthy Liver. Healthy Life.', 'كبد سليم. حياة صحية.') + '</small></span></a>' +
       '<button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">' + bi('Menu', 'القائمة') + '</button>' +
       '<nav class="nav" id="site-nav" aria-label="Main">' +
         nav.map(function (n) {
-          return '<a href="' + n[1] + '"' + (n[0] === page ? ' aria-current="page"' : '') + '>' + bi(n[2], n[3]) + '</a>';
+          return '<a href="' + ROOT + n[1] + '"' + (n[0] === page ? ' aria-current="page"' : '') + '>' + bi(n[2], n[3]) + '</a>';
         }).join('') +
-        '<button class="lang-btn" type="button" lang="' + (html.lang === 'ar' ? 'en' : 'ar') + '">' + (html.lang === 'ar' ? 'English' : 'العربية') + '</button>' +
+        '<a class="lang-btn" href="' + twinUrl() + '" hreflang="' + (html.lang === 'ar' ? 'en' : 'ar') + '" lang="' + (html.lang === 'ar' ? 'en' : 'ar') + '">' + (html.lang === 'ar' ? 'English' : 'العربية') + '</a>' +
       '</nav>' +
     '</div>';
   document.body.insertBefore(header, document.body.firstChild);
 
-  header.querySelector('.lang-btn').addEventListener('click', function () {
-    var next = html.lang === 'ar' ? 'en' : 'ar';
-    setLang(next, true);
-    this.setAttribute('lang', next === 'ar' ? 'en' : 'ar');
-  });
   var menuBtn = header.querySelector('.menu-btn');
   menuBtn.addEventListener('click', function () {
     var open = !header.classList.contains('open');
@@ -88,11 +78,11 @@
           'Education only. This site does not give medical advice, diagnosis or treatment. Always talk to your own doctor about your health. In an emergency, call your local emergency number.',
           'هذا الموقع للتثقيف فقط، ولا يقدّم استشارة طبية أو تشخيصًا أو علاجًا. تحدّث دائمًا مع طبيبك عن صحتك. في الحالات الطارئة اتصل برقم الطوارئ في بلدك.') + '</p></div>' +
       '<div><ul>' +
-        '<li><a href="legal.html#disclaimer">' + bi('Disclaimer', 'إخلاء المسؤولية') + '</a></li>' +
-        '<li><a href="legal.html#privacy">' + bi('Privacy', 'الخصوصية') + '</a></li>' +
-        '<li><a href="legal.html#conflicts">' + bi('Conflicts of interest', 'تضارب المصالح') + '</a></li>' +
-        '<li><a href="legal.html#editorial">' + bi('How we review content', 'كيف نراجع المحتوى') + '</a></li>' +
-        '<li><a href="legal.html#terms">' + bi('Terms of use', 'شروط الاستخدام') + '</a></li>' +
+        '<li><a href="' + ROOT + 'legal.html#disclaimer">' + bi('Disclaimer', 'إخلاء المسؤولية') + '</a></li>' +
+        '<li><a href="' + ROOT + 'legal.html#privacy">' + bi('Privacy', 'الخصوصية') + '</a></li>' +
+        '<li><a href="' + ROOT + 'legal.html#conflicts">' + bi('Conflicts of interest', 'تضارب المصالح') + '</a></li>' +
+        '<li><a href="' + ROOT + 'legal.html#editorial">' + bi('How we review content', 'كيف نراجع المحتوى') + '</a></li>' +
+        '<li><a href="' + ROOT + 'legal.html#terms">' + bi('Terms of use', 'شروط الاستخدام') + '</a></li>' +
       '</ul></div>' +
       '<div><ul>' +
         '<li><a href="mailto:mdesoky15@gmail.com">' + bi('Email', 'البريد الإلكتروني') + '</a></li>' +
@@ -294,15 +284,4 @@
       out.focus();
     });
   }
-
-  /* Re-render language-dependent results when switching language */
-  document.addEventListener('mla:lang', function () {
-    ['fib4-result', 'risk-result'].forEach(function (id) {
-      var n = document.getElementById(id);
-      if (n && !n.hidden) {
-        var f = id === 'fib4-result' ? fib : checklist;
-        if (f && f.requestSubmit) f.requestSubmit();
-      }
-    });
-  });
 })();

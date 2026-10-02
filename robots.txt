@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://drmahmouddesoky.github.io/metabolic-liver-academy/sitemap.xml

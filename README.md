@@ -5,18 +5,33 @@ for patients and doctors. Founded by Dr. Mahmoud Desoky.
 
 Live at: https://drmahmouddesoky.github.io/metabolic-liver-academy/
 
-## The pages
+## How the site is built
 
-| File | Page |
+- `src/*.html`: the page sources, with English and Arabic side by side.
+- `content/learn.py`: the patient Q&A library (English + Arabic).
+- `build.py`: turns these into the real pages.
+  - English pages at the site root (e.g. `patients.html`, `learn/fibroscan.html`)
+  - Arabic pages under `ar/` (e.g. `ar/patients.html`), so Google can find them in Arabic
+  - `sitemap.xml` for search engines
+
+Run `python3 build.py` after changing anything in `src/` or `content/`, then commit everything.
+Do not edit the generated `*.html` files directly; they are overwritten by the build.
+
+**News, events and videos need no build.** Edit `data/news.js` or `data/lectures.js` on GitHub and commit.
+
+`REVIEW.md` is the private medical review checklist.
+
+| Source | Page |
 | --- | --- |
-| `index.html` | Home: two doors (patient / doctor), fibrosis scale, events, news, videos |
-| `patients.html` | Plain guide, risk check, liver journey, questions, urgent care |
-| `academy.html` | For doctors: hubs, learning by role, FIB-4 calculator, lectures |
-| `guidance.html` | Fibrosis pathway, lifestyle, drugs, surgery, heart risk, special groups, sources |
-| `guides.html` | Printable patient guides: plate, shopping, walking plan, Ramadan |
-| `news.html` | News and events with filters |
-| `about.html` | Founder, mission, publications, partners |
-| `legal.html` | Disclaimer, privacy, conflicts of interest, editorial policy, terms |
+| `src/index.html` | Home: two doors (patient / doctor), fibrosis scale, events, news, videos |
+| `src/patients.html` | Plain guide, risk check, liver journey, questions, urgent care |
+| `content/learn.py` | Patient Q&A: `learn.html` plus one page per question |
+| `src/academy.html` | For doctors: hubs, learning by role, FIB-4 calculator, lectures |
+| `src/guidance.html` | Fibrosis pathway, lifestyle, drugs, surgery, heart risk, special groups, sources |
+| `src/guides.html` | Printable patient guides: plate, shopping, walking plan, Ramadan |
+| `src/news.html` | News and events with filters |
+| `src/about.html` | Founder, mission, publications, partners |
+| `src/legal.html` | Disclaimer, privacy, conflicts of interest, editorial policy, terms |
 
 ## Posting news or an event (the file you will use most)
 
@@ -38,13 +53,13 @@ Open `data/lectures.js`. Videos need the YouTube id (the code after `watch?v=`).
 
 ## Writing in two languages
 
-Every piece of text is written twice, side by side:
+In `src/`, every piece of text is written twice, side by side:
 
 ```html
 <span data-lang="en">English text</span><span data-lang="ar">النص العربي</span>
 ```
 
-The site shows only the language the visitor picks.
+The build keeps only the English text in the English pages and only the Arabic text in the Arabic pages.
 
 ## Privacy
 

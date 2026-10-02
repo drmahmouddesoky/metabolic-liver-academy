@@ -83,7 +83,7 @@ p { margin: 0 0 1em; }
 .nav a { text-decoration: none; color: var(--ink); padding: 8px 12px; border-radius: var(--radius-s); font-size: 0.97rem; }
 .nav a:hover { background: var(--pine-tint); }
 .nav a[aria-current="page"] { color: var(--pine); font-weight: 600; box-shadow: inset 0 -2px 0 var(--pine); border-radius: 0; }
-.lang-btn { font: inherit; font-size: 0.92rem; border: 1px solid var(--pine); color: var(--pine); background: transparent; padding: 6px 12px; border-radius: 999px; cursor: pointer; margin-inline-start: 8px; }
+.lang-btn { display: inline-block; text-decoration: none; font: inherit; font-size: 0.92rem; border: 1px solid var(--pine); color: var(--pine); background: transparent; padding: 6px 12px; border-radius: 999px; cursor: pointer; margin-inline-start: 8px; }
 .lang-btn:hover { background: var(--pine); color: #fff; }
 .menu-btn { display: none; font: inherit; background: none; border: 1px solid var(--line); border-radius: var(--radius-s); padding: 6px 10px; cursor: pointer; margin-inline-start: auto; }
 
@@ -266,3 +266,20 @@ th { background: var(--pine-tint); font-weight: 600; }
 /* Reading-width blocks stay aligned with the page edge */
 .wrap.read { max-width: none; }
 .wrap.read > * { max-width: var(--read); }
+
+/* ---------- Patient Q&A ---------- */
+.crumbs { color: var(--muted); margin-bottom: 10px; }
+.crumbs a { color: var(--muted); }
+.shortbox { background: var(--pine-tint); border-radius: var(--radius-l); padding: 18px 22px; margin-bottom: 24px; font-size: 1.08rem; }
+.shortbox p { margin: 0; }
+.shortbox p + p { margin-top: 4px; }
+.h-small { font-size: 1.25rem; margin-top: 1.6em; }
+.qgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 40px; }
+@media (max-width: 760px) { .qgrid { grid-template-columns: 1fr; } }
+.qcat .h-small { margin-top: 1em; }
+.qlist { list-style: none; padding: 0; margin: 0; }
+.qlist li { border-bottom: 1px solid var(--line); }
+.qlist a { display: block; padding: 10px 0; text-decoration: none; }
+.qlist a:hover { text-decoration: underline; }
+.searchbox { max-width: 520px; margin-bottom: 8px; }
+[hidden] { display: none !important; }
