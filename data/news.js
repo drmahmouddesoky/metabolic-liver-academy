@@ -36,6 +36,91 @@ window.MLA_NEWS = [
   },
   ---------------------------------------------------------------------------------- */
 
+  /* ---------- Upcoming events ---------- */
+  {
+    type: "events",
+    date: "2026-11-05",
+    place_en: "Denver, USA · 5–9 November 2026", place_ar: "دنفر، الولايات المتحدة · 5–9 نوفمبر 2026",
+    title_en: "The Liver Meeting 2026 (AASLD)",
+    title_ar: "الاجتماع السنوي للكبد 2026 (AASLD)",
+    summary_en: "The American Association for the Study of Liver Diseases' yearly meeting, at the Colorado Convention Center. Expect new MASH trial data and treatment updates.",
+    summary_ar: "الاجتماع السنوي للجمعية الأمريكية لدراسة أمراض الكبد في مركز مؤتمرات كولورادو، ويُتوقع فيه عرض بيانات جديدة لتجارب علاج التهاب الكبد الدهني.",
+    link: "https://www.aasld.org/tlm-26/home",
+    linkLabel_en: "Event website", linkLabel_ar: "موقع الفعالية"
+  },
+  {
+    type: "events",
+    date: "2027-02-10",
+    place_en: "10–13 February 2027", place_ar: "10–13 فبراير 2027",
+    title_en: "EASL Steatotic Liver Disease Summit 2027",
+    title_ar: "قمة EASL لأمراض الكبد الدهني 2027",
+    summary_en: "A focused EASL meeting on MASLD, MetALD and alcohol-related liver disease, from public health and nutrition to diagnosis and new drugs.",
+    summary_ar: "اجتماع متخصص من EASL عن MASLD وMetALD وأمراض الكبد المرتبطة بالكحول، من الصحة العامة والتغذية إلى التشخيص والأدوية الجديدة.",
+    link: "https://easl.eu/event/easl-sld-summit-2027/scientific-programme/",
+    linkLabel_en: "Programme", linkLabel_ar: "البرنامج"
+  },
+  {
+    type: "events",
+    date: "2027-06-16",
+    place_en: "London, UK · 16–19 June 2027", place_ar: "لندن، المملكة المتحدة · 16–19 يونيو 2027",
+    title_en: "EASL Congress 2027",
+    title_ar: "مؤتمر EASL لعام 2027",
+    summary_en: "Europe's largest liver congress. Abstract deadlines are usually announced months ahead, so watch the website if you plan to submit.",
+    summary_ar: "أكبر مؤتمر أوروبي لأمراض الكبد. تُعلن مواعيد تقديم الملخصات عادةً قبلها بأشهر، فتابع الموقع إن كنت تنوي المشاركة.",
+    link: "https://easl.eu/easl-congress/future-easl-congress-dates/",
+    linkLabel_en: "Congress dates", linkLabel_ar: "مواعيد المؤتمر"
+  },
+
+  /* ---------- Health news ---------- */
+  {
+    type: "health",
+    date: "2026-07",
+    title_en: "UK approves two medicines for MASH",
+    title_ar: "المملكة المتحدة تعتمد دواءين لالتهاب الكبد الدهني",
+    summary_en: "The UK regulator approved resmetirom in June and semaglutide in July 2026 for adults with MASH and moderate-to-advanced fibrosis. NHS use still depends on a NICE review.",
+    summary_ar: "اعتمدت الهيئة البريطانية للأدوية الريسميتيروم في يونيو والسيماغلوتايد في يوليو 2026 للبالغين المصابين بالتهاب الكبد الدهني مع تليّف متوسط إلى متقدّم، ولا يزال استخدامهما في الخدمة الصحية البريطانية مرهونًا بمراجعة NICE.",
+    link: "https://britishlivertrust.org.uk/new-hope-for-people-living-with-mash-as-two-treatments-receive-mhra-approval/"
+  },
+  {
+    type: "health",
+    date: "2026-01-28",
+    title_en: "MASH drugs to watch in 2026",
+    title_ar: "أدوية التهاب الكبد الدهني التي تستحق المتابعة في 2026",
+    summary_en: "FGF21-based drugs such as efruxifermin and pegozafermin are in phase 3 trials, and GLP-1 combinations are close behind. Outcome results for the approved drugs are expected from 2027.",
+    summary_ar: "أدوية قائمة على FGF21 مثل إيفروكسيفيرمين وبيغوزافيرمين في المرحلة الثالثة من التجارب، وتليها تركيبات GLP-1. ويُنتظر من 2027 صدور نتائج المآلات للأدوية المعتمدة.",
+    link: "https://www.hcplive.com/view/mash-pipeline-developments-and-emerging-therapies-to-watch-in-2026-with-mazen-noureddin-md-mhsc"
+  },
+  {
+    type: "health",
+    date: "2025-08-19",
+    title_en: "Europe approves the first MASH medicine",
+    title_ar: "أوروبا تعتمد أول دواء لالتهاب الكبد الدهني",
+    summary_en: "The European Commission gave resmetirom a conditional approval for adults with MASH and F2–F3 fibrosis without cirrhosis. More data are still required.",
+    summary_ar: "منحت المفوضية الأوروبية الريسميتيروم اعتمادًا مشروطًا للبالغين المصابين بالتهاب الكبد الدهني مع تليّف F2–F3 دون تشمّع، مع طلب بيانات إضافية.",
+    link: "https://ir.madrigalpharma.com/node/16716"
+  },
+  {
+    type: "health",
+    date: "2025-08",
+    title_en: "Semaglutide becomes the second US-approved MASH drug",
+    title_ar: "السيماغلوتايد يصبح الدواء الثاني المعتمد أمريكيًا لالتهاب الكبد الدهني",
+    summary_en: "The US FDA gave semaglutide 2.4 mg an accelerated approval for MASH with moderate-to-advanced fibrosis, joining resmetirom, approved in March 2024.",
+    summary_ar: "منحت هيئة الغذاء والدواء الأمريكية السيماغلوتايد 2.4 ملغ اعتمادًا معجّلًا لعلاج التهاب الكبد الدهني مع تليّف متوسط إلى متقدّم، لينضم إلى الريسميتيروم المعتمد في مارس 2024.",
+    link: "https://www.hcplive.com/view/mash-pipeline-developments-and-emerging-therapies-to-watch-in-2026-with-mazen-noureddin-md-mhsc"
+  },
+  {
+    type: "events",
+    date: "2026-01-16",
+    place_en: "Riyadh · 16–17 January 2026", place_ar: "الرياض · 16–17 يناير 2026",
+    title_en: "Best of The Liver Meeting: AASLD & SASLT, Riyadh",
+    title_ar: "أفضل ما في الاجتماع السنوي للكبد: AASLD وSASLT في الرياض",
+    summary_en: "AASLD and the Saudi Association for the Study of Liver Diseases and Transplantation (SASLT) brought highlights of The Liver Meeting to Riyadh.",
+    summary_ar: "نقلت الجمعية الأمريكية لدراسة أمراض الكبد والجمعية السعودية لدراسة أمراض الكبد وزراعته أبرز ما في الاجتماع السنوي إلى الرياض.",
+    link: "https://www.aasld.org/best-tlm-aasld-saslt-conference-2026",
+    linkLabel_en: "Event page", linkLabel_ar: "صفحة الفعالية"
+  },
+
+  /* ---------- My activities ---------- */
   {
     type: "mine",
     date: "2026-10-02",

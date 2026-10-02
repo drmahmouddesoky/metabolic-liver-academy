@@ -135,6 +135,9 @@
       items = items.filter(function (n) { return n.type === 'events' && parseDate(n.date) >= today; })
         .sort(function (a, b) { return parseDate(a.date) - parseDate(b.date); });
     } else {
+      /* Future events live in the "Upcoming" list only */
+      var now = new Date(); now.setHours(0, 0, 0, 0);
+      items = items.filter(function (n) { return !(n.type === 'events' && parseDate(n.date) > now); });
       items.sort(function (a, b) { return parseDate(b.date) - parseDate(a.date); });
     }
     if (opts.limit) items = items.slice(0, opts.limit);

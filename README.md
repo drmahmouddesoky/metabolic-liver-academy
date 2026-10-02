@@ -12,7 +12,8 @@ Live at: https://drmahmouddesoky.github.io/metabolic-liver-academy/
 | `index.html` | Home: two doors (patient / doctor), fibrosis scale, events, news, videos |
 | `patients.html` | Plain guide, risk check, liver journey, questions, urgent care |
 | `academy.html` | For doctors: hubs, learning by role, FIB-4 calculator, lectures |
-| `guidance.html` | Fibrosis pathway, topics, how we review evidence |
+| `guidance.html` | Fibrosis pathway, lifestyle, drugs, surgery, heart risk, special groups, sources |
+| `guides.html` | Printable patient guides: plate, shopping, walking plan, Ramadan |
 | `news.html` | News and events with filters |
 | `about.html` | Founder, mission, publications, partners |
 | `legal.html` | Disclaimer, privacy, conflicts of interest, editorial policy, terms |
