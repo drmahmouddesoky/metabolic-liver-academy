@@ -82,7 +82,7 @@
         '<li><a href="' + ROOT + 'legal.html#disclaimer">' + bi('Disclaimer', 'إخلاء المسؤولية') + '</a></li>' +
         '<li><a href="' + ROOT + 'legal.html#privacy">' + bi('Privacy', 'الخصوصية') + '</a></li>' +
         '<li><a href="' + ROOT + 'legal.html#conflicts">' + bi('Conflicts of interest', 'تضارب المصالح') + '</a></li>' +
-        '<li><a href="' + ROOT + 'legal.html#editorial">' + bi('How we review content', 'كيف نراجع المحتوى') + '</a></li>' +
+        '<li><a href="' + ROOT + 'legal.html#governance">' + bi('How we review content', 'كيف نراجع المحتوى') + '</a></li>' +
         '<li><a href="' + ROOT + 'legal.html#terms">' + bi('Terms of use', 'شروط الاستخدام') + '</a></li>' +
       '</ul></div>' +
       '<div><ul>' +
@@ -170,7 +170,7 @@
     var list = (window.MLA_VIDEOS || []).slice(0, +box.getAttribute('data-limit') || 99);
     box.innerHTML = list.map(function (v) {
       return '<a class="video" href="https://www.youtube.com/watch?v=' + esc(v.id) + '" target="_blank" rel="noopener" lang="ar" dir="rtl">' +
-        '<img src="https://i.ytimg.com/vi/' + esc(v.id) + '/hqdefault.jpg" alt="" loading="lazy" width="480" height="270">' +
+        '<span class="video-thumb" aria-hidden="true"><svg viewBox="0 0 48 48" width="48" height="48"><circle cx="24" cy="24" r="23" fill="currentColor"/><path d="M19 15l15 9-15 9z" fill="#fff"/></svg><em>' + esc(v.length) + '</em></span>' +
         '<div><strong>' + esc(v.title) + '</strong><small>' + esc(v.length) + ' · ' + esc(v.year) + '</small></div></a>';
     }).join('');
   });
@@ -233,7 +233,7 @@
 
   /* ---------- FIB-4 calculator (for clinicians) ----------
      FIB-4 = (age × AST) / (platelets × √ALT)
-     Rule-out < 1.30 (use < 2.0 from age 65); rule-in > 2.67.
+     Rule-out < 1.30 (use < 2.0 from age 65); rule-in >= 2.67.
      Not validated under age 35. */
   var fib = document.getElementById('fib4-form');
   if (fib) {
@@ -262,7 +262,7 @@
         head = t('Low risk of advanced fibrosis', 'خطر منخفض للتليف المتقدّم');
         body = t('Advanced fibrosis is unlikely. Manage metabolic risk and repeat FIB-4 in 1 to 3 years.',
           'التليف المتقدّم غير مرجّح. عالج عوامل الخطر الأيضية وأعد حساب FIB-4 خلال سنة إلى ثلاث سنوات.');
-      } else if (score > 2.67) {
+      } else if (score >= 2.67) {
         cls = 'high';
         head = t('High risk of advanced fibrosis', 'خطر مرتفع للتليف المتقدّم');
         body = t('Refer to a liver specialist. Confirm with elastography.',
@@ -275,13 +275,14 @@
       }
       var notes = [];
       if (age < 35) notes.push(t('FIB-4 is not reliable under age 35. Interpret with care.', 'مؤشر FIB-4 غير موثوق تحت سن 35. فسّر النتيجة بحذر.'));
+      if (ast > 200 || alt > 200) notes.push(t('AST or ALT is very high. Acute liver injury can make FIB-4 misleading; repeat when stable.', 'قيمة AST أو ALT مرتفعة جدًا. قد تجعل إصابة الكبد الحادة FIB-4 مضلّلًا، فأعد الحساب عند الاستقرار.'));
       if (age >= 65) notes.push(t('Age 65 or over: lower cut-off of 2.0 used.', 'العمر 65 سنة أو أكثر: استُخدم الحد الأدنى 2.0.'));
       out.className = 'result ' + cls;
       out.innerHTML = '<div class="score">' + score.toFixed(2) + '</div>' +
         '<h3>' + head + '</h3><p>' + body + '</p>' +
         notes.map(function (n) { return '<p>' + n + '</p>'; }).join('') +
-        '<p class="fine">' + t('Cut-offs: below ' + low.toFixed(1) + ' low, 2.67 and above high. Supports, but never replaces, clinical judgement. Nothing you type is stored or sent.',
-          'الحدود: أقل من ' + low.toFixed(1) + ' منخفض، و2.67 فأكثر مرتفع. أداة مساعدة لا تغني أبدًا عن التقييم السريري. لا يُحفظ أو يُرسل أي شيء تكتبه.') + '</p>';
+        '<p class="fine">' + t('Cut-offs: below ' + low.toFixed(1) + ' low, 2.67 and above high. Supports, but never replaces, clinical judgement. Nothing you type is stored or sent. <a href="' + ROOT + 'ref/fib4-method.html">Method and limits</a>',
+          'الحدود: أقل من ' + low.toFixed(1) + ' منخفض، و2.67 فأكثر مرتفع. أداة مساعدة لا تغني أبدًا عن التقييم السريري. لا يُحفظ أو يُرسل أي شيء تكتبه. <a href="' + ROOT + 'ref/fib4-method.html">الطريقة والحدود</a>') + '</p>';
       out.focus();
     });
   }

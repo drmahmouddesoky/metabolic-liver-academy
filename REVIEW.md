@@ -74,3 +74,13 @@ Check these first: drug table (doses, label interactions), Baveno VII cut-offs, 
 - [ ] Follow-up and referral (ref/follow-up.html)
 - [ ] MASLD cirrhosis: key care (ref/cirrhosis.html)
 - [ ] Special groups (ref/special-groups.html)
+
+## Governance update (2026-10-02, after external review)
+
+- [ ] FIB-4 calculator: method, users and limits (ref/fib4-method.html)
+- [ ] Legal page: governing law set to Saudi Arabia (confirm with your lawyer)
+- [ ] Legal page: 7-day reply target for error reports (change if you prefer)
+- [ ] About page: write your disclosure statement (past 24 months: grants, speaker fees, advisory roles, trials, shares)
+
+How to mark a page as reviewed: in content/learn.py or content/ref.py, add the page to REVIEWED,
+e.g.  "drugs": "2026-10-20",  then run python3 build.py. The page record will show your name and date.

@@ -20,7 +20,11 @@ Do not edit the generated `*.html` files directly; they are overwritten by the b
 
 **News, events and videos need no build.** Edit `data/news.js` or `data/lectures.js` on GitHub and commit.
 
-`REVIEW.md` is the private medical review checklist.
+`REVIEW.md` is the medical review checklist.
+
+`tests/test_fib4.py` checks the FIB-4 calculator (known values and cut-off edges). Run it before changing the calculator.
+
+Fonts are self-hosted in `fonts/` (IBM Plex, SIL Open Font License), so pages make no requests to Google.
 
 | Source | Page |
 | --- | --- |
@@ -66,4 +70,4 @@ The build keeps only the English text in the English pages and only the Arabic t
 ## Privacy
 
 The tools run only in the visitor's browser. Nothing they type is stored or sent.
-There is no tracking and no analytics.
+There is no tracking and no analytics, and pages load nothing from other websites.

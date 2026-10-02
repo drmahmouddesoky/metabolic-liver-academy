@@ -47,9 +47,7 @@ HEAD = """<!doctype html>
 <title data-title-en="{t_en}" data-title-ar="{t_ar}">{t_en}</title>
 <meta name="description" content="{d_en}" data-ar="{d_ar}">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect x='1' y='5' width='5.2' height='24' rx='2.6' fill='%233E9C7B'/%3E%3Crect x='7.7' y='5' width='5.2' height='24' rx='2.6' fill='%2394B95A'/%3E%3Crect x='14.4' y='5' width='5.2' height='24' rx='2.6' fill='%23E0B43C'/%3E%3Crect x='21.1' y='5' width='5.2' height='24' rx='2.6' fill='%23D97B3A'/%3E%3Crect x='27.8' y='5' width='5.2' height='24' rx='2.6' fill='%23A3423E'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{up}fonts/fonts.css">
 <link rel="stylesheet" href="{up}style.css">
 </head>
 <body data-page="{page}" data-root="{up}">
@@ -69,6 +67,31 @@ def cat_name(key):
 
 def item_by_slug():
     return {i["slug"]: i for i in L.ITEMS}
+
+
+REPO = "https://github.com/drmahmouddesoky/metabolic-liver-academy"
+
+
+def page_record(mod, slug, src_file):
+    rev = mod.REVIEWED.get(slug)
+    ver = mod.VERSIONS.get(slug, "1.0")
+    rv_en = "Reviewed by Dr. Mahmoud Desoky on %s" % rev if rev else "Pending"
+    rv_ar = "راجعها د. محمود الدسوقي بتاريخ %s" % rev if rev else "قيد الإنجاز"
+    hist = "%s/commits/main/%s" % (REPO, src_file)
+    rows = [
+        (("Written by", "إعداد"), ("Dr. Mahmoud Desoky, Founder and Director", "د. محمود الدسوقي، المؤسس والمدير")),
+        (("Medical review", "المراجعة الطبية"), (rv_en, rv_ar)),
+        (("Version", "الإصدار"), (ver, ver)),
+        (("Last updated", "آخر تحديث"), (mod.UPDATED, mod.UPDATED)),
+        (("Next review due", "موعد المراجعة القادمة"), (mod.NEXT_REVIEW, mod.NEXT_REVIEW)),
+    ]
+    out = ['<aside class="record small" aria-label="Page record"><h2 class="h-small">%s</h2><dl>' % bi("Page record", "سجل الصفحة")]
+    for k, v in rows:
+        out.append("<dt>%s</dt><dd>%s</dd>" % (bi(*k), bi(esc(v[0]), esc(v[1]))))
+    out.append("</dl><p>%s</p></aside>" % bi(
+        '<a href="%s" target="_blank" rel="noopener">See every change to this content (public history)</a> · <a href="../legal.html#governance">How we review content</a>' % hist,
+        '<a href="%s" target="_blank" rel="noopener">اطّلع على كل تعديل في هذا المحتوى (سجل علني)</a> · <a href="../legal.html#governance">كيف نراجع المحتوى</a>' % hist))
+    return "".join(out)
 
 
 # ------------------------------------------------------------------ Q&A pages
@@ -108,6 +131,7 @@ def learn_page(it):
     out.append('<p class="fine">%s</p>' % bi(
         "Last updated %s. Based on international and Saudi guidelines. Education only: it does not replace your doctor. <a href=\"../legal.html#disclaimer\">Read the disclaimer</a>." % L.UPDATED,
         "آخر تحديث %s. مبني على الإرشادات الدولية والسعودية. للتثقيف فقط ولا يغني عن طبيبك. <a href=\"../legal.html#disclaimer\">اقرأ إخلاء المسؤولية</a>." % L.UPDATED))
+    out.append(page_record(L, it["slug"], "content/learn.py"))
     out.append("</div></article>")
     out.append(FOOT.format(up="../"))
     return "".join(out)
@@ -232,6 +256,7 @@ def ref_page(pg):
     out.append('<p class="fine">%s</p>' % bi(
         "Last updated %s. A summary of published guidelines for healthcare professionals. It does not replace clinical judgement, the full guidelines or local drug labels. <a href=\"../legal.html#disclaimer\">Read the disclaimer</a>." % R.UPDATED,
         "آخر تحديث %s. ملخص للإرشادات المنشورة موجّه للعاملين في المجال الصحي، ولا يغني عن التقدير السريري أو الإرشادات الكاملة أو نشرات الأدوية المحلية. <a href=\"../legal.html#disclaimer\">اقرأ إخلاء المسؤولية</a>." % R.UPDATED))
+    out.append(page_record(R, pg["slug"], "content/ref.py"))
     out.append("</div></article>")
     out.append(FOOT.format(up="../"))
     return "".join(out)

@@ -19,6 +19,14 @@ Fields
 """
 
 UPDATED = "2026-10-02"
+NEXT_REVIEW = "2027-10"
+# Medical review record. When you have reviewed a page, add:  "slug": "YYYY-MM-DD",
+# The page will then show "Medically reviewed by Dr. Mahmoud Desoky on <date>".
+REVIEWED = {
+}
+# Version per page (default "1.0"). Raise it when the medical meaning of a page changes.
+VERSIONS = {
+}
 
 GROUPS = [
     ("diagnose", {"en": "Diagnose and stage", "ar": "التشخيص وتقييم المرحلة"}),
@@ -226,6 +234,55 @@ PAGES = [
  ],
  "see": ["fibrosis-pathway", "cirrhosis"],
  "src": ["easl2024", "aasld2023", "nit2021", "fib4", "nfs", "apri", "mcpherson"],
+},
+{
+ "slug": "fib4-method", "group": "diagnose",
+ "title": {"en": "FIB-4 calculator: method, users and limits", "ar": "حاسبة FIB-4: الطريقة والفئة المستهدفة والحدود"},
+ "lead": {"en": "How our FIB-4 calculator works, who it is for, and when not to rely on it.",
+          "ar": "كيف تعمل حاسبة FIB-4 لدينا، ولمن صُممت، ومتى لا يُعتمد عليها."},
+ "key": [
+  ("For healthcare professionals assessing adults with known or suspected MASLD.", "للعاملين في المجال الصحي عند تقييم البالغين المصابين بـ MASLD أو المشتبه بإصابتهم."),
+  ("It estimates the chance of advanced fibrosis (F3–F4). It does not diagnose MASLD or MASH.", "تقدّر احتمال التليّف المتقدّم (F3–F4)، ولا تشخّص MASLD أو MASH."),
+  ("It is a first step. Results of 1.3 or more need a second test.", "هي خطوة أولى، والنتيجة 1.3 فأكثر تحتاج إلى فحص ثانٍ."),
+  ("Runs only in the browser. Nothing typed is stored or sent.", "تعمل داخل المتصفح فقط، ولا يُحفظ أو يُرسل أي شيء يُكتب."),
+ ],
+ "sections": [
+  {"h": ("Formula and units", "المعادلة والوحدات"),
+   "p": [("FIB-4 = (age in years × AST in U/L) ÷ (platelets in 10⁹/L × √ALT in U/L).", "FIB-4 = (العمر بالسنوات × AST بوحدة/ل) ÷ (الصفائح بـ 10⁹/ل × الجذر التربيعي لـ ALT بوحدة/ل)."),
+         ("Platelets in 10⁹/L are the same number as in 10³/µL. Use AST and ALT taken on the same day.", "الصفائح بوحدة 10⁹/ل هي الرقم نفسه بوحدة 10³/ميكرولتر. استخدم AST وALT من العينة نفسها.")],
+   "table": {"head": [("Input", "المُدخل"), ("Accepted range", "النطاق المقبول")],
+             "rows": [
+              [("Age", "العمر"), ("18–100 years", "18–100 سنة")],
+              ["AST", ("Above 0 and below 5000 U/L", "أكبر من 0 وأقل من 5000 وحدة/ل")],
+              ["ALT", ("Above 0 and below 5000 U/L", "أكبر من 0 وأقل من 5000 وحدة/ل")],
+              [("Platelets", "الصفائح"), ("Above 0 and below 2000 ×10⁹/L", "أكبر من 0 وأقل من 2000 ×10⁹/ل")],
+             ]},
+   "note": ("Worked example: age 55, AST 40, ALT 35, platelets 200 → (55 × 40) ÷ (200 × 5.92) = 1.86 → indeterminate.",
+            "مثال: العمر 55، وAST ‏40، وALT ‏35، والصفائح 200 ← (55 × 40) ÷ (200 × 5.92) = 1.86 ← غير حاسم.")},
+  {"h": ("How results are labelled", "كيف تُصنّف النتائج"),
+   "table": {"head": [("Score", "النتيجة"), ("Label", "التصنيف")],
+             "rows": [
+              [("Below 1.3 (below 2.0 if aged 65+)", "أقل من 1.3 (أقل من 2.0 لمن 65 سنة فأكثر)"), ("Low risk", "خطر منخفض")],
+              [("From the low cut-off up to below 2.67", "من الحد الأدنى إلى أقل من 2.67"), ("Indeterminate", "غير حاسم")],
+              [("2.67 or above", "2.67 فأكثر"), ("High risk", "خطر مرتفع")],
+             ]},
+   "note": ("Cut-offs from the EASL–EASD–EASO 2024 and AASLD 2023 guidance; the age-65 cut-off from McPherson 2017.",
+            "الحدود من إرشادات EASL–EASD–EASO لعام 2024 وAASLD لعام 2023، وحد عمر 65 من دراسة McPherson لعام 2017.")},
+  {"h": ("Do not rely on FIB-4 alone when", "لا تعتمد على FIB-4 وحده في الحالات التالية"),
+   "ul": [
+    ("The patient is under 35 (accuracy is poor). The calculator shows a warning.", "عمر المريض أقل من 35 سنة (الدقة ضعيفة)، وتُظهر الحاسبة تنبيهًا."),
+    ("AST or ALT is very high, or there is acute liver injury. The calculator warns above 200 U/L.", "ارتفاع شديد في AST أو ALT، أو إصابة كبدية حادة. تنبّه الحاسبة عند تجاوز 200 وحدة/ل."),
+    ("Platelets are low for another reason (e.g. blood disease, hypersplenism from another cause, recent chemotherapy).", "نقص الصفائح لسبب آخر (مثل أمراض الدم، أو تضخّم الطحال لسبب آخر، أو علاج كيميائي حديث)."),
+    ("There are clinical or imaging signs of cirrhosis. A low score does not exclude it.", "وجود علامات سريرية أو تصويرية للتشمّع، فالنتيجة المنخفضة لا تنفيه."),
+    ("Another liver disease is present. FIB-4 cut-offs here are for MASLD.", "وجود مرض كبدي آخر، فهذه الحدود خاصة بـ MASLD."),
+    ("Children and pregnancy: not validated.", "الأطفال والحمل: غير مُعتمدة."),
+   ]},
+  {"h": ("How we check the calculator", "كيف نتحقق من الحاسبة"),
+   "p": [("The code is public on GitHub. Before each change we test known values, including the worked example above and the cut-off edges (1.29, 1.30, 2.66, 2.67), and both age groups. Report a problem by email.",
+          "الشيفرة منشورة علنًا على GitHub. قبل كل تعديل نختبر قيمًا معروفة، منها المثال أعلاه وحواف الحدود (1.29 و1.30 و2.66 و2.67) والفئتان العمريتان. أبلغنا عن أي مشكلة بالبريد الإلكتروني.")]},
+ ],
+ "see": ["fibrosis-pathway", "nit-reference"],
+ "src": ["fib4", "shah", "mcpherson", "easl2024", "aasld2023"],
 },
 # =================================================================== TREAT
 {
