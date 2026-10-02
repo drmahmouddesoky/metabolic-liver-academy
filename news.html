@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-title-en="News & Events | Metabolic Liver Academy" data-title-ar="الأخبار والفعاليات | أكاديمية الكبد الأيضي">News &amp; Events | Metabolic Liver Academy</title>
+<meta name="description" content="Fatty liver news, MASH conferences and deadlines, and the founder's activities.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect x='1' y='5' width='5.2' height='24' rx='2.6' fill='%233E9C7B'/%3E%3Crect x='7.7' y='5' width='5.2' height='24' rx='2.6' fill='%2394B95A'/%3E%3Crect x='14.4' y='5' width='5.2' height='24' rx='2.6' fill='%23E0B43C'/%3E%3Crect x='21.1' y='5' width='5.2' height='24' rx='2.6' fill='%23D97B3A'/%3E%3Crect x='27.8' y='5' width='5.2' height='24' rx='2.6' fill='%23A3423E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="news">
+<main id="main">
+
+  <header class="page-head">
+    <div class="wrap">
+      <h1><span data-lang="en">News & Events</span><span data-lang="ar">الأخبار والفعاليات</span></h1>
+      <p><span data-lang="en">Fatty liver news, conferences and deadlines, and our own activities. Event times are shown in Riyadh time and GMT.</span><span data-lang="ar">أخبار الكبد الدهني، والمؤتمرات والمواعيد النهائية، وأنشطتنا. تظهر مواعيد الفعاليات بتوقيت الرياض وتوقيت غرينتش.</span></p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap">
+      <h2><span data-lang="en">Upcoming events</span><span data-lang="ar">الفعاليات القادمة</span></h2>
+      <div id="upcoming" data-news data-upcoming></div>
+    </div>
+  </section>
+
+  <section class="section tint">
+    <div class="wrap">
+      <h2><span data-lang="en">All posts</span><span data-lang="ar">كل المنشورات</span></h2>
+      <div class="filters" role="group" aria-label="Filter" data-filters-for="all-news">
+        <button type="button" data-filter="all" aria-pressed="true"><span data-lang="en">All</span><span data-lang="ar">الكل</span></button>
+        <button type="button" data-filter="health" aria-pressed="false"><span data-lang="en">Health news</span><span data-lang="ar">أخبار صحية</span></button>
+        <button type="button" data-filter="events" aria-pressed="false"><span data-lang="en">Events</span><span data-lang="ar">فعاليات</span></button>
+        <button type="button" data-filter="mine" aria-pressed="false"><span data-lang="en">My activities</span><span data-lang="ar">أنشطتي</span></button>
+      </div>
+      <div id="all-news" data-news></div>
+    </div>
+  </section>
+
+</main>
+<script src="data/news.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
