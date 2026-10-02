@@ -101,7 +101,7 @@
         '<li><a href="https://orcid.org/0000-0002-1422-0886" target="_blank" rel="noopener">ORCID</a></li>' +
       '</ul></div>' +
     '</div>' +
-    '<div class="bottom">© ' + new Date().getFullYear() + ' ' + bi('Metabolic Liver Academy (MLA). Founded by Dr. Mahmoud Desoky.', 'أكاديمية الكبد الأيضي. أسسها د. محمود دسوقي.') + '</div></div>';
+    '<div class="bottom">© ' + new Date().getFullYear() + ' ' + bi('Metabolic Liver Academy (MLA). Founded by Dr. Mahmoud Desoky.', 'أكاديمية الكبد الأيضي. أسسها د. محمود الدسوقي.') + '</div></div>';
   document.body.appendChild(footer);
 
   /* ---------- Helpers ---------- */
