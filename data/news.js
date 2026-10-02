@@ -39,6 +39,28 @@ window.MLA_NEWS = [
   /* ---------- Upcoming events ---------- */
   {
     type: "events",
+    date: "2026-10-15",
+    place_en: "Online · Global Liver Institute", place_ar: "عبر الإنترنت · المعهد العالمي للكبد",
+    title_en: "Webinar: Innovations bringing new hope to patients and families",
+    title_ar: "ندوة: ابتكارات تمنح أملًا جديدًا للمرضى وأسرهم",
+    summary_en: "Part of the #OctoberIs4Livers campaign. Experts talk about new therapies and advances in liver cancer care. Free to watch.",
+    summary_ar: "ضمن حملة #OctoberIs4Livers. يتحدث خبراء عن العلاجات الجديدة والتطورات في رعاية سرطان الكبد. المشاهدة مجانية.",
+    link: "https://globalliver.org/octoberis4livers/",
+    linkLabel_en: "Campaign and webinar links", linkLabel_ar: "الحملة وروابط الندوات"
+  },
+  {
+    type: "events",
+    date: "2026-10-22",
+    place_en: "Online · Global Liver Institute", place_ar: "عبر الإنترنت · المعهد العالمي للكبد",
+    title_en: "Webinar: Exploring proton therapy as a treatment option",
+    title_ar: "ندوة: العلاج بالبروتونات بوصفه خيارًا علاجيًا",
+    summary_en: "Part of the #OctoberIs4Livers campaign. How proton therapy works for liver cancer and how it differs from standard radiotherapy.",
+    summary_ar: "ضمن حملة #OctoberIs4Livers. كيف يعمل العلاج بالبروتونات في سرطان الكبد، وبمَ يختلف عن العلاج الإشعاعي المعتاد.",
+    link: "https://globalliver.org/octoberis4livers/",
+    linkLabel_en: "Campaign and webinar links", linkLabel_ar: "الحملة وروابط الندوات"
+  },
+  {
+    type: "events",
     date: "2026-11-05",
     place_en: "Denver, USA · 5–9 November 2026", place_ar: "دنفر، الولايات المتحدة · 5–9 نوفمبر 2026",
     title_en: "The Liver Meeting 2026 (AASLD)",
@@ -72,6 +94,15 @@ window.MLA_NEWS = [
   },
 
   /* ---------- Health news ---------- */
+  {
+    type: "health",
+    date: "2026-10-01",
+    title_en: "October is liver cancer awareness month: #OctoberIs4Livers",
+    title_ar: "أكتوبر شهر التوعية بسرطان الكبد: #OctoberIs4Livers",
+    summary_en: "The Global Liver Institute launched its 2026 campaign across the whole liver cancer journey, from prevention and early detection to treatment. It offers free webinars, a guide for people newly diagnosed, and a social media toolkit. Fatty liver is a growing cause of liver cancer, so finding fibrosis early matters.",
+    summary_ar: "أطلق المعهد العالمي للكبد حملته لعام 2026 التي تغطي رحلة سرطان الكبد كاملة، من الوقاية والاكتشاف المبكر إلى العلاج. وتقدّم الحملة ندوات مجانية، ودليلًا للمشخّصين حديثًا، وأدوات للتواصل الاجتماعي. والكبد الدهني سبب متزايد لسرطان الكبد، لذا فإن اكتشاف التليّف مبكرًا مهم.",
+    link: "https://globalliver.org/global-liver-institutes-2026-octoberis4livers-campaign-calls-for-action-across-the-liver-cancer-journey/"
+  },
   {
     type: "health",
     date: "2026-07",

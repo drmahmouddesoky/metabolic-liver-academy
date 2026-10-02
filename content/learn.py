@@ -58,6 +58,7 @@ ORGS = [
     ("AGA – American Gastroenterological Association", "https://gastro.org"),
     ("ACG – American College of Gastroenterology", "https://gi.org"),
     ("WGO – World Gastroenterology Organisation", "https://www.worldgastroenterology.org"),
+    ("GLI – Global Liver Institute (patient advocacy)", "https://globalliver.org"),
     ("British Liver Trust (patient charity)", "https://britishlivertrust.org.uk"),
     ("American Liver Foundation (patient charity)", "https://liverfoundation.org"),
 ]
