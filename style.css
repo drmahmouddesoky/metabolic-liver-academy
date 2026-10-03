@@ -311,3 +311,112 @@ th { background: var(--pine-tint); font-weight: 600; }
 @media (max-width: 780px) { .about-band { grid-template-columns: 1fr; } }
 .unit-row { display: flex; gap: 6px; }
 .unit-row select { width: auto; flex: none; }
+
+/* ============================================================
+   Teaching modules: textbook-chapter layout
+   Serif text (Source Serif 4 / Noto Naskh Arabic), contents rail,
+   margin notes, graded recommendation boxes.
+   ============================================================ */
+.mod-head { background: var(--white); border-bottom: 1px solid var(--line); padding: 36px 0 28px; }
+.mod-head h1, .mod-body h2, .mod-body h3, .case h3 {
+  font-family: "Source Serif 4", "Noto Naskh Arabic", Georgia, serif; font-weight: 600; letter-spacing: -0.005em; }
+[dir="rtl"] .mod-head h1, [dir="rtl"] .mod-body h2, [dir="rtl"] .mod-body h3 { font-family: "Noto Naskh Arabic", "IBM Plex Sans Arabic", serif; letter-spacing: 0; }
+.mod-head h1 { font-size: clamp(2rem, 1.4rem + 2.4vw, 3.1rem); line-height: 1.12; margin: 4px 0 10px; max-width: 22ch; }
+.mod-no { margin: 14px 0 0; color: var(--pine); font-weight: 600; }
+.mod-sub { font-family: "Source Serif 4", Georgia, serif; font-style: italic; font-size: 1.2rem; color: var(--muted); max-width: 56ch; margin: 0 0 22px; }
+[dir="rtl"] .mod-sub { font-family: "Noto Naskh Arabic", serif; font-style: normal; }
+.mod-meta { display: flex; flex-wrap: wrap; gap: 10px 32px; margin: 0; padding-top: 16px; border-top: 1px solid var(--line); font-size: 0.9rem; }
+.mod-meta div { max-width: 34ch; }
+.mod-meta dt { color: var(--muted); font-size: 0.8rem; }
+.mod-meta dd { margin: 0; }
+
+.mod-layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 48px; padding-top: 36px; padding-bottom: 56px; }
+.mod-toc { position: sticky; top: 92px; align-self: start; font-size: 0.88rem; }
+.mod-toc .toc-title { font-weight: 600; margin: 0 0 8px; }
+.mod-toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; border-inline-start: 2px solid var(--line); }
+.mod-toc li { counter-increment: toc; }
+.mod-toc li:last-child { counter-increment: none; }
+.mod-toc a { display: block; padding: 5px 0 5px 14px; color: var(--muted); text-decoration: none; margin-inline-start: -2px; border-inline-start: 2px solid transparent; }
+[dir="rtl"] .mod-toc a { padding: 5px 14px 5px 0; }
+.mod-toc li:not(:last-child) a::before { content: counter(toc) ". "; }
+.mod-toc a:hover, .mod-toc a.on { color: var(--pine); border-inline-start-color: var(--pine); }
+
+.mod-body { max-width: 66ch; font-family: "Source Serif 4", Georgia, serif; font-size: 1.12rem; line-height: 1.72; }
+[dir="rtl"] .mod-body { font-family: "Noto Naskh Arabic", "IBM Plex Sans Arabic", serif; font-size: 1.15rem; line-height: 1.95; }
+.mod-body .small, .mod-body .fine, .mod-body table, .mod-body .rec-tags, .mod-body figcaption, .mod-body .muted, .mod-body .record,
+.mod-body .mcq .opt, .mod-body .cite-box, .mod-body .refs { font-family: "IBM Plex Sans", "IBM Plex Sans Arabic", system-ui, sans-serif; }
+[dir="rtl"] .mod-body .small, [dir="rtl"] .mod-body table, [dir="rtl"] .mod-body .rec-tags, [dir="rtl"] .mod-body figcaption, [dir="rtl"] .mod-body .mcq .opt { font-family: "IBM Plex Sans Arabic", "IBM Plex Sans", sans-serif; }
+.mod-body h2 { font-size: 1.6rem; margin: 2.2em 0 0.6em; display: flex; gap: 0.5em; align-items: baseline; scroll-margin-top: 90px; }
+.mod-body h2 .num { color: var(--pine); font-size: 0.85em; }
+.mod-body h2.h-small { font-size: 1.15rem; margin: 0 0 0.4em; display: block; }
+.mod-body p { margin: 0 0 1em; }
+.cite { font-family: "IBM Plex Sans", sans-serif; font-size: 0.68em; line-height: 0; }
+.cite a { text-decoration: none; }
+
+.objectives { background: var(--white); border: 1px solid var(--line); border-inline-start: 4px solid var(--pine); border-radius: 6px; padding: 18px 22px 8px; }
+.objectives ol { margin: 0 0 12px; padding-inline-start: 1.3em; }
+.objectives .small { color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; }
+
+/* margin notes: in the margin on wide screens, inline on small ones */
+.sidenote { font-family: "IBM Plex Sans", "IBM Plex Sans Arabic", sans-serif; font-size: 0.86rem; line-height: 1.55; color: var(--ink);
+  background: var(--amber-tint); border-radius: 6px; padding: 12px 14px; margin: 0 0 1em; }
+@media (min-width: 1240px) {
+  .mod-layout { grid-template-columns: 210px minmax(0, 1fr); }
+  .mod-body { position: relative; }
+  .sidenote { float: right; clear: right; width: 230px; margin-right: -270px; margin-top: 4px; background: none; padding: 0 0 0 14px; border-left: 3px solid #E0B43C; border-radius: 0; color: var(--muted); }
+  [dir="rtl"] .sidenote { float: left; clear: left; margin-right: 0; margin-left: -270px; padding: 0 14px 0 0; border-left: 0; border-right: 3px solid #E0B43C; }
+}
+
+/* graded recommendation */
+.rec { border: 1px solid #B9D3CE; background: #F2F8F6; border-radius: 6px; padding: 12px 16px 4px; margin: 0 0 1em; }
+.rec-tags { margin: 0 0 6px; font-size: 0.78rem; }
+.rec-tags a { text-decoration: none; color: var(--pine-2); display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.rec-tags > a > span { border: 1px solid #9CC2BB; border-radius: 4px; padding: 1px 7px; background: var(--white); }
+.rec-tags .g-loe { background: var(--pine); border-color: var(--pine); color: #fff; }
+.rec-text { margin: 0 0 8px !important; }
+
+.mod-body .table-wrap { margin: 1.4em 0; }
+.mod-body caption { caption-side: top; text-align: start; font-weight: 600; padding: 0 0 8px; font-size: 0.92rem; }
+.mod-body table { font-size: 0.9rem; line-height: 1.5; }
+
+.fig { margin: 1.6em 0; padding: 16px; background: var(--white); border: 1px solid var(--line); border-radius: 6px; }
+.fig-svg { width: 100%; height: auto; display: block; font-family: "IBM Plex Sans", "IBM Plex Sans Arabic", sans-serif; }
+.fig figcaption { font-size: 0.86rem; color: var(--muted); margin-top: 10px; }
+
+.case { border: 1px solid var(--line); background: var(--white); border-radius: 6px; padding: 18px 22px; }
+.case h3 { margin: 0 0 12px; font-size: 1.25rem; }
+.case dl { margin: 0; display: grid; grid-template-columns: 9.5em 1fr; gap: 10px 18px; }
+.case dt { font-family: "IBM Plex Sans", "IBM Plex Sans Arabic", sans-serif; font-weight: 600; font-size: 0.85rem; color: var(--pine); padding-top: 3px; }
+.case dd { margin: 0; }
+@media (max-width: 640px) { .case dl { grid-template-columns: 1fr; } .case dd { margin-bottom: 8px; } }
+
+.mcq { border-top: 1px solid var(--line); padding: 14px 0 6px; }
+.mcq .q { display: block; padding: 0; border: 0; margin: 0 0 10px; font-weight: 600; }
+.mcq .qn { color: var(--pine); }
+.mcq .opts { display: grid; gap: 8px; }
+.mcq .opt { text-align: start; font-size: 0.95rem; padding: 9px 12px; background: var(--white); border: 1px solid #B8C8C5; border-radius: 6px; cursor: pointer; color: var(--ink); }
+.mcq .opt:hover { border-color: var(--pine); }
+.mcq .opt:focus-visible { outline: 3px solid var(--pine-tint); border-color: var(--pine); }
+.mcq .opt.right { border-color: #3E9C7B; background: #E2F2EB; }
+.mcq .opt.wrong { border-color: #A3423E; background: #F6E3E2; }
+.mcq .why { margin: 10px 0 0; font-size: 0.98rem; padding: 10px 14px; background: var(--pine-tint); border-radius: 6px; }
+
+.refs li { margin-bottom: 6px; scroll-margin-top: 90px; }
+.refs li:target { background: var(--amber-tint); }
+.cite-box { margin: 28px 0 8px; padding: 14px 18px; border: 1px dashed #9CC2BB; border-radius: 6px; font-size: 0.9rem; }
+.cite-box p { margin: 0; word-break: break-word; }
+
+@media (max-width: 960px) {
+  .mod-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .mod-toc { position: static; background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; }
+}
+@media print {
+  .site-header, .site-footer, .mod-toc, .mcq .opts { display: none !important; }
+  .mod-layout { display: block; } .sidenote { float: none; margin: 0 0 1em; width: auto; }
+}
+.module-list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; max-width: 760px; }
+.module-list li { border: 1px solid var(--line); border-radius: 8px; padding: 14px 18px; background: var(--white); display: grid; gap: 4px; color: var(--muted); }
+.module-list li strong { font-family: "Source Serif 4", "Noto Naskh Arabic", Georgia, serif; font-weight: 600; font-size: 1.12rem; }
+.module-list li.ready { border-color: var(--pine); border-inline-start-width: 4px; }
+.module-list li.ready a { display: grid; gap: 4px; text-decoration: none; color: var(--ink); }
+.module-list li.ready a:hover strong { color: var(--pine); text-decoration: underline; }

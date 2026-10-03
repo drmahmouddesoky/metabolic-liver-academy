@@ -102,3 +102,8 @@ AASLD children 2025, APASL 2025, Chinese 2024, Egyptian 2022, global consensus 2
 - [ ] About page: mission, principles, "Our people", advisory board / faculty invitation
 - [ ] Home page: "About the Academy" and "Why our region" box
 - [ ] Portal names: Patient Portal / Physician Portal (بوابة المرضى / بوابة الأطباء)
+
+## Model teaching module (2026-10-03)
+
+- [ ] Module 1: Assessing liver fibrosis in MASLD (modules/fibrosis-assessment.html)
+      Check: the 10 EASL recommendations (paraphrased, with grades), prognosis numbers, the case, the 5 quiz answers.

@@ -350,4 +350,40 @@
       out.focus();
     });
   }
+
+  /* ---------- Module self-test (nothing stored) ---------- */
+  document.querySelectorAll('.mcq').forEach(function (box) {
+    var ans = +box.getAttribute('data-answer');
+    box.querySelectorAll('.opt').forEach(function (b) {
+      b.addEventListener('click', function () {
+        box.querySelectorAll('.opt').forEach(function (x) {
+          x.classList.remove('right', 'wrong');
+          if (+x.getAttribute('data-i') === ans) x.classList.add('right');
+        });
+        if (+b.getAttribute('data-i') !== ans) b.classList.add('wrong');
+        b.setAttribute('aria-pressed', 'true');
+        var why = box.querySelector('.why');
+        why.hidden = false;
+        var mark = +b.getAttribute('data-i') === ans ? t('Correct. ', 'إجابة صحيحة. ') : t('Not quite. ', 'ليست الإجابة الصحيحة. ');
+        if (!why.getAttribute('data-orig')) why.setAttribute('data-orig', why.innerHTML);
+        why.innerHTML = '<strong>' + mark + '</strong>' + why.getAttribute('data-orig');
+      });
+    });
+  });
+
+  /* ---------- Module contents: highlight the section in view ---------- */
+  var tocLinks = document.querySelectorAll('.mod-toc a');
+  if (tocLinks.length && 'IntersectionObserver' in window) {
+    var map = {};
+    tocLinks.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting && map[en.target.id]) {
+          tocLinks.forEach(function (a) { a.classList.remove('on'); });
+          map[en.target.id].classList.add('on');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    Object.keys(map).forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+  }
 })();

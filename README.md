@@ -10,6 +10,7 @@ Live at: https://drmahmouddesoky.github.io/metabolic-liver-academy/
 - `src/*.html`: the page sources, with English and Arabic side by side.
 - `content/learn.py`: the patient Q&A library (English + Arabic).
 - `content/ref.py`: the doctors' reference library (English + Arabic).
+- `content/modules.py`: teaching modules (textbook-chapter pages with graded recommendations, figures, a case and a quiz).
 - `build.py`: turns these into the real pages.
   - English pages at the site root (e.g. `patients.html`, `learn/fibroscan.html`)
   - Arabic pages under `ar/` (e.g. `ar/patients.html`), so Google can find them in Arabic

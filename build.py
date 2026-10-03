@@ -24,6 +24,7 @@ SITE = "https://drmahmouddesoky.github.io/metabolic-liver-academy/"
 sys.path.insert(0, os.path.join(ROOT, "content"))
 import learn as L  # noqa: E402
 import ref as R  # noqa: E402
+import modules as M  # noqa: E402
 
 LANGS = ("en", "ar")
 OTHER = {"en": "ar", "ar": "en"}
@@ -39,7 +40,7 @@ def esc(s):
 
 
 # ------------------------------------------------------------------ head
-HEAD = """<!doctype html>
+HEAD_T = """<!doctype html>
 <html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
@@ -49,10 +50,17 @@ HEAD = """<!doctype html>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect x='1' y='5' width='5.2' height='24' rx='2.6' fill='%233E9C7B'/%3E%3Crect x='7.7' y='5' width='5.2' height='24' rx='2.6' fill='%2394B95A'/%3E%3Crect x='14.4' y='5' width='5.2' height='24' rx='2.6' fill='%23E0B43C'/%3E%3Crect x='21.1' y='5' width='5.2' height='24' rx='2.6' fill='%23D97B3A'/%3E%3Crect x='27.8' y='5' width='5.2' height='24' rx='2.6' fill='%23A3423E'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="{up}fonts/fonts.css">
 <link rel="stylesheet" href="{up}style.css">
-</head>
+{extra_head}</head>
 <body data-page="{page}" data-root="{up}">
 <main id="main">
 """
+class _Head(str):
+    def format(self, **kw):
+        kw.setdefault("extra_head", "")
+        return str.format(self, **kw)
+
+
+HEAD = _Head(HEAD_T)
 FOOT = """
 </main>
 <script src="{up}main.js"></script>
@@ -194,6 +202,7 @@ def learn_index():
 def all_sources():
     d = dict(L.SOURCES)
     d.update(R.SOURCES)
+    d.update(M.SOURCES)
     return d
 
 
@@ -300,6 +309,140 @@ def ref_index():
     return "".join(out)
 
 
+# ------------------------------------------------------------------ teaching modules
+CITE = re.compile(r"\[\[([\w,\s]+)\]\]")
+GRADE = {
+    "strong": ("Strong recommendation", "توصية قوية"),
+    "weak": ("Weak recommendation", "توصية ضعيفة"),
+    "open": ("Open recommendation", "توصية مفتوحة"),
+}
+CONS = {"strong": ("Strong consensus", "إجماع قوي"), "consensus": ("Consensus", "إجماع")}
+
+
+def module_page(mod):
+    src = all_sources()
+    order = []
+
+    def note(keys):
+        for k in keys:
+            k = k.strip()
+            if k not in src:
+                raise KeyError("unknown source " + k)
+            if k not in order:
+                order.append(k)
+
+    for b in mod["blocks"]:
+        for txt in [x for x in b[1:] if isinstance(x, tuple)]:
+            for m in CITE.finditer(txt[0]):
+                note(m.group(1).split(","))
+        if b[0] == "rec":
+            note([b[5]])
+
+    def cites(txt):
+        def sub(m):
+            nums = [order.index(k.strip()) + 1 for k in m.group(1).split(",")]
+            return '<sup class="cite">[%s]</sup>' % ",".join('<a href="#ref-%d">%d</a>' % (n, n) for n in nums)
+        return CITE.sub(sub, esc(txt))
+
+    def pc(p, tag="span"):
+        return bi(cites(p[0]), cites(p[1]), tag)
+
+    def cell(c):
+        return bi(esc(c[0]), esc(c[1])) if isinstance(c, tuple) else '<span dir="ltr">%s</span>' % esc(c)
+
+    toc, body = [], []
+    n = 0
+    for b in mod["blocks"]:
+        kind = b[0]
+        if kind == "h2":
+            n += 1
+            toc.append('<li><a href="#%s">%s</a></li>' % (b[2], bi(esc(b[1][0]), esc(b[1][1]))))
+            body.append('<h2 id="%s"><span class="num">%d</span>%s</h2>' % (b[2], n, bi(esc(b[1][0]), esc(b[1][1]))))
+        elif kind == "p":
+            body.append("<p>%s</p>" % pc(b[1]))
+        elif kind == "ul":
+            body.append('<ul class="ticks">' + "".join("<li>%s</li>" % pc(x) for x in b[1]) + "</ul>")
+        elif kind == "aside":
+            body.append('<aside class="sidenote">%s</aside>' % pc(b[1]))
+        elif kind == "rec":
+            _, text, loe, strength, cons, key = b
+            tags = ['<span class="g-loe">%s</span>' % bi("Evidence level %d" % loe, "مستوى الدليل %d" % loe)]
+            if strength:
+                tags.append("<span>%s</span>" % bi(*GRADE[strength]))
+            tags.append("<span>%s</span>" % bi(*CONS[cons]))
+            num = order.index(key) + 1
+            body.append('<div class="rec"><p class="rec-tags"><a href="#grading">%s</a></p><p class="rec-text">%s <sup class="cite">[<a href="#ref-%d">%d</a>]</sup></p></div>'
+                        % ("".join(tags), bi(esc(text[0]), esc(text[1])), num, num))
+        elif kind == "table":
+            t = b[1]
+            body.append('<div class="table-wrap"><table class="ref-table"><caption>%s</caption><thead><tr>%s</tr></thead><tbody>%s</tbody></table></div>' % (
+                bi(esc(t["caption"][0]), esc(t["caption"][1])),
+                "".join('<th scope="col">%s</th>' % cell(c) for c in t["head"]),
+                "".join("<tr>" + "".join(('<th scope="row">%s</th>' if i == 0 else "<td>%s</td>") % cell(c) for i, c in enumerate(r)) + "</tr>" for r in t["rows"])))
+        elif kind == "figure":
+            body.append('<figure class="fig">%s<figcaption>%s</figcaption></figure>' % (M.FIGURES[b[1]], bi(esc(b[2][0]), esc(b[2][1]))))
+        elif kind == "case":
+            c = b[1]
+            rows = "".join("<dt>%s</dt><dd>%s</dd>" % (bi(esc(l[0]), esc(l[1])), pc(t)) for l, t in c["parts"])
+            body.append('<section class="case"><h3>%s</h3><dl>%s</dl></section>' % (bi(esc(c["title"][0]), esc(c["title"][1])), rows))
+        elif kind == "mcq":
+            items = []
+            for i, q in enumerate(b[1], 1):
+                opts = "".join('<button type="button" class="opt" data-i="%d">%s</button>' % (j, bi(esc(o[0]), esc(o[1]))) for j, o in enumerate(q["options"]))
+                items.append('<div class="mcq" data-answer="%d"><p class="q"><span class="qn">%d.</span> %s</p><div class="opts">%s</div><p class="why" hidden>%s</p></div>'
+                             % (q["answer"], i, bi(esc(q["q"][0]), esc(q["q"][1])), opts, bi(esc(q["why"][0]), esc(q["why"][1]))))
+            body.append('<p class="muted small">%s</p>%s' % (bi("Choose an answer to see the explanation. Nothing is recorded.", "اختر إجابة لترى الشرح. لا يُسجَّل أي شيء."), "".join(items)))
+
+    out = [HEAD.format(
+        t_en=esc(mod["title"]["en"]) + " | MLA Teaching module",
+        t_ar=esc(mod["title"]["ar"]) + " | وحدة تعليمية من أكاديمية الكبد الأيضي",
+        d_en=esc(mod["subtitle"]["en"]), d_ar=esc(mod["subtitle"]["ar"]), up="../", page="academy",
+        extra_head='<link rel="stylesheet" href="../fonts/serif.css">\n')]
+    ver = M.VERSIONS.get(mod["slug"], "1.0")
+    rev = M.REVIEWED.get(mod["slug"])
+    out.append('<header class="mod-head"><div class="wrap">')
+    out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../academy.html">%s</a> › <a href="../academy.html#modules">%s</a></nav>'
+               % (bi("Physician Portal", "بوابة الأطباء"), bi("Teaching modules", "الوحدات التعليمية")))
+    out.append('<p class="mod-no">%s</p>' % bi("Module %d" % mod["number"], "الوحدة %d" % mod["number"]))
+    out.append("<h1>%s</h1>" % bi(esc(mod["title"]["en"]), esc(mod["title"]["ar"])))
+    out.append('<p class="mod-sub">%s</p>' % bi(esc(mod["subtitle"]["en"]), esc(mod["subtitle"]["ar"])))
+    meta = [
+        (("Author", "المؤلف"), ("Mahmoud Desoky, MD", "د. محمود الدسوقي")),
+        (("Medical review", "المراجعة الطبية"), ("Reviewed " + rev, "رُوجعت " + rev) if rev else ("Pending", "قيد الإنجاز")),
+        (("For", "موجّهة إلى"), (mod["audience"]["en"], mod["audience"]["ar"])),
+        (("Reading time", "مدة القراءة"), ("About %d minutes" % mod["minutes"], "نحو %d دقيقة" % mod["minutes"])),
+        (("Version", "الإصدار"), ("%s, updated %s" % (ver, M.UPDATED), "%s، حُدّثت في %s" % (ver, M.UPDATED))),
+    ]
+    out.append('<dl class="mod-meta">' + "".join("<div><dt>%s</dt><dd>%s</dd></div>" % (bi(*k), bi(esc(v[0]), esc(v[1]))) for k, v in meta) + "</dl>")
+    out.append("</div></header>")
+    out.append('<div class="wrap mod-layout">')
+    out.append('<nav class="mod-toc" aria-label="Contents"><p class="toc-title">%s</p><ol>%s<li><a href="#references">%s</a></li></ol></nav>'
+               % (bi("Contents", "المحتويات"), "".join(toc), bi("References", "المراجع")))
+    out.append('<article class="mod-body">')
+    out.append('<section class="objectives"><h2 class="h-small">%s</h2><p>%s</p><ol>%s</ol>' % (
+        bi("Learning objectives", "أهداف التعلّم"), bi("After this module you should be able to:", "بعد هذه الوحدة ستكون قادرًا على:"),
+        "".join("<li>%s</li>" % bi(esc(o[0]), esc(o[1])) for o in mod["objectives"])))
+    out.append('<p class="small" id="grading">%s</p></section>' % bi(
+        "Boxed recommendations are paraphrased from the EASL–EASD–EASO 2024 guideline, with its grades: evidence level from 1 (strongest) to 5; recommendation strong, weak or open; consensus is the panel's agreement (strong means at least 95%).",
+        "التوصيات المؤطّرة مُعاد صياغتها من إرشادات EASL–EASD–EASO لعام 2024 مع درجاتها: مستوى الدليل من 1 (الأقوى) إلى 5؛ والتوصية قوية أو ضعيفة أو مفتوحة؛ والإجماع هو مدى اتفاق اللجنة (القوي يعني 95% على الأقل)."))
+    out.extend(body)
+    out.append('<h2 id="references">%s</h2><ol class="pubs small refs" lang="en" dir="ltr">' % bi("References", "المراجع"))
+    for i, k in enumerate(order, 1):
+        text, url = src[k]
+        out.append('<li id="ref-%d">%s <a href="%s" target="_blank" rel="noopener">%s</a></li>' % (i, esc(text), url, esc(url.replace("https://doi.org/", "doi:"))))
+    out.append("</ol>")
+    url = SITE + "modules/%s.html" % mod["slug"]
+    out.append('<div class="cite-box"><h2 class="h-small">%s</h2><p lang="en" dir="ltr">Desoky M. %s. Metabolic Liver Academy, version %s. Updated %s. Available from: <a href="%s">%s</a></p></div>'
+               % (bi("How to cite this module", "كيفية الاستشهاد بهذه الوحدة"), esc(mod["title"]["en"]), ver, M.UPDATED, url, url))
+    out.append('<p class="fine">%s</p>' % bi(
+        "For education only. This module summarises published evidence and guidelines; it does not replace clinical judgement, full guidelines or local drug labels. It is not accredited for CME credit. <a href=\"../legal.html#disclaimer\">Disclaimer</a>.",
+        "للتعليم فقط. تلخّص هذه الوحدة الأدلة والإرشادات المنشورة، ولا تغني عن التقدير السريري أو الإرشادات الكاملة أو نشرات الأدوية المحلية، وهي غير معتمدة لساعات التعليم الطبي المستمر. <a href=\"../legal.html#disclaimer\">إخلاء المسؤولية</a>."))
+    out.append(page_record(M, mod["slug"], "content/modules.py"))
+    out.append("</article></div>")
+    out.append(FOOT.format(up="../"))
+    return "".join(out)
+
+
 # ------------------------------------------------------------------ split one bilingual page
 def split(src_html, rel, lang):
     """rel = output path relative to the language root, e.g. 'learn/biopsy.html'."""
@@ -365,6 +508,8 @@ def main():
     pages["learn.html"] = learn_index()
     for it in L.ITEMS:
         pages["learn/%s.html" % it["slug"]] = learn_page(it)
+    for mod in M.MODULES:
+        pages["modules/%s.html" % mod["slug"]] = module_page(mod)
     pages["ref.html"] = ref_index()
     for pg in R.PAGES:
         pages["ref/%s.html" % pg["slug"]] = ref_page(pg)
