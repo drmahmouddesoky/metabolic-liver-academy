@@ -127,7 +127,7 @@ MODULES = [
              (("Step 1", "الخطوة 1"), ("FIB-4 = (52 × 42) ÷ (210 × √48) = 1.50. This is indeterminate (1.3–2.67), so a second-line test is needed.", "FIB-4 = (52 × 42) ÷ (210 × √48) = 1.50، وهي نتيجة غير حاسمة (1.3–2.67)، لذا يلزم فحص من الخط الثاني.")),
              (("Step 2", "الخطوة 2"), ("VCTE (XL probe, fasting): liver stiffness 10.8 kPa, IQR/median 18%. This is in the grey zone (8–12 kPa).", "VCTE (بالمجس XL وبعد الصيام): الصلابة 10.8 كيلوباسكال، وIQR/الوسيط 18%، وهي في المنطقة الرمادية (8–12).")),
              (("Next step", "الخطوة التالية"), ("ELF is 10.1 (≥9.8, high risk). Together the results suggest at least significant fibrosis, probably F2–F3, without cirrhosis. He is referred to hepatology.", "نتيجة ELF ‏10.1 (≥9.8، خطر مرتفع). وتشير النتائج مجتمعة إلى تليّف ملحوظ على الأقل، غالبًا F2–F3، دون تشمّع. يُحال إلى طبيب الكبد.")),
-             (("Teaching points", "نقاط تعليمية"), ("A normal-looking ALT and an \"only fatty\" ultrasound did not exclude significant fibrosis. With obesity and diabetes, he meets criteria for a GLP-1 receptor agonist that treats both his diabetes and MASH, alongside lifestyle change and a statin for cardiovascular risk. See the drugs page in the reference library.", "لم يستبعد ALT شبه الطبيعي ولا وصف الأشعة بأنه \"دهون فقط\" وجود تليّف ملحوظ. ومع السمنة والسكري، تنطبق عليه معايير منبّه مستقبل GLP-1 الذي يعالج السكري وMASH معًا، إلى جانب تعديل نمط الحياة وستاتين للخطر القلبي. راجع صفحة الأدوية في المرجع.")),
+             (("Teaching points", "نقاط تعليمية"), ("A normal-looking ALT and an \"only fatty\" ultrasound did not exclude significant fibrosis. If the hepatologist confirms at-risk MASH, semaglutide 2.4 mg could treat his obesity, diabetes and liver together where it is approved (AASLD 2025 guidance), alongside lifestyle change and a statin. Note that EASL 2024, written before the semaglutide phase 3 trial, did not yet recommend GLP-1 drugs as liver treatment. See Module 2.", "لم يستبعد ALT شبه الطبيعي ولا وصف الأشعة بأنه \"دهون فقط\" وجود تليّف ملحوظ. وإذا أكّد طبيب الكبد وجود MASH عالي الخطورة، فقد يعالج السيماغلوتايد 2.4 ملغ السمنة والسكري والكبد معًا حيث يكون معتمدًا (إرشادات AASLD لعام 2025)، إلى جانب تعديل نمط الحياة وستاتين. ولاحظ أن إرشادات EASL لعام 2024، التي صدرت قبل تجربة المرحلة الثالثة للسيماغلوتايد، لم توصِ بعدُ بأدوية GLP-1 علاجًا للكبد. راجع الوحدة 2.")),
             ]}),
 
   ("h2", ("Test yourself", "اختبر نفسك"), "quiz"),
@@ -165,6 +165,16 @@ MODULES = [
  ],
 },
 ]
+
+# ------------------------------------------------------------------ modules 2-5 (one file each)
+import importlib as _il  # noqa: E402
+for _name in ("modules_m2", "modules_m3", "modules_m4", "modules_m5"):
+    _m = _il.import_module(_name)
+    for _k, _v in _m.SOURCES.items():
+        if _k in SOURCES and SOURCES[_k][1] != _v[1]:
+            raise ValueError("source key clash: " + _k)
+        SOURCES.setdefault(_k, _v)
+    MODULES.append(_m.MODULE)
 
 # ------------------------------------------------------------------ figures
 # Language-neutral numbers sit outside the language groups.

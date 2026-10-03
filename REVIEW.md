@@ -107,3 +107,13 @@ AASLD children 2025, APASL 2025, Chinese 2024, Egyptian 2022, global consensus 2
 
 - [ ] Module 1: Assessing liver fibrosis in MASLD (modules/fibrosis-assessment.html)
       Check: the 10 EASL recommendations (paraphrased, with grades), prognosis numbers, the case, the 5 quiz answers.
+
+## Modules 2–5 and academic restyle (2026-10-03)
+
+Each module was drafted from the full guideline texts in your folder and then fact-checked by a separate checker; 12 small errors were corrected.
+- [ ] Module 2: Choosing drug treatment for MASH (modules/drug-treatment.html)
+- [ ] Module 3: The lifestyle prescription (modules/lifestyle-prescription.html) — includes a short Ramadan section from 2 published reviews
+- [ ] Module 4: MASLD in the diabetes clinic (modules/diabetes-clinic.html) — ADA 2025 wording taken from a web summary: please check
+- [ ] Module 5: Caring for MASLD cirrhosis (modules/cirrhosis-care.html)
+- [ ] Guidelines side by side: Saudi 2026 row now filled from the full text
+- [ ] Cirrhosis quick reference: vaccines now hepatitis A/B only; MELD line removed; Saudi F3 surveillance difference added

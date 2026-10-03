@@ -320,11 +320,11 @@ th { background: var(--pine-tint); font-weight: 600; }
 .mod-head { background: var(--white); border-bottom: 1px solid var(--line); padding: 36px 0 28px; }
 .mod-head h1, .mod-body h2, .mod-body h3, .case h3 {
   font-family: "Source Serif 4", "Noto Naskh Arabic", Georgia, serif; font-weight: 600; letter-spacing: -0.005em; }
-[dir="rtl"] .mod-head h1, [dir="rtl"] .mod-body h2, [dir="rtl"] .mod-body h3 { font-family: "Noto Naskh Arabic", "IBM Plex Sans Arabic", serif; letter-spacing: 0; }
+[dir="rtl"] .mod-head h1, [dir="rtl"] .mod-body h2, [dir="rtl"] .mod-body h3 { font-family: "Noto Naskh Arabic", "Source Serif 4", serif; letter-spacing: 0; }
 .mod-head h1 { font-size: clamp(2rem, 1.4rem + 2.4vw, 3.1rem); line-height: 1.12; margin: 4px 0 10px; max-width: 22ch; }
 .mod-no { margin: 14px 0 0; color: var(--pine); font-weight: 600; }
 .mod-sub { font-family: "Source Serif 4", Georgia, serif; font-style: italic; font-size: 1.2rem; color: var(--muted); max-width: 56ch; margin: 0 0 22px; }
-[dir="rtl"] .mod-sub { font-family: "Noto Naskh Arabic", serif; font-style: normal; }
+[dir="rtl"] .mod-sub { font-family: "Noto Naskh Arabic", "Source Serif 4", serif; font-style: normal; }
 .mod-meta { display: flex; flex-wrap: wrap; gap: 10px 32px; margin: 0; padding-top: 16px; border-top: 1px solid var(--line); font-size: 0.9rem; }
 .mod-meta div { max-width: 34ch; }
 .mod-meta dt { color: var(--muted); font-size: 0.8rem; }
@@ -342,7 +342,7 @@ th { background: var(--pine-tint); font-weight: 600; }
 .mod-toc a:hover, .mod-toc a.on { color: var(--pine); border-inline-start-color: var(--pine); }
 
 .mod-body { max-width: 66ch; font-family: "Source Serif 4", Georgia, serif; font-size: 1.12rem; line-height: 1.72; }
-[dir="rtl"] .mod-body { font-family: "Noto Naskh Arabic", "IBM Plex Sans Arabic", serif; font-size: 1.15rem; line-height: 1.95; }
+[dir="rtl"] .mod-body { font-family: "Noto Naskh Arabic", "Source Serif 4", serif; font-size: 1.15rem; line-height: 1.95; }
 .mod-body .small, .mod-body .fine, .mod-body table, .mod-body .rec-tags, .mod-body figcaption, .mod-body .muted, .mod-body .record,
 .mod-body .mcq .opt, .mod-body .cite-box, .mod-body .refs { font-family: "IBM Plex Sans", "IBM Plex Sans Arabic", system-ui, sans-serif; }
 [dir="rtl"] .mod-body .small, [dir="rtl"] .mod-body table, [dir="rtl"] .mod-body .rec-tags, [dir="rtl"] .mod-body figcaption, [dir="rtl"] .mod-body .mcq .opt { font-family: "IBM Plex Sans Arabic", "IBM Plex Sans", sans-serif; }
@@ -420,3 +420,5 @@ th { background: var(--pine-tint); font-weight: 600; }
 .module-list li.ready { border-color: var(--pine); border-inline-start-width: 4px; }
 .module-list li.ready a { display: grid; gap: 4px; text-decoration: none; color: var(--ink); }
 .module-list li.ready a:hover strong { color: var(--pine); text-decoration: underline; }
+.modules-panel { border-color: var(--pine); border-inline-start-width: 4px; }
+.modules-panel li { padding: 4px 0; font-family: "Source Serif 4", "Noto Naskh Arabic", Georgia, serif; font-size: 1.08rem; }

@@ -216,28 +216,60 @@ def pair(p, tag="span"):
     return bi(esc(p[0]), esc(p[1]), tag)
 
 
+REF_MODULE = {
+    "definitions": "fibrosis-assessment", "case-finding": "fibrosis-assessment", "fibrosis-pathway": "fibrosis-assessment",
+    "nit-reference": "fibrosis-assessment", "fib4-method": "fibrosis-assessment", "nfs-method": "fibrosis-assessment",
+    "follow-up": "fibrosis-assessment", "drugs": "drug-treatment", "lifestyle": "lifestyle-prescription",
+    "surgery": "lifestyle-prescription", "cardiometabolic": "diabetes-clinic", "cirrhosis": "cirrhosis-care",
+}
+
+
 def ref_page(pg):
     by = {p["slug"]: p for p in R.PAGES}
+    mods = {m["slug"]: m for m in M.MODULES}
     g = dict(R.GROUPS)[pg["group"]]
     src = all_sources()
     out = [HEAD.format(
         t_en=esc(pg["title"]["en"]) + " | MLA Reference",
         t_ar=esc(pg["title"]["ar"]) + " | مرجع أكاديمية الكبد الأيضي",
-        d_en=esc(pg["lead"]["en"]), d_ar=esc(pg["lead"]["ar"]), up="../", page="ref")]
-    out.append('<header class="page-head"><div class="wrap read">')
+        d_en=esc(pg["lead"]["en"]), d_ar=esc(pg["lead"]["ar"]), up="../", page="ref",
+        extra_head='<link rel="stylesheet" href="../fonts/serif.css">\n')]
+    ver = R.VERSIONS.get(pg["slug"], "1.0")
+    rev = R.REVIEWED.get(pg["slug"])
+    out.append('<header class="mod-head"><div class="wrap">')
     out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../ref.html">%s</a> › <a href="../ref.html#%s">%s</a></nav>'
                % (bi("Doctors&#39; reference", "مرجع الأطباء"), pg["group"], bi(esc(g["en"]), esc(g["ar"]))))
+    out.append('<p class="mod-no">%s</p>' % bi("Quick reference", "مرجع سريع"))
     out.append("<h1>%s</h1>" % bi(esc(pg["title"]["en"]), esc(pg["title"]["ar"])))
-    out.append("<p>%s</p>" % bi(esc(pg["lead"]["en"]), esc(pg["lead"]["ar"])))
-    out.append('<p class="tag pro">%s</p>' % bi("For healthcare professionals", "للعاملين في المجال الصحي"))
+    out.append('<p class="mod-sub">%s</p>' % bi(esc(pg["lead"]["en"]), esc(pg["lead"]["ar"])))
+    meta = [
+        (("For", "موجّه إلى"), ("Healthcare professionals", "العاملون في المجال الصحي")),
+        (("Author", "المؤلف"), ("Mahmoud Desoky, MD", "د. محمود الدسوقي")),
+        (("Medical review", "المراجعة الطبية"), ("Reviewed " + rev, "رُوجعت " + rev) if rev else ("Pending", "قيد الإنجاز")),
+        (("Version", "الإصدار"), ("%s, updated %s" % (ver, R.UPDATED), "%s، حُدّث في %s" % (ver, R.UPDATED))),
+    ]
+    out.append('<dl class="mod-meta">' + "".join("<div><dt>%s</dt><dd>%s</dd></div>" % (bi(*k), bi(esc(v[0]), esc(v[1]))) for k, v in meta) + "</dl>")
     out.append("</div></header>")
-    out.append('<article class="section"><div class="wrap read">')
-    out.append('<div class="shortbox"><p class="small"><strong>%s</strong></p><ul class="ticks">' % bi("Key points", "النقاط الأساسية"))
+    toc = []
+    for n, sec in enumerate(pg["sections"], 1):
+        toc.append('<li><a href="#s%d">%s</a></li>' % (n, pair(sec["h"])))
+    out.append('<div class="wrap mod-layout">')
+    out.append('<nav class="mod-toc" aria-label="Contents"><p class="toc-title">%s</p><ol>%s<li><a href="#references">%s</a></li></ol></nav>'
+               % (bi("Contents", "المحتويات"), "".join(toc), bi("References", "المراجع")))
+    out.append('<article class="mod-body">')
+    out.append('<section class="objectives"><h2 class="h-small">%s</h2><ul class="ticks">' % bi("Key points", "النقاط الأساسية"))
     for k in pg["key"]:
         out.append("<li>%s</li>" % pair(k))
-    out.append("</ul></div>")
-    for sec in pg["sections"]:
-        out.append("<h2>%s</h2>" % pair(sec["h"]))
+    out.append("</ul>")
+    ms = REF_MODULE.get(pg["slug"])
+    if ms and ms in mods:
+        m = mods[ms]
+        out.append('<p class="small">%s</p>' % bi(
+            'For the evidence, graded recommendations, a case and self-test questions, read <a href="../modules/%s.html">Module %d: %s</a>.' % (ms, m["number"], esc(m["title"]["en"])),
+            'للاطلاع على الأدلة والتوصيات المصنّفة وحالة سريرية وأسئلة للتقييم الذاتي، اقرأ <a href="../modules/%s.html">الوحدة %d: %s</a>.' % (ms, m["number"], esc(m["title"]["ar"]))))
+    out.append("</section>")
+    for n, sec in enumerate(pg["sections"], 1):
+        out.append('<h2 id="s%d"><span class="num">%d</span>%s</h2>' % (n, n, pair(sec["h"])))
         for p in sec.get("p", []):
             out.append("<p>%s</p>" % pair(p))
         if sec.get("ul"):
@@ -257,16 +289,19 @@ def ref_page(pg):
         for s_ in pg["see"]:
             out.append('<li><a href="%s.html">%s</a></li>' % (s_, bi(esc(by[s_]["title"]["en"]), esc(by[s_]["title"]["ar"]))))
         out.append("</ul>")
-    out.append('<h2 class="h-small">%s</h2><ol class="pubs small" lang="en" dir="ltr">' % bi("References", "المراجع"))
+    out.append('<h2 id="references">%s</h2><ol class="pubs small refs" lang="en" dir="ltr">' % bi("References", "المراجع"))
     for k in pg["src"]:
         text, url = src[k]
-        out.append('<li>%s <a href="%s" target="_blank" rel="noopener">Link</a></li>' % (esc(text), url))
+        out.append('<li>%s <a href="%s" target="_blank" rel="noopener">%s</a></li>' % (esc(text), url, esc(url.replace("https://doi.org/", "doi:"))))
     out.append("</ol>")
+    url = SITE + "ref/%s.html" % pg["slug"]
+    out.append('<div class="cite-box"><h2 class="h-small">%s</h2><p lang="en" dir="ltr">Desoky M. %s. Metabolic Liver Academy quick reference, version %s. Updated %s. Available from: <a href="%s">%s</a></p></div>'
+               % (bi("How to cite this page", "كيفية الاستشهاد بهذه الصفحة"), esc(pg["title"]["en"]), ver, R.UPDATED, url, url))
     out.append('<p class="fine">%s</p>' % bi(
-        "Last updated %s. A summary of published guidelines for healthcare professionals. It does not replace clinical judgement, the full guidelines or local drug labels. <a href=\"../legal.html#disclaimer\">Read the disclaimer</a>." % R.UPDATED,
-        "آخر تحديث %s. ملخص للإرشادات المنشورة موجّه للعاملين في المجال الصحي، ولا يغني عن التقدير السريري أو الإرشادات الكاملة أو نشرات الأدوية المحلية. <a href=\"../legal.html#disclaimer\">اقرأ إخلاء المسؤولية</a>." % R.UPDATED))
+        "A summary of published guidelines for healthcare professionals. It does not replace clinical judgement, the full guidelines or local drug labels. <a href=\"../legal.html#disclaimer\">Disclaimer</a>.",
+        "ملخص للإرشادات المنشورة موجّه للعاملين في المجال الصحي، ولا يغني عن التقدير السريري أو الإرشادات الكاملة أو نشرات الأدوية المحلية. <a href=\"../legal.html#disclaimer\">إخلاء المسؤولية</a>."))
     out.append(page_record(R, pg["slug"], "content/ref.py"))
-    out.append("</div></article>")
+    out.append("</article></div>")
     out.append(FOOT.format(up="../"))
     return "".join(out)
 
@@ -277,14 +312,19 @@ def ref_index():
         t_ar="مرجع الأطباء عن الكبد الدهني | أكاديمية الكبد الأيضي",
         d_en="Guideline-based summaries for clinicians: diagnosis, fibrosis tests, drugs, cirrhosis care, follow-up and special groups.",
         d_ar="ملخصات مبنية على الإرشادات للأطباء: التشخيص، وفحوص التليّف، والأدوية، ورعاية التشمّع، والمتابعة، والفئات الخاصة.",
-        up="", page="ref")]
+        up="", page="ref", extra_head='<link rel="stylesheet" href="fonts/serif.css">\n')]
     out.append('<header class="page-head"><div class="wrap">')
     out.append("<h1>%s</h1>" % bi("Doctors&#39; reference library", "مرجع الأطباء"))
     out.append("<p>%s</p>" % bi(
         "Short, practical summaries of the main MASLD and MASH guidelines, with cut-offs, tables and references. For healthcare professionals.",
         "ملخصات قصيرة وعملية لأهم إرشادات الكبد الدهني والتهابه، مع الحدود والجداول والمراجع. للعاملين في المجال الصحي."))
     out.append("</div></header>")
-    out.append('<section class="section"><div class="wrap"><div class="grid three">')
+    out.append('<section class="section"><div class="wrap">')
+    out.append('<div class="panel modules-panel"><h2 class="h-small">%s</h2><p class="muted small">%s</p><ol class="plain">%s</ol></div>' % (
+        bi("Teaching modules", "الوحدات التعليمية"),
+        bi("Chapter-length modules with graded recommendations, a clinical case and self-test questions.", "وحدات بطول فصل دراسي مع توصيات مصنّفة وحالة سريرية وأسئلة للتقييم الذاتي."),
+        "".join('<li><a href="modules/%s.html">%s</a></li>' % (m["slug"], bi("Module %d. %s" % (m["number"], esc(m["title"]["en"])), "الوحدة %d. %s" % (m["number"], esc(m["title"]["ar"])))) for m in M.MODULES)))
+    out.append('<h2 class="h-small" style="margin-top:28px">%s</h2><div class="grid three">' % bi("Quick reference pages", "صفحات المرجع السريع"))
     for key, name in R.GROUPS:
         out.append('<section class="panel" id="%s"><h2 class="h-small">%s</h2><ul class="qlist">' % (key, pair((name["en"], name["ar"]))))
         for pg in [p for p in R.PAGES if p["group"] == key]:
