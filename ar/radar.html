@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>رادار الأبحاث | أكاديمية الكبد الأيضي</title>
+<meta content="أحدث الأبحاث عن الكبد الدهني والسمنة، تُحدَّث يوميًا من قاعدة PubMed، مع قسم خاص بمنطقة الشرق الأوسط وشمال أفريقيا." name="description"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect x='1' y='5' width='5.2' height='24' rx='2.6' fill='%233E9C7B'/%3E%3Crect x='7.7' y='5' width='5.2' height='24' rx='2.6' fill='%2394B95A'/%3E%3Crect x='14.4' y='5' width='5.2' height='24' rx='2.6' fill='%23E0B43C'/%3E%3Crect x='21.1' y='5' width='5.2' height='24' rx='2.6' fill='%23D97B3A'/%3E%3Crect x='27.8' y='5' width='5.2' height='24' rx='2.6' fill='%23A3423E'/%3E%3C/svg%3E" rel="icon"/>
+<link href="../fonts/fonts.css" rel="stylesheet"/>
+<link href="../style.css" rel="stylesheet"/>
+<link href="https://drmahmouddesoky.github.io/metabolic-liver-academy/radar.html" hreflang="en" rel="alternate"/><link href="https://drmahmouddesoky.github.io/metabolic-liver-academy/ar/radar.html" hreflang="ar" rel="alternate"/><link href="https://drmahmouddesoky.github.io/metabolic-liver-academy/radar.html" hreflang="x-default" rel="alternate"/><link href="https://drmahmouddesoky.github.io/metabolic-liver-academy/ar/radar.html" rel="canonical"/><meta content="ar_SA" property="og:locale"/></head>
+<body data-page="radar">
+<main id="main">
+<header class="page-head radar-head">
+<div class="wrap">
+<p class="eyebrow"><span aria-hidden="true" class="pulse"></span><span data-lang="ar">يُحدَّث يوميًا من قاعدة PubMed</span></p>
+<h1><span data-lang="ar">رادار الأبحاث</span></h1>
+<p><span data-lang="ar">أحدث الأبحاث العلمية عن الكبد الدهني (MASLD وMASH) والسمنة وعلاقتها بالكبد، من حول العالم ومن منطقة الشرق الأوسط وشمال أفريقيا. تُجمع الأبحاث تلقائيًا كل صباح. عناوين الأبحاث تظهر بالإنجليزية كما نُشرت.</span></p>
+<p aria-live="polite" class="radar-stamp" id="radar-stamp"></p>
+</div>
+</header>
+<section class="section radar-picks-wrap" hidden="" id="picks-section">
+<div class="wrap">
+<h2><span data-lang="ar">أبرز أبحاث هذا الشهر</span></h2>
+<p class="muted small"><span data-lang="ar">إرشادات وتحليلات تجميعية وتجارب عشوائية من آخر 30 يومًا.</span></p>
+<div class="radar-picks" dir="ltr" id="radar-picks" lang="en"></div>
+</div>
+</section>
+<section class="section tint">
+<div class="wrap">
+<div aria-label="Region" class="radar-tabs" role="tablist">
+<button aria-selected="true" data-region="global" id="tab-global" role="tab" type="button"><span data-lang="ar">العالم</span> <em id="count-global"></em></button>
+<button aria-selected="false" data-region="mena" id="tab-mena" role="tab" type="button"><span data-lang="ar">الشرق الأوسط وشمال أفريقيا</span> <em id="count-mena"></em></button>
+</div>
+<div class="radar-controls">
+<div aria-label="Period" class="filters" id="radar-period" role="group">
+<button aria-pressed="false" data-days="7" type="button"><span data-lang="ar">7 أيام</span></button>
+<button aria-pressed="true" data-days="30" type="button"><span data-lang="ar">30 يومًا</span></button>
+<button aria-pressed="false" data-days="90" type="button"><span data-lang="ar">90 يومًا</span></button>
+<button aria-pressed="false" data-days="0" type="button"><span data-lang="ar">الكل</span></button>
+</div>
+<div class="radar-fields">
+<label class="field"><span><span data-lang="ar">بحث</span></span>
+<input autocomplete="off" id="radar-q" placeholder="e.g. resmetirom, FIB-4, children" type="search"/></label>
+<label class="field"><span><span data-lang="ar">نوع الدراسة</span></span>
+<select id="radar-type">
+<option value="">All types</option>
+<option value="guideline">Guideline / consensus</option>
+<option value="meta">Systematic review / meta-analysis</option>
+<option value="rct">Randomized trial</option>
+<option value="trial">Other clinical trial</option>
+<option value="review">Review</option>
+<option value="obs">Observational</option>
+<option value="research">Original research</option>
+</select></label>
+<label class="field"><span><span data-lang="ar">الموضوع</span></span>
+<select id="radar-topic">
+<option value="">All topics</option>
+<option value="masld">MASLD / MASH</option>
+<option value="obesity">Obesity &amp; weight</option>
+<option value="drugs">Drugs (GLP-1, resmetirom…)</option>
+<option value="fibrosis">Fibrosis tests</option>
+<option value="cancer">Cirrhosis &amp; liver cancer</option>
+<option value="heart">Heart &amp; vessels</option>
+<option value="children">Children &amp; teens</option>
+<option value="ai">AI &amp; machine learning</option>
+</select></label>
+</div>
+</div>
+<p aria-live="polite" class="radar-count" id="radar-count"></p>
+<div class="radar-list" dir="ltr" id="radar-list" lang="en"></div>
+<p class="radar-more"><button class="btn ghost" hidden="" id="radar-more" type="button"><span data-lang="ar">عرض المزيد</span></button></p>
+<p class="note-box small"><span data-lang="ar">تُجمع هذه القائمة تلقائيًا من قاعدة PubMed (المكتبة الوطنية الأمريكية للطب). ظهور البحث هنا لا يعني التوصية به، ولم تراجعه الأكاديمية. للتثقيف فقط. لا تشمل القائمة تقارير الحالات والرسائل والافتتاحيات ودراسات الحيوان وحدها. يعني قسم "الشرق الأوسط وشمال أفريقيا" أن أحد المؤلفين على الأقل يعمل في دولة من دول المنطقة.</span></p>
+</div>
+</section>
+</main>
+<script src="../data/radar.js"></script>
+<script src="../main.js"></script>
+<script src="../radar.js"></script>
+</body>
+</html>

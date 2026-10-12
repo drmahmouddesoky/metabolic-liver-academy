@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<PubmedArticleSet>
+<PubmedArticle>
+  <MedlineCitation>
+    <PMID>11111111</PMID>
+    <Article>
+      <Journal><Title>Journal of Hepatology</Title><ISOAbbreviation>J Hepatol</ISOAbbreviation></Journal>
+      <ArticleTitle>Semaglutide for <i>MASH</i> with fibrosis: a randomized trial.</ArticleTitle>
+      <AuthorList>
+        <Author><LastName>Hassan</LastName><Initials>MA</Initials>
+          <AffiliationInfo><Affiliation>Department of Medicine, King Saud University, Riyadh, Saudi Arabia.</Affiliation></AffiliationInfo></Author>
+        <Author><LastName>Smith</LastName><Initials>J</Initials>
+          <AffiliationInfo><Affiliation>Cairo University, Cairo, Egypt.</Affiliation></AffiliationInfo></Author>
+      </AuthorList>
+      <PublicationTypeList><PublicationType>Journal Article</PublicationType><PublicationType>Randomized Controlled Trial</PublicationType></PublicationTypeList>
+    </Article>
+  </MedlineCitation>
+  <PubmedData>
+    <History><PubMedPubDate PubStatus="pubmed"><Year>2026</Year><Month>10</Month><Day>2</Day></PubMedPubDate></History>
+    <ArticleIdList><ArticleId IdType="pubmed">11111111</ArticleId><ArticleId IdType="doi">10.1000/test.1</ArticleId></ArticleIdList>
+  </PubmedData>
+</PubmedArticle>
+<PubmedArticle>
+  <MedlineCitation>
+    <PMID>22222222</PMID>
+    <Article>
+      <Journal><Title>Hepatology</Title></Journal>
+      <ArticleTitle>FIB-4 and transient elastography in primary care: a systematic review and meta-analysis</ArticleTitle>
+      <AuthorList>
+        <Author><LastName>Woman</LastName><Initials>A</Initials>
+          <AffiliationInfo><Affiliation>Women's Health Unit, Boston, MA, USA.</Affiliation></AffiliationInfo></Author>
+      </AuthorList>
+      <PublicationTypeList><PublicationType>Meta-Analysis</PublicationType><PublicationType>Review</PublicationType></PublicationTypeList>
+    </Article>
+  </MedlineCitation>
+  <PubmedData>
+    <History><PubMedPubDate PubStatus="pubmed"><Year>2026</Year><Month>9</Month><Day>20</Day></PubMedPubDate></History>
+    <ArticleIdList><ArticleId IdType="pubmed">22222222</ArticleId></ArticleIdList>
+  </PubmedData>
+</PubmedArticle>
+</PubmedArticleSet>

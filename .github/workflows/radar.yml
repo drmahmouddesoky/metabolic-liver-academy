@@ -1,0 +1,52 @@
+# Publication Radar: refresh the paper list from PubMed every day.
+# You can also run it by hand: GitHub > Actions > "Publication Radar" > "Run workflow".
+name: Publication Radar
+
+on:
+  schedule:
+    - cron: "17 3 * * *"   # every day at 03:17 GMT (06:17 Riyadh time)
+  workflow_dispatch:        # "Run workflow" button
+  push:
+    branches: [main]
+    paths:
+      - scripts/radar_fetch.py
+      - .github/workflows/radar.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: radar
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check the parser
+        run: python3 tests/test_radar.py
+
+      - name: Fetch new papers from PubMed
+        env:
+          NCBI_API_KEY: ${{ secrets.NCBI_API_KEY }}   # optional
+        run: python3 scripts/radar_fetch.py
+
+      - name: Save the update
+        run: |
+          if git diff --quiet -- data/radar.js; then
+            echo "No change today."
+            exit 0
+          fi
+          git config user.name "MLA Radar bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/radar.js
+          git commit -m "Publication Radar: daily update"
+          git pull --rebase origin main
+          git push

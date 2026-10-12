@@ -36,6 +36,7 @@ Fonts are self-hosted in `fonts/` (IBM Plex, SIL Open Font License), so pages ma
 | `src/academy.html` | Physician Portal: hubs, learning by role, FIB-4 and NFS calculators, lectures |
 | `src/guidance.html` | Fibrosis pathway, lifestyle, drugs, surgery, heart risk, special groups, sources |
 | `src/guides.html` | Printable patient guides: plate, shopping, walking plan, Ramadan |
+| `src/radar.html` | Publication Radar: daily PubMed papers (Global and MENA) |
 | `src/news.html` | News and events with filters |
 | `src/about.html` | Founder, mission, publications, partners |
 | `src/legal.html` | Disclaimer, privacy, conflicts of interest, editorial policy, terms |
@@ -67,6 +68,16 @@ In `src/`, every piece of text is written twice, side by side:
 ```
 
 The build keeps only the English text in the English pages and only the Arabic text in the Arabic pages.
+
+## Publication Radar (updates itself)
+
+`radar.html` lists new MASLD / MASH and obesity papers from PubMed, with a Global tab and a MENA tab.
+
+- A GitHub robot (`.github/workflows/radar.yml`) runs every day at 06:17 Riyadh time.
+- It runs `scripts/radar_fetch.py`, which searches PubMed and rewrites `data/radar.js`.
+- You never need to edit `data/radar.js`. To update now: GitHub > **Actions** > **Publication Radar** > **Run workflow**.
+- To change the topics or the countries, edit the word lists at the top of `scripts/radar_fetch.py`.
+- Visitors' browsers never contact PubMed; they only read `data/radar.js`.
 
 ## Privacy
 

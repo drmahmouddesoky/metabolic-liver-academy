@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Publication Radar | Metabolic Liver Academy</title>
+<meta content="New research papers on MASLD, MASH, obesity and the liver, updated every day from PubMed, with a special view for the Middle East and North Africa." name="description"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect x='1' y='5' width='5.2' height='24' rx='2.6' fill='%233E9C7B'/%3E%3Crect x='7.7' y='5' width='5.2' height='24' rx='2.6' fill='%2394B95A'/%3E%3Crect x='14.4' y='5' width='5.2' height='24' rx='2.6' fill='%23E0B43C'/%3E%3Crect x='21.1' y='5' width='5.2' height='24' rx='2.6' fill='%23D97B3A'/%3E%3Crect x='27.8' y='5' width='5.2' height='24' rx='2.6' fill='%23A3423E'/%3E%3C/svg%3E" rel="icon"/>
+<link href="fonts/fonts.css" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/>
+<link href="https://drmahmouddesoky.github.io/metabolic-liver-academy/radar.html" hreflang="en" rel="alternate"/><link href="https://drmahmouddesoky.github.io/metabolic-liver-academy/ar/radar.html" hreflang="ar" rel="alternate"/><link href="https://drmahmouddesoky.github.io/metabolic-liver-academy/radar.html" hreflang="x-default" rel="alternate"/><link href="https://drmahmouddesoky.github.io/metabolic-liver-academy/radar.html" rel="canonical"/><meta content="en_GB" property="og:locale"/></head>
+<body data-page="radar">
+<main id="main">
+<header class="page-head radar-head">
+<div class="wrap">
+<p class="eyebrow"><span aria-hidden="true" class="pulse"></span><span data-lang="en">Updated every day from PubMed</span></p>
+<h1><span data-lang="en">Publication Radar</span></h1>
+<p><span data-lang="en">New research on fatty liver disease (MASLD and MASH), obesity and the liver, worldwide and from the Middle East and North Africa (MENA). Papers are collected automatically every morning.</span></p>
+<p aria-live="polite" class="radar-stamp" id="radar-stamp"></p>
+</div>
+</header>
+<section class="section radar-picks-wrap" hidden="" id="picks-section">
+<div class="wrap">
+<h2><span data-lang="en">Top picks this month</span></h2>
+<p class="muted small"><span data-lang="en">Guidelines, meta-analyses and randomized trials from the last 30 days.</span></p>
+<div class="radar-picks" dir="ltr" id="radar-picks" lang="en"></div>
+</div>
+</section>
+<section class="section tint">
+<div class="wrap">
+<div aria-label="Region" class="radar-tabs" role="tablist">
+<button aria-selected="true" data-region="global" id="tab-global" role="tab" type="button"><span data-lang="en">Global</span> <em id="count-global"></em></button>
+<button aria-selected="false" data-region="mena" id="tab-mena" role="tab" type="button"><span data-lang="en">MENA</span> <em id="count-mena"></em></button>
+</div>
+<div class="radar-controls">
+<div aria-label="Period" class="filters" id="radar-period" role="group">
+<button aria-pressed="false" data-days="7" type="button"><span data-lang="en">7 days</span></button>
+<button aria-pressed="true" data-days="30" type="button"><span data-lang="en">30 days</span></button>
+<button aria-pressed="false" data-days="90" type="button"><span data-lang="en">90 days</span></button>
+<button aria-pressed="false" data-days="0" type="button"><span data-lang="en">All</span></button>
+</div>
+<div class="radar-fields">
+<label class="field"><span><span data-lang="en">Search</span></span>
+<input autocomplete="off" id="radar-q" placeholder="e.g. resmetirom, FIB-4, children" type="search"/></label>
+<label class="field"><span><span data-lang="en">Study type</span></span>
+<select id="radar-type">
+<option value="">All types</option>
+<option value="guideline">Guideline / consensus</option>
+<option value="meta">Systematic review / meta-analysis</option>
+<option value="rct">Randomized trial</option>
+<option value="trial">Other clinical trial</option>
+<option value="review">Review</option>
+<option value="obs">Observational</option>
+<option value="research">Original research</option>
+</select></label>
+<label class="field"><span><span data-lang="en">Topic</span></span>
+<select id="radar-topic">
+<option value="">All topics</option>
+<option value="masld">MASLD / MASH</option>
+<option value="obesity">Obesity &amp; weight</option>
+<option value="drugs">Drugs (GLP-1, resmetirom…)</option>
+<option value="fibrosis">Fibrosis tests</option>
+<option value="cancer">Cirrhosis &amp; liver cancer</option>
+<option value="heart">Heart &amp; vessels</option>
+<option value="children">Children &amp; teens</option>
+<option value="ai">AI &amp; machine learning</option>
+</select></label>
+</div>
+</div>
+<p aria-live="polite" class="radar-count" id="radar-count"></p>
+<div class="radar-list" dir="ltr" id="radar-list" lang="en"></div>
+<p class="radar-more"><button class="btn ghost" hidden="" id="radar-more" type="button"><span data-lang="en">Show more papers</span></button></p>
+<p class="note-box small"><span data-lang="en">Collected automatically from PubMed (U.S. National Library of Medicine). Listing a paper is not a recommendation, and papers have not been reviewed by the Academy. For education only. Case reports, letters, editorials and animal-only studies are left out. "MENA" means at least one author lists an address in the Middle East or North Africa.</span></p>
+</div>
+</section>
+</main>
+<script src="data/radar.js"></script>
+<script src="main.js"></script>
+<script src="radar.js"></script>
+</body>
+</html>

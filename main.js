@@ -34,6 +34,7 @@
     ['academy', 'academy.html', 'Physician Portal', 'بوابة الأطباء'],
     ['guidance', 'guidance.html', 'Guidance', 'الإرشادات'],
     ['ref', 'ref.html', 'Reference', 'المرجع'],
+    ['radar', 'radar.html', 'Radar', 'رادار الأبحاث'],
     ['news', 'news.html', 'News & Events', 'الأخبار والفعاليات'],
     ['about', 'about.html', 'About', 'من نحن']
   ];
