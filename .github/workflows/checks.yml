@@ -1,0 +1,52 @@
+# Site checks: run on every pull request and every change to main.
+# They catch mistakes before visitors see them:
+#   1. the pages were rebuilt after editing src/ or content/ (build.py)
+#   2. every calculator still gives the right answer at known values and cut-offs
+# A red cross on GitHub means one of these failed; open the run to see which.
+name: Site checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths-ignore:
+      - data/radar.js   # the daily Radar update needs no checks
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install tools
+        run: |
+          pip install beautifulsoup4 playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Pages are up to date with their sources
+        run: |
+          python build.py
+          if ! git diff --quiet; then
+            echo "::error::Generated pages differ from src/ and content/. Run 'python3 build.py' and commit the result."
+            git status --short
+            exit 1
+          fi
+
+      - name: Calculators give the right answers
+        run: |
+          python -m http.server 8765 >/dev/null 2>&1 &
+          sleep 2
+          python tests/test_fib4.py
+          python tests/test_nfs.py
+          python tests/test_calcs.py
+
+      - name: Radar parser
+        run: python tests/test_radar.py
