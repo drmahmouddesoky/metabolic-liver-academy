@@ -117,3 +117,7 @@ Each module was drafted from the full guideline texts in your folder and then fa
 - [ ] Module 5: Caring for MASLD cirrhosis (modules/cirrhosis-care.html)
 - [ ] Guidelines side by side: Saudi 2026 row now filled from the full text
 - [ ] Cirrhosis quick reference: vaccines now hepatitis A/B only; MELD line removed; Saudi F3 surveillance difference added
+
+## Global research section (2026-10-17)
+
+- [ ] Physician Portal: new "Global research and collaboration" section (academy.html#global, + ar/). Four cards: Global Liver Registry, global consensus 2025 and lifestyle tools (all linking to the Global NASH Council site), and our Publication Radar. Check the wording and that you are happy to invite study listings by email.
