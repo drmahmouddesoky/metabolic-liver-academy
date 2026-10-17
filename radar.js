@@ -113,6 +113,7 @@
   document.querySelectorAll('.radar-tabs [role="tab"]').forEach(function (tab) {
     tab.addEventListener('click', function () {
       document.querySelectorAll('.radar-tabs [role="tab"]').forEach(function (t) { t.setAttribute('aria-selected', t === tab); });
+      document.getElementById('radar-panel').setAttribute('aria-labelledby', tab.id);
       st.region = tab.getAttribute('data-region'); st.shown = PAGE; render();
     });
   });
