@@ -26,18 +26,67 @@
     return '<span data-lang="en">' + en + '</span><span data-lang="ar">' + ar + '</span>';
   }
 
-  /* ---------- Header ---------- */
+  /* ---------- Header + left side menu ----------
+     Top bar: logo, language switch, menu button (phones and tablets).
+     Side menu: groups that fold open, like the SGA platform.
+     On wide screens it stays on the left (right in Arabic); on small
+     screens it slides in when the menu button is pressed. */
   var page = document.body.getAttribute('data-page') || '';
-  var nav = [
-    ['patients', 'patients.html', 'Patient Portal', 'بوابة المرضى'],
-    ['learn', 'learn.html', 'Q&A', 'أسئلة وأجوبة'],
-    ['academy', 'academy.html', 'Physician Portal', 'بوابة الأطباء'],
-    ['guidance', 'guidance.html', 'Guidance', 'الإرشادات'],
-    ['ref', 'ref.html', 'Reference', 'المرجع'],
-    ['radar', 'radar.html', 'Radar', 'رادار الأبحاث'],
-    ['news', 'news.html', 'News & Events', 'الأخبار والفعاليات'],
-    ['about', 'about.html', 'About', 'من نحن']
+  var segs = location.pathname.split('/');
+  var file = (segs[segs.length - 1] || 'index.html').replace(/\.html$/, '');
+  var dir = segs[segs.length - 2] || '';
+  var here = dir === 'learn' ? 'learn' : dir === 'ref' ? 'ref' : dir === 'modules' ? 'modules' : (file === 'index' ? 'home' : file);
+
+  function icon(d) {
+    return '<svg class="side-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>';
+  }
+  var I = {
+    home: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+    heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
+    steth: '<path d="M6 3v6a4 4 0 0 0 8 0V3"/><path d="M10 13v2a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="11" r="2"/>',
+    radar: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12l6-6"/>',
+    cal: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
+    shield: '<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/>',
+    chev: '<path d="M9 6l6 6-6 6"/>'
+  };
+  /* [key, link, English, Arabic] — key marks the page you are on */
+  var menu = [
+    { key: 'home', href: 'index.html', ico: 'home', en: 'Home', ar: 'الرئيسية' },
+    { ico: 'heart', en: 'For patients', ar: 'للمرضى', items: [
+      ['patients', 'patients.html', 'Patient Portal', 'بوابة المرضى'],
+      ['', 'patients.html#risk', 'Check your risk', 'افحص خطرك'],
+      ['learn', 'learn.html', 'Questions & answers', 'أسئلة وأجوبة'],
+      ['guides', 'guides.html', 'Printable guides', 'أدلة للطباعة']
+    ] },
+    { ico: 'steth', en: 'For doctors', ar: 'للأطباء', items: [
+      ['academy', 'academy.html', 'Physician Portal', 'بوابة الأطباء'],
+      ['modules', 'academy.html#modules', 'Teaching modules', 'الوحدات التعليمية'],
+      ['', 'academy.html#fib4', 'Calculators (FIB-4, NFS)', 'الحاسبات (FIB-4 و NFS)'],
+      ['guidance', 'guidance.html', 'Guidance', 'الإرشادات'],
+      ['ref', 'ref.html', 'Reference library', 'المكتبة المرجعية']
+    ] },
+    { key: 'radar', href: 'radar.html', ico: 'radar', en: 'Publication Radar', ar: 'رادار الأبحاث' },
+    { key: 'news', href: 'news.html', ico: 'cal', en: 'News & Events', ar: 'الأخبار والفعاليات' },
+    { key: 'about', href: 'about.html', ico: 'info', en: 'About', ar: 'من نحن' },
+    { key: 'legal', href: 'legal.html', ico: 'shield', en: 'Policies', ar: 'السياسات' }
   ];
+  function cur(key) { return key && key === here ? ' aria-current="page"' : ''; }
+  var sideHtml = menu.map(function (m, gi) {
+    if (!m.items) {
+      return '<a class="side-link" href="' + ROOT + m.href + '"' + cur(m.key) + '>' + icon(I[m.ico]) + '<span>' + t(m.en, m.ar) + '</span></a>';
+    }
+    var open = m.items.some(function (it) { return it[0] && it[0] === here; });
+    return '<div class="side-group' + (open ? ' open' : '') + '">' +
+      '<button type="button" class="side-link side-toggle" aria-expanded="' + open + '" aria-controls="side-g' + gi + '">' +
+        icon(I[m.ico]) + '<span>' + t(m.en, m.ar) + '</span>' + icon(I.chev).replace('side-ico', 'side-chev') + '</button>' +
+      '<div class="side-sub" id="side-g' + gi + '">' +
+        m.items.map(function (it) {
+          return '<a href="' + ROOT + it[1] + '"' + cur(it[0]) + '>' + t(it[2], it[3]) + '</a>';
+        }).join('') +
+      '</div></div>';
+  }).join('');
+
   var mark = '<svg class="brand-mark" viewBox="0 0 34 34" aria-hidden="true">' +
     '<rect x="1" y="5" width="5.2" height="24" rx="2.6" fill="#3E9C7B"/>' +
     '<rect x="7.7" y="5" width="5.2" height="24" rx="2.6" fill="#94B95A"/>' +
@@ -48,27 +97,44 @@
   var header = document.createElement('header');
   header.className = 'site-header';
   header.innerHTML =
-    '<a class="skip" href="#main">' + bi('Skip to content', 'انتقل إلى المحتوى') + '</a>' +
-    '<div class="wrap">' +
+    '<a class="skip" href="#main">' + t('Skip to content', 'انتقل إلى المحتوى') + '</a>' +
+    '<div class="bar">' +
+      '<button class="menu-btn" type="button" aria-expanded="false" aria-controls="side-nav" aria-label="' + t('Open menu', 'افتح القائمة') + '">' +
+        '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>' +
       '<a class="brand" href="' + ROOT + 'index.html">' + mark +
-        '<span>' + bi('Metabolic Liver Academy', 'أكاديمية الكبد الأيضي') +
-        '<small>' + bi('Healthy Liver. Healthy Life.', 'كبد سليم. حياة صحية.') + '</small></span></a>' +
-      '<button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">' + bi('Menu', 'القائمة') + '</button>' +
-      '<nav class="nav" id="site-nav" aria-label="Main">' +
-        nav.map(function (n) {
-          return '<a href="' + ROOT + n[1] + '"' + (n[0] === page ? ' aria-current="page"' : '') + '>' + bi(n[2], n[3]) + '</a>';
-        }).join('') +
-        '<a class="lang-btn" href="' + twinUrl() + '" hreflang="' + (html.lang === 'ar' ? 'en' : 'ar') + '" lang="' + (html.lang === 'ar' ? 'en' : 'ar') + '">' + (html.lang === 'ar' ? 'English' : 'العربية') + '</a>' +
-      '</nav>' +
+        '<span>' + t('Metabolic Liver Academy', 'أكاديمية الكبد الأيضي') +
+        '<small>' + t('Healthy Liver. Healthy Life.', 'كبد سليم. حياة صحية.') + '</small></span></a>' +
+      '<a class="lang-btn" href="' + twinUrl() + '" hreflang="' + (html.lang === 'ar' ? 'en' : 'ar') + '" lang="' + (html.lang === 'ar' ? 'en' : 'ar') + '">' + (html.lang === 'ar' ? 'English' : 'العربية') + '</a>' +
     '</div>';
   document.body.insertBefore(header, document.body.firstChild);
 
-  var menuBtn = header.querySelector('.menu-btn');
-  menuBtn.addEventListener('click', function () {
-    var open = !header.classList.contains('open');
-    header.classList.toggle('open', open);
-    menuBtn.setAttribute('aria-expanded', open);
+  var side = document.createElement('nav');
+  side.className = 'side-nav';
+  side.id = 'side-nav';
+  side.setAttribute('aria-label', t('Main', 'القائمة الرئيسية'));
+  side.innerHTML = sideHtml;
+  header.parentNode.insertBefore(side, header.nextSibling);
+  var shade = document.createElement('div');
+  shade.className = 'side-shade';
+  side.parentNode.insertBefore(shade, side.nextSibling);
+  document.body.classList.add('has-side');
+
+  Array.prototype.forEach.call(side.querySelectorAll('.side-toggle'), function (b) {
+    b.addEventListener('click', function () {
+      var g = b.parentNode, open = !g.classList.contains('open');
+      g.classList.toggle('open', open);
+      b.setAttribute('aria-expanded', open);
+    });
   });
+  var menuBtn = header.querySelector('.menu-btn');
+  function setMenu(open) {
+    document.body.classList.toggle('side-open', open);
+    menuBtn.setAttribute('aria-expanded', open);
+  }
+  menuBtn.addEventListener('click', function () { setMenu(!document.body.classList.contains('side-open')); });
+  shade.addEventListener('click', function () { setMenu(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+  side.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
 
   /* ---------- Footer ---------- */
   var footer = document.createElement('footer');
