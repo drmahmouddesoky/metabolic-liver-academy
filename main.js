@@ -62,7 +62,7 @@
     { ico: 'steth', en: 'For doctors', ar: 'للأطباء', items: [
       ['academy', 'academy.html', 'Physician Portal', 'بوابة الأطباء'],
       ['modules', 'academy.html#modules', 'Teaching modules', 'الوحدات التعليمية'],
-      ['', 'academy.html#fib4', 'Calculators (FIB-4, NFS)', 'الحاسبات (FIB-4 و NFS)'],
+      ['calculators', 'calculators.html', 'Calculator hub', 'مركز الحاسبات'],
       ['guidance', 'guidance.html', 'Guidance', 'الإرشادات'],
       ['ref', 'ref.html', 'Reference library', 'المكتبة المرجعية']
     ] },
@@ -135,6 +135,62 @@
   shade.addEventListener('click', function () { setMenu(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
   side.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+
+  /* ---------- Share buttons (Q&A cards and pages) ----------
+     Uses the phone's own share sheet when there is one; otherwise
+     shows WhatsApp, X, LinkedIn, Telegram and copy-link options. */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.share-btn');
+    if (!b) return;
+    e.preventDefault();
+    var url = new URL(b.getAttribute('data-share'), location.href).href;
+    var title = b.getAttribute('data-title-' + html.lang) || document.title;
+    if (navigator.share) { navigator.share({ title: title, url: url }).catch(function () {}); return; }
+    var old = document.querySelector('.share-pop');
+    if (old) { old.remove(); if (old._for === b) return; }
+    var u = encodeURIComponent(url), tt = encodeURIComponent(title);
+    var pop = document.createElement('div');
+    pop.className = 'share-pop';
+    pop._for = b;
+    pop.innerHTML =
+      '<a target="_blank" rel="noopener" href="https://wa.me/?text=' + tt + '%20' + u + '">WhatsApp</a>' +
+      '<a target="_blank" rel="noopener" href="https://x.com/intent/post?text=' + tt + '&url=' + u + '">X</a>' +
+      '<a target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=' + u + '">LinkedIn</a>' +
+      '<a target="_blank" rel="noopener" href="https://t.me/share/url?url=' + u + '&text=' + tt + '">Telegram</a>' +
+      '<button type="button" class="share-copy">' + t('Copy link', 'نسخ الرابط') + '</button>';
+    b.insertAdjacentElement('afterend', pop);
+    pop.querySelector('.share-copy').addEventListener('click', function () {
+      var btn = this;
+      (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(function () {
+        btn.textContent = t('Link copied', 'تم نسخ الرابط');
+      }, function () { window.prompt(t('Copy this link', 'انسخ هذا الرابط'), url); });
+    });
+  });
+
+  /* ---------- Install as an app ----------
+     Android and desktop Chrome/Edge: the browser's own install prompt.
+     iPhone/iPad Safari: a short tip (Share, then Add to Home Screen). */
+  var siteRoot = ROOT + (html.lang === 'ar' ? '../' : '');
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    navigator.serviceWorker.register(siteRoot + 'sw.js').catch(function () {});
+  }
+  var standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  var ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var inst = document.createElement('div');
+  inst.className = 'side-install';
+  inst.hidden = true;
+  inst.innerHTML = '<button type="button" class="install-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>' +
+    t('Install app', 'ثبّت التطبيق') + '</button>' +
+    '<p class="install-tip" hidden>' + t('On iPhone or iPad: tap the Share button, then "Add to Home Screen".', 'على iPhone أو iPad: اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية».') + '</p>';
+  side.appendChild(inst);
+  var deferred = null;
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; inst.hidden = false; });
+  window.addEventListener('appinstalled', function () { inst.hidden = true; });
+  if (!standalone && ios) inst.hidden = false;
+  inst.querySelector('.install-btn').addEventListener('click', function () {
+    if (deferred) { deferred.prompt(); deferred.userChoice.then(function () { deferred = null; inst.hidden = true; }); }
+    else inst.querySelector('.install-tip').hidden = false;
+  });
 
   /* ---------- Footer ---------- */
   var footer = document.createElement('footer');

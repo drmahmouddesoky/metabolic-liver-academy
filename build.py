@@ -103,6 +103,18 @@ def page_record(mod, slug, src_file):
 
 
 # ------------------------------------------------------------------ Q&A pages
+def read_min(it, lang):
+    txt = " ".join([it["q"][lang], it["short"][lang]] + list(it["body"][lang]) + list((it.get("bullets") or {}).get(lang, [])))
+    words = len(re.findall(r"\w+", txt))
+    return max(1, round(words / (200 if lang == "en" else 150)))
+
+
+def share_btn(href, title_en, title_ar):
+    return ('<button type="button" class="share-btn" data-share="%s" data-title-en="%s" data-title-ar="%s">'
+            '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg>'
+            '%s</button>') % (href, H.escape(title_en), H.escape(title_ar), bi("Share", "مشاركة"))
+
+
 def learn_page(it):
     by = item_by_slug()
     c = cat_name(it["cat"])
@@ -118,6 +130,8 @@ def learn_page(it):
     out.append('<article class="section"><div class="wrap read">')
     out.append('<div class="shortbox"><p class="small"><strong>%s</strong></p><p>%s</p></div>'
                % (bi("In short", "باختصار"), bi(esc(it["short"]["en"]), esc(it["short"]["ar"]))))
+    out.append('<p class="qmeta small muted">%s %s</p>' % (bi("%d min read" % read_min(it, "en"), "قراءة %d دقيقة" % read_min(it, "ar")),
+               share_btn("%s.html" % it["slug"], it["q"]["en"], it["q"]["ar"])))
     for en, ar in zip(it["body"]["en"], it["body"]["ar"]):
         out.append("<p>%s</p>" % bi(esc(en), esc(ar)))
     if it.get("bullets"):
@@ -162,12 +176,19 @@ def learn_index():
     out.append('<div class="field searchbox"><label for="q-search">%s</label><input id="q-search" type="search" autocomplete="off"></div>'
                % bi("Search the questions", "ابحث في الأسئلة"))
     out.append('<p id="q-none" class="empty" hidden>%s</p>' % bi("No question matches. Try another word.", "لا يوجد سؤال مطابق. جرّب كلمة أخرى."))
-    out.append('<div class="qgrid">')
+    out.append('<div class="qgrid cards">')
     for key, name in L.CATEGORIES:
-        out.append('<section class="qcat" id="%s"><h2 class="h-small">%s</h2><ul class="qlist">' % (key, bi(esc(name["en"]), esc(name["ar"]))))
-        for it in [i for i in L.ITEMS if i["cat"] == key]:
-            out.append('<li><a href="learn/%s.html">%s</a></li>' % (it["slug"], bi(esc(it["q"]["en"]), esc(it["q"]["ar"]))))
-        out.append("</ul></section>")
+        items = [i for i in L.ITEMS if i["cat"] == key]
+        out.append('<section class="qcat" id="%s"><h2 class="h-small">%s <span class="count">%d</span></h2><div class="qcards">'
+                   % (key, bi(esc(name["en"]), esc(name["ar"])), len(items)))
+        for it in items:
+            out.append('<article class="qcard"><a class="qcard-link" href="learn/%s.html"><span class="tag">%s</span><h3>%s</h3><p>%s</p></a>'
+                       '<div class="qcard-foot"><span class="small muted">%s</span>%s</div></article>'
+                       % (it["slug"], bi(esc(name["en"]), esc(name["ar"])), bi(esc(it["q"]["en"]), esc(it["q"]["ar"])),
+                          bi(esc(it["short"]["en"]), esc(it["short"]["ar"])),
+                          bi("%d min read" % read_min(it, "en"), "قراءة %d دقيقة" % read_min(it, "ar")),
+                          share_btn("learn/%s.html" % it["slug"], it["q"]["en"], it["q"]["ar"])))
+        out.append("</div></section>")
     out.append("</div>")
     out.append('<div class="panel" style="margin-top:32px"><h2 class="h-small">%s</h2><p class="muted small">%s</p><ul class="plain" lang="en" dir="ltr">'
                % (bi("Official organisations", "الجهات الرسمية"),
@@ -183,7 +204,7 @@ def learn_index():
     var q = box.value.trim().toLowerCase(), any = false;
     document.querySelectorAll('.qcat').forEach(function (cat) {
       var shown = 0;
-      cat.querySelectorAll('li').forEach(function (li) {
+      cat.querySelectorAll('.qcard').forEach(function (li) {
         var ok = !q || li.textContent.toLowerCase().indexOf(q) > -1;
         li.hidden = !ok; if (ok) shown++;
       });
@@ -520,8 +541,14 @@ def split(src_html, rel, lang):
                     continue  # page links stay inside the Arabic site
                 el[attr] = "../" + v
 
-    # language alternates + canonical
+    # installable web app: manifest, theme colour, home-screen icon
     head = soup.head
+    up_site = "../" * rel.count("/") + ("../" if lang == "ar" else "")
+    head.append(soup.new_tag("link", rel="manifest", href=up_site + "manifest.webmanifest"))
+    head.append(soup.new_tag("meta", attrs={"name": "theme-color", "content": "#155E5C"}))
+    head.append(soup.new_tag("link", rel="apple-touch-icon", href=up_site + "icons/apple-touch-icon.png"))
+
+    # language alternates + canonical
     url_en = SITE + rel
     url_ar = SITE + "ar/" + rel
     for hl, href in (("en", url_en), ("ar", url_ar)):
@@ -553,6 +580,15 @@ def main():
     pages["ref.html"] = ref_index()
     for pg in R.PAGES:
         pages["ref/%s.html" % pg["slug"]] = ref_page(pg)
+
+    # live counts for the home page tiles
+    with open(os.path.join(ROOT, "calc.js"), encoding="utf-8") as f:
+        calc_src = f.read()
+    n_calc = len(re.findall(r"^      id: '", calc_src, re.M)) + len(re.findall(r"^    \{ g: '", calc_src, re.M))
+    counts = {"N_LEARN": len(L.ITEMS), "N_MOD": len(M.MODULES), "N_REF": len(R.PAGES), "N_CALC": n_calc,
+              "N_GUIDES": pages["guides.html"].count('class="guide"')}
+    for k, v in counts.items():
+        pages["index.html"] = pages["index.html"].replace("%%" + k + "%%", str(v))
 
     for rel, src in pages.items():
         write(rel, split(src, rel, "en"))

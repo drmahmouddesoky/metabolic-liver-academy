@@ -23,7 +23,7 @@ Do not edit the generated `*.html` files directly; they are overwritten by the b
 
 `REVIEW.md` is the medical review checklist.
 
-`tests/test_fib4.py` and `tests/test_nfs.py` check the calculators (known values and cut-off edges). Run them before changing a calculator.
+`tests/test_fib4.py`, `tests/test_nfs.py` and `tests/test_calcs.py` check the calculators (known values and cut-off edges). Run them before changing a calculator.
 
 Fonts are self-hosted in `fonts/` (IBM Plex, SIL Open Font License), so pages make no requests to Google.
 
@@ -34,6 +34,7 @@ Fonts are self-hosted in `fonts/` (IBM Plex, SIL Open Font License), so pages ma
 | `content/learn.py` | Patient Q&A: `learn.html` plus one page per question |
 | `content/ref.py` | Doctors' reference: `ref.html` plus 11 topic pages |
 | `src/academy.html` | Physician Portal: hubs, learning by role, FIB-4 and NFS calculators, lectures |
+| `src/calculators.html` + `calc.js` | Calculator hub: Agile 3+, Agile 4, FAST, FibroScan explainer, FLI, HSI, HOMA-IR, BMI and waist-to-height (each with its original paper) |
 | `src/guidance.html` | Fibrosis pathway, lifestyle, drugs, surgery, heart risk, special groups, sources |
 | `src/guides.html` | Printable patient guides: plate, shopping, walking plan, Ramadan |
 | `src/radar.html` | Publication Radar: daily PubMed papers (Global and MENA) |
@@ -83,3 +84,8 @@ The build keeps only the English text in the English pages and only the Arabic t
 
 The tools run only in the visitor's browser. Nothing they type is stored or sent.
 There is no tracking and no analytics, and pages load nothing from other websites.
+
+## Side menu, share buttons and the app
+
+- The left side menu, the share buttons and the "Install app" button live in `main.js`.
+- `manifest.webmanifest`, `sw.js` and `icons/` make the site installable on phones. `sw.js` always loads the newest pages when online and keeps the last copy for offline use.
