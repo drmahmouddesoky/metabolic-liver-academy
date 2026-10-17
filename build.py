@@ -36,7 +36,9 @@ def bi(en, ar, tag="span"):
 
 
 def esc(s):
-    return H.escape(s, quote=False)
+    # quote=True: titles and descriptions also go inside attributes (data-title-en="..."),
+    # where an unescaped " would break the page head.
+    return H.escape(s, quote=True)
 
 
 # ------------------------------------------------------------------ head
