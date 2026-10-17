@@ -354,6 +354,17 @@
     });
   }
 
+  /* Read a number typed on any keyboard: accepts Arabic-Indic (٠-٩) and
+     Persian (۰-۹) digits, and "," or "٫" as the decimal mark. */
+  function toNum(raw) {
+    var s = String(raw).trim()
+      .replace(/[٠-٩]/g, function (d) { return d.charCodeAt(0) - 0x0660; })
+      .replace(/[۰-۹]/g, function (d) { return d.charCodeAt(0) - 0x06F0; })
+      .replace(/[٫,]/g, '.');
+    var v = parseFloat(s);
+    return isFinite(v) ? v : NaN;
+  }
+
   /* ---------- FIB-4 calculator (for clinicians) ----------
      FIB-4 = (age × AST) / (platelets × √ALT)
      Rule-out < 1.30 (use < 2.0 from age 65); rule-in >= 2.67.
@@ -363,13 +374,13 @@
     fib.addEventListener('submit', function (e) {
       e.preventDefault();
       var out = document.getElementById('fib4-result');
-      function num(id) { var v = parseFloat(String(document.getElementById(id).value).replace(',', '.')); return isFinite(v) ? v : NaN; }
+      function num(id) { return toNum(document.getElementById(id).value); }
       var age = num('f-age'), ast = num('f-ast'), alt = num('f-alt'), plt = num('f-plt');
       var bad = [];
       if (!(age >= 18 && age <= 100)) bad.push(t('age (18 to 100 years)', 'العمر (18 إلى 100 سنة)'));
       if (!(ast > 0 && ast < 5000)) bad.push('AST');
       if (!(alt > 0 && alt < 5000)) bad.push('ALT');
-      if (!(plt > 0 && plt < 2000)) bad.push(t('platelets (×10⁹/L)', 'الصفائح (×10⁹/لتر)'));
+      if (!(plt >= 10 && plt <= 1000)) bad.push(t('platelets (10 to 1000 ×10⁹/L)', 'الصفائح (10 إلى 1000 ×10⁹/لتر)'));
       out.hidden = false;
       if (bad.length) {
         out.className = 'result';
@@ -419,7 +430,7 @@
     nf.addEventListener('submit', function (e) {
       e.preventDefault();
       var out = document.getElementById('nfs-result');
-      function num(id) { var v = parseFloat(String(document.getElementById(id).value).replace(',', '.')); return isFinite(v) ? v : NaN; }
+      function num(id) { return toNum(document.getElementById(id).value); }
       var age = num('n-age'), wt = num('n-wt'), ht = num('n-ht'), ast = num('n-ast'), alt = num('n-alt'), plt = num('n-plt'), alb = num('n-alb');
       var dm = document.getElementById('n-dm').value;
       var unit = document.getElementById('n-alb-unit').value;
@@ -430,7 +441,7 @@
       if (dm !== '0' && dm !== '1') bad.push(t('diabetes (yes or no)', 'السكري (نعم أو لا)'));
       if (!(ast > 0 && ast < 5000)) bad.push('AST');
       if (!(alt > 0 && alt < 5000)) bad.push('ALT');
-      if (!(plt > 0 && plt < 2000)) bad.push(t('platelets (×10⁹/L)', 'الصفائح (×10⁹/لتر)'));
+      if (!(plt >= 10 && plt <= 1000)) bad.push(t('platelets (10 to 1000 ×10⁹/L)', 'الصفائح (10 إلى 1000 ×10⁹/لتر)'));
       var albDl = unit === 'gL' ? alb / 10 : alb;
       if (!(albDl >= 1 && albDl <= 7)) bad.push(t('albumin (check the unit)', 'الألبومين (راجع الوحدة)'));
       out.hidden = false;

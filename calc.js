@@ -289,7 +289,13 @@
     });
   });
 
-  function num(s) { return parseFloat(String(s).replace(',', '.').replace(/[٠-٩]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); })); }
+  /* Arabic-Indic (٠-٩) and Persian (۰-۹) digits, "," or "٫" as decimal mark */
+  function num(s) {
+    return parseFloat(String(s).trim()
+      .replace(/[٠-٩]/g, function (d) { return d.charCodeAt(0) - 0x0660; })
+      .replace(/[۰-۹]/g, function (d) { return d.charCodeAt(0) - 0x06F0; })
+      .replace(/[٫,]/g, '.'));
+  }
 
   CALCS.forEach(function (c) {
     var form = document.getElementById(c.id + '-form'), out = document.getElementById(c.id + '-result');
