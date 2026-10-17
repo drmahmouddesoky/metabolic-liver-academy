@@ -167,6 +167,22 @@
     });
   });
 
+  /* ---------- Private visit counter (GoatCounter) ----------
+     Counts page views with no cookies and no personal data. The numbers
+     are visible only on the founder's GoatCounter dashboard, never on
+     the site. To switch it on, put your GoatCounter site code between
+     the quotes, e.g. 'mla' for https://mla.goatcounter.com.
+     Leave it empty ('') to switch it off. */
+  var GOATCOUNTER = '';
+  var dnt = navigator.doNotTrack === '1' || window.doNotTrack === '1';
+  if (GOATCOUNTER && !dnt && location.protocol === 'https:') {
+    var gc = document.createElement('script');
+    gc.async = true;
+    gc.src = 'https://gc.zgo.at/count.js';
+    gc.setAttribute('data-goatcounter', 'https://' + GOATCOUNTER + '.goatcounter.com/count');
+    document.body.appendChild(gc);
+  }
+
   /* ---------- Install as an app ----------
      Android and desktop Chrome/Edge: the browser's own install prompt.
      iPhone/iPad Safari: a short tip (Share, then Add to Home Screen). */
