@@ -272,7 +272,8 @@
     '<div class="consent" id="calc-consent"><label><input type="checkbox" id="calc-ok"><span>' +
     t('I am a healthcare professional. I understand these tools support, but do not replace, clinical judgement. Nothing I type is saved or sent.',
       'أنا من العاملين في المجال الصحي، وأفهم أن هذه الأدوات تساعد ولا تغني عن التقييم السريري. لا يُحفظ أو يُرسل أي شيء أكتبه.') +
-    '</span></label></div>' + tools;
+    '</span></label></div>' +
+    '<h2 class="visually-hidden">' + t('The calculators', 'الحاسبات') + '</h2>' + tools;
 
   var ok = document.getElementById('calc-ok');
   ok.addEventListener('change', function () {

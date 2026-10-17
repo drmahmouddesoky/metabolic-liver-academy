@@ -545,6 +545,15 @@ def split(src_html, rel, lang):
                     continue  # page links stay inside the Arabic site
                 el[attr] = "../" + v
 
+    # wide tables scroll sideways on phones: let keyboard users reach and scroll them
+    for w in soup.select("div.table-wrap"):
+        cap = w.find("caption")
+        prev = w.find_previous(["h2", "h3", "h4"])
+        label = (cap or prev).get_text(" ", strip=True) if (cap or prev) else ("جدول" if lang == "ar" else "Table")
+        w["tabindex"] = "0"
+        w["role"] = "region"
+        w["aria-label"] = label
+
     # installable web app: manifest, theme colour, home-screen icon
     head = soup.head
     up_site = "../" * rel.count("/") + ("../" if lang == "ar" else "")
