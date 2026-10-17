@@ -1,0 +1,17 @@
+{
+  "name": "Metabolic Liver Academy",
+  "short_name": "Liver Academy",
+  "description": "Free bilingual fatty liver (MASLD) education for patients and doctors.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F4F7F6",
+  "theme_color": "#155E5C",
+  "lang": "en",
+  "dir": "auto",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
