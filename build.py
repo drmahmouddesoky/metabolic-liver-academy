@@ -85,16 +85,16 @@ REPO = "https://github.com/drmahmouddesoky/metabolic-liver-academy"
 def page_record(mod, slug, src_file):
     rev = mod.REVIEWED.get(slug)
     ver = mod.VERSIONS.get(slug, "1.0")
-    rv_en = "Reviewed by Dr. Mahmoud Desoky on %s" % rev if rev else "Pending"
-    rv_ar = "راجعها د. محمود الدسوقي بتاريخ %s" % rev if rev else "قيد الإنجاز"
     hist = "%s/commits/main/%s" % (REPO, src_file)
     rows = [
         (("Written by", "إعداد"), ("Dr. Mahmoud Desoky, Founder and Director", "د. محمود الدسوقي، المؤسس والمدير")),
-        (("Medical review", "المراجعة الطبية"), (rv_en, rv_ar)),
         (("Version", "الإصدار"), (ver, ver)),
         (("Last updated", "آخر تحديث"), (mod.UPDATED, mod.UPDATED)),
         (("Next review due", "موعد المراجعة القادمة"), (mod.NEXT_REVIEW, mod.NEXT_REVIEW)),
     ]
+    if rev:  # the review row appears only once a page has been signed off
+        rows.insert(1, (("Medical review", "المراجعة الطبية"),
+                        ("Reviewed by Dr. Mahmoud Desoky on %s" % rev, "راجعها د. محمود الدسوقي بتاريخ %s" % rev)))
     out = ['<aside class="record small" aria-label="Page record"><h2 class="h-small">%s</h2><dl>' % bi("Page record", "سجل الصفحة")]
     for k, v in rows:
         out.append("<dt>%s</dt><dd>%s</dd>" % (bi(*k), bi(esc(v[0]), esc(v[1]))))
@@ -268,9 +268,10 @@ def ref_page(pg):
     meta = [
         (("For", "موجّه إلى"), ("Healthcare professionals", "العاملون في المجال الصحي")),
         (("Author", "المؤلف"), ("Mahmoud Desoky, MD", "د. محمود الدسوقي")),
-        (("Medical review", "المراجعة الطبية"), ("Reviewed " + rev, "رُوجعت " + rev) if rev else ("Pending", "قيد الإنجاز")),
         (("Version", "الإصدار"), ("%s, updated %s" % (ver, R.UPDATED), "%s، حُدّث في %s" % (ver, R.UPDATED))),
     ]
+    if rev:  # the review row appears only once a page has been signed off
+        meta.insert(2, (("Medical review", "المراجعة الطبية"), ("Reviewed " + rev, "رُوجعت " + rev)))
     out.append('<dl class="mod-meta">' + "".join("<div><dt>%s</dt><dd>%s</dd></div>" % (bi(*k), bi(esc(v[0]), esc(v[1]))) for k, v in meta) + "</dl>")
     out.append("</div></header>")
     toc = []
@@ -471,11 +472,12 @@ def module_page(mod):
     out.append('<p class="mod-sub">%s</p>' % bi(esc(mod["subtitle"]["en"]), esc(mod["subtitle"]["ar"])))
     meta = [
         (("Author", "المؤلف"), ("Mahmoud Desoky, MD", "د. محمود الدسوقي")),
-        (("Medical review", "المراجعة الطبية"), ("Reviewed " + rev, "رُوجعت " + rev) if rev else ("Pending", "قيد الإنجاز")),
         (("For", "موجّهة إلى"), (mod["audience"]["en"], mod["audience"]["ar"])),
         (("Reading time", "مدة القراءة"), ("About %d minutes" % mod["minutes"], "نحو %d دقيقة" % mod["minutes"])),
         (("Version", "الإصدار"), ("%s, updated %s" % (ver, M.UPDATED), "%s، حُدّثت في %s" % (ver, M.UPDATED))),
     ]
+    if rev:  # the review row appears only once a page has been signed off
+        meta.insert(2, (("Medical review", "المراجعة الطبية"), ("Reviewed " + rev, "رُوجعت " + rev)))
     out.append('<dl class="mod-meta">' + "".join("<div><dt>%s</dt><dd>%s</dd></div>" % (bi(*k), bi(esc(v[0]), esc(v[1]))) for k, v in meta) + "</dl>")
     out.append("</div></header>")
     out.append('<div class="wrap mod-layout">')
