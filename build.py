@@ -506,7 +506,7 @@ def module_page(mod):
     out.append('<p class="fine">%s</p>' % bi(
         "For education only. This module summarises published evidence and guidelines; it does not replace clinical judgement, full guidelines or local drug labels. It is not accredited for CME credit. <a href=\"../legal.html#disclaimer\">Disclaimer</a>.",
         "للتعليم فقط. تلخّص هذه الوحدة الأدلة والإرشادات المنشورة، ولا تغني عن التقدير السريري أو الإرشادات الكاملة أو نشرات الأدوية المحلية، وهي غير معتمدة لساعات التعليم الطبي المستمر. <a href=\"../legal.html#disclaimer\">إخلاء المسؤولية</a>."))
-    out.append(page_record(M, mod["slug"], "content/modules.py"))
+    out.append(page_record(M, mod["slug"], mod.get("src_file", "content/modules.py")))
     out.append("</article></div>")
     out.append(FOOT.format(up="../"))
     return "".join(out)

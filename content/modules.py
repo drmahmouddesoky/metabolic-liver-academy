@@ -174,6 +174,7 @@ for _name in ("modules_m2", "modules_m3", "modules_m4", "modules_m5"):
         if _k in SOURCES and SOURCES[_k][1] != _v[1]:
             raise ValueError("source key clash: " + _k)
         SOURCES.setdefault(_k, _v)
+    _m.MODULE.setdefault("src_file", "content/%s.py" % _name)  # for the page's change-history link
     MODULES.append(_m.MODULE)
 
 # ------------------------------------------------------------------ figures
