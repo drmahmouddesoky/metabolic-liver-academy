@@ -126,7 +126,7 @@ def learn_page(it):
     c = cat_name(it["cat"])
     out = [HEAD.format(
         t_en=esc(it["q"]["en"]) + " | Metabolic Liver Academy",
-        t_ar=esc(it["q"]["ar"]) + " | أكاديمية الكبد الأيضي",
+        t_ar=esc(it["q"]["ar"]) + " | أكاديمية الكبد والتمثيل الغذائي",
         d_en=esc(it["short"]["en"]), d_ar=esc(it["short"]["ar"]), up="../", page="learn")]
     out.append('<header class="page-head"><div class="wrap read">')
     out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../learn.html">%s</a> › <a href="../learn.html#%s">%s</a></nav>'
@@ -168,7 +168,7 @@ def learn_page(it):
 def learn_index():
     out = [HEAD.format(
         t_en="Patient Q&amp;A on fatty liver | Metabolic Liver Academy",
-        t_ar="أسئلة وأجوبة عن الكبد الدهني | أكاديمية الكبد الأيضي",
+        t_ar="أسئلة وأجوبة عن الكبد الدهني | أكاديمية الكبد والتمثيل الغذائي",
         d_en="Plain answers to %d common questions about fatty liver (MASLD and MASH), based on international and Saudi guidelines." % len(L.ITEMS),
         d_ar="إجابات مبسطة عن %d سؤالًا شائعًا حول الكبد الدهني، مبنية على الإرشادات الدولية والسعودية." % len(L.ITEMS),
         up="", page="learn")]
@@ -258,7 +258,7 @@ def ref_page(pg):
     src = all_sources()
     out = [HEAD.format(
         t_en=esc(pg["title"]["en"]) + " | MLA Reference",
-        t_ar=esc(pg["title"]["ar"]) + " | مرجع أكاديمية الكبد الأيضي",
+        t_ar=esc(pg["title"]["ar"]) + " | مرجع أكاديمية الكبد والتمثيل الغذائي",
         d_en=esc(pg["lead"]["en"]), d_ar=esc(pg["lead"]["ar"]), up="../", page="ref",
         extra_head='<link rel="stylesheet" href="../fonts/serif.css">\n')]
     ver = R.VERSIONS.get(pg["slug"], "1.0")
@@ -337,7 +337,7 @@ def ref_page(pg):
 def ref_index():
     out = [HEAD.format(
         t_en="Doctors&#39; reference library on MASLD and MASH | Metabolic Liver Academy",
-        t_ar="مرجع الأطباء عن الكبد الدهني | أكاديمية الكبد الأيضي",
+        t_ar="مرجع الأطباء عن الكبد الدهني | أكاديمية الكبد والتمثيل الغذائي",
         d_en="Guideline-based summaries for clinicians: diagnosis, fibrosis tests, drugs, cirrhosis care, follow-up and special groups.",
         d_ar="ملخصات مبنية على الإرشادات للأطباء: التشخيص، وفحوص التليّف، والأدوية، ورعاية التشمّع، والمتابعة، والفئات الخاصة.",
         up="", page="ref", extra_head='<link rel="stylesheet" href="fonts/serif.css">\n')]
@@ -463,7 +463,7 @@ def module_page(mod):
 
     out = [HEAD.format(
         t_en=esc(mod["title"]["en"]) + " | MLA Teaching module",
-        t_ar=esc(mod["title"]["ar"]) + " | وحدة تعليمية من أكاديمية الكبد الأيضي",
+        t_ar=esc(mod["title"]["ar"]) + " | وحدة تعليمية من أكاديمية الكبد والتمثيل الغذائي",
         d_en=esc(mod["subtitle"]["en"]), d_ar=esc(mod["subtitle"]["ar"]), up="../", page="academy",
         extra_head='<link rel="stylesheet" href="../fonts/serif.css">\n')]
     ver = M.VERSIONS.get(mod["slug"], "1.0")
@@ -524,7 +524,7 @@ def social_tags(soup, rel, lang):
     desc = d["content"] if d is not None else ""
     url = SITE + ("ar/" if lang == "ar" else "") + rel
     img = SITE + "images/og-%s.png" % lang
-    site = "أكاديمية الكبد الأيضي" if lang == "ar" else "Metabolic Liver Academy"
+    site = "أكاديمية الكبد والتمثيل الغذائي" if lang == "ar" else "Metabolic Liver Academy"
     kind = "article" if rel.startswith(("learn/", "ref/", "modules/")) else "website"
     for prop, val in (("og:type", kind), ("og:site_name", site), ("og:title", title), ("og:description", desc),
                       ("og:url", url), ("og:image", img), ("og:image:width", "1200"), ("og:image:height", "630"),
@@ -542,7 +542,7 @@ def structured_data(soup, rel, lang):
     import json
     url = SITE + ("ar/" if lang == "ar" else "") + rel
     org = {"@type": "Organization", "@id": SITE + "#org",
-           "name": "Metabolic Liver Academy", "alternateName": ["MLA", "أكاديمية الكبد الأيضي"],
+           "name": "Metabolic Liver Academy", "alternateName": ["MLA", "أكاديمية الكبد والتمثيل الغذائي"],
            "url": SITE, "logo": SITE + "icons/icon-512.png",
            "founder": {"@id": SITE + "#founder"}}
     person = {"@type": "Person", "@id": SITE + "#founder", "name": FOUNDER["en"],

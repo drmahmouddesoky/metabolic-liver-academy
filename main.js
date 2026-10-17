@@ -102,7 +102,7 @@
       '<button class="menu-btn" type="button" aria-expanded="false" aria-controls="side-nav" aria-label="' + t('Open menu', 'افتح القائمة') + '">' +
         '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>' +
       '<a class="brand" href="' + ROOT + 'index.html">' + mark +
-        '<span>' + t('Metabolic Liver Academy', 'أكاديمية الكبد الأيضي') +
+        '<span>' + t('Metabolic Liver Academy', 'أكاديمية الكبد والتمثيل الغذائي') +
         '<small>' + t('Healthy Liver. Healthy Life.', 'كبد سليم. حياة صحية.') + '</small></span></a>' +
       '<a class="lang-btn" href="' + twinUrl() + '" hreflang="' + (html.lang === 'ar' ? 'en' : 'ar') + '" lang="' + (html.lang === 'ar' ? 'en' : 'ar') + '">' + (html.lang === 'ar' ? 'English' : 'العربية') + '</a>' +
     '</div>';
@@ -197,7 +197,7 @@
   footer.className = 'site-footer';
   footer.innerHTML =
     '<div class="wrap"><div class="foot-grid">' +
-      '<div><p><strong>' + bi('Metabolic Liver Academy', 'أكاديمية الكبد الأيضي') + '</strong></p>' +
+      '<div><p><strong>' + bi('Metabolic Liver Academy', 'أكاديمية الكبد والتمثيل الغذائي') + '</strong></p>' +
         '<p class="note">' + bi(
           'Education only. This site does not give medical advice, diagnosis or treatment. Always talk to your own doctor about your health. In an emergency, call your local emergency number.',
           'هذا الموقع للتثقيف فقط، ولا يقدّم استشارة طبية أو تشخيصًا أو علاجًا. تحدّث دائمًا مع طبيبك عن صحتك. في الحالات الطارئة اتصل برقم الطوارئ في بلدك.') + '</p></div>' +
@@ -215,7 +215,7 @@
         '<li><a href="https://orcid.org/0000-0002-1422-0886" target="_blank" rel="noopener">ORCID</a></li>' +
       '</ul></div>' +
     '</div>' +
-    '<div class="bottom">© ' + new Date().getFullYear() + ' ' + bi('Metabolic Liver Academy (MLA). Founded by Dr. Mahmoud Desoky.', 'أكاديمية الكبد الأيضي. أسسها د. محمود الدسوقي.') + '</div></div>';
+    '<div class="bottom">© ' + new Date().getFullYear() + ' ' + bi('Metabolic Liver Academy (MLA). Founded by Dr. Mahmoud Desoky.', 'أكاديمية الكبد والتمثيل الغذائي. أسسها د. محمود الدسوقي.') + '</div></div>';
   document.body.appendChild(footer);
 
   /* ---------- Helpers ---------- */
