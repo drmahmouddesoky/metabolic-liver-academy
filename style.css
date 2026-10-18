@@ -31,6 +31,7 @@
   --rec-line: #9CC2BB;
   --foot-bg: #0F2B2C;
   --deep: #155E5C;      /* large filled panels with white text */
+  --side-bg: #EEF4F2;   /* side menu */
   --deep-2: #0E4645;
   --radius-s: 6px;
   --radius-l: 14px;
@@ -65,6 +66,7 @@
   --on-pine: #0C1718;
   --foot-bg: #071011;
   --deep: #1A5A55;
+  --side-bg: #0F1D1E;
   --deep-2: #20706A;
   color-scheme: dark;
 }
@@ -90,6 +92,7 @@
     --on-pine: #0C1718;
     --foot-bg: #071011;
   --deep: #1A5A55;
+  --side-bg: #0F1D1E;
   --deep-2: #20706A;
     color-scheme: dark;
   }
@@ -143,13 +146,15 @@ p { margin: 0 0 1em; }
 .skip { position: absolute; inset-inline-start: -999px; top: 8px; background: #0F2B2C; color: #fff; padding: 8px 14px; z-index: 50; border-radius: var(--radius-s); }
 .skip:focus { inset-inline-start: 8px; }
 
-/* ---------- Header, main menu ----------
+/* ---------- Header and side menu ----------
    Written into every page by build.py (chrome.py); main.js adds behaviour.
-   Desktop: logo bar, then a sticky menu bar with short drop-down lists.
-   Phones and tablets: the menu button slides the menu in from the side. */
-:root { --bar-h: 64px; --wide: var(--max); }
-.site-header { background: var(--white); border-bottom: 1px solid var(--line); }
-.site-header .bar { display: flex; align-items: center; gap: 12px; min-height: var(--bar-h); width: min(100% - 32px, var(--wide)); margin-inline: auto; }
+   Computers: a fixed menu down the left side (right side in Arabic), like
+   the SGA platform; groups open in place, and the current one starts open.
+   Phones and tablets: the menu button slides the same menu in. */
+:root { --bar-h: 64px; --side-w: 264px; }
+html { scroll-padding-top: calc(var(--bar-h) + 12px); }
+.site-header { background: var(--white); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 30; }
+.site-header .bar { display: flex; align-items: center; gap: 12px; height: var(--bar-h); padding-inline: 20px; }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); min-width: 0; }
 .brand:hover { color: var(--ink); text-decoration: none; }
 .brand-mark { width: 34px; height: 34px; flex: none; }
@@ -166,40 +171,36 @@ html[lang="ar"] .brand-name { font-size: 1.02rem; letter-spacing: 0; }
 .theme-btn:hover, .menu-btn:hover { background: var(--pine-tint); }
 .theme-btn .i-sun { display: none; }
 
-.site-nav { position: sticky; top: 0; z-index: 30; background: var(--white); border-bottom: 1px solid var(--line); }
-.nav-list { list-style: none; margin: 0 auto; padding: 0; display: flex; flex-wrap: wrap; gap: 2px; width: min(100% - 32px, var(--wide)); }
-.nav-item { position: relative; }
-.nav-top { display: inline-flex; align-items: center; gap: 4px; padding: 13px 12px; font: inherit; font-size: 0.95rem; font-weight: 600; color: var(--ink); background: none; border: 0; text-decoration: none; cursor: pointer; border-radius: 0; }
-.nav-top:hover { color: var(--pine); text-decoration: none; }
-.nav-item.is-active > .nav-top { color: var(--pine); box-shadow: inset 0 -3px 0 var(--pine); }
-.nav-chev { width: 15px; height: 15px; transition: transform .15s; }
+.site-nav { position: fixed; top: var(--bar-h); bottom: 0; inset-inline-start: 0; width: var(--side-w); overflow-y: auto; background: var(--side-bg); border-inline-end: 1px solid var(--line); padding: 14px 12px 32px; z-index: 25; }
+.nav-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.nav-top { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; font: inherit; font-size: 0.97rem; font-weight: 500; color: var(--ink); background: none; border: 0; border-radius: 8px; text-align: start; text-decoration: none; cursor: pointer; }
+.nav-top:hover, .nav-sub a:hover { background: var(--pine-tint); color: var(--ink); text-decoration: none; }
+.nav-ico { width: 20px; height: 20px; flex: none; color: var(--pine); }
+.nav-chev { width: 16px; height: 16px; flex: none; margin-inline-start: auto; color: var(--muted); transition: transform .15s; }
 .nav-toggle[aria-expanded="true"] .nav-chev { transform: rotate(180deg); }
-.nav-sub { display: none; list-style: none; margin: 0; padding: 8px; position: absolute; top: 100%; inset-inline-start: 0; min-width: 240px; background: var(--white); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px rgba(15, 43, 44, .12); z-index: 31; }
+.nav-item.is-active > .nav-top { color: var(--pine); font-weight: 600; }
+.nav-sub { display: none; list-style: none; margin: 0; padding: 2px 0 8px; }
 .nav-toggle[aria-expanded="true"] + .nav-sub { display: block; }
-@media (hover: hover) and (min-width: 1025px) { .has-sub:hover > .nav-sub { display: block; } }
-.nav-sub a { display: block; padding: 8px 12px; border-radius: 6px; color: var(--ink); text-decoration: none; font-size: 0.94rem; }
-.nav-sub a:hover { background: var(--pine-tint); color: var(--ink); }
-.site-nav a[aria-current="page"] { color: var(--pine); font-weight: 600; }
+.nav-sub a { display: block; padding: 8px 12px; padding-inline-start: 44px; border-radius: 8px; color: var(--ink); text-decoration: none; font-size: 0.93rem; }
+.site-nav a[aria-current="page"] { background: var(--white); color: var(--pine); font-weight: 600; box-shadow: inset 3px 0 0 var(--pine); }
+html[dir="rtl"] .site-nav a[aria-current="page"] { box-shadow: inset -3px 0 0 var(--pine); }
+.nav-close { display: none; }
 .nav-shade[hidden] { display: none; }
-.site-nav .side-install, .nav-close { display: none; }
+/* page content sits beside the menu */
+main, .touch-band, .site-footer { margin-inline-start: var(--side-w); }
 
 @media (max-width: 1024px) {
   .menu-btn { display: block; }
-  .site-nav { position: fixed; top: 0; bottom: 0; inset-inline-start: 0; width: min(320px, 86vw); overflow-y: auto; border: 0; border-inline-end: 1px solid var(--line); padding: 16px 12px 32px; z-index: 40; transform: translateX(-105%); transition: transform .2s ease; visibility: hidden; }
+  .site-header .bar { padding-inline: 12px; }
+  main, .touch-band, .site-footer { margin-inline-start: 0; }
+  .site-nav { top: 0; width: min(320px, 86vw); padding: 16px 12px 32px; z-index: 40; transform: translateX(-105%); transition: transform .2s ease; visibility: hidden; }
   html[dir="rtl"] .site-nav { transform: translateX(105%); }
   body.nav-open .site-nav { transform: none; visibility: visible; box-shadow: 0 8px 30px rgba(15, 43, 44, .2); }
   .nav-shade { position: fixed; inset: 0; background: rgba(15, 43, 44, .4); z-index: 35; }
-  .nav-list { flex-direction: column; width: auto; gap: 0; }
-  .nav-top { width: 100%; justify-content: space-between; padding: 11px 12px; border-radius: 8px; }
-  .nav-item.is-active > .nav-top { box-shadow: inset 3px 0 0 var(--pine); background: var(--pine-tint); }
-  html[dir="rtl"] .nav-item.is-active > .nav-top { box-shadow: inset -3px 0 0 var(--pine); }
-  .nav-sub { position: static; box-shadow: none; border: 0; padding: 0 0 6px; min-width: 0; background: none; }
-  .nav-sub a { padding-inline-start: 24px; }
-  .site-nav .side-install { display: block; }
-  .nav-close { display: block; width: 40px; height: 40px; padding: 9px; margin: 0 0 8px auto; margin-inline: auto 0; background: none; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); cursor: pointer; }
+  .nav-close { display: block; width: 40px; height: 40px; padding: 9px; margin-block-end: 8px; margin-inline: auto 0; background: none; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); cursor: pointer; }
   .nav-close svg { width: 100%; height: 100%; display: block; }
 }
-@media (max-width: 480px) { .brand-tag { display: none; } .site-header .bar { gap: 8px; width: calc(100% - 20px); } .lang-btn { padding: 6px 10px; } }
+@media (max-width: 480px) { .brand-tag { display: none; } .site-header .bar { gap: 8px; padding-inline: 10px; } .lang-btn { padding: 6px 10px; } }
 @media (prefers-reduced-motion: reduce) { .site-nav, .nav-chev { transition: none; } }
 
 /* ---------- Sections ---------- */
@@ -478,7 +479,7 @@ html[lang="ar"] .foot-h { letter-spacing: 0; font-size: 0.9rem; }
 /* margin notes: in the margin on wide screens, inline on small ones */
 .sidenote { font-family: "IBM Plex Sans", "IBM Plex Sans Arabic", sans-serif; font-size: 0.86rem; line-height: 1.55; color: var(--ink);
   background: var(--amber-tint); border-radius: 6px; padding: 12px 14px; margin: 0 0 1em; }
-@media (min-width: 1240px) {
+@media (min-width: 1504px) {  /* 1240px of page + the 264px side menu */
   .mod-layout { grid-template-columns: 210px minmax(0, 1fr); }
   .mod-body { position: relative; }
   .sidenote { float: right; clear: right; width: 230px; margin-right: -270px; margin-top: 4px; background: none; padding: 0 0 0 14px; border-left: 3px solid #E0B43C; border-radius: 0; color: var(--muted); }

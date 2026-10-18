@@ -22,32 +22,32 @@ ORCID = "https://orcid.org/0000-0002-1422-0886"
 SUBSCRIBE_MAILTO = "mailto:%s?subject=Subscribe%%20to%%20the%%20Metabolic%%20Liver%%20Academy%%20mailing%%20list" % CONTACT_EMAIL
 
 MENU = [
-    {"en": "Home", "ar": "الرئيسية", "href": "index.html", "key": "home"},
-    {"en": "Patients", "ar": "المرضى", "key": "patients", "items": [
+    {"en": "Home", "ar": "الرئيسية", "href": "index.html", "key": "home", "icon": "home"},
+    {"en": "Patients", "ar": "المرضى", "key": "patients", "icon": "heart", "items": [
         ("Patient Portal", "بوابة المرضى", "patients.html"),
         ("Am I at risk?", "هل أنا معرّض للخطر؟", "patients.html#risk"),
         ("Questions and answers", "أسئلة وأجوبة", "learn.html"),
         ("Printable guides", "أدلة للطباعة", "guides.html"),
     ]},
-    {"en": "Physicians", "ar": "الأطباء", "key": "physicians", "items": [
+    {"en": "Physicians", "ar": "الأطباء", "key": "physicians", "icon": "steth", "items": [
         ("Physician Portal", "بوابة الأطباء", "academy.html"),
         ("Teaching modules", "الوحدات التعليمية", "academy.html#modules"),
         ("Reference library", "المكتبة المرجعية", "ref.html"),
         ("Guidance", "الإرشادات", "guidance.html"),
         ("Calculators", "الحاسبات", "calculators.html"),
     ]},
-    {"en": "Lectures", "ar": "المحاضرات", "href": "lectures.html", "key": "lectures"},
-    {"en": "Meet the Expert", "ar": "لقاء مع خبير", "href": "experts.html", "key": "experts"},
-    {"en": "Publication Radar", "ar": "رادار الأبحاث", "href": "radar.html", "key": "radar"},
-    {"en": "News", "ar": "الأخبار", "href": "news.html", "key": "news"},
-    {"en": "About", "ar": "من نحن", "key": "about", "items": [
+    {"en": "Lectures", "ar": "المحاضرات", "href": "lectures.html", "key": "lectures", "icon": "play"},
+    {"en": "Meet the Expert", "ar": "لقاء مع خبير", "href": "experts.html", "key": "experts", "icon": "people"},
+    {"en": "Publication Radar", "ar": "رادار الأبحاث", "href": "radar.html", "key": "radar", "icon": "radar"},
+    {"en": "News", "ar": "الأخبار", "href": "news.html", "key": "news", "icon": "cal"},
+    {"en": "About", "ar": "من نحن", "key": "about", "icon": "info", "items": [
         ("About the Academy", "عن الأكاديمية", "about.html"),
         ("Mission and values", "الرسالة والقيم", "about.html#mission"),
         ("Editorial policy", "السياسة التحريرية", "legal.html#governance"),
         ("Partners", "الشركاء", "partners.html"),
         ("Policies", "السياسات", "legal.html"),
     ]},
-    {"en": "Contact", "ar": "تواصل معنا", "href": "contact.html", "key": "contact"},
+    {"en": "Contact", "ar": "تواصل معنا", "href": "contact.html", "key": "contact", "icon": "mail"},
 ]
 
 # Which menu item is highlighted for each page (by file name or folder).
@@ -76,6 +76,25 @@ MARK = ('<svg class="brand-mark" viewBox="0 0 34 34" aria-hidden="true" focusabl
 
 ICON_MENU = ('<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" '
              'stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>')
+# Side-menu icons (simple line drawings, 24 x 24)
+ICONS = {
+    "home": '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+    "heart": '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
+    "steth": '<path d="M6 3v6a4 4 0 0 0 8 0V3"/><path d="M10 13v2a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="11" r="2"/>',
+    "play": '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/>',
+    "people": '<circle cx="9" cy="8" r="3.2"/><path d="M3 20c.8-3.6 3.3-5.5 6-5.5s5.2 1.9 6 5.5"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.6c2.4.2 4.2 1.9 5 5.4"/>',
+    "radar": '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12l6-6"/>',
+    "cal": '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    "info": '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
+    "mail": '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+}
+
+
+def icon(name):
+    return ('<svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" '
+            'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">%s</svg>' % ICONS[name])
+
+
 ICON_CHEV = ('<svg class="nav-chev" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" '
              'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>')
 # One button, two icons: CSS shows the moon in light mode and the sun in dark mode.
@@ -107,13 +126,16 @@ def header(rel):
     for i, m in enumerate(MENU):
         active = " is-active" if m["key"] == here else ""
         if "items" not in m:
-            items.append('<li class="nav-item%s">%s</li>' % (active, link(m["en"], m["ar"], m["href"], "nav-top")))
+            items.append('<li class="nav-item%s"><a class="nav-top" href="%s%s"%s>%s%s</a></li>' % (
+                active, up, m["href"], ' aria-current="page"' if m["href"] == page else "", icon(m["icon"]), bi(m["en"], m["ar"])))
             continue
         sub = "".join("<li>%s</li>" % link(en, ar, href) for en, ar, href in m["items"])
         items.append(
             '<li class="nav-item has-sub%s">'
-            '<button type="button" class="nav-top nav-toggle" aria-expanded="false" aria-controls="nav-sub-%d">%s%s</button>'
-            '<ul class="nav-sub" id="nav-sub-%d">%s</ul></li>' % (active, i, bi(m["en"], m["ar"]), ICON_CHEV, i, sub))
+            # the section you are in starts open
+            '<button type="button" class="nav-top nav-toggle" aria-expanded="%s" aria-controls="nav-sub-%d">%s%s%s</button>'
+            '<ul class="nav-sub" id="nav-sub-%d">%s</ul></li>' % (active, "true" if active else "false", i, icon(m["icon"]),
+                                                                  bi(m["en"], m["ar"]), ICON_CHEV, i, sub))
 
     lang_en = '<a class="lang-btn" href="%sar/%s" hreflang="ar" lang="ar">العربية</a>' % (up, rel)
     lang_ar = '<a class="lang-btn" href="%s../%s" hreflang="en" lang="en">English</a>' % (up, rel)

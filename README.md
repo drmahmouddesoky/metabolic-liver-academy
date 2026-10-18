@@ -146,7 +146,8 @@ write Arabic and English as separate sections, and never include patient details
 
 ## Menu, dark mode, share pictures and the app
 
-- The header, main menu and footer are written into every page by `build.py`, from `chrome.py`.
+- The header, side menu and footer are written into every page by `build.py`, from `chrome.py`.
+  On computers the menu sits down the left side (right side in Arabic); on phones the menu button slides it in.
   To change a menu item, edit `MENU` in `chrome.py` and run `python3 build.py`.
 - `main.js` makes the menu, dark mode switch, share buttons and "Install app" button work.
 - Dark mode follows the visitor's phone or computer; the moon/sun button switches it and is remembered.

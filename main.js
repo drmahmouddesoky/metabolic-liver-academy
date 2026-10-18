@@ -26,7 +26,7 @@
      The header, menu and footer are written into every page by build.py
      (see chrome.py). This script only makes them interactive:
      - phones and tablets: the menu button slides the menu in
-     - desktop: Patients / Physicians / About open their short lists
+     - Patients / Physicians / About open in place (the current one starts open)
      - the moon/sun button switches dark mode (remembered in this browser) */
   var nav = document.getElementById('site-nav');
   var menuBtn = document.querySelector('.menu-btn');
@@ -35,12 +35,6 @@
     document.body.classList.toggle('nav-open', open);
     if (menuBtn) menuBtn.setAttribute('aria-expanded', open);
     if (shade) shade.hidden = !open;
-  }
-  function closeSubs(except) {
-    if (!nav) return;
-    Array.prototype.forEach.call(nav.querySelectorAll('.nav-toggle[aria-expanded="true"]'), function (b) {
-      if (b !== except) b.setAttribute('aria-expanded', 'false');
-    });
   }
   if (nav && menuBtn) {
     menuBtn.addEventListener('click', function () { setMenu(!document.body.classList.contains('nav-open')); });
@@ -52,19 +46,12 @@
     });
     Array.prototype.forEach.call(nav.querySelectorAll('.nav-toggle'), function (b) {
       b.addEventListener('click', function () {
-        var open = b.getAttribute('aria-expanded') !== 'true';
-        closeSubs(b);
-        b.setAttribute('aria-expanded', open);
+        b.setAttribute('aria-expanded', b.getAttribute('aria-expanded') !== 'true');
       });
     });
-    nav.addEventListener('click', function (e) { if (e.target.closest('a')) { setMenu(false); closeSubs(); } });
-    document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item.has-sub')) closeSubs(); });
+    nav.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
     document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape') return;
-      var open = nav.querySelector('.nav-toggle[aria-expanded="true"]');
-      closeSubs();
-      if (open) open.focus();
-      setMenu(false);
+      if (e.key === 'Escape' && document.body.classList.contains('nav-open')) { setMenu(false); menuBtn.focus(); }
     });
   }
 
