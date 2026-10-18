@@ -11,7 +11,7 @@ Each entry is  (English label, Arabic label, link)  or a group with "items".
 import os
 
 # The founder's name as shown on the site. Change it here, then rebuild.
-FOUNDER = {"en": "Dr. Mahmoud Desoky", "ar": "د. محمود الدسوقي"}
+FOUNDER = {"en": "Dr. Mahmoud Al-Desoky", "ar": "د. محمود الدسوقي"}
 
 CONTACT_EMAIL = "mdesoky15@gmail.com"
 LINKEDIN = "https://www.linkedin.com/in/drmahmoudaldesoky"

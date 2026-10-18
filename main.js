@@ -125,7 +125,7 @@
      the site. To switch it on, put your GoatCounter site code between
      the quotes, e.g. 'mla' for https://mla.goatcounter.com.
      Leave it empty ('') to switch it off. */
-  var GOATCOUNTER = '';
+  var GOATCOUNTER = 'drmahmouddesoky';
   var dnt = navigator.doNotTrack === '1' || window.doNotTrack === '1';
   if (GOATCOUNTER && !dnt && location.protocol === 'https:') {
     var gc = document.createElement('script');

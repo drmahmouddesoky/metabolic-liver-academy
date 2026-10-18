@@ -1,7 +1,7 @@
 # Metabolic Liver Academy (MLA)
 
 Free, bilingual (English + Arabic) education on fatty liver disease (MASLD and MASH)
-for patients and doctors. Founded by Dr. Mahmoud Desoky.
+for patients and doctors. Founded by Dr. Mahmoud Al-Desoky.
 
 Live at: https://drmahmouddesoky.github.io/metabolic-liver-academy/
 
@@ -111,9 +111,12 @@ except the private visit counter below once it is switched on.
 
 ## Private visit counter (only you see the numbers)
 
-The site can count visits with GoatCounter (free, no cookies, no personal data,
-so no cookie banner is needed). The numbers appear only on your own GoatCounter
-dashboard, never on the site.
+The site counts visits with GoatCounter (free, no cookies, no personal data,
+so no cookie banner is needed). The numbers appear only on your own dashboard,
+https://drmahmouddesoky.goatcounter.com, never on the site. It is switched on
+(`var GOATCOUNTER = 'drmahmouddesoky';` in `main.js`).
+
+How it was set up:
 
 1. Sign up at https://www.goatcounter.com and pick a site code, e.g. `mla`
    (your dashboard is then https://mla.goatcounter.com).
