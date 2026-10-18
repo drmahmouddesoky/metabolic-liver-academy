@@ -18,6 +18,10 @@ Live site: https://drmahmouddesoky.github.io/metabolic-liver-academy/
 | [ ] | news.html (+ ar/) |  |  |
 | [ ] | about.html (+ ar/) |  |  |
 | [ ] | legal.html (+ ar/) |  |  |
+| [ ] | lectures.html (+ ar/) |  |  |
+| [ ] | experts.html, expert.html (+ ar/): check each expert page before approval |  |  |
+| [ ] | partners.html (+ ar/) |  |  |
+| [ ] | contact.html (+ ar/) |  |  |
 
 ## Patient Q&A
 

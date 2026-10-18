@@ -10,8 +10,27 @@
   if (!list) return;
 
   var AR = document.documentElement.lang === 'ar';
+  /* The page first loads data/radar-recent.js (recent papers only, small and
+     fast). The full list, data/radar.js, is fetched only when the visitor
+     picks a longer period than the recent file covers. */
   var data = window.MLA_RADAR || { items: [] };
   var items = data.items || [];
+  var full = !data.recentDays;
+  var waiting = null;
+  function needFull() { return !full && (st.days === 0 || st.days > data.recentDays - 2); }
+  function loadFull(done) {
+    if (waiting) { waiting.push(done); return; }
+    waiting = [done];
+    var me = document.querySelector('script[src*="radar-recent.js"]');
+    var s = document.createElement('script');
+    s.src = me ? me.getAttribute('src').replace('radar-recent.js', 'radar.js') : 'data/radar.js';
+    s.onload = function () {
+      data = window.MLA_RADAR || data; items = data.items || items; full = true;
+      var q = waiting; waiting = null; q.forEach(function (f) { f(); });
+    };
+    s.onerror = function () { full = true; var q = waiting; waiting = null; q.forEach(function (f) { f(); }); };
+    document.body.appendChild(s);
+  }
   var PAGE = 25;
 
   var TYPES = {
@@ -72,14 +91,16 @@
     .slice(0, 6);
   if (picks.length) {
     document.getElementById('radar-picks').innerHTML = picks.map(function (it) { return card(it, true); }).join('');
-    document.getElementById('picks-section').hidden = false;
+  } else {
+    document.getElementById('picks-section').hidden = true;
   }
 
   /* ---------- Filters ---------- */
   var st = { region: 'global', days: 30, type: '', topic: '', q: '', shown: PAGE };
   function inRegion(it, r) { return r === 'mena' ? it.m : it.w; }
-  document.getElementById('count-global').textContent = '(' + items.filter(function (i) { return i.w; }).length + ')';
-  document.getElementById('count-mena').textContent = '(' + items.filter(function (i) { return i.m; }).length + ')';
+  var counts = data.counts || { global: items.filter(function (i) { return i.w; }).length, mena: items.filter(function (i) { return i.m; }).length };
+  document.getElementById('count-global').textContent = '(' + counts.global + ')';
+  document.getElementById('count-mena').textContent = '(' + counts.mena + ')';
 
   function current() {
     var words = st.q.toLowerCase().split(/\s+/).filter(Boolean);
@@ -99,6 +120,11 @@
   var countEl = document.getElementById('radar-count');
   var more = document.getElementById('radar-more');
   function render() {
+    if (needFull()) {
+      countEl.textContent = AR ? 'جارٍ تحميل الأبحاث الأقدم…' : 'Loading older papers…';
+      loadFull(render);
+      return;
+    }
     var res = current();
     if (!items.length) {
       list.innerHTML = '<p class="empty">' + (AR ? 'ستظهر الأبحاث هنا بعد أول تحديث تلقائي.' : 'Papers will appear here after the first automatic update.') + '</p>';

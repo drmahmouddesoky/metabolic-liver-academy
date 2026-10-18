@@ -40,13 +40,13 @@ jobs:
 
       - name: Save the update
         run: |
-          if git diff --quiet -- data/radar.js; then
+          if git diff --quiet -- data/radar.js data/radar-recent.js; then
             echo "No change today."
             exit 0
           fi
           git config user.name "MLA Radar bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/radar.js
+          git add data/radar.js data/radar-recent.js
           git commit -m "Publication Radar: daily update"
           git pull --rebase origin main
           git push

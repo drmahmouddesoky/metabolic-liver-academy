@@ -25,6 +25,8 @@ sys.path.insert(0, os.path.join(ROOT, "content"))
 import learn as L  # noqa: E402
 import ref as R  # noqa: E402
 import modules as M  # noqa: E402
+sys.path.insert(0, ROOT)
+import chrome  # noqa: E402  header, menu and footer (chrome.py)
 
 LANGS = ("en", "ar")
 OTHER = {"en": "ar", "ar": "en"}
@@ -80,10 +82,8 @@ def item_by_slug():
 
 REPO = "https://github.com/drmahmouddesoky/metabolic-liver-academy"
 
-# The founder as named on every page record and in search-engine data.
-# Change it here once and rebuild to update the whole site.
-FOUNDER = {"en": "Dr. Mahmoud Desoky", "ar": "د. محمود الدسوقي",
-           "same_as": ["https://orcid.org/0000-0002-1422-0886", "https://www.linkedin.com/in/drmahmoudaldesoky"]}
+# The founder's name lives in chrome.py (FOUNDER); change it there and rebuild.
+FOUNDER = dict(chrome.FOUNDER, same_as=[chrome.ORCID, chrome.LINKEDIN])
 
 
 def page_record(mod, slug, src_file):
@@ -91,14 +91,14 @@ def page_record(mod, slug, src_file):
     ver = mod.VERSIONS.get(slug, "1.0")
     hist = "%s/commits/main/%s" % (REPO, src_file)
     rows = [
-        (("Written by", "إعداد"), ("Dr. Mahmoud Desoky, Founder and Director", "د. محمود الدسوقي، المؤسس والمدير")),
+        (("Written by", "إعداد"), ("%s, Founder" % FOUNDER["en"], "%s، المؤسس" % FOUNDER["ar"])),
         (("Version", "الإصدار"), (ver, ver)),
         (("Last updated", "آخر تحديث"), (mod.UPDATED, mod.UPDATED)),
         (("Next review due", "موعد المراجعة القادمة"), (mod.NEXT_REVIEW, mod.NEXT_REVIEW)),
     ]
     if rev:  # the review row appears only once a page has been signed off
         rows.insert(1, (("Medical review", "المراجعة الطبية"),
-                        ("Reviewed by Dr. Mahmoud Desoky on %s" % rev, "راجعها د. محمود الدسوقي بتاريخ %s" % rev)))
+                        ("Reviewed by %s on %s" % (FOUNDER["en"], rev), "راجعها %s بتاريخ %s" % (FOUNDER["ar"], rev))))
     out = ['<aside class="record small" aria-label="Page record"><h2 class="h-small">%s</h2><dl>' % bi("Page record", "سجل الصفحة")]
     for k, v in rows:
         out.append("<dt>%s</dt><dd>%s</dd>" % (bi(*k), bi(esc(v[0]), esc(v[1]))))
@@ -271,7 +271,7 @@ def ref_page(pg):
     out.append('<p class="mod-sub">%s</p>' % bi(esc(pg["lead"]["en"]), esc(pg["lead"]["ar"])))
     meta = [
         (("For", "موجّه إلى"), ("Healthcare professionals", "العاملون في المجال الصحي")),
-        (("Author", "المؤلف"), ("Mahmoud Desoky, MD", "د. محمود الدسوقي")),
+        (("Author", "المؤلف"), (FOUNDER["en"], FOUNDER["ar"])),
         (("Version", "الإصدار"), ("%s, updated %s" % (ver, R.UPDATED), "%s، حُدّث في %s" % (ver, R.UPDATED))),
     ]
     if rev:  # the review row appears only once a page has been signed off
@@ -475,7 +475,7 @@ def module_page(mod):
     out.append("<h1>%s</h1>" % bi(esc(mod["title"]["en"]), esc(mod["title"]["ar"])))
     out.append('<p class="mod-sub">%s</p>' % bi(esc(mod["subtitle"]["en"]), esc(mod["subtitle"]["ar"])))
     meta = [
-        (("Author", "المؤلف"), ("Mahmoud Desoky, MD", "د. محمود الدسوقي")),
+        (("Author", "المؤلف"), (FOUNDER["en"], FOUNDER["ar"])),
         (("For", "موجّهة إلى"), (mod["audience"]["en"], mod["audience"]["ar"])),
         (("Reading time", "مدة القراءة"), ("About %d minutes" % mod["minutes"], "نحو %d دقيقة" % mod["minutes"])),
         (("Version", "الإصدار"), ("%s, updated %s" % (ver, M.UPDATED), "%s، حُدّثت في %s" % (ver, M.UPDATED))),
@@ -523,7 +523,9 @@ def social_tags(soup, rel, lang):
     d = head.find("meta", attrs={"name": "description"})
     desc = d["content"] if d is not None else ""
     url = SITE + ("ar/" if lang == "ar" else "") + rel
-    img = SITE + "images/og-%s.png" % lang
+    # a main page uses its own picture (images/og/<page>-<lang>.png) when there is one
+    own = "images/og/%s-%s.png" % (rel.replace(".html", "").replace("/", "-"), lang)
+    img = SITE + (own if os.path.exists(os.path.join(ROOT, own)) else "images/og-%s.png" % lang)
     site = "أكاديمية الكبد والتمثيل الغذائي" if lang == "ar" else "Metabolic Liver Academy"
     kind = "article" if rel.startswith(("learn/", "ref/", "modules/")) else "website"
     for prop, val in (("og:type", kind), ("og:site_name", site), ("og:title", title), ("og:description", desc),
@@ -623,6 +625,50 @@ def split(src_html, rel, lang):
     head.append(soup.new_tag("meta", attrs={"name": "theme-color", "content": "#155E5C"}))
     head.append(soup.new_tag("link", rel="apple-touch-icon", href=up_site + "icons/apple-touch-icon.png"))
 
+    # dark mode: apply a saved choice before the page paints (no white flash)
+    for el in head.find_all("meta", charset=True) + head.find_all("meta", attrs={"name": "viewport"}):
+        el.decompose()  # re-added first, ahead of the dark-mode script
+    boot = soup.new_tag("script")
+    boot.string = chrome.THEME_BOOT
+    head.insert(0, boot)
+    head.insert(0, soup.new_tag("meta", attrs={"name": "color-scheme", "content": "light dark"}))
+    head.insert(0, soup.new_tag("meta", attrs={"name": "viewport", "content": "width=device-width, initial-scale=1"}))
+    head.insert(0, soup.new_tag("meta", charset="utf-8"))
+
+    # the small font list files go straight into the page (one less request
+    # before the first paint); their font paths are made relative to this page
+    for el in head.find_all("link", rel="stylesheet"):
+        href = el.get("href", "")
+        if href.endswith(("fonts/fonts.css", "fonts/serif.css")):
+            with open(os.path.join(ROOT, "fonts", href.rsplit("/", 1)[1]), encoding="utf-8") as f:
+                css_txt = f.read()
+            css_txt = re.sub(r"/\*.*?\*/", "", css_txt, flags=re.S).strip()
+            css_txt = re.sub(r"url\(([^)]+)\)", lambda m: "url(%sfonts/%s)" % (up_site, m.group(1)), css_txt)
+            style = soup.new_tag("style")
+            style.string = css_txt
+            el.replace_with(style)
+
+    # scripts at the end of the page: download in the background, run in order
+    # once the page is read (they no longer hold up the first paint)
+    for el in soup.find_all("script", src=True):
+        el["defer"] = ""
+
+    # fonts the first screen needs: fetch them straight away, so the text does not
+    # change font (and move) a moment after the page appears
+    # (Arabic pages also use the bold Latin font: headings often contain MASLD, MASH, FIB-4)
+    first_fonts = (("ibm-plex-sans-arabic-arabic-400-normal", "ibm-plex-sans-arabic-arabic-600-normal",
+                    "ibm-plex-sans-latin-600-normal")
+                   if lang == "ar" else ("ibm-plex-sans-latin-400-normal", "ibm-plex-sans-latin-600-normal"))
+    if rel.startswith("modules/"):  # teaching modules are set in a serif face
+        first_fonts += (("noto-naskh-arabic-arabic-400-normal",) if lang == "ar"
+                        else ("source-serif-4-latin-400-normal", "source-serif-4-latin-600-normal"))
+    if lang == "ar" and rel == "radar.html":  # the paper list is in English
+        first_fonts += ("ibm-plex-sans-latin-400-normal",)
+    css = head.find("link", rel="stylesheet") or head.find("style")
+    for name in first_fonts:
+        css.insert_before(soup.new_tag("link", rel="preload", href=up_site + "fonts/%s.woff2" % name,
+                                       attrs={"as": "font", "type": "font/woff2", "crossorigin": ""}))
+
     # tab icon: one SVG file (plus a PNG for older browsers) instead of an inline data link
     for el in soup.find_all("link", rel="icon"):
         el.decompose()
@@ -653,7 +699,7 @@ def write(path, text):
 def main():
     pages = {}
     for name in sorted(os.listdir(os.path.join(ROOT, "src"))):
-        if name.endswith(".html"):
+        if name.endswith(".html") and not name.startswith("_"):
             with open(os.path.join(ROOT, "src", name), encoding="utf-8") as f:
                 pages[name] = f.read()
     pages["learn.html"] = learn_index()
@@ -675,11 +721,14 @@ def main():
         pages["index.html"] = pages["index.html"].replace("%%" + k + "%%", str(v))
 
     for rel, src in pages.items():
+        src = chrome.add_chrome(src, rel)
         write(rel, split(src, rel, "en"))
         write("ar/" + rel, split(src, rel, "ar"))
 
     urls = []
     for rel in sorted(pages):
+        if rel == "expert.html":
+            continue  # a template filled from data/experts.js (expert.html?id=...)
         loc = "" if rel == "index.html" else rel
         urls.append(
             "  <url><loc>%s%s</loc>"
@@ -692,6 +741,13 @@ def main():
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n'
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
           + "\n".join(urls) + "\n</urlset>\n")
+    # "page not found": English chrome, both languages in the body, no Arabic copy
+    with open(os.path.join(ROOT, "src", "_404.html"), encoding="utf-8") as f:
+        nf = f.read().replace("%%THEME_BOOT%%", chrome.THEME_BOOT)
+    nf = chrome.add_chrome(nf, "404.html")
+    nf = re.sub(r'<span data-lang="ar">.*?</span>', "", nf)
+    nf = nf.replace('<span data-lang="en">', "<span>")
+    write("404.html", nf.replace('href="ar/404.html"', 'href="ar/index.html"'))
     write("robots.txt", "User-agent: *\nAllow: /\nSitemap: %ssitemap.xml\n" % SITE)
     print("Built %d pages x 2 languages" % len(pages))
 
