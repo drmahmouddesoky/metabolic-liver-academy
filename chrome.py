@@ -17,7 +17,7 @@ CONTACT_EMAIL = "mdesoky15@gmail.com"
 LINKEDIN = "https://www.linkedin.com/in/drmahmoudaldesoky"
 YOUTUBE = "https://www.youtube.com/channel/UCNzyfqdKJP9BDp35L8eNxGA"
 ORCID = "https://orcid.org/0000-0002-1422-0886"
-# Until the MailerLite sign-up link is set in main.js (NEWSLETTER_URL), the
+# Until the beehiiv sign-up link is set in main.js (NEWSLETTER_URL), the
 # "Join our mailing list" button opens an email with this subject line.
 SUBSCRIBE_MAILTO = "mailto:%s?subject=Subscribe%%20to%%20the%%20Metabolic%%20Liver%%20Academy%%20mailing%%20list" % CONTACT_EMAIL
 

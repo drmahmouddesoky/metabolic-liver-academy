@@ -119,9 +119,9 @@
     });
   });
 
-  /* ---------- Mailing list (MailerLite) ----------
-     Paste the link of your MailerLite sign-up form between the quotes,
-     e.g. 'https://subscribe-forms.com/...' or 'https://preview.mailerlite.io/forms/...'.
+  /* ---------- Mailing list (beehiiv) ----------
+     Paste the link of your beehiiv subscribe page between the quotes,
+     e.g. 'https://metabolic-liver-academy.beehiiv.com/subscribe'.
      Every "Join our mailing list" button then opens that form.
      While it is empty, the button opens an email to the Academy instead. */
   var NEWSLETTER_URL = '';
