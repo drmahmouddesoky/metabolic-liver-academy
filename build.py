@@ -548,7 +548,7 @@ def structured_data(soup, rel, lang):
            "url": SITE, "logo": SITE + "icons/icon-512.png",
            "founder": {"@id": SITE + "#founder"}}
     person = {"@type": "Person", "@id": SITE + "#founder", "name": FOUNDER["en"],
-              "alternateName": FOUNDER["ar"], "jobTitle": "Founder, Metabolic Liver Academy",
+              "alternateName": [FOUNDER["ar"], "Mahmoud Desoky", "Desoky MS"],  # names used on publications "jobTitle": "Founder, Metabolic Liver Academy",
               "sameAs": FOUNDER["same_as"]}
     title = soup.title.get_text() if soup.title else ""
     d = soup.head.find("meta", attrs={"name": "description"})
