@@ -126,9 +126,28 @@ How it was set up:
 
 To switch it off again, empty the quotes.
 
+## Mailing list (beehiiv)
+
+Every page has a "Stay in touch" strip above the footer with **Join our mailing list** and
+**Contact us**. Until a beehiiv link is added, "Join our mailing list" opens an email to
+the Academy with "Subscribe" in the subject.
+
+To connect beehiiv (free plan; past issues also become public web pages):
+1. Sign up at https://www.beehiiv.com and create a publication called "Metabolic Liver Academy".
+2. In **Settings**, switch on **double opt-in** (people confirm by email), and switch **off**
+   any ad network, "Boosts" or recommendations, so no adverts appear in Academy emails.
+3. Copy your publication's subscribe page link (it looks like
+   `https://<your-name>.beehiiv.com/subscribe`).
+4. On GitHub, open `main.js`, find `var NEWSLETTER_URL = '';` and paste the link between the quotes.
+   Click **Commit changes**. Every "Join our mailing list" button now opens your subscribe page.
+
+To send a newsletter: **Start writing** in beehiiv. Keep each email short, link to the site,
+write Arabic and English as separate sections, and never include patient details.
+
 ## Menu, dark mode, share pictures and the app
 
-- The header, main menu and footer are written into every page by `build.py`, from `chrome.py`.
+- The header, side menu and footer are written into every page by `build.py`, from `chrome.py`.
+  On computers the menu sits down the left side (right side in Arabic); on phones the menu button slides it in.
   To change a menu item, edit `MENU` in `chrome.py` and run `python3 build.py`.
 - `main.js` makes the menu, dark mode switch, share buttons and "Install app" button work.
 - Dark mode follows the visitor's phone or computer; the moon/sun button switches it and is remembered.
