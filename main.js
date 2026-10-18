@@ -1,6 +1,6 @@
 /* ============================================================
    Metabolic Liver Academy – shared script
-   - Builds the header and footer on every page
+   - Makes the menu, dark mode and language switch work (they are built by build.py)
    - English / Arabic switch (remembers the choice in this browser)
    - News list, video list, risk checklist, FIB-4 calculator
    Nothing typed into the tools is sent anywhere or stored.
@@ -16,125 +16,77 @@
   html.dir = html.lang === 'ar' ? 'rtl' : 'ltr';
   /* Path from this page back to its language root ("" or "../") */
   var ROOT = document.body.getAttribute('data-root') || '';
-  function twinUrl() {
-    var l = document.querySelector('link[rel="alternate"][hreflang="' + (html.lang === 'ar' ? 'en' : 'ar') + '"]');
-    return l ? l.getAttribute('href') : (html.lang === 'ar' ? ROOT + '../index.html' : ROOT + 'ar/index.html');
-  }
 
   function t(en, ar) { return html.lang === 'ar' ? ar : en; }
   function bi(en, ar) {
     return '<span data-lang="en">' + en + '</span><span data-lang="ar">' + ar + '</span>';
   }
 
-  /* ---------- Header + left side menu ----------
-     Top bar: logo, language switch, menu button (phones and tablets).
-     Side menu: groups that fold open, like the SGA platform.
-     On wide screens it stays on the left (right in Arabic); on small
-     screens it slides in when the menu button is pressed. */
-  var page = document.body.getAttribute('data-page') || '';
-  var segs = location.pathname.split('/');
-  var file = (segs[segs.length - 1] || 'index.html').replace(/\.html$/, '');
-  var dir = segs[segs.length - 2] || '';
-  var here = dir === 'learn' ? 'learn' : dir === 'ref' ? 'ref' : dir === 'modules' ? 'modules' : (file === 'index' ? 'home' : file);
-
-  function icon(d) {
-    return '<svg class="side-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>';
-  }
-  var I = {
-    home: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
-    heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
-    steth: '<path d="M6 3v6a4 4 0 0 0 8 0V3"/><path d="M10 13v2a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="11" r="2"/>',
-    radar: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12l6-6"/>',
-    cal: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
-    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
-    shield: '<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/>',
-    chev: '<path d="M9 6l6 6-6 6"/>'
-  };
-  /* [key, link, English, Arabic] — key marks the page you are on */
-  var menu = [
-    { key: 'home', href: 'index.html', ico: 'home', en: 'Home', ar: 'الرئيسية' },
-    { ico: 'heart', en: 'For patients', ar: 'للمرضى', items: [
-      ['patients', 'patients.html', 'Patient Portal', 'بوابة المرضى'],
-      ['', 'patients.html#risk', 'Check your risk', 'افحص خطرك'],
-      ['learn', 'learn.html', 'Questions & answers', 'أسئلة وأجوبة'],
-      ['guides', 'guides.html', 'Printable guides', 'أدلة للطباعة']
-    ] },
-    { ico: 'steth', en: 'For doctors', ar: 'للأطباء', items: [
-      ['academy', 'academy.html', 'Physician Portal', 'بوابة الأطباء'],
-      ['modules', 'academy.html#modules', 'Teaching modules', 'الوحدات التعليمية'],
-      ['calculators', 'calculators.html', 'Calculator hub', 'مركز الحاسبات'],
-      ['guidance', 'guidance.html', 'Guidance', 'الإرشادات'],
-      ['ref', 'ref.html', 'Reference library', 'المكتبة المرجعية']
-    ] },
-    { key: 'radar', href: 'radar.html', ico: 'radar', en: 'Publication Radar', ar: 'رادار الأبحاث' },
-    { key: 'news', href: 'news.html', ico: 'cal', en: 'News & Events', ar: 'الأخبار والفعاليات' },
-    { key: 'about', href: 'about.html', ico: 'info', en: 'About', ar: 'من نحن' },
-    { key: 'legal', href: 'legal.html', ico: 'shield', en: 'Policies', ar: 'السياسات' }
-  ];
-  function cur(key) { return key && key === here ? ' aria-current="page"' : ''; }
-  var sideHtml = menu.map(function (m, gi) {
-    if (!m.items) {
-      return '<a class="side-link" href="' + ROOT + m.href + '"' + cur(m.key) + '>' + icon(I[m.ico]) + '<span>' + t(m.en, m.ar) + '</span></a>';
-    }
-    var open = m.items.some(function (it) { return it[0] && it[0] === here; });
-    return '<div class="side-group' + (open ? ' open' : '') + '">' +
-      '<button type="button" class="side-link side-toggle" aria-expanded="' + open + '" aria-controls="side-g' + gi + '">' +
-        icon(I[m.ico]) + '<span>' + t(m.en, m.ar) + '</span>' + icon(I.chev).replace('side-ico', 'side-chev') + '</button>' +
-      '<div class="side-sub" id="side-g' + gi + '">' +
-        m.items.map(function (it) {
-          return '<a href="' + ROOT + it[1] + '"' + cur(it[0]) + '>' + t(it[2], it[3]) + '</a>';
-        }).join('') +
-      '</div></div>';
-  }).join('');
-
-  var mark = '<svg class="brand-mark" viewBox="0 0 34 34" aria-hidden="true">' +
-    '<rect x="1" y="5" width="5.2" height="24" rx="2.6" fill="#3E9C7B"/>' +
-    '<rect x="7.7" y="5" width="5.2" height="24" rx="2.6" fill="#94B95A"/>' +
-    '<rect x="14.4" y="5" width="5.2" height="24" rx="2.6" fill="#E0B43C"/>' +
-    '<rect x="21.1" y="5" width="5.2" height="24" rx="2.6" fill="#D97B3A"/>' +
-    '<rect x="27.8" y="5" width="5.2" height="24" rx="2.6" fill="#A3423E"/></svg>';
-
-  var header = document.createElement('header');
-  header.className = 'site-header';
-  header.innerHTML =
-    '<a class="skip" href="#main">' + t('Skip to content', 'انتقل إلى المحتوى') + '</a>' +
-    '<div class="bar">' +
-      '<button class="menu-btn" type="button" aria-expanded="false" aria-controls="side-nav" aria-label="' + t('Open menu', 'افتح القائمة') + '">' +
-        '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>' +
-      '<a class="brand" href="' + ROOT + 'index.html">' + mark +
-        '<span>' + t('Metabolic Liver Academy', 'أكاديمية الكبد والتمثيل الغذائي') +
-        '<small>' + t('Healthy Liver. Healthy Life.', 'كبد سليم. حياة صحية.') + '</small></span></a>' +
-      '<a class="lang-btn" href="' + twinUrl() + '" hreflang="' + (html.lang === 'ar' ? 'en' : 'ar') + '" lang="' + (html.lang === 'ar' ? 'en' : 'ar') + '">' + (html.lang === 'ar' ? 'English' : 'العربية') + '</a>' +
-    '</div>';
-  document.body.insertBefore(header, document.body.firstChild);
-
-  var side = document.createElement('nav');
-  side.className = 'side-nav';
-  side.id = 'side-nav';
-  side.setAttribute('aria-label', t('Main', 'القائمة الرئيسية'));
-  side.innerHTML = sideHtml;
-  header.parentNode.insertBefore(side, header.nextSibling);
-  var shade = document.createElement('div');
-  shade.className = 'side-shade';
-  side.parentNode.insertBefore(shade, side.nextSibling);
-  document.body.classList.add('has-side');
-
-  Array.prototype.forEach.call(side.querySelectorAll('.side-toggle'), function (b) {
-    b.addEventListener('click', function () {
-      var g = b.parentNode, open = !g.classList.contains('open');
-      g.classList.toggle('open', open);
-      b.setAttribute('aria-expanded', open);
-    });
-  });
-  var menuBtn = header.querySelector('.menu-btn');
+  /* ---------- Header and main menu ----------
+     The header, menu and footer are written into every page by build.py
+     (see chrome.py). This script only makes them interactive:
+     - phones and tablets: the menu button slides the menu in
+     - desktop: Patients / Physicians / About open their short lists
+     - the moon/sun button switches dark mode (remembered in this browser) */
+  var nav = document.getElementById('site-nav');
+  var menuBtn = document.querySelector('.menu-btn');
+  var shade = document.querySelector('.nav-shade');
   function setMenu(open) {
-    document.body.classList.toggle('side-open', open);
-    menuBtn.setAttribute('aria-expanded', open);
+    document.body.classList.toggle('nav-open', open);
+    if (menuBtn) menuBtn.setAttribute('aria-expanded', open);
+    if (shade) shade.hidden = !open;
   }
-  menuBtn.addEventListener('click', function () { setMenu(!document.body.classList.contains('side-open')); });
-  shade.addEventListener('click', function () { setMenu(false); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
-  side.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  function closeSubs(except) {
+    if (!nav) return;
+    Array.prototype.forEach.call(nav.querySelectorAll('.nav-toggle[aria-expanded="true"]'), function (b) {
+      if (b !== except) b.setAttribute('aria-expanded', 'false');
+    });
+  }
+  if (nav && menuBtn) {
+    menuBtn.addEventListener('click', function () { setMenu(!document.body.classList.contains('nav-open')); });
+    if (shade) shade.addEventListener('click', function () { setMenu(false); });
+    var closeBtn = nav.querySelector('.nav-close');
+    if (closeBtn) closeBtn.addEventListener('click', function () { setMenu(false); menuBtn.focus(); });
+    menuBtn.addEventListener('click', function () {
+      if (document.body.classList.contains('nav-open') && closeBtn) closeBtn.focus();
+    });
+    Array.prototype.forEach.call(nav.querySelectorAll('.nav-toggle'), function (b) {
+      b.addEventListener('click', function () {
+        var open = b.getAttribute('aria-expanded') !== 'true';
+        closeSubs(b);
+        b.setAttribute('aria-expanded', open);
+      });
+    });
+    nav.addEventListener('click', function (e) { if (e.target.closest('a')) { setMenu(false); closeSubs(); } });
+    document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item.has-sub')) closeSubs(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var open = nav.querySelector('.nav-toggle[aria-expanded="true"]');
+      closeSubs();
+      if (open) open.focus();
+      setMenu(false);
+    });
+  }
+
+  /* Dark mode. The page's <head> applies a saved choice before it paints;
+     with no saved choice the site follows the phone or computer setting. */
+  var themeBtn = document.querySelector('.theme-btn');
+  function isDark() {
+    var t = html.getAttribute('data-theme');
+    return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  if (themeBtn) {
+    themeBtn.setAttribute('aria-pressed', isDark());
+    themeBtn.addEventListener('click', function () {
+      var next = isDark() ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      themeBtn.setAttribute('aria-pressed', next === 'dark');
+      try { localStorage.setItem('mla-theme', next); } catch (e) { /* private mode: not remembered */ }
+    });
+  }
+
+  var yr = document.querySelector('.site-footer .year');
+  if (yr) yr.textContent = new Date().getFullYear();
 
   /* ---------- Share buttons (Q&A cards and pages) ----------
      Uses the phone's own share sheet when there is one; otherwise
@@ -192,13 +144,11 @@
   }
   var standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   var ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  var inst = document.createElement('div');
-  inst.className = 'side-install';
+  var inst = document.querySelector('.side-install') || document.createElement('div');
   inst.hidden = true;
   inst.innerHTML = '<button type="button" class="install-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>' +
     t('Install app', 'ثبّت التطبيق') + '</button>' +
     '<p class="install-tip" hidden>' + t('On iPhone or iPad: tap the Share button, then "Add to Home Screen".', 'على iPhone أو iPad: اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية».') + '</p>';
-  side.appendChild(inst);
   var deferred = null;
   window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; inst.hidden = false; });
   window.addEventListener('appinstalled', function () { inst.hidden = true; });
@@ -207,32 +157,6 @@
     if (deferred) { deferred.prompt(); deferred.userChoice.then(function () { deferred = null; inst.hidden = true; }); }
     else inst.querySelector('.install-tip').hidden = false;
   });
-
-  /* ---------- Footer ---------- */
-  var footer = document.createElement('footer');
-  footer.className = 'site-footer';
-  footer.innerHTML =
-    '<div class="wrap"><div class="foot-grid">' +
-      '<div><p><strong>' + bi('Metabolic Liver Academy', 'أكاديمية الكبد والتمثيل الغذائي') + '</strong></p>' +
-        '<p class="note">' + bi(
-          'Education only. This site does not give medical advice, diagnosis or treatment. Always talk to your own doctor about your health. In an emergency, call your local emergency number.',
-          'هذا الموقع للتثقيف فقط، ولا يقدّم استشارة طبية أو تشخيصًا أو علاجًا. تحدّث دائمًا مع طبيبك عن صحتك. في الحالات الطارئة اتصل برقم الطوارئ في بلدك.') + '</p></div>' +
-      '<div><ul>' +
-        '<li><a href="' + ROOT + 'legal.html#disclaimer">' + bi('Disclaimer', 'إخلاء المسؤولية') + '</a></li>' +
-        '<li><a href="' + ROOT + 'legal.html#privacy">' + bi('Privacy', 'الخصوصية') + '</a></li>' +
-        '<li><a href="' + ROOT + 'legal.html#conflicts">' + bi('Conflicts of interest', 'تضارب المصالح') + '</a></li>' +
-        '<li><a href="' + ROOT + 'legal.html#governance">' + bi('How we review content', 'كيف نراجع المحتوى') + '</a></li>' +
-        '<li><a href="' + ROOT + 'legal.html#terms">' + bi('Terms of use', 'شروط الاستخدام') + '</a></li>' +
-      '</ul></div>' +
-      '<div><ul>' +
-        '<li><a href="mailto:mdesoky15@gmail.com">' + bi('Email', 'البريد الإلكتروني') + '</a></li>' +
-        '<li><a href="https://www.linkedin.com/in/drmahmoudaldesoky" target="_blank" rel="noopener">LinkedIn</a></li>' +
-        '<li><a href="https://www.youtube.com/channel/UCNzyfqdKJP9BDp35L8eNxGA" target="_blank" rel="noopener">YouTube</a></li>' +
-        '<li><a href="https://orcid.org/0000-0002-1422-0886" target="_blank" rel="noopener">ORCID</a></li>' +
-      '</ul></div>' +
-    '</div>' +
-    '<div class="bottom">© ' + new Date().getFullYear() + ' ' + bi('Metabolic Liver Academy (MLA). Founded by Dr. Mahmoud Desoky.', 'أكاديمية الكبد والتمثيل الغذائي. أسسها د. محمود الدسوقي.') + '</div></div>';
-  document.body.appendChild(footer);
 
   /* ---------- Helpers ---------- */
   function esc(s) {
