@@ -32,6 +32,49 @@ assert "fibrosis" in b["g"] and "doi" not in b
 
 print("Radar parser: all checks passed")
 
+# Every author's country is tagged, in author order (a real multi-country paper)
+AFFS = ["Kansas City, MO, United States.", "Osmania Medical College, Hyderabad, India.",
+        "Nishtar Medical University, Multan, Pakistan.", "Ain Shams University, Cairo, Egypt.",
+        "Hadhramout University, Hadhramout, Yemen.", "Keele University, Stoke-on-Trent, United Kingdom.",
+        "University of Sydney, Sydney, New South Wales, Australia.",
+        "Dartmouth-Hitchcock Medical Center, Lebanon, NH, United States."]
+authors = "".join("<Author><LastName>A%d</LastName><Initials>B</Initials><AffiliationInfo>"
+                  "<Affiliation>%s</Affiliation></AffiliationInfo></Author>" % (i, x) for i, x in enumerate(AFFS))
+xml = ("<PubmedArticleSet><PubmedArticle><MedlineCitation><PMID>33333333</PMID><Article>"
+       "<Journal><Title>Test</Title></Journal><ArticleTitle>Obesity and MASLD</ArticleTitle>"
+       "<AuthorList>" + authors + "</AuthorList></Article></MedlineCitation>"
+       "<PubmedData></PubmedData></PubmedArticle></PubmedArticleSet>").encode()
+c = R.parse_xml(xml)[0]
+assert c["c"] == ["USA", "India", "Pakistan", "Egypt", "Yemen", "UK", "Australia"], c["c"]
+assert c.get("m") == 1
+print("Radar countries: all checks passed")
+
+# Real addresses from the Radar audit (October 2026) that used to give a wrong or no country
+for addr, want in [
+    ("Selçuk University Faculty of Medicine, Konya, Turkey.", ["Türkiye"]),          # not UK
+    ("School of Medicine, Royal College of Surgeons in Ireland, Busaiteen, Bahrain.", ["Bahrain"]),
+    ("Medical Research Group of Egypt (MRGE), Arlington, Massachusetts, USA.", ["USA"]),
+    ("Institute of Digestive Disease, Hong Kong SAR, China.", ["Hong Kong"]),
+    ("China Medical University, Taichung, 40402, Taiwan", ["Taiwan"]),
+    ("Prince of Wales Hospital, Sydney, New South Wales, Australia.", ["Australia"]),
+    ("Erasmus MC, Rotterdam, The Netherlands. c.ghossein-doha@erasmusmc.nl.", ["Netherlands"]),  # not Qatar
+    ("Coventry University, Jordan Well, Coventry, CV1 5RW, UK.", ["UK"]),            # not Jordan
+    ("Georgetown University Medical Center, Washington, DC.", ["USA"]),
+    ("NYU Grossman School of Medicine, New York, NY 10016.", ["USA"]),
+    ("College of Medicine, Taibah University, Medina, SAU.", ["Saudi Arabia"]),
+    ("Charles University, Prague, Czech Republic", ["Czech Republic"]),
+    ("Ilia State University, Tbilisi, Georgia.", ["Georgia"]),
+    ("Emory University, Atlanta, Georgia.", ["USA"]),
+    ("University of Aleppo, Aleppo, Syrian Arab Republic.", ["Syria"]),
+    ("Queen's University Belfast, Belfast, Northern Ireland.", ["UK"]),
+    ("Turkey Creek Medical Center, Tennova Healthcare, Knoxville, TN.", ["USA"]),   # not Türkiye
+    ("Geisel School of Medicine, Dartmouth College, Lebanon, New Hampshire.", ["USA"]),  # not Lebanon
+    ("University College London, London, U.K.", ["UK"]),
+    ("Kazakh National Medical University, Almaty, KAZ.", ["Kazakhstan"]),
+]:
+    assert R.address_countries(addr) == want, (addr, R.address_countries(addr))
+print("Radar address rules: all checks passed")
+
 # The small "recent" file keeps only recent papers but the full tab totals
 from datetime import datetime, timezone  # noqa: E402
 payload = {"updated": "2026-10-17T07:00Z", "items": [
