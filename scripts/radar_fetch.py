@@ -66,8 +66,7 @@ MENA = [
     ("Jordan", ["jordan", "amman"]),
     ("Lebanon", ["lebanon", "beirut"]),
     ("Iraq", ["iraq", "baghdad"]),
-    ("Syria", ["syria", "damascus"]),
-    ("Palestine", ["palestine", "gaza", "west bank"]),
+    ("Syria", ["syria", "syrian arab republic", "damascus", "aleppo"]),
     ("Yemen", ["yemen", "sana'a", "sanaa"]),
     ("Iran", ["iran", "tehran"]),
     ("Türkiye", ["turkey", "türkiye", "turkiye", "istanbul", "ankara", "izmir"]),
@@ -79,22 +78,95 @@ MENA = [
 ]
 MENA_QUERY = "(" + " OR ".join('"%s"[ad]' % w for _, words in MENA for w in words if w != "u.a.e") + ")"
 
-# Other countries, for the country tag on global papers (first author)
+# Other countries, so every author's country can be tagged
 OTHER = [
-    ("USA", ["usa", "united states", "u.s.a"]), ("UK", ["united kingdom", "uk", "england", "scotland", "wales"]),
+    ("USA", ["usa", "united states", "u.s.a"]), ("UK", ["united kingdom", "uk", "great britain", "england", "scotland", "wales"]),
     ("China", ["china", "p.r. china", "prc"]), ("Hong Kong", ["hong kong"]), ("Taiwan", ["taiwan"]),
     ("Japan", ["japan"]), ("South Korea", ["korea"]), ("India", ["india"]), ("Pakistan", ["pakistan"]),
     ("Italy", ["italy"]), ("Spain", ["spain"]), ("France", ["france"]), ("Germany", ["germany"]),
     ("Netherlands", ["netherlands"]), ("Belgium", ["belgium"]), ("Switzerland", ["switzerland"]),
     ("Austria", ["austria"]), ("Sweden", ["sweden"]), ("Denmark", ["denmark"]), ("Norway", ["norway"]),
     ("Finland", ["finland"]), ("Poland", ["poland"]), ("Greece", ["greece"]), ("Portugal", ["portugal"]),
-    ("Romania", ["romania"]), ("Russia", ["russia"]), ("Israel", ["israel"]), ("Canada", ["canada"]),
+    ("Romania", ["romania"]), ("Russia", ["russia"]), ("Canada", ["canada"]),
     ("Mexico", ["mexico"]), ("Brazil", ["brazil"]), ("Argentina", ["argentina"]), ("Chile", ["chile"]),
     ("Australia", ["australia"]), ("New Zealand", ["new zealand"]), ("Singapore", ["singapore"]),
     ("Malaysia", ["malaysia"]), ("Thailand", ["thailand"]), ("Vietnam", ["vietnam", "viet nam"]),
     ("Indonesia", ["indonesia"]), ("Philippines", ["philippines"]), ("Bangladesh", ["bangladesh"]),
     ("Nigeria", ["nigeria"]), ("South Africa", ["south africa"]), ("Ireland", ["ireland"]),
+    ("Czech Republic", ["czech republic", "czechia"]), ("Slovakia", ["slovakia", "szlovákia"]),
+    ("Hungary", ["hungary"]), ("Serbia", ["serbia"]), ("Croatia", ["croatia"]), ("Slovenia", ["slovenia"]),
+    ("Bosnia and Herzegovina", ["bosnia and herzegovina", "bosnia"]), ("Montenegro", ["montenegro"]),
+    ("North Macedonia", ["north macedonia", "macedonia"]), ("Albania", ["albania"]), ("Kosovo", ["kosovo"]),
+    ("Bulgaria", ["bulgaria"]), ("Moldova", ["moldova"]), ("Ukraine", ["ukraine"]), ("Belarus", ["belarus"]),
+    ("Lithuania", ["lithuania"]), ("Latvia", ["latvia"]), ("Estonia", ["estonia"]), ("Iceland", ["iceland"]),
+    ("Luxembourg", ["luxembourg"]), ("Malta", ["malta"]), ("Cyprus", ["cyprus"]),
+    ("Georgia", ["sakartvelo"]), ("Armenia", ["armenia"]), ("Azerbaijan", ["azerbaijan"]),
+    ("Kazakhstan", ["kazakhstan"]), ("Uzbekistan", ["uzbekistan"]), ("Kyrgyzstan", ["kyrgyzstan"]),
+    ("Tajikistan", ["tajikistan"]), ("Turkmenistan", ["turkmenistan"]), ("Mongolia", ["mongolia"]),
+    ("Afghanistan", ["afghanistan"]), ("Nepal", ["nepal"]), ("Sri Lanka", ["sri lanka"]), ("Bhutan", ["bhutan"]),
+    ("Maldives", ["maldives"]), ("Myanmar", ["myanmar"]), ("Cambodia", ["cambodia"]), ("Laos", ["laos", "lao pdr"]),
+    ("Brunei", ["brunei"]), ("Macau", ["macau", "macao"]),
+    ("Colombia", ["colombia"]), ("Peru", ["peru"]), ("Ecuador", ["ecuador"]), ("Venezuela", ["venezuela"]),
+    ("Bolivia", ["bolivia"]), ("Paraguay", ["paraguay"]), ("Uruguay", ["uruguay"]), ("Cuba", ["cuba"]),
+    ("Costa Rica", ["costa rica"]), ("Panama", ["panama"]), ("Guatemala", ["guatemala"]),
+    ("Honduras", ["honduras"]), ("El Salvador", ["el salvador"]), ("Nicaragua", ["nicaragua"]),
+    ("Dominican Republic", ["dominican republic"]), ("Jamaica", ["jamaica"]), ("Puerto Rico", ["puerto rico"]),
+    ("Trinidad and Tobago", ["trinidad"]),
+    ("Ethiopia", ["ethiopia"]), ("Kenya", ["kenya"]), ("Uganda", ["uganda"]), ("Tanzania", ["tanzania"]),
+    ("Rwanda", ["rwanda"]), ("Somalia", ["somalia"]), ("Eritrea", ["eritrea"]), ("Djibouti", ["djibouti"]),
+    ("Ghana", ["ghana"]), ("Senegal", ["senegal"]), ("Burkina Faso", ["burkina faso"]), ("Mali", ["mali"]),
+    ("Niger", ["niger"]), ("Benin", ["benin"]), ("Togo", ["togo"]), ("Gambia", ["gambia"]),
+    ("Côte d'Ivoire", ["côte d'ivoire", "cote d'ivoire", "ivory coast"]), ("Guinea", ["guinea"]),
+    ("Sierra Leone", ["sierra leone"]), ("Liberia", ["liberia"]), ("Cameroon", ["cameroon"]),
+    ("Gabon", ["gabon"]), ("DR Congo", ["drcongo"]), ("Congo", ["congo"]),
+    ("Central African Republic", ["central african republic"]), ("Angola", ["angola"]),
+    ("Zambia", ["zambia"]), ("Zimbabwe", ["zimbabwe"]), ("Malawi", ["malawi"]), ("Mozambique", ["mozambique"]),
+    ("Botswana", ["botswana"]), ("Namibia", ["namibia"]), ("Madagascar", ["madagascar"]),
+    ("Mauritius", ["mauritius"]), ("Mauritania", ["mauritania"]), ("South Sudan", ["southsudan"]),
+    ("Papua New Guinea", ["papuanewguinea"]), ("Fiji", ["fiji"]), ("Grenada", ["grenada"]),
+    ("Monaco", ["monaco"]),
 ]
+
+# Words that point to a country when an address has no country name
+US_STATES = ["alabama", "alaska", "arizona", "arkansas", "california", "calif", "colorado", "connecticut",
+             "delaware", "florida", "georgia", "hawaii", "idaho", "illinois", "indiana", "iowa", "kansas",
+             "kentucky", "louisiana", "maine", "maryland", "massachusetts", "michigan", "minnesota",
+             "mississippi", "missouri", "montana", "nebraska", "nevada", "new hampshire", "new jersey",
+             "new york", "north carolina", "north dakota", "ohio", "oklahoma", "oregon", "pennsylvania",
+             "rhode island", "south carolina", "south dakota", "tennessee", "texas", "utah", "vermont",
+             "virginia", "washington", "west virginia", "wisconsin", "wyoming"]
+CITY_HINTS = [
+    ("USA", US_STATES + ["boston", "chicago", "los angeles", "san francisco", "philadelphia", "baltimore",
+                         "houston", "seattle", "mayo clinic", "kansas city", "minneapolis", "new haven",
+                         "brooklyn", "atlanta"]),
+    ("China", ["beijing", "shanghai", "guangzhou", "shenzhen", "wuhan", "chengdu", "hangzhou", "nanjing",
+               "tianjin", "chongqing", "zhejiang", "jilin", "fudan", "anhui", "wenzhou", "sichuan"]),
+    ("Japan", ["tokyo", "osaka", "kyoto", "hokkaido", "nagoya"]),
+    ("South Korea", ["seoul", "busan"]),
+    ("Canada", ["ontario", "quebec", "québec", "british columbia", "alberta", "toronto", "montreal", "vancouver"]),
+    ("Australia", ["nsw", "queensland", "sydney", "melbourne"]),
+    ("Romania", ["bucharest", "iasi", "cluj"]), ("Austria", ["graz", "vienna"]),
+    ("Germany", ["deutschland", "frankfurt", "muenster", "münster"]), ("Brazil", ["brasil"]),
+    ("Italy", ["bologna", "milan", "naples"]), ("Iran", ["mazandaran", "isfahan", "shiraz", "mashhad"]),
+]
+# Short codes allowed only as the last word of an address (US states, 3-letter country codes)
+CODES = {c: "USA" for c in ("al ak az ar ca co ct dc de fl ga hi id il in ia ks ky la me md ma mi mn ms mo mt "
+                            "ne nv nh nj nm ny nc nd oh ok or pa ri sc sd tn tx ut vt va wa wv wi wy us u.s "
+                            "u.s.a usa").split()}
+CODES.update({"gbr": "UK", "ind": "India", "pak": "Pakistan", "sau": "Saudi Arabia", "pol": "Poland",
+              "irl": "Ireland", "jor": "Jordan", "egy": "Egypt", "chn": "China", "are": "UAE", "tur": "Türkiye",
+              "bra": "Brazil", "can": "Canada", "aus": "Australia", "deu": "Germany", "fra": "France",
+              "ita": "Italy", "esp": "Spain", "jpn": "Japan", "kor": "South Korea", "nld": "Netherlands",
+              "che": "Switzerland", "swe": "Sweden", "mex": "Mexico", "nga": "Nigeria", "bgd": "Bangladesh",
+              "npl": "Nepal", "lka": "Sri Lanka", "irn": "Iran", "irq": "Iraq", "kwt": "Kuwait", "qat": "Qatar",
+              "omn": "Oman", "bhr": "Bahrain", "lbn": "Lebanon", "syr": "Syria", "yem": "Yemen",
+              "mar": "Morocco", "dza": "Algeria", "tun": "Tunisia", "lby": "Libya", "sdn": "Sudan",
+              "grc": "Greece", "prt": "Portugal", "rou": "Romania",
+              "mys": "Malaysia", "sgp": "Singapore", "tha": "Thailand", "vnm": "Vietnam", "idn": "Indonesia",
+              "phl": "Philippines", "zaf": "South Africa", "ken": "Kenya", "eth": "Ethiopia", "col": "Colombia",
+              "per": "Peru", "arg": "Argentina", "chl": "Chile", "twn": "Taiwan", "hkg": "Hong Kong",
+              "geo": "Georgia", "uga": "Uganda", "kaz": "Kazakhstan", "kgz": "Kyrgyzstan", "uzb": "Uzbekistan",
+              "uk": "UK", "u.k": "UK"})
 
 # ---------------------------------------------------------------- tagging
 TYPE_ORDER = [  # first match wins
@@ -125,15 +197,71 @@ def text(el):
     return re.sub(r"\s+", " ", "".join(el.itertext())).strip() if el is not None else ""
 
 
-def find_countries(aff_text, table):
+# Place names that contain another country's name (checked first)
+NOT_COUNTRY = [
+    ("new south wales", "nsw, australia"), ("new mexico", "usa"), ("new england", "newengland"),
+    ("prince of wales", "princeofwales"), ("northern ireland", "uk"),
+    ("lebanon, nh", "usa"), ("lebanon, new hampshire", "usa"), ("hong kong sar, china", "hong kong"),
+    ("hong kong, china", "hong kong"), ("hong kong sar, prc", "hong kong"), ("macau sar, china", "macau"),
+    ("macao sar, china", "macau"), ("taiwan, roc", "taiwan"), ("taiwan, republic of china", "taiwan"),
+    ("republic of china (taiwan)", "taiwan"), ("democratic republic of the congo", "drcongo"),
+    ("dr congo", "drcongo"), ("south sudan", "southsudan"), ("papua new guinea", "papuanewguinea"),
+    ("equatorial guinea", "equatorialguinea"), ("guinea-bissau", "guineabissau"),
+]
+WORD = r"(?<![^\W\d_])%s(?![^\W\d_])"   # whole word: not inside a longer word
+
+
+def _clean(aff):
+    low = " " + aff.lower() + " "
+    low = re.sub(r"electronic address:.*", " ", low)
+    low = re.sub(r"\S+@\S+", " ", low)                  # e-mail addresses say nothing reliable
+    low = re.sub(r"(tbilisi|batumi|kutaisi)(.*?)georgia", r"\1\2sakartvelo", low)  # the country Georgia
+    for place, repl in NOT_COUNTRY:
+        low = low.replace(place, repl)
+    return low
+
+
+def _names(s, tables):
     found = []
-    low = " " + aff_text.lower() + " "
-    for name, words in table:
-        for w in words:
-            if re.search(r"(?<![a-z])" + re.escape(w) + r"(?![a-z])", low):
+    for table in tables:
+        for name, words in table:
+            if name not in found and any(re.search(WORD % re.escape(w), s) for w in words):
                 found.append(name)
-                break
     return found
+
+
+def address_countries(aff):
+    """Countries of one address. The country is normally the last part,
+    so that part decides; the whole address is searched only when the end
+    names no country (this avoids 'Royal College of Surgeons in Ireland,
+    Bahrain' giving Ireland, or 'Jordan Well, Coventry, UK' giving Jordan)."""
+    found = []
+    for part in aff.split(";"):
+        low = _clean(part)
+        segs = [s.strip(" .") for s in low.split(",") if s.strip(" .")]
+        hit = []
+        for seg in segs[-1:] + segs[-2:-1]:          # last part, then the one before it
+            hit = _names(seg, [MENA, OTHER])
+            if not hit:
+                words = re.sub(r"\d+", " ", seg).replace(".", " ").split()
+                squashed = re.sub(r"[\s.]", "", seg)          # "U.K." -> "uk", "U.S.A." -> "usa"
+                if words and len(words) <= 3 and words[-1] in CODES:
+                    hit = [CODES[words[-1]]]
+                elif squashed in CODES:
+                    hit = [CODES[squashed]]
+            if not hit:
+                hit = _names(seg, [CITY_HINTS])
+            if hit:
+                break
+        if not hit:
+            hit = _names(low, [MENA, OTHER]) or _names(low, [CITY_HINTS])
+        for c in hit:
+            if c not in found:
+                found.append(c)
+    return found
+
+
+MENA_NAMES = {name for name, _ in MENA}
 
 
 def parse_article(art):
@@ -165,13 +293,14 @@ def parse_article(art):
         if first and len(authors) > 1:
             first += " et al."
 
-    # affiliations: first author, then everyone
-    def affs(au):
-        return " ; ".join(text(f) for f in au.findall("AffiliationInfo/Affiliation"))
-    first_aff = affs(authors[0]) if authors else ""
-    all_aff = " ; ".join(affs(x) for x in authors)
-    mena = find_countries(all_aff, MENA)
-    first_country = (find_countries(first_aff, MENA) or find_countries(first_aff, OTHER) or [""])[0]
+    # every author's country, in author order (first author's first)
+    countries = []
+    for au in authors:
+        for f in au.findall("AffiliationInfo/Affiliation"):
+            for c in address_countries(text(f)):
+                if c not in countries:
+                    countries.append(c)
+    mena = [c for c in countries if c in MENA_NAMES]
 
     # publication type
     pts = {text(p).lower() for p in a.findall("PublicationTypeList/PublicationType")}
@@ -208,14 +337,8 @@ def parse_article(art):
     item = {"p": pmid, "d": date, "t": title, "j": journal, "a": first, "k": kind, "g": topics}
     if doi:
         item["doi"] = doi
-    countries = []
-    if first_country:
-        countries.append(first_country)
-    for c in mena:
-        if c not in countries:
-            countries.append(c)
     if countries:
-        item["c"] = countries[:3]
+        item["c"] = countries
     if mena:
         item["m"] = 1
     return item
