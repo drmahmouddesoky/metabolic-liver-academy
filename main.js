@@ -159,6 +159,14 @@
   });
 
   /* ---------- Helpers ---------- */
+  /* Add schema.org data for search engines (used for videos and experts). */
+  function addLd(items) {
+    if (!items || !items.length) return;
+    var sc = document.createElement('script');
+    sc.type = 'application/ld+json';
+    sc.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': items });
+    document.head.appendChild(sc);
+  }
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -176,7 +184,7 @@
   var TYPE_LABEL = {
     health: ['Health news', 'أخبار صحية'],
     events: ['Event', 'فعالية'],
-    mine: ['My activities', 'أنشطتي']
+    mine: ['Academy activities', 'أنشطة الأكاديمية']
   };
 
   /* ---------- News & events ---------- */
@@ -228,14 +236,44 @@
     }
   });
 
-  /* ---------- Videos ---------- */
+  /* ---------- Videos ----------
+     Home and Physician Portal: cards that open the video on YouTube.
+     Lectures page (data-embed): the video plays on the page, but only
+     after the visitor presses play (nothing loads from YouTube before). */
+  var PLAY = '<svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="currentColor"/><path d="M19 15l15 9-15 9z" fill="#fff"/></svg>';
   document.querySelectorAll('[data-videos]').forEach(function (box) {
     var list = (window.MLA_VIDEOS || []).slice(0, +box.getAttribute('data-limit') || 99);
+    var embed = box.hasAttribute('data-embed');
     box.innerHTML = list.map(function (v) {
+      var info = '<div><strong>' + esc(v.title) + '</strong><small>' + esc(v.length) + ' · ' + esc(v.year) + '</small></div>';
+      if (embed) {
+        return '<div class="video" lang="ar" dir="rtl"><button type="button" class="video-thumb video-play" data-id="' + esc(v.id) + '" data-title="' + esc(v.title) + '">' +
+          PLAY + '<em>' + esc(v.length) + '</em><span class="visually-hidden">' + t('Play video: ', 'شغّل المقطع: ') + esc(v.title) + '</span></button>' + info + '</div>';
+      }
       return '<a class="video" href="https://www.youtube.com/watch?v=' + esc(v.id) + '" target="_blank" rel="noopener" lang="ar" dir="rtl">' +
-        '<span class="video-thumb" aria-hidden="true"><svg viewBox="0 0 48 48" width="48" height="48"><circle cx="24" cy="24" r="23" fill="currentColor"/><path d="M19 15l15 9-15 9z" fill="#fff"/></svg><em>' + esc(v.length) + '</em></span>' +
-        '<div><strong>' + esc(v.title) + '</strong><small>' + esc(v.length) + ' · ' + esc(v.year) + '</small></div></a>';
+        '<span class="video-thumb" aria-hidden="true">' + PLAY + '<em>' + esc(v.length) + '</em></span>' + info + '</a>';
     }).join('');
+    if (!embed) return;
+    box.addEventListener('click', function (e) {
+      var b = e.target.closest('.video-play');
+      if (!b) return;
+      var f = document.createElement('iframe');
+      f.className = 'video-frame';
+      f.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(b.getAttribute('data-id')) + '?autoplay=1&rel=0';
+      f.title = b.getAttribute('data-title');
+      f.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+      f.setAttribute('allowfullscreen', '');
+      b.replaceWith(f);
+      f.focus();
+    });
+    /* Search engines: describe each video (VideoObject) */
+    addLd(list.map(function (v) {
+      return { '@type': 'VideoObject', name: v.title, inLanguage: 'ar', uploadDate: String(v.year),
+        thumbnailUrl: 'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg',
+        embedUrl: 'https://www.youtube-nocookie.com/embed/' + v.id,
+        contentUrl: 'https://www.youtube.com/watch?v=' + v.id,
+        description: v.title, publisher: { '@type': 'Organization', name: 'Metabolic Liver Academy' } };
+    }));
   });
   document.querySelectorAll('[data-talks]').forEach(function (box) {
     var list = (window.MLA_TALKS || []).slice().sort(function (a, b) { return parseDate(b.date) - parseDate(a.date); });
@@ -246,6 +284,173 @@
         (x.link ? '<a href="' + esc(x.link) + '" target="_blank" rel="noopener">' + esc(x.linkLabel || 'Open') + '</a>' : '') +
         '</div></article>';
     }).join('');
+  });
+
+  /* ---------- Meet the Expert ----------
+     Everything comes from data/experts.js. An entry is shown only if it is
+     a marked sample (sample: true) or the founder has the expert's written
+     approval (approved: true). Samples never reach the home page or search
+     engines. */
+  var EXPERT_TOPICS = {
+    'masld': ['MASLD', 'MASLD'],
+    'mash-treatment': ['MASH treatment', 'علاج MASH'],
+    'obesity': ['Obesity', 'السمنة'],
+    'diabetes': ['Diabetes', 'السكري'],
+    'nutrition': ['Nutrition', 'التغذية']
+  };
+  var EXPERT_AUD = { patients: ['For patients', 'للمرضى'], physicians: ['For physicians', 'للأطباء'] };
+  var ASSET = html.lang === 'ar' ? '../' : '';   /* expert pages sit at the top of each language folder */
+  var EXPERTS = (window.MLA_EXPERTS || []).filter(function (e) { return e && e.id && (e.sample === true || e.approved === true); });
+  function xf(e, k) { return e[k + '_' + html.lang] || e[k + '_en'] || ''; }
+  function xlist(e, k) { return e[k + '_' + html.lang] || e[k + '_en'] || []; }
+  function initials(name) {
+    var w = String(name).replace(/\(.*?\)/g, '').replace(/^(prof\.?|dr\.?|د\.|أ\.د\.)\s*/i, '').trim().split(/\s+/);
+    return (w[0] || '').charAt(0) + (w.length > 1 ? w[w.length - 1].charAt(0) : '');
+  }
+  var PERSON_ICON = '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="18" r="8" fill="currentColor" opacity=".55"/><path d="M8 42c2-9 9-13 16-13s14 4 16 13" fill="currentColor" opacity=".55"/></svg>';
+  function expertPhoto(e, size) {
+    if (e.photo) return '<img src="' + esc(ASSET + e.photo) + '" alt="" width="' + size + '" height="' + size + '" loading="lazy" decoding="async">';
+    return e.sample ? PERSON_ICON : '<span aria-hidden="true">' + esc(initials(e.name_en || e.name_ar)) + '</span>';
+  }
+  var SAMPLE_BADGE = '<span class="sample-badge">' + t('Sample entry, not a real person', 'مثال، وليس شخصًا حقيقيًا') + '</span>';
+  function expertTags(e) {
+    return (e.topics || []).filter(function (k) { return EXPERT_TOPICS[k]; }).map(function (k) { return '<span class="chip">' + t(EXPERT_TOPICS[k][0], EXPERT_TOPICS[k][1]) + '</span>'; }).join('') +
+      (e.audience || []).filter(function (k) { return EXPERT_AUD[k]; }).map(function (k) { return '<span class="chip c-aud">' + t(EXPERT_AUD[k][0], EXPERT_AUD[k][1]) + '</span>'; }).join('');
+  }
+
+  var exGrid = document.getElementById('ex-grid');
+  if (exGrid) {
+    var exState = { topic: '', aud: '' };
+    var drawExperts = function () {
+      var list = EXPERTS.filter(function (e) {
+        return (!exState.topic || (e.topics || []).indexOf(exState.topic) > -1) && (!exState.aud || (e.audience || []).indexOf(exState.aud) > -1);
+      });
+      document.getElementById('ex-count').textContent = list.length
+        ? t(list.length + (list.length === 1 ? ' interview' : ' interviews'), 'عدد اللقاءات: ' + list.length) : '';
+      exGrid.innerHTML = list.length ? list.map(function (e) {
+        return '<a class="expert-card' + (e.sample ? ' is-sample' : '') + '" href="expert.html?id=' + encodeURIComponent(e.id) + '">' +
+          '<span class="ex-photo">' + expertPhoto(e, 96) + '</span><span class="ex-body">' +
+          (e.sample ? SAMPLE_BADGE : '') +
+          '<strong class="ex-name">' + esc(xf(e, 'name')) + '</strong>' +
+          '<span class="ex-title">' + esc(xf(e, 'title')) + (xf(e, 'country') ? ' · ' + esc(xf(e, 'country')) : '') + '</span>' +
+          '<span class="ex-topic">' + esc(xf(e, 'topic')) + '</span>' +
+          '<span class="ex-tags">' + expertTags(e) + '</span></span></a>';
+      }).join('') : '<p class="empty">' + t('No interviews match these filters yet.', 'لا توجد لقاءات تطابق هذا الاختيار بعد.') + '</p>';
+    };
+    ['ex-topic', 'ex-aud'].forEach(function (gid) {
+      var g = document.getElementById(gid);
+      g.addEventListener('click', function (ev) {
+        var b = ev.target.closest('button'); if (!b) return;
+        g.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+        exState[gid === 'ex-topic' ? 'topic' : 'aud'] = b.getAttribute('data-v');
+        drawExperts();
+      });
+    });
+    drawExperts();
+  }
+
+  var exPage = document.getElementById('expert-page');
+  if (exPage) {
+    var exId = new URLSearchParams(location.search).get('id');
+    var ex = EXPERTS.filter(function (e) { return e.id === exId; })[0];
+    if (!ex) {
+      exPage.innerHTML = '<header class="page-head"><div class="wrap"><h1>' + t('We could not find this expert', 'لم نعثر على هذا الخبير') + '</h1>' +
+        '<p><a href="experts.html">' + t('See all expert interviews', 'اطّلع على كل لقاءات الخبراء') + '</a></p></div></header>';
+    } else {
+      var name = xf(ex, 'name');
+      var other = html.lang === 'ar' ? 'en' : 'ar';
+      var langName = { en: t('English', 'الإنجليزية'), ar: t('Arabic', 'العربية') };
+      var tk = xlist(ex, 'takeaways');
+      var qa = ex.qa || [];
+      var pubs = (ex.publications || []).filter(function (p) { return p && p.url; });
+      var h = '<header class="page-head expert-head"><div class="wrap">' +
+        '<nav class="crumbs small" aria-label="' + t('Breadcrumb', 'مسار التنقل') + '"><a href="experts.html">' + t('Meet the Expert', 'لقاء مع خبير') + '</a></nav>' +
+        (ex.sample ? '<p class="sample-note" role="note">' + t('This is a sample page that shows the layout. It is not a real expert or a real interview.', 'هذه صفحة نموذجية لعرض التصميم، وليست لخبير حقيقي أو لقاء حقيقي.') + '</p>' : '') +
+        '<div class="expert-hero"><span class="ex-photo big">' + expertPhoto(ex, 160) + '</span><div>' +
+        '<p class="eyebrow">' + esc(xf(ex, 'topic')) + '</p>' +
+        '<h1>' + esc(name) + '</h1>' +
+        '<p class="ex-title">' + esc(xf(ex, 'title')) + (xf(ex, 'country') ? ' · ' + esc(xf(ex, 'country')) : '') + '</p>' +
+        '<p class="ex-tags">' + expertTags(ex) + '</p></div></div></div></header>';
+      h += '<section class="section"><div class="wrap read">';
+      if (ex.video) {
+        h += '<h2 class="h-small">' + t('The interview', 'اللقاء') + '</h2>' +
+          '<div class="video expert-video"><button type="button" class="video-thumb video-play" data-id="' + esc(ex.video) + '" data-title="' + esc(name) + '">' + PLAY +
+          '<span class="visually-hidden">' + t('Play the interview with ', 'شغّل اللقاء مع ') + esc(name) + '</span></button></div>' +
+          '<p class="fine">' + t('Recorded in ', 'سُجّل باللغة ') + langName[ex.language || 'en'] + '. ' +
+          t('The video loads from YouTube only when you press play.', 'لا يُحمَّل المقطع من يوتيوب إلا عند الضغط على التشغيل.') + '</p>';
+      }
+      if (tk.length) {
+        h += '<div class="takeaways"><h2 class="h-small">' + t('Key takeaways', 'النقاط الأساسية') + '</h2><ul class="ticks">' +
+          tk.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
+      }
+      if (qa.length) {
+        h += '<h2>' + t('Questions and answers', 'أسئلة وأجوبة') + '</h2><dl class="expert-qa">' +
+          qa.map(function (q) { return '<dt>' + esc(q['q_' + html.lang] || q.q_en) + '</dt><dd>' + esc(q['a_' + html.lang] || q.a_en) + '</dd>'; }).join('') + '</dl>';
+      }
+      var tr = ex['transcript_' + html.lang], trOther = ex['transcript_' + other];
+      if (tr || trOther) {
+        var trLabel = (ex.language || 'en') === html.lang ? t('Full transcript', 'النص الكامل')
+          : t('English text of an interview recorded in ' + langName[ex.language], 'النص العربي للقاء سُجّل باللغة ' + langName[ex.language]);
+        if (tr) h += '<details class="transcript" open><summary>' + trLabel + '</summary><div class="tr-text">' + esc(tr).replace(/\n/g, '<br>') + '</div></details>';
+        if (trOther) h += '<details class="transcript" lang="' + other + '" dir="' + (other === 'ar' ? 'rtl' : 'ltr') + '"><summary>' +
+          (other === 'ar' ? 'النص باللغة العربية' : 'Text in English') + '</summary><div class="tr-text">' + esc(trOther).replace(/\n/g, '<br>') + '</div></details>';
+      }
+      h += '<h2 class="h-small">' + t('About the expert', 'عن الخبير') + '</h2><p>' + esc(xf(ex, 'bio')) + '</p>';
+      if (pubs.length || (ex.profile && ex.profile.url)) {
+        h += '<ul class="ticks">' + pubs.map(function (p) { return '<li><a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.label || p.url) + '</a></li>'; }).join('') +
+          (ex.profile && ex.profile.url ? '<li><a href="' + esc(ex.profile.url) + '" target="_blank" rel="noopener">' + esc(ex.profile.label || t('Professional profile', 'الملف المهني')) + '</a></li>' : '') + '</ul>';
+      }
+      h += '<aside class="record small" aria-label="' + t('Page record', 'سجل الصفحة') + '"><dl>' +
+        (ex.recorded ? '<dt>' + t('Recorded', 'تاريخ التسجيل') + '</dt><dd>' + esc(fmtDate(ex.recorded, html.lang)) + '</dd>' : '') +
+        (ex.reviewed ? '<dt>' + t('Last reviewed', 'آخر مراجعة') + '</dt><dd>' + esc(fmtDate(ex.reviewed, html.lang)) + '</dd>' : '') +
+        '<dt>' + t('Disclosure', 'الإفصاح') + '</dt><dd>' + esc(xf(ex, 'disclosure') || t('No disclosure provided yet.', 'لم يُقدَّم إفصاح بعد.')) + '</dd></dl>' +
+        '<p>' + t('Education only, not personal medical advice. The expert\'s views are their own. ', 'للتثقيف فقط، وليس استشارة طبية شخصية. الآراء الواردة تعبّر عن الخبير. ') +
+        '<a href="experts.html">' + t('All expert interviews', 'كل لقاءات الخبراء') + '</a></p></aside>';
+      h += '</div></section>';
+      exPage.innerHTML = h;
+      exPage.addEventListener('click', function (ev) {
+        var b = ev.target.closest('.video-play'); if (!b) return;
+        var f = document.createElement('iframe');
+        f.className = 'video-frame';
+        f.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(b.getAttribute('data-id')) + '?autoplay=1&rel=0';
+        f.title = b.getAttribute('data-title');
+        f.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+        f.setAttribute('allowfullscreen', '');
+        b.replaceWith(f); f.focus();
+      });
+      document.title = name + ' | ' + t('Meet the Expert', 'لقاء مع خبير') + ' | ' + t('Metabolic Liver Academy', 'أكاديمية الكبد والتمثيل الغذائي');
+      var md = document.querySelector('meta[name="description"]');
+      if (md) md.setAttribute('content', xf(ex, 'topic') + ' – ' + name);
+      if (ex.sample) {
+        var nr = document.createElement('meta'); nr.name = 'robots'; nr.content = 'noindex'; document.head.appendChild(nr);
+      } else {
+        var person = { '@type': 'Person', name: ex.name_en, alternateName: ex.name_ar, jobTitle: ex.title_en,
+          sameAs: pubs.map(function (p) { return p.url; }).concat(ex.profile && ex.profile.url ? [ex.profile.url] : []) };
+        var ld = [person];
+        if (ex.video) ld.push({ '@type': 'VideoObject', name: name + ': ' + xf(ex, 'topic'), description: xf(ex, 'topic'),
+          uploadDate: ex.recorded || undefined, thumbnailUrl: 'https://i.ytimg.com/vi/' + ex.video + '/hqdefault.jpg',
+          embedUrl: 'https://www.youtube-nocookie.com/embed/' + ex.video, inLanguage: ex.language || 'en',
+          transcript: ex['transcript_' + (ex.language || 'en')] || undefined });
+        addLd(ld);
+      }
+    }
+  }
+
+  /* Home page: upcoming live expert sessions (real, approved experts only) */
+  document.querySelectorAll('[data-expert-sessions]').forEach(function (box) {
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var list = EXPERTS.filter(function (e) { return !e.sample && e.session && parseDate(e.session) >= today; })
+      .sort(function (a, b) { return parseDate(a.session) - parseDate(b.session); }).slice(0, 3);
+    if (!list.length) {
+      box.innerHTML = '<p class="empty">' + t('New interviews with liver, metabolic and obesity experts are being prepared. Session dates will appear here and in ',
+        'نُعدّ لقاءات جديدة مع خبراء في الكبد والأيض والسمنة. ستظهر مواعيد الجلسات هنا وفي ') +
+        '<a href="news.html">' + t('News', 'الأخبار') + '</a>.</p>';
+      return;
+    }
+    box.innerHTML = '<div class="session-strip">' + list.map(function (e) {
+      return '<a class="session-card" href="expert.html?id=' + encodeURIComponent(e.id) + '"><time>' + bi(fmtDate(e.session, 'en'), fmtDate(e.session, 'ar')) + '</time>' +
+        '<strong>' + esc(xf(e, 'name')) + '</strong><span class="muted small">' + esc(xf(e, 'topic')) + '</span></a>';
+    }).join('') + '</div>';
   });
 
   /* ---------- Consent gate for tools ---------- */

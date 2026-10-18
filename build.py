@@ -691,6 +691,8 @@ def main():
 
     urls = []
     for rel in sorted(pages):
+        if rel == "expert.html":
+            continue  # a template filled from data/experts.js (expert.html?id=...)
         loc = "" if rel == "index.html" else rel
         urls.append(
             "  <url><loc>%s%s</loc>"

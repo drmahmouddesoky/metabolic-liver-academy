@@ -53,7 +53,7 @@ SECTION = {
     "patients.html": "patients", "learn.html": "patients", "learn/": "patients", "guides.html": "patients",
     "academy.html": "physicians", "modules/": "physicians", "ref.html": "physicians", "ref/": "physicians",
     "guidance.html": "physicians", "calculators.html": "physicians",
-    "lectures.html": "lectures", "experts.html": "experts", "experts/": "experts",
+    "lectures.html": "lectures", "experts.html": "experts", "expert.html": "experts",
     "radar.html": "radar", "news.html": "news",
     "about.html": "about", "partners.html": "about", "legal.html": "about",
     "contact.html": "contact",
