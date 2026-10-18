@@ -36,7 +36,9 @@ def bi(en, ar, tag="span"):
 
 
 def esc(s):
-    return H.escape(s, quote=False)
+    # quote=True: titles and descriptions also go inside attributes (data-title-en="..."),
+    # where an unescaped " would break the page head.
+    return H.escape(s, quote=True)
 
 
 # ------------------------------------------------------------------ head
@@ -47,7 +49,6 @@ HEAD_T = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title data-title-en="{t_en}" data-title-ar="{t_ar}">{t_en}</title>
 <meta name="description" content="{d_en}" data-ar="{d_ar}">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect x='1' y='5' width='5.2' height='24' rx='2.6' fill='%233E9C7B'/%3E%3Crect x='7.7' y='5' width='5.2' height='24' rx='2.6' fill='%2394B95A'/%3E%3Crect x='14.4' y='5' width='5.2' height='24' rx='2.6' fill='%23E0B43C'/%3E%3Crect x='21.1' y='5' width='5.2' height='24' rx='2.6' fill='%23D97B3A'/%3E%3Crect x='27.8' y='5' width='5.2' height='24' rx='2.6' fill='%23A3423E'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="{up}fonts/fonts.css">
 <link rel="stylesheet" href="{up}style.css">
 {extra_head}</head>
@@ -79,20 +80,25 @@ def item_by_slug():
 
 REPO = "https://github.com/drmahmouddesoky/metabolic-liver-academy"
 
+# The founder as named on every page record and in search-engine data.
+# Change it here once and rebuild to update the whole site.
+FOUNDER = {"en": "Dr. Mahmoud Desoky", "ar": "د. محمود الدسوقي",
+           "same_as": ["https://orcid.org/0000-0002-1422-0886", "https://www.linkedin.com/in/drmahmoudaldesoky"]}
+
 
 def page_record(mod, slug, src_file):
     rev = mod.REVIEWED.get(slug)
     ver = mod.VERSIONS.get(slug, "1.0")
-    rv_en = "Reviewed by Dr. Mahmoud Desoky on %s" % rev if rev else "Pending"
-    rv_ar = "راجعها د. محمود الدسوقي بتاريخ %s" % rev if rev else "قيد الإنجاز"
     hist = "%s/commits/main/%s" % (REPO, src_file)
     rows = [
         (("Written by", "إعداد"), ("Dr. Mahmoud Desoky, Founder and Director", "د. محمود الدسوقي، المؤسس والمدير")),
-        (("Medical review", "المراجعة الطبية"), (rv_en, rv_ar)),
         (("Version", "الإصدار"), (ver, ver)),
         (("Last updated", "آخر تحديث"), (mod.UPDATED, mod.UPDATED)),
         (("Next review due", "موعد المراجعة القادمة"), (mod.NEXT_REVIEW, mod.NEXT_REVIEW)),
     ]
+    if rev:  # the review row appears only once a page has been signed off
+        rows.insert(1, (("Medical review", "المراجعة الطبية"),
+                        ("Reviewed by Dr. Mahmoud Desoky on %s" % rev, "راجعها د. محمود الدسوقي بتاريخ %s" % rev)))
     out = ['<aside class="record small" aria-label="Page record"><h2 class="h-small">%s</h2><dl>' % bi("Page record", "سجل الصفحة")]
     for k, v in rows:
         out.append("<dt>%s</dt><dd>%s</dd>" % (bi(*k), bi(esc(v[0]), esc(v[1]))))
@@ -120,7 +126,7 @@ def learn_page(it):
     c = cat_name(it["cat"])
     out = [HEAD.format(
         t_en=esc(it["q"]["en"]) + " | Metabolic Liver Academy",
-        t_ar=esc(it["q"]["ar"]) + " | أكاديمية الكبد الأيضي",
+        t_ar=esc(it["q"]["ar"]) + " | أكاديمية الكبد والتمثيل الغذائي",
         d_en=esc(it["short"]["en"]), d_ar=esc(it["short"]["ar"]), up="../", page="learn")]
     out.append('<header class="page-head"><div class="wrap read">')
     out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../learn.html">%s</a> › <a href="../learn.html#%s">%s</a></nav>'
@@ -162,7 +168,7 @@ def learn_page(it):
 def learn_index():
     out = [HEAD.format(
         t_en="Patient Q&amp;A on fatty liver | Metabolic Liver Academy",
-        t_ar="أسئلة وأجوبة عن الكبد الدهني | أكاديمية الكبد الأيضي",
+        t_ar="أسئلة وأجوبة عن الكبد الدهني | أكاديمية الكبد والتمثيل الغذائي",
         d_en="Plain answers to %d common questions about fatty liver (MASLD and MASH), based on international and Saudi guidelines." % len(L.ITEMS),
         d_ar="إجابات مبسطة عن %d سؤالًا شائعًا حول الكبد الدهني، مبنية على الإرشادات الدولية والسعودية." % len(L.ITEMS),
         up="", page="learn")]
@@ -252,7 +258,7 @@ def ref_page(pg):
     src = all_sources()
     out = [HEAD.format(
         t_en=esc(pg["title"]["en"]) + " | MLA Reference",
-        t_ar=esc(pg["title"]["ar"]) + " | مرجع أكاديمية الكبد الأيضي",
+        t_ar=esc(pg["title"]["ar"]) + " | مرجع أكاديمية الكبد والتمثيل الغذائي",
         d_en=esc(pg["lead"]["en"]), d_ar=esc(pg["lead"]["ar"]), up="../", page="ref",
         extra_head='<link rel="stylesheet" href="../fonts/serif.css">\n')]
     ver = R.VERSIONS.get(pg["slug"], "1.0")
@@ -266,9 +272,10 @@ def ref_page(pg):
     meta = [
         (("For", "موجّه إلى"), ("Healthcare professionals", "العاملون في المجال الصحي")),
         (("Author", "المؤلف"), ("Mahmoud Desoky, MD", "د. محمود الدسوقي")),
-        (("Medical review", "المراجعة الطبية"), ("Reviewed " + rev, "رُوجعت " + rev) if rev else ("Pending", "قيد الإنجاز")),
         (("Version", "الإصدار"), ("%s, updated %s" % (ver, R.UPDATED), "%s، حُدّث في %s" % (ver, R.UPDATED))),
     ]
+    if rev:  # the review row appears only once a page has been signed off
+        meta.insert(2, (("Medical review", "المراجعة الطبية"), ("Reviewed " + rev, "رُوجعت " + rev)))
     out.append('<dl class="mod-meta">' + "".join("<div><dt>%s</dt><dd>%s</dd></div>" % (bi(*k), bi(esc(v[0]), esc(v[1]))) for k, v in meta) + "</dl>")
     out.append("</div></header>")
     toc = []
@@ -330,7 +337,7 @@ def ref_page(pg):
 def ref_index():
     out = [HEAD.format(
         t_en="Doctors&#39; reference library on MASLD and MASH | Metabolic Liver Academy",
-        t_ar="مرجع الأطباء عن الكبد الدهني | أكاديمية الكبد الأيضي",
+        t_ar="مرجع الأطباء عن الكبد الدهني | أكاديمية الكبد والتمثيل الغذائي",
         d_en="Guideline-based summaries for clinicians: diagnosis, fibrosis tests, drugs, cirrhosis care, follow-up and special groups.",
         d_ar="ملخصات مبنية على الإرشادات للأطباء: التشخيص، وفحوص التليّف، والأدوية، ورعاية التشمّع، والمتابعة، والفئات الخاصة.",
         up="", page="ref", extra_head='<link rel="stylesheet" href="fonts/serif.css">\n')]
@@ -456,7 +463,7 @@ def module_page(mod):
 
     out = [HEAD.format(
         t_en=esc(mod["title"]["en"]) + " | MLA Teaching module",
-        t_ar=esc(mod["title"]["ar"]) + " | وحدة تعليمية من أكاديمية الكبد الأيضي",
+        t_ar=esc(mod["title"]["ar"]) + " | وحدة تعليمية من أكاديمية الكبد والتمثيل الغذائي",
         d_en=esc(mod["subtitle"]["en"]), d_ar=esc(mod["subtitle"]["ar"]), up="../", page="academy",
         extra_head='<link rel="stylesheet" href="../fonts/serif.css">\n')]
     ver = M.VERSIONS.get(mod["slug"], "1.0")
@@ -469,11 +476,12 @@ def module_page(mod):
     out.append('<p class="mod-sub">%s</p>' % bi(esc(mod["subtitle"]["en"]), esc(mod["subtitle"]["ar"])))
     meta = [
         (("Author", "المؤلف"), ("Mahmoud Desoky, MD", "د. محمود الدسوقي")),
-        (("Medical review", "المراجعة الطبية"), ("Reviewed " + rev, "رُوجعت " + rev) if rev else ("Pending", "قيد الإنجاز")),
         (("For", "موجّهة إلى"), (mod["audience"]["en"], mod["audience"]["ar"])),
         (("Reading time", "مدة القراءة"), ("About %d minutes" % mod["minutes"], "نحو %d دقيقة" % mod["minutes"])),
         (("Version", "الإصدار"), ("%s, updated %s" % (ver, M.UPDATED), "%s، حُدّثت في %s" % (ver, M.UPDATED))),
     ]
+    if rev:  # the review row appears only once a page has been signed off
+        meta.insert(2, (("Medical review", "المراجعة الطبية"), ("Reviewed " + rev, "رُوجعت " + rev)))
     out.append('<dl class="mod-meta">' + "".join("<div><dt>%s</dt><dd>%s</dd></div>" % (bi(*k), bi(esc(v[0]), esc(v[1]))) for k, v in meta) + "</dl>")
     out.append("</div></header>")
     out.append('<div class="wrap mod-layout">')
@@ -498,10 +506,68 @@ def module_page(mod):
     out.append('<p class="fine">%s</p>' % bi(
         "For education only. This module summarises published evidence and guidelines; it does not replace clinical judgement, full guidelines or local drug labels. It is not accredited for CME credit. <a href=\"../legal.html#disclaimer\">Disclaimer</a>.",
         "للتعليم فقط. تلخّص هذه الوحدة الأدلة والإرشادات المنشورة، ولا تغني عن التقدير السريري أو الإرشادات الكاملة أو نشرات الأدوية المحلية، وهي غير معتمدة لساعات التعليم الطبي المستمر. <a href=\"../legal.html#disclaimer\">إخلاء المسؤولية</a>."))
-    out.append(page_record(M, mod["slug"], "content/modules.py"))
+    out.append(page_record(M, mod["slug"], mod.get("src_file", "content/modules.py")))
     out.append("</article></div>")
     out.append(FOOT.format(up="../"))
     return "".join(out)
+
+
+# ------------------------------------------------------------------ share previews + search-engine data
+def social_tags(soup, rel, lang):
+    """Open Graph / Twitter tags: the title, text and picture shown when a page
+    is shared on WhatsApp, LinkedIn, X or Telegram."""
+    head = soup.head
+    for el in head.find_all("meta", property=re.compile(r"^og:(title|description|image|url|type|site_name)")):
+        el.decompose()
+    title = soup.title.get_text() if soup.title else "Metabolic Liver Academy"
+    d = head.find("meta", attrs={"name": "description"})
+    desc = d["content"] if d is not None else ""
+    url = SITE + ("ar/" if lang == "ar" else "") + rel
+    img = SITE + "images/og-%s.png" % lang
+    site = "أكاديمية الكبد والتمثيل الغذائي" if lang == "ar" else "Metabolic Liver Academy"
+    kind = "article" if rel.startswith(("learn/", "ref/", "modules/")) else "website"
+    for prop, val in (("og:type", kind), ("og:site_name", site), ("og:title", title), ("og:description", desc),
+                      ("og:url", url), ("og:image", img), ("og:image:width", "1200"), ("og:image:height", "630"),
+                      ("og:image:alt", site)):
+        head.append(soup.new_tag("meta", attrs={"property": prop, "content": val}))
+    for name, val in (("twitter:card", "summary_large_image"), ("twitter:title", title),
+                      ("twitter:description", desc), ("twitter:image", img)):
+        head.append(soup.new_tag("meta", attrs={"name": name, "content": val}))
+
+
+def structured_data(soup, rel, lang):
+    """JSON-LD for search engines: who publishes the site (Organization), who
+    writes the pages (Person) and, on clinical pages, that the page is a
+    MedicalWebPage with its audience and last update."""
+    import json
+    url = SITE + ("ar/" if lang == "ar" else "") + rel
+    org = {"@type": "Organization", "@id": SITE + "#org",
+           "name": "Metabolic Liver Academy", "alternateName": ["MLA", "أكاديمية الكبد والتمثيل الغذائي"],
+           "url": SITE, "logo": SITE + "icons/icon-512.png",
+           "founder": {"@id": SITE + "#founder"}}
+    person = {"@type": "Person", "@id": SITE + "#founder", "name": FOUNDER["en"],
+              "alternateName": FOUNDER["ar"], "jobTitle": "Founder, Metabolic Liver Academy",
+              "sameAs": FOUNDER["same_as"]}
+    title = soup.title.get_text() if soup.title else ""
+    d = soup.head.find("meta", attrs={"name": "description"})
+    page = {"@id": url, "url": url, "name": title, "description": d["content"] if d is not None else "",
+            "inLanguage": lang, "isPartOf": {"@id": SITE + "#website"}, "publisher": {"@id": SITE + "#org"}}
+    if rel.startswith(("learn/", "ref/", "modules/")):
+        lib = L if rel.startswith("learn/") else (R if rel.startswith("ref/") else M)
+        page.update({"@type": "MedicalWebPage", "author": {"@id": SITE + "#founder"},
+                     "dateModified": lib.UPDATED,
+                     "audience": {"@type": "PeopleAudience", "audienceType": "Patients and families"}
+                     if rel.startswith("learn/") else {"@type": "MedicalAudience", "audienceType": "Clinician"},
+                     "about": {"@type": "MedicalCondition", "name": "Metabolic dysfunction-associated steatotic liver disease (MASLD)"}})
+    else:
+        page["@type"] = "WebPage"
+    graph = [org, person, page]
+    if rel == "index.html":
+        graph.append({"@type": "WebSite", "@id": SITE + "#website", "url": SITE,
+                      "name": "Metabolic Liver Academy", "inLanguage": ["en", "ar"], "publisher": {"@id": SITE + "#org"}})
+    tag = soup.new_tag("script", type="application/ld+json")
+    tag.string = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False, separators=(",", ":"))
+    soup.head.append(tag)
 
 
 # ------------------------------------------------------------------ split one bilingual page
@@ -541,12 +607,30 @@ def split(src_html, rel, lang):
                     continue  # page links stay inside the Arabic site
                 el[attr] = "../" + v
 
+    # wide tables scroll sideways on phones: let keyboard users reach and scroll them
+    for w in soup.select("div.table-wrap"):
+        cap = w.find("caption")
+        prev = w.find_previous(["h2", "h3", "h4"])
+        label = (cap or prev).get_text(" ", strip=True) if (cap or prev) else ("جدول" if lang == "ar" else "Table")
+        w["tabindex"] = "0"
+        w["role"] = "region"
+        w["aria-label"] = label
+
     # installable web app: manifest, theme colour, home-screen icon
     head = soup.head
     up_site = "../" * rel.count("/") + ("../" if lang == "ar" else "")
     head.append(soup.new_tag("link", rel="manifest", href=up_site + "manifest.webmanifest"))
     head.append(soup.new_tag("meta", attrs={"name": "theme-color", "content": "#155E5C"}))
     head.append(soup.new_tag("link", rel="apple-touch-icon", href=up_site + "icons/apple-touch-icon.png"))
+
+    # tab icon: one SVG file (plus a PNG for older browsers) instead of an inline data link
+    for el in soup.find_all("link", rel="icon"):
+        el.decompose()
+    head.append(soup.new_tag("link", rel="icon", href=up_site + "favicon.svg", type="image/svg+xml"))
+    head.append(soup.new_tag("link", rel="icon", href=up_site + "icons/favicon-32.png", type="image/png", sizes="32x32"))
+
+    social_tags(soup, rel, lang)
+    structured_data(soup, rel, lang)
 
     # language alternates + canonical
     url_en = SITE + rel

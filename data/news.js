@@ -156,7 +156,7 @@ window.MLA_NEWS = [
     type: "mine",
     date: "2026-10-02",
     title_en: "The Metabolic Liver Academy is now online",
-    title_ar: "أكاديمية الكبد الأيضي الآن على الإنترنت",
+    title_ar: "أكاديمية الكبد والتمثيل الغذائي الآن على الإنترنت",
     summary_en: "A free, bilingual home for fatty liver (MASLD and MASH) education: plain guides for patients, practical tools for doctors, and news from the field.",
     summary_ar: "منصة مجانية ثنائية اللغة للتثقيف حول الكبد الدهني: أدلة مبسطة للمرضى، وأدوات عملية للأطباء، وأخبار هذا المجال.",
     link: ""

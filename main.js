@@ -102,7 +102,7 @@
       '<button class="menu-btn" type="button" aria-expanded="false" aria-controls="side-nav" aria-label="' + t('Open menu', 'افتح القائمة') + '">' +
         '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>' +
       '<a class="brand" href="' + ROOT + 'index.html">' + mark +
-        '<span>' + t('Metabolic Liver Academy', 'أكاديمية الكبد الأيضي') +
+        '<span>' + t('Metabolic Liver Academy', 'أكاديمية الكبد والتمثيل الغذائي') +
         '<small>' + t('Healthy Liver. Healthy Life.', 'كبد سليم. حياة صحية.') + '</small></span></a>' +
       '<a class="lang-btn" href="' + twinUrl() + '" hreflang="' + (html.lang === 'ar' ? 'en' : 'ar') + '" lang="' + (html.lang === 'ar' ? 'en' : 'ar') + '">' + (html.lang === 'ar' ? 'English' : 'العربية') + '</a>' +
     '</div>';
@@ -167,6 +167,22 @@
     });
   });
 
+  /* ---------- Private visit counter (GoatCounter) ----------
+     Counts page views with no cookies and no personal data. The numbers
+     are visible only on the founder's GoatCounter dashboard, never on
+     the site. To switch it on, put your GoatCounter site code between
+     the quotes, e.g. 'mla' for https://mla.goatcounter.com.
+     Leave it empty ('') to switch it off. */
+  var GOATCOUNTER = '';
+  var dnt = navigator.doNotTrack === '1' || window.doNotTrack === '1';
+  if (GOATCOUNTER && !dnt && location.protocol === 'https:') {
+    var gc = document.createElement('script');
+    gc.async = true;
+    gc.src = 'https://gc.zgo.at/count.js';
+    gc.setAttribute('data-goatcounter', 'https://' + GOATCOUNTER + '.goatcounter.com/count');
+    document.body.appendChild(gc);
+  }
+
   /* ---------- Install as an app ----------
      Android and desktop Chrome/Edge: the browser's own install prompt.
      iPhone/iPad Safari: a short tip (Share, then Add to Home Screen). */
@@ -197,7 +213,7 @@
   footer.className = 'site-footer';
   footer.innerHTML =
     '<div class="wrap"><div class="foot-grid">' +
-      '<div><p><strong>' + bi('Metabolic Liver Academy', 'أكاديمية الكبد الأيضي') + '</strong></p>' +
+      '<div><p><strong>' + bi('Metabolic Liver Academy', 'أكاديمية الكبد والتمثيل الغذائي') + '</strong></p>' +
         '<p class="note">' + bi(
           'Education only. This site does not give medical advice, diagnosis or treatment. Always talk to your own doctor about your health. In an emergency, call your local emergency number.',
           'هذا الموقع للتثقيف فقط، ولا يقدّم استشارة طبية أو تشخيصًا أو علاجًا. تحدّث دائمًا مع طبيبك عن صحتك. في الحالات الطارئة اتصل برقم الطوارئ في بلدك.') + '</p></div>' +
@@ -215,7 +231,7 @@
         '<li><a href="https://orcid.org/0000-0002-1422-0886" target="_blank" rel="noopener">ORCID</a></li>' +
       '</ul></div>' +
     '</div>' +
-    '<div class="bottom">© ' + new Date().getFullYear() + ' ' + bi('Metabolic Liver Academy (MLA). Founded by Dr. Mahmoud Desoky.', 'أكاديمية الكبد الأيضي. أسسها د. محمود الدسوقي.') + '</div></div>';
+    '<div class="bottom">© ' + new Date().getFullYear() + ' ' + bi('Metabolic Liver Academy (MLA). Founded by Dr. Mahmoud Desoky.', 'أكاديمية الكبد والتمثيل الغذائي. أسسها د. محمود الدسوقي.') + '</div></div>';
   document.body.appendChild(footer);
 
   /* ---------- Helpers ---------- */
@@ -354,6 +370,17 @@
     });
   }
 
+  /* Read a number typed on any keyboard: accepts Arabic-Indic (٠-٩) and
+     Persian (۰-۹) digits, and "," or "٫" as the decimal mark. */
+  function toNum(raw) {
+    var s = String(raw).trim()
+      .replace(/[٠-٩]/g, function (d) { return d.charCodeAt(0) - 0x0660; })
+      .replace(/[۰-۹]/g, function (d) { return d.charCodeAt(0) - 0x06F0; })
+      .replace(/[٫,]/g, '.');
+    var v = parseFloat(s);
+    return isFinite(v) ? v : NaN;
+  }
+
   /* ---------- FIB-4 calculator (for clinicians) ----------
      FIB-4 = (age × AST) / (platelets × √ALT)
      Rule-out < 1.30 (use < 2.0 from age 65); rule-in >= 2.67.
@@ -363,13 +390,13 @@
     fib.addEventListener('submit', function (e) {
       e.preventDefault();
       var out = document.getElementById('fib4-result');
-      function num(id) { var v = parseFloat(String(document.getElementById(id).value).replace(',', '.')); return isFinite(v) ? v : NaN; }
+      function num(id) { return toNum(document.getElementById(id).value); }
       var age = num('f-age'), ast = num('f-ast'), alt = num('f-alt'), plt = num('f-plt');
       var bad = [];
       if (!(age >= 18 && age <= 100)) bad.push(t('age (18 to 100 years)', 'العمر (18 إلى 100 سنة)'));
       if (!(ast > 0 && ast < 5000)) bad.push('AST');
       if (!(alt > 0 && alt < 5000)) bad.push('ALT');
-      if (!(plt > 0 && plt < 2000)) bad.push(t('platelets (×10⁹/L)', 'الصفائح (×10⁹/لتر)'));
+      if (!(plt >= 10 && plt <= 1000)) bad.push(t('platelets (10 to 1000 ×10⁹/L)', 'الصفائح (10 إلى 1000 ×10⁹/لتر)'));
       out.hidden = false;
       if (bad.length) {
         out.className = 'result';
@@ -419,7 +446,7 @@
     nf.addEventListener('submit', function (e) {
       e.preventDefault();
       var out = document.getElementById('nfs-result');
-      function num(id) { var v = parseFloat(String(document.getElementById(id).value).replace(',', '.')); return isFinite(v) ? v : NaN; }
+      function num(id) { return toNum(document.getElementById(id).value); }
       var age = num('n-age'), wt = num('n-wt'), ht = num('n-ht'), ast = num('n-ast'), alt = num('n-alt'), plt = num('n-plt'), alb = num('n-alb');
       var dm = document.getElementById('n-dm').value;
       var unit = document.getElementById('n-alb-unit').value;
@@ -430,7 +457,7 @@
       if (dm !== '0' && dm !== '1') bad.push(t('diabetes (yes or no)', 'السكري (نعم أو لا)'));
       if (!(ast > 0 && ast < 5000)) bad.push('AST');
       if (!(alt > 0 && alt < 5000)) bad.push('ALT');
-      if (!(plt > 0 && plt < 2000)) bad.push(t('platelets (×10⁹/L)', 'الصفائح (×10⁹/لتر)'));
+      if (!(plt >= 10 && plt <= 1000)) bad.push(t('platelets (10 to 1000 ×10⁹/L)', 'الصفائح (10 إلى 1000 ×10⁹/لتر)'));
       var albDl = unit === 'gL' ? alb / 10 : alb;
       if (!(albDl >= 1 && albDl <= 7)) bad.push(t('albumin (check the unit)', 'الألبومين (راجع الوحدة)'));
       out.hidden = false;

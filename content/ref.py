@@ -387,7 +387,7 @@ PAGES = [
  ],
  "sections": [
   {"h": ("The two approved drugs", "الدواءان المعتمدان"),
-   "table": {"head": ["", ("Resmetirom", "الريسميتيروم"), ("Semaglutide 2.4 mg", "السيماغلوتايد 2.4 ملغ")],
+   "table": {"head": [("Feature", "البند"), ("Resmetirom", "الريسميتيروم"), ("Semaglutide 2.4 mg", "السيماغلوتايد 2.4 ملغ")],
              "rows": [
               [("How it works", "آلية العمل"), ("Liver-directed thyroid hormone receptor-β agonist", "منبّه لمستقبل هرمون الغدة الدرقية بيتا موجّه للكبد"), ("GLP-1 receptor agonist; weight loss and metabolic effects", "منبّه لمستقبل GLP-1؛ خسارة وزن وتأثيرات أيضية")],
               [("Dose", "الجرعة"), ("80 mg daily (<100 kg) or 100 mg daily (≥100 kg), by mouth", "80 ملغ يوميًا (<100 كغ) أو 100 ملغ يوميًا (≥100 كغ) بالفم"), ("2.4 mg weekly injection, built up over about 16 weeks", "2.4 ملغ حقنة أسبوعية، تُرفع تدريجيًا خلال نحو 16 أسبوعًا")],

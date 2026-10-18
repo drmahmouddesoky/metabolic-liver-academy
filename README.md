@@ -83,7 +83,22 @@ The build keeps only the English text in the English pages and only the Arabic t
 ## Privacy
 
 The tools run only in the visitor's browser. Nothing they type is stored or sent.
-There is no tracking and no analytics, and pages load nothing from other websites.
+There is no tracking and no cookies. Pages load nothing from other websites,
+except the private visit counter below once it is switched on.
+
+## Private visit counter (only you see the numbers)
+
+The site can count visits with GoatCounter (free, no cookies, no personal data,
+so no cookie banner is needed). The numbers appear only on your own GoatCounter
+dashboard, never on the site.
+
+1. Sign up at https://www.goatcounter.com and pick a site code, e.g. `mla`
+   (your dashboard is then https://mla.goatcounter.com).
+2. Keep "Allow public access to the dashboard" switched off in GoatCounter's settings.
+3. On GitHub, open `main.js`, find `var GOATCOUNTER = '';` and put your code
+   between the quotes: `var GOATCOUNTER = 'mla';`. Commit.
+
+To switch it off again, empty the quotes.
 
 ## Side menu, share buttons and the app
 
