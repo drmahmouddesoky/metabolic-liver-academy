@@ -111,7 +111,7 @@
      e.g. 'https://metabolic-liver-academy.beehiiv.com/subscribe'.
      Every "Join our mailing list" button then opens that form.
      While it is empty, the button opens an email to the Academy instead. */
-  var NEWSLETTER_URL = '';
+  var NEWSLETTER_URL = 'https://metabolic-liver-academy.beehiiv.com/subscribe';
   if (NEWSLETTER_URL) {
     document.querySelectorAll('[data-newsletter]').forEach(function (a) {
       a.href = NEWSLETTER_URL;
