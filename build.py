@@ -663,7 +663,7 @@ def write(path, text):
 def main():
     pages = {}
     for name in sorted(os.listdir(os.path.join(ROOT, "src"))):
-        if name.endswith(".html"):
+        if name.endswith(".html") and not name.startswith("_"):
             with open(os.path.join(ROOT, "src", name), encoding="utf-8") as f:
                 pages[name] = f.read()
     pages["learn.html"] = learn_index()
@@ -703,6 +703,13 @@ def main():
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n'
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
           + "\n".join(urls) + "\n</urlset>\n")
+    # "page not found": English chrome, both languages in the body, no Arabic copy
+    with open(os.path.join(ROOT, "src", "_404.html"), encoding="utf-8") as f:
+        nf = f.read().replace("%%THEME_BOOT%%", chrome.THEME_BOOT)
+    nf = chrome.add_chrome(nf, "404.html")
+    nf = re.sub(r'<span data-lang="ar">.*?</span>', "", nf)
+    nf = nf.replace('<span data-lang="en">', "<span>")
+    write("404.html", nf.replace('href="ar/404.html"', 'href="ar/index.html"'))
     write("robots.txt", "User-agent: *\nAllow: /\nSitemap: %ssitemap.xml\n" % SITE)
     print("Built %d pages x 2 languages" % len(pages))
 
