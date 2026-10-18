@@ -129,7 +129,9 @@ To switch it off again, empty the quotes.
 ## Mailing list (beehiiv)
 
 Every page has a "Stay in touch" strip above the footer with **Join our mailing list** and
-**Contact us**. Until a beehiiv link is added, "Join our mailing list" opens an email to
+**Contact us**. "Join our mailing list" opens the Academy's beehiiv page,
+`https://metabolic-liver-academy.beehiiv.com/subscribe` (set in `main.js`). If that line is
+emptied, the button falls back to an email to
 the Academy with "Subscribe" in the subject.
 
 To connect beehiiv (free plan; past issues also become public web pages):
