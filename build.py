@@ -635,13 +635,36 @@ def split(src_html, rel, lang):
     head.insert(0, soup.new_tag("meta", attrs={"name": "viewport", "content": "width=device-width, initial-scale=1"}))
     head.insert(0, soup.new_tag("meta", charset="utf-8"))
 
+    # the small font list files go straight into the page (one less request
+    # before the first paint); their font paths are made relative to this page
+    for el in head.find_all("link", rel="stylesheet"):
+        href = el.get("href", "")
+        if href.endswith(("fonts/fonts.css", "fonts/serif.css")):
+            with open(os.path.join(ROOT, "fonts", href.rsplit("/", 1)[1]), encoding="utf-8") as f:
+                css_txt = f.read()
+            css_txt = re.sub(r"/\*.*?\*/", "", css_txt, flags=re.S).strip()
+            css_txt = re.sub(r"url\(([^)]+)\)", lambda m: "url(%sfonts/%s)" % (up_site, m.group(1)), css_txt)
+            style = soup.new_tag("style")
+            style.string = css_txt
+            el.replace_with(style)
+
+    # scripts at the end of the page: download in the background, run in order
+    # once the page is read (they no longer hold up the first paint)
+    for el in soup.find_all("script", src=True):
+        el["defer"] = ""
+
     # fonts the first screen needs: fetch them straight away, so the text does not
     # change font (and move) a moment after the page appears
-    first_fonts = (("ibm-plex-sans-arabic-arabic-400-normal", "ibm-plex-sans-arabic-arabic-600-normal")
+    # (Arabic pages also use the bold Latin font: headings often contain MASLD, MASH, FIB-4)
+    first_fonts = (("ibm-plex-sans-arabic-arabic-400-normal", "ibm-plex-sans-arabic-arabic-600-normal",
+                    "ibm-plex-sans-latin-600-normal")
                    if lang == "ar" else ("ibm-plex-sans-latin-400-normal", "ibm-plex-sans-latin-600-normal"))
+    if rel.startswith("modules/"):  # teaching modules are set in a serif face
+        first_fonts += (("noto-naskh-arabic-arabic-400-normal",) if lang == "ar"
+                        else ("source-serif-4-latin-400-normal", "source-serif-4-latin-600-normal"))
     if lang == "ar" and rel == "radar.html":  # the paper list is in English
-        first_fonts += ("ibm-plex-sans-latin-400-normal", "ibm-plex-sans-latin-600-normal")
-    css = head.find("link", rel="stylesheet")
+        first_fonts += ("ibm-plex-sans-latin-400-normal",)
+    css = head.find("link", rel="stylesheet") or head.find("style")
     for name in first_fonts:
         css.insert_before(soup.new_tag("link", rel="preload", href=up_site + "fonts/%s.woff2" % name,
                                        attrs={"as": "font", "type": "font/woff2", "crossorigin": ""}))
