@@ -523,7 +523,9 @@ def social_tags(soup, rel, lang):
     d = head.find("meta", attrs={"name": "description"})
     desc = d["content"] if d is not None else ""
     url = SITE + ("ar/" if lang == "ar" else "") + rel
-    img = SITE + "images/og-%s.png" % lang
+    # a main page uses its own picture (images/og/<page>-<lang>.png) when there is one
+    own = "images/og/%s-%s.png" % (rel.replace(".html", "").replace("/", "-"), lang)
+    img = SITE + (own if os.path.exists(os.path.join(ROOT, own)) else "images/og-%s.png" % lang)
     site = "أكاديمية الكبد والتمثيل الغذائي" if lang == "ar" else "Metabolic Liver Academy"
     kind = "article" if rel.startswith(("learn/", "ref/", "modules/")) else "website"
     for prop, val in (("og:type", kind), ("og:site_name", site), ("og:title", title), ("og:description", desc),
