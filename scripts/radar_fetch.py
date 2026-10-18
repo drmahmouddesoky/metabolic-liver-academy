@@ -25,10 +25,14 @@ import time
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "data", "radar.js")
+# A small file with only recent papers loads first, so the Radar page opens fast.
+# The full list (data/radar.js) loads only when a visitor asks for older papers.
+OUT_RECENT = os.path.join(ROOT, "data", "radar-recent.js")
+RECENT_DAYS = 32   # the page opens on "30 days"
 EUTILS = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
 TOOL = "MetabolicLiverAcademyRadar"
 API_KEY = os.environ.get("NCBI_API_KEY", "")  # optional, allows faster requests
@@ -264,6 +268,30 @@ def fetch(ids):
 
 
 # ---------------------------------------------------------------- main
+def write_js(path, payload):
+    body = ("/* Publication Radar data. Written automatically every day by scripts/radar_fetch.py.\n"
+            "   Do not edit by hand: your changes would be replaced on the next update. */\n"
+            "window.MLA_RADAR = " + json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + ";\n")
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(body)
+    os.replace(tmp, path)
+    return len(body.encode()) // 1024
+
+
+def recent_payload(payload, now=None):
+    """The same data, keeping only papers from the last RECENT_DAYS days.
+    'counts' keeps the full totals for the Global and MENA tabs."""
+    now = now or datetime.now(timezone.utc)
+    cut = (now - timedelta(days=RECENT_DAYS)).strftime("%Y-%m-%d")
+    items = payload["items"]
+    small = dict(payload)
+    small["items"] = [x for x in items if x.get("d", "") >= cut]
+    small["recentDays"] = RECENT_DAYS
+    small["counts"] = {"global": sum(1 for x in items if x.get("w")), "mena": sum(1 for x in items if x.get("m"))}
+    return small
+
+
 def save(items):
     items.sort(key=lambda x: (x.get("d", ""), x["p"]), reverse=True)
     payload = {
@@ -271,15 +299,11 @@ def save(items):
         "globalDays": GLOBAL_DAYS, "menaDays": MENA_DAYS,
         "items": items,
     }
-    body = ("/* Publication Radar data. Written automatically every day by scripts/radar_fetch.py.\n"
-            "   Do not edit by hand: your changes would be replaced on the next update. */\n"
-            "window.MLA_RADAR = " + json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + ";\n")
-    tmp = OUT + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as f:
-        f.write(body)
-    os.replace(tmp, OUT)
-    print("Saved %d papers (%d MENA) to data/radar.js, %d KB"
-          % (len(items), sum(1 for x in items if x.get("m")), len(body.encode()) // 1024))
+    kb = write_js(OUT, payload)
+    small = recent_payload(payload)
+    kb_small = write_js(OUT_RECENT, small)
+    print("Saved %d papers (%d MENA) to data/radar.js, %d KB; %d recent papers to data/radar-recent.js, %d KB"
+          % (len(items), sum(1 for x in items if x.get("m")), kb, len(small["items"]), kb_small))
 
 
 def main():

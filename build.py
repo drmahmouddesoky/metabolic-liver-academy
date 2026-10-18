@@ -635,6 +635,17 @@ def split(src_html, rel, lang):
     head.insert(0, soup.new_tag("meta", attrs={"name": "viewport", "content": "width=device-width, initial-scale=1"}))
     head.insert(0, soup.new_tag("meta", charset="utf-8"))
 
+    # fonts the first screen needs: fetch them straight away, so the text does not
+    # change font (and move) a moment after the page appears
+    first_fonts = (("ibm-plex-sans-arabic-arabic-400-normal", "ibm-plex-sans-arabic-arabic-600-normal")
+                   if lang == "ar" else ("ibm-plex-sans-latin-400-normal", "ibm-plex-sans-latin-600-normal"))
+    if lang == "ar" and rel == "radar.html":  # the paper list is in English
+        first_fonts += ("ibm-plex-sans-latin-400-normal", "ibm-plex-sans-latin-600-normal")
+    css = head.find("link", rel="stylesheet")
+    for name in first_fonts:
+        css.insert_before(soup.new_tag("link", rel="preload", href=up_site + "fonts/%s.woff2" % name,
+                                       attrs={"as": "font", "type": "font/woff2", "crossorigin": ""}))
+
     # tab icon: one SVG file (plus a PNG for older browsers) instead of an inline data link
     for el in soup.find_all("link", rel="icon"):
         el.decompose()

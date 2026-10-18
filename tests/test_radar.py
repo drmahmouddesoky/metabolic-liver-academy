@@ -31,3 +31,13 @@ assert "m" not in b
 assert "fibrosis" in b["g"] and "doi" not in b
 
 print("Radar parser: all checks passed")
+
+# The small "recent" file keeps only recent papers but the full tab totals
+from datetime import datetime, timezone  # noqa: E402
+payload = {"updated": "2026-10-17T07:00Z", "items": [
+    {"p": "1", "d": "2026-10-10", "w": 1}, {"p": "2", "d": "2026-08-01", "w": 1, "m": 1}, {"p": "3", "d": "2026-09-20", "m": 1}]}
+small = R.recent_payload(payload, datetime(2026, 10, 17, tzinfo=timezone.utc))
+assert [x["p"] for x in small["items"]] == ["1", "3"], small["items"]
+assert small["counts"] == {"global": 2, "mena": 2}, small["counts"]
+assert len(payload["items"]) == 3   # the full list is not changed
+print("Radar recent file: all checks passed")

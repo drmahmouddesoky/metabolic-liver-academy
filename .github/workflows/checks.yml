@@ -10,7 +10,8 @@ on:
   push:
     branches: [main]
     paths-ignore:
-      - data/radar.js   # the daily Radar update needs no checks
+      - data/radar.js          # the daily Radar update needs no checks
+      - data/radar-recent.js
 
 permissions:
   contents: read

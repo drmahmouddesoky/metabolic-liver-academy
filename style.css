@@ -169,7 +169,7 @@ html[lang="ar"] .brand-name { font-size: 1.02rem; letter-spacing: 0; }
 .site-nav { position: sticky; top: 0; z-index: 30; background: var(--white); border-bottom: 1px solid var(--line); }
 .nav-list { list-style: none; margin: 0 auto; padding: 0; display: flex; flex-wrap: wrap; gap: 2px; width: min(100% - 32px, var(--wide)); }
 .nav-item { position: relative; }
-.nav-top { display: inline-flex; align-items: center; gap: 4px; padding: 13px 12px; font: inherit; font-size: 0.95rem; font-weight: 500; color: var(--ink); background: none; border: 0; text-decoration: none; cursor: pointer; border-radius: 0; }
+.nav-top { display: inline-flex; align-items: center; gap: 4px; padding: 13px 12px; font: inherit; font-size: 0.95rem; font-weight: 600; color: var(--ink); background: none; border: 0; text-decoration: none; cursor: pointer; border-radius: 0; }
 .nav-top:hover { color: var(--pine); text-decoration: none; }
 .nav-item.is-active > .nav-top { color: var(--pine); box-shadow: inset 0 -3px 0 var(--pine); }
 .nav-chev { width: 15px; height: 15px; transition: transform .15s; }
@@ -691,3 +691,8 @@ html[dir="rtl"] .qcard-foot { padding: 8px 18px 10px 12px; }
 .contact-value { font-size: 1.1rem; font-weight: 600; color: var(--pine); margin: 0 0 6px; overflow-wrap: anywhere; }
 .contact-warning { margin-top: 24px; }
 .contact-warning .h-small { margin-top: 0; }
+
+/* Lists filled in by a script (experts, videos, talks, Radar): keep their
+   space while they load, so the rest of the page does not jump. */
+#ex-grid:empty, [data-videos]:empty, #radar-picks:empty, #radar-list:empty { min-height: 100vh; }
+[data-talks]:empty { min-height: 240px; }
