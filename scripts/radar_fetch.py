@@ -295,11 +295,16 @@ def parse_article(art):
 
     # every author's country, in author order (first author's first)
     countries = []
+    unplaced = False      # an address with no recognisable country
     for au in authors:
         for f in au.findall("AffiliationInfo/Affiliation"):
-            for c in address_countries(text(f)):
+            found = address_countries(text(f))
+            unplaced = unplaced or not found
+            for c in found:
                 if c not in countries:
                     countries.append(c)
+    if not countries:
+        unplaced = True   # no addresses to check (e.g. a group author list)
     mena = [c for c in countries if c in MENA_NAMES]
 
     # publication type
@@ -341,6 +346,8 @@ def parse_article(art):
         item["c"] = countries
     if mena:
         item["m"] = 1
+    if unplaced:
+        item["_u"] = 1    # used by main(), not saved
     return item
 
 
@@ -429,12 +436,30 @@ def save(items):
           % (len(items), sum(1 for x in items if x.get("m")), kb, len(small["items"]), kb_small))
 
 
+def mark_lists(items, g_set, m_set):
+    """Mark which list each paper belongs to; drop papers in neither."""
+    for it in items:
+        if it["p"] in g_set:
+            it["w"] = 1  # belongs to the Global (worldwide) list
+        # MENA list: PubMed's MENA address search, confirmed by our tagger.
+        # PubMed's search also matches words such as "Lebanon, New Hampshire"
+        # or "Turkey Creek Medical Center", so a paper stays only if an author
+        # is placed in a MENA country, or some address could not be placed.
+        if it["p"] in m_set and (it.get("m") or it.get("_u")):
+            it["m"] = 1
+        else:
+            it.pop("m", None)
+        it.pop("_u", None)
+    return [it for it in items if it.get("w") or it.get("m")]
+
+
 def main():
     if len(sys.argv) == 3 and sys.argv[1] == "--from-xml":
         with open(sys.argv[2], "rb") as f:
             items = parse_xml(f.read())
         for it in items:
             it["w"] = 1
+            it.pop("_u", None)
         save(items)
         return
 
@@ -445,14 +470,7 @@ def main():
 
     ids = list(dict.fromkeys(g_ids + m_ids))
     items = fetch(ids)
-    m_set, g_set = set(m_ids), set(g_ids)
-    for it in items:
-        if it["p"] in g_set:
-            it["w"] = 1  # belongs to the Global (worldwide) list
-        if it["p"] in m_set:
-            it["m"] = 1  # PubMed matched a MENA address even if our tagger missed it
-        else:
-            it.pop("m", None)  # MENA list = PubMed's MENA search only
+    items = mark_lists(items, set(g_ids), set(m_ids))
     if len(items) < 20:
         raise SystemExit("Too few papers (%d). Keeping yesterday's list." % len(items))
     save(items)

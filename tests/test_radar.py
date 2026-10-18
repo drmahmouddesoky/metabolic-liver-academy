@@ -75,6 +75,17 @@ for addr, want in [
     assert R.address_countries(addr) == want, (addr, R.address_countries(addr))
 print("Radar address rules: all checks passed")
 
+# MENA list needs PubMed's MENA match AND a MENA author (or an unplaced address)
+L = R.mark_lists([
+    {"p": "1", "c": ["USA"]},                       # PubMed matched "Lebanon, New Hampshire": out
+    {"p": "2", "c": ["USA", "Egypt"], "m": 1},      # real MENA author: in
+    {"p": "3", "c": ["USA"], "_u": 1},              # an address with no country: kept, to be safe
+    {"p": "4", "c": ["USA"]},                       # in the Global list only
+], g_set={"4"}, m_set={"1", "2", "3"})
+assert [(x["p"], x.get("m"), x.get("w")) for x in L] == [("2", 1, None), ("3", 1, None), ("4", None, 1)], L
+assert all("_u" not in x for x in L)
+print("Radar lists: all checks passed")
+
 # The small "recent" file keeps only recent papers but the full tab totals
 from datetime import datetime, timezone  # noqa: E402
 payload = {"updated": "2026-10-17T07:00Z", "items": [
