@@ -119,6 +119,19 @@
     });
   });
 
+  /* ---------- Mailing list (MailerLite) ----------
+     Paste the link of your MailerLite sign-up form between the quotes,
+     e.g. 'https://subscribe-forms.com/...' or 'https://preview.mailerlite.io/forms/...'.
+     Every "Join our mailing list" button then opens that form.
+     While it is empty, the button opens an email to the Academy instead. */
+  var NEWSLETTER_URL = '';
+  if (NEWSLETTER_URL) {
+    document.querySelectorAll('[data-newsletter]').forEach(function (a) {
+      a.href = NEWSLETTER_URL;
+      a.target = '_blank';
+    });
+  }
+
   /* ---------- Private visit counter (GoatCounter) ----------
      Counts page views with no cookies and no personal data. The numbers
      are visible only on the founder's GoatCounter dashboard, never on

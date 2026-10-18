@@ -126,6 +126,25 @@ How it was set up:
 
 To switch it off again, empty the quotes.
 
+## Mailing list (MailerLite)
+
+Every page has a "Stay in touch" strip above the footer with **Join our mailing list** and
+**Contact us**. Until a MailerLite link is added, "Join our mailing list" opens an email to
+the Academy with "Subscribe" in the subject.
+
+To connect MailerLite (free for small lists):
+1. Sign up at https://www.mailerlite.com and confirm your account.
+2. Go to **Forms** > **Create form**, choose a **Pop-up** or **Embedded form** (any type works),
+   give it a name such as "MLA mailing list", and add an email field (a name field is optional).
+3. In the form settings, switch on **double opt-in** (people confirm by email; this is good practice
+   for consent).
+4. Open the form's **Overview** or **Share** page and copy its public link.
+5. On GitHub, open `main.js`, find `var NEWSLETTER_URL = '';` and paste the link between the quotes.
+   Click **Commit changes**. Every "Join our mailing list" button now opens your form.
+
+To write a newsletter, use **Campaigns** in MailerLite. Keep each email short, link to the site,
+and never include patient details.
+
 ## Menu, dark mode, share pictures and the app
 
 - The header, main menu and footer are written into every page by `build.py`, from `chrome.py`.

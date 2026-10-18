@@ -701,3 +701,13 @@ html[dir="rtl"] .qcard-foot { padding: 8px 18px 10px 12px; }
 #calc-hub { min-height: 100vh; }
 [data-expert-sessions]:empty { min-height: 120px; }
 [data-talks]:empty { min-height: 240px; }
+
+/* ---------- Stay in touch (above the footer on every page) ---------- */
+.touch-band { background: var(--pine-tint); border-top: 1px solid var(--line); padding: 36px 0; }
+.touch-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px 40px; flex-wrap: wrap; }
+.touch-h { font-size: 1.4rem; margin: 0 0 4px; }
+.touch-band p { margin: 0; color: var(--muted); max-width: 58ch; }
+.touch-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.touch-actions .btn { margin-top: 0; }
+.touch-band .btn.ghost { background: var(--white); }
+@media print { .touch-band { display: none !important; } }
