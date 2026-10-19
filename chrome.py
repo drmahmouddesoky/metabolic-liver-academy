@@ -67,12 +67,12 @@ def bi(en, ar):
     return '<span data-lang="en">%s</span><span data-lang="ar">%s</span>' % (en, ar)
 
 
-MARK = ('<svg class="brand-mark" viewBox="0 0 34 34" aria-hidden="true" focusable="false">'
-        '<rect x="1" y="5" width="5.2" height="24" rx="2.6" fill="#3E9C7B"/>'
-        '<rect x="7.7" y="5" width="5.2" height="24" rx="2.6" fill="#94B95A"/>'
-        '<rect x="14.4" y="5" width="5.2" height="24" rx="2.6" fill="#E0B43C"/>'
-        '<rect x="21.1" y="5" width="5.2" height="24" rx="2.6" fill="#D97B3A"/>'
-        '<rect x="27.8" y="5" width="5.2" height="24" rx="2.6" fill="#A3423E"/></svg>')
+def mark(up, dark_only=False):
+    """The MLA logo. Two versions: blue letters for light pages, light letters
+    for dark mode (and the always-dark footer). CSS shows the right one."""
+    img = ('<img class="brand-mark %s" src="%simages/brand/%s-160.webp" alt="" width="79" height="46">')
+    dark = img % ("logo-d", up, "mla-logo-dark")
+    return dark if dark_only else img % ("logo-l", up, "mla-logo") + dark
 
 ICON_MENU = ('<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" '
              'stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>')
@@ -158,7 +158,7 @@ def header(rel):
     ) % (
         bi("Skip to content", "انتقل إلى المحتوى"),
         bi("Menu", "القائمة"), ICON_MENU,
-        up, MARK,
+        up, mark(up),
         bi("Metabolic Liver Academy", "أكاديمية الكبد والتمثيل الغذائي"),
         bi("Healthy liver. Healthy life.", "كبد سليم. حياة صحية."),
         bi("Dark mode", "الوضع الداكن"), ICON_THEME,
@@ -207,7 +207,7 @@ def footer(rel):
         '<div class="bottom">© <span class="year">2026</span> %s</div>'
         '</div></footer>\n'
     ) % (
-        MARK, bi("Metabolic Liver Academy", "أكاديمية الكبد والتمثيل الغذائي"),
+        mark(up, dark_only=True), bi("Metabolic Liver Academy", "أكاديمية الكبد والتمثيل الغذائي"),
         bi("Independent, free education on fatty liver disease (MASLD and MASH). Education only: this site does not give "
            "medical advice, diagnosis or treatment. Always talk to your own doctor about your health. In an emergency, "
            "call your local emergency number.",

@@ -175,7 +175,14 @@ html { scroll-padding-top: calc(var(--bar-h) + 12px); }
 .site-header .bar { display: flex; align-items: center; gap: 12px; height: var(--bar-h); padding-inline: 20px; }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); min-width: 0; }
 .brand:hover { color: var(--ink); text-decoration: none; }
-.brand-mark { width: 34px; height: 34px; flex: none; }
+.brand-mark { height: 46px; width: auto; flex: none; }
+.brand-mark.logo-d { display: none; }
+:root[data-theme="dark"] .brand-mark.logo-l { display: none; }
+:root[data-theme="dark"] .brand-mark.logo-d { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .brand-mark.logo-l { display: none; }
+  :root:not([data-theme="light"]) .brand-mark.logo-d { display: block; }
+}
 .brand-text { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
 .brand-name { font-weight: 600; font-size: 1.06rem; letter-spacing: -0.005em; }
 .brand-tag { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.02em; }
@@ -232,6 +239,18 @@ main { display: block; }
 /* ---------- Hero ---------- */
 .hero { background: linear-gradient(120deg, var(--hero-a), var(--hero-b) 60%, var(--hero-c)); padding: 56px 0 0; border-bottom: 1px solid var(--line); }
 .hero h1 { max-width: 17ch; }
+/* Home headline: always two lines, the second ending in a decorative accent */
+.hero .hero-title { max-width: none; font-size: clamp(1.05rem, 0.1rem + 5.1vw, 3.25rem); line-height: 1.18; letter-spacing: -0.015em; }
+.hero-title .ln { display: block; white-space: nowrap; }
+.hero-title .hl { font-family: "Source Serif 4", Georgia, serif; font-style: italic; font-weight: 400; font-size: 1.1em; letter-spacing: 0;
+  color: var(--coral-ink); white-space: nowrap; padding-bottom: 0.12em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 18' preserveAspectRatio='none'%3E%3Cpath d='M3 12 C 60 4, 120 4, 170 9 S 260 15, 297 6' fill='none' stroke='%23E07A3F' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M20 15 C 90 9, 170 10, 280 11' fill='none' stroke='%23E6C97F' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left 100% / 100% 0.32em; }
+html[lang="ar"] .hero .hero-title { font-size: clamp(1.2rem, 0.2rem + 5.6vw, 3.4rem); line-height: 1.45; letter-spacing: 0; }
+html[lang="ar"] .hero-title .hl { font-family: "Noto Naskh Arabic", var(--sans-ar); font-style: normal; font-weight: 600; font-size: 1.08em; background-position: right 100%; }
+@media (min-width: 1025px) {
+  .hero .hero-title { font-size: clamp(2rem, 0.4rem + 2.9vw, 3.25rem); }
+  html[lang="ar"] .hero .hero-title { font-size: clamp(2.2rem, 0.6rem + 3vw, 3.4rem); }
+}
 .doors { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 32px 0 40px; max-width: 760px; }
 .door { display: block; text-decoration: none; padding: 20px 22px; border-radius: var(--radius-l); border: 1.5px solid var(--coral); color: var(--ink); background: var(--white); }
 .door strong { display: block; font-size: 1.25rem; color: var(--pine); }
@@ -246,7 +265,8 @@ main { display: block; }
 /* ---------- The fibrosis scale (signature element) ---------- */
 .scale-block { padding: 8px 0 40px; }
 .scale-title { font-size: 0.95rem; color: var(--muted); margin: 0 0 10px; }
-.scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+.scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px; }
+@media (max-width: 360px) { .scale > div { padding-inline: 7px; } }
 .scale > div { padding: 12px 12px 10px; color: #fff; min-height: 86px; display: flex; flex-direction: column; justify-content: space-between; }
 .scale > div:first-child { border-start-start-radius: var(--radius-l); border-end-start-radius: var(--radius-l); }
 .scale > div:last-child { border-start-end-radius: var(--radius-l); border-end-end-radius: var(--radius-l); }
@@ -391,7 +411,7 @@ th { background: var(--pine-tint); font-weight: 600; }
 @media (max-width: 860px) { .foot-grid { grid-template-columns: 1fr 1fr; } .foot-about { grid-column: 1 / -1; } }
 @media (max-width: 480px) { .foot-grid { grid-template-columns: 1fr; } }
 .foot-brand { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; }
-.foot-brand .brand-mark { width: 28px; height: 28px; }
+.site-footer .brand-mark.logo-d { display: block; height: 44px; margin-bottom: 6px; }
 .foot-h { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--foot-muted); margin: 4px 0 12px; }
 html[lang="ar"] .foot-h { letter-spacing: 0; font-size: 0.9rem; }
 .site-footer .note { font-size: 0.88rem; color: var(--foot-muted); max-width: 52ch; }
