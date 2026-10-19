@@ -608,6 +608,10 @@ def split(src_html, rel, lang):
                 if path.endswith(".html") or path == "":
                     continue  # page links stay inside the Arabic site
                 el[attr] = "../" + v
+        for el in soup.find_all(["img", "source"], srcset=True):
+            el["srcset"] = ", ".join(
+                s if SKIP.match(s) else "../" + s
+                for s in (x.strip() for x in el["srcset"].split(",")))
 
     # wide tables scroll sideways on phones: let keyboard users reach and scroll them
     for w in soup.select("div.table-wrap"):
@@ -622,7 +626,7 @@ def split(src_html, rel, lang):
     head = soup.head
     up_site = "../" * rel.count("/") + ("../" if lang == "ar" else "")
     head.append(soup.new_tag("link", rel="manifest", href=up_site + "manifest.webmanifest"))
-    head.append(soup.new_tag("meta", attrs={"name": "theme-color", "content": "#155E5C"}))
+    head.append(soup.new_tag("meta", attrs={"name": "theme-color", "content": "#0F5FA8"}))
     head.append(soup.new_tag("link", rel="apple-touch-icon", href=up_site + "icons/apple-touch-icon.png"))
 
     # dark mode: apply a saved choice before the page paints (no white flash)
