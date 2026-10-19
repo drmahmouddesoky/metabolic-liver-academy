@@ -666,6 +666,9 @@ def split(src_html, rel, lang):
     if rel.startswith("modules/"):  # teaching modules are set in a serif face
         first_fonts += (("noto-naskh-arabic-arabic-400-normal",) if lang == "ar"
                         else ("source-serif-4-latin-400-normal", "source-serif-4-latin-600-normal"))
+    if rel == "index.html":  # the home headline ends in a decorative face
+        first_fonts += (("noto-naskh-arabic-arabic-600-normal",) if lang == "ar"
+                        else ("source-serif-4-latin-400-italic",))
     if lang == "ar" and rel == "radar.html":  # the paper list is in English
         first_fonts += ("ibm-plex-sans-latin-400-normal",)
     css = head.find("link", rel="stylesheet") or head.find("style")

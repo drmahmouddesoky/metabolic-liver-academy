@@ -33,14 +33,15 @@ const PAGES = {
 };
 const HOME = ['Fatty liver is common, silent, and treatable when found early.', 'الكبد الدهني شائع وصامت، ويمكن علاجه إذا اكتُشف مبكرًا.'];
 
-const mark = fs.readFileSync(path.join(ROOT, 'favicon.svg'), 'utf8');
+const logo = 'data:image/png;base64,' + fs.readFileSync(path.join(ROOT, 'images/brand/mla-logo.png')).toString('base64');
+const mark = `<img src="${logo}" alt="">`;
 function html(lang, title) {
   const ar = lang === 'ar';
   return `<!doctype html><html lang="${lang}" dir="${ar ? 'rtl' : 'ltr'}"><head><meta charset="utf-8">
 <link rel="stylesheet" href="${BASE}fonts/fonts.css"><style>
 *{margin:0;box-sizing:border-box}body{width:1200px;height:630px;background:#F5F9FC;font-family:'IBM Plex Sans','IBM Plex Sans Arabic',sans-serif;color:#0E2238;display:flex;flex-direction:column;justify-content:space-between;padding:72px 84px;position:relative;overflow:hidden}
 .bar{position:absolute;inset:auto 0 0 0;height:14px;display:flex}.bar i{flex:1}
-.top{display:flex;align-items:center;gap:22px}.top svg{width:84px;height:84px}
+.top{display:flex;align-items:center;gap:26px}.top img{height:96px;width:auto}
 .name{font-size:${ar ? 44 : 40}px;font-weight:600;color:#0F5FA8;line-height:1.2}
 h1{font-size:${ar ? 64 : 66}px;font-weight:600;line-height:${ar ? 1.35 : 1.12};max-width:960px;letter-spacing:${ar ? 0 : -0.5}px}
 p{font-size:30px;color:#4F6275;line-height:1.4}
@@ -48,7 +49,7 @@ p{font-size:30px;color:#4F6275;line-height:1.4}
 <div class="top">${mark}<div class="name">${ar ? 'أكاديمية الكبد والتمثيل الغذائي' : 'Metabolic Liver Academy'}</div></div>
 <h1>${title}</h1>
 <p>${ar ? 'تثقيف مجاني عن الكبد الدهني (MASLD) للمرضى والأطباء · العربية والإنجليزية' : 'Free MASLD education for patients and doctors · Arabic and English'}</p>
-<div class="bar"><i style="background:#3E9C7B"></i><i style="background:#94B95A"></i><i style="background:#E0B43C"></i><i style="background:#D97B3A"></i><i style="background:#A3423E"></i></div>
+<div class="bar"><i style="background:#0F5FA8;flex:3"></i><i style="background:#E07A3F"></i></div>
 </body></html>`;
 }
 
