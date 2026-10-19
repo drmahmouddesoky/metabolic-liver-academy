@@ -38,12 +38,12 @@ function html(lang, title) {
   const ar = lang === 'ar';
   return `<!doctype html><html lang="${lang}" dir="${ar ? 'rtl' : 'ltr'}"><head><meta charset="utf-8">
 <link rel="stylesheet" href="${BASE}fonts/fonts.css"><style>
-*{margin:0;box-sizing:border-box}body{width:1200px;height:630px;background:#F4F7F6;font-family:'IBM Plex Sans','IBM Plex Sans Arabic',sans-serif;color:#0F2B2C;display:flex;flex-direction:column;justify-content:space-between;padding:72px 84px;position:relative;overflow:hidden}
+*{margin:0;box-sizing:border-box}body{width:1200px;height:630px;background:#F5F9FC;font-family:'IBM Plex Sans','IBM Plex Sans Arabic',sans-serif;color:#0E2238;display:flex;flex-direction:column;justify-content:space-between;padding:72px 84px;position:relative;overflow:hidden}
 .bar{position:absolute;inset:auto 0 0 0;height:14px;display:flex}.bar i{flex:1}
 .top{display:flex;align-items:center;gap:22px}.top svg{width:84px;height:84px}
-.name{font-size:${ar ? 44 : 40}px;font-weight:600;color:#155E5C;line-height:1.2}
+.name{font-size:${ar ? 44 : 40}px;font-weight:600;color:#0F5FA8;line-height:1.2}
 h1{font-size:${ar ? 64 : 66}px;font-weight:600;line-height:${ar ? 1.35 : 1.12};max-width:960px;letter-spacing:${ar ? 0 : -0.5}px}
-p{font-size:30px;color:#526567;line-height:1.4}
+p{font-size:30px;color:#4F6275;line-height:1.4}
 </style></head><body>
 <div class="top">${mark}<div class="name">${ar ? 'أكاديمية الكبد والتمثيل الغذائي' : 'Metabolic Liver Academy'}</div></div>
 <h1>${title}</h1>

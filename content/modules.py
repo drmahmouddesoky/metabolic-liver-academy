@@ -185,9 +185,9 @@ FIGURES = {
 <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F2B2C"/></marker></defs>
 <g fill="none" stroke="#0F2B2C" stroke-width="1.6">
  <rect x="230" y="12" width="300" height="56" rx="8" fill="#fff"/>
- <rect x="230" y="110" width="300" height="56" rx="8" fill="#E3EFEC" stroke="#155E5C"/>
+ <rect x="230" y="110" width="300" height="56" rx="8" fill="#E3EEF8" stroke="#0F5FA8"/>
  <rect x="20" y="214" width="290" height="70" rx="8" fill="#E2F2EB" stroke="#3E9C7B"/>
- <rect x="450" y="214" width="290" height="56" rx="8" fill="#E3EFEC" stroke="#155E5C"/>
+ <rect x="450" y="214" width="290" height="56" rx="8" fill="#E3EEF8" stroke="#0F5FA8"/>
  <rect x="20" y="370" width="230" height="84" rx="8" fill="#E2F2EB" stroke="#3E9C7B"/>
  <rect x="265" y="370" width="230" height="84" rx="8" fill="#FBF1D9" stroke="#E0B43C"/>
  <rect x="510" y="370" width="230" height="84" rx="8" fill="#F6E3E2" stroke="#A3423E"/>
