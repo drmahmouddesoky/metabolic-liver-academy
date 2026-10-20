@@ -4,7 +4,7 @@ Private working file for Dr. Mahmoud Desoky. It is in the repository but not lin
 
 How to use: read each page on the live site (English and Arabic). When you are happy, change `[ ]` to `[x]` and add the date, or tell Claude which pages are approved. Claude will then add "Medically reviewed by Dr. Mahmoud Desoky" to those pages.
 
-Live site: https://drmahmouddesoky.github.io/metabolic-liver-academy/
+Live site: https://metabolicliveracademy.org/
 
 ## Main pages
 

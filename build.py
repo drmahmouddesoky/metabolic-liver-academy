@@ -20,7 +20,7 @@ import sys
 from bs4 import BeautifulSoup, Comment
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-SITE = "https://drmahmouddesoky.github.io/metabolic-liver-academy/"
+SITE = "https://metabolicliveracademy.org/"
 sys.path.insert(0, os.path.join(ROOT, "content"))
 import learn as L  # noqa: E402
 import ref as R  # noqa: E402

@@ -3,7 +3,7 @@
 Free, bilingual (English + Arabic) education on fatty liver disease (MASLD and MASH)
 for patients and doctors. Founded by Dr. Mahmoud Al-Desoky.
 
-Live at: https://drmahmouddesoky.github.io/metabolic-liver-academy/
+Live at: https://metabolicliveracademy.org/ (the old github.io address forwards here)
 
 ## How the site is built
 
