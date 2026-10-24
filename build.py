@@ -96,9 +96,14 @@ def page_record(mod, slug, src_file):
         (("Last updated", "آخر تحديث"), (mod.UPDATED, mod.UPDATED)),
         (("Next review due", "موعد المراجعة القادمة"), (mod.NEXT_REVIEW, mod.NEXT_REVIEW)),
     ]
-    if rev:  # the review row appears only once a page has been signed off
-        rows.insert(1, (("Medical review", "المراجعة الطبية"),
-                        ("Reviewed by %s on %s" % (FOUNDER["en"], rev), "راجعها %s بتاريخ %s" % (FOUNDER["ar"], rev))))
+    if rev:  # the author-check row appears only once the author has signed the page off
+        rows.insert(1, (("Author check", "تدقيق المؤلف"),
+                        ("Checked by the author, %s, on %s" % (FOUNDER["en"], rev), "دقّقها المؤلف %s بتاريخ %s" % (FOUNDER["ar"], rev))))
+    # Independent peer review is shown separately, and only claimed once it has happened.
+    # Add it in content/*.py as  PEER = {"slug": ("Dr. Name, Title", "YYYY-MM-DD")}
+    peer = getattr(mod, "PEER", {}).get(slug)
+    rows.insert(2 if rev else 1, (("Independent peer review", "مراجعة الأقران المستقلة"),
+                 ("%s, %s" % peer, "%s، %s" % peer) if peer else ("Not yet peer reviewed", "لم تخضع بعد لمراجعة الأقران")))
     out = ['<aside class="record small" aria-label="Page record"><h2 class="h-small">%s</h2><dl>' % bi("Page record", "سجل الصفحة")]
     for k, v in rows:
         out.append("<dt>%s</dt><dd>%s</dd>" % (bi(*k), bi(esc(v[0]), esc(v[1]))))
@@ -275,7 +280,9 @@ def ref_page(pg):
         (("Version", "الإصدار"), ("%s, updated %s" % (ver, R.UPDATED), "%s، حُدّث في %s" % (ver, R.UPDATED))),
     ]
     if rev:  # the review row appears only once a page has been signed off
-        meta.insert(2, (("Medical review", "المراجعة الطبية"), ("Reviewed " + rev, "رُوجعت " + rev)))
+        meta.insert(2, (("Author check", "تدقيق المؤلف"), ("Checked by the author " + rev, "دقّقها المؤلف " + rev)))
+    _peer = getattr(R, "PEER", {}).get(pg["slug"])
+    meta.append((("Peer review", "مراجعة الأقران"), ("%s, %s" % _peer, "%s، %s" % _peer) if _peer else ("Not yet peer reviewed", "لم تخضع بعد لمراجعة الأقران")))
     out.append('<dl class="mod-meta">' + "".join("<div><dt>%s</dt><dd>%s</dd></div>" % (bi(*k), bi(esc(v[0]), esc(v[1]))) for k, v in meta) + "</dl>")
     out.append("</div></header>")
     toc = []
@@ -481,7 +488,9 @@ def module_page(mod):
         (("Version", "الإصدار"), ("%s, updated %s" % (ver, M.UPDATED), "%s، حُدّثت في %s" % (ver, M.UPDATED))),
     ]
     if rev:  # the review row appears only once a page has been signed off
-        meta.insert(2, (("Medical review", "المراجعة الطبية"), ("Reviewed " + rev, "رُوجعت " + rev)))
+        meta.insert(2, (("Author check", "تدقيق المؤلف"), ("Checked by the author " + rev, "دقّقها المؤلف " + rev)))
+    _peer = getattr(M, "PEER", {}).get(mod["slug"])
+    meta.append((("Peer review", "مراجعة الأقران"), ("%s, %s" % _peer, "%s، %s" % _peer) if _peer else ("Not yet peer reviewed", "لم تخضع بعد لمراجعة الأقران")))
     out.append('<dl class="mod-meta">' + "".join("<div><dt>%s</dt><dd>%s</dd></div>" % (bi(*k), bi(esc(v[0]), esc(v[1]))) for k, v in meta) + "</dl>")
     out.append("</div></header>")
     out.append('<div class="wrap mod-layout">')

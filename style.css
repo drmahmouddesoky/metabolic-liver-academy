@@ -773,3 +773,17 @@ html[dir="rtl"] .qcard-foot { padding: 8px 18px 10px 12px; }
 .glance-link img { display: block; width: 100%; height: auto; }
 .glance-link:hover { border-color: var(--pine); }
 .glance figcaption { font-size: 0.9rem; color: var(--muted); margin-top: 10px; }
+
+/* Mobile header: keep the academy name to two lines at most (audit, Oct 2026) */
+@media (max-width: 480px) {
+  .brand { gap: 8px; }
+  .brand-mark { height: 34px; }
+  .brand-name { font-size: 0.86rem; line-height: 1.2; }
+  html[lang="ar"] .brand-name { font-size: 0.84rem; }
+  .theme-btn { width: 36px; height: 36px; }
+}
+@media (max-width: 400px) {
+  .brand-name { font-size: 0.8rem; }
+  html[lang="ar"] .brand-name { font-size: 0.8rem; }
+  .lang-btn { padding: 5px 8px; font-size: 0.85rem; }
+}

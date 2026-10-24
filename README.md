@@ -24,7 +24,7 @@ Do not edit the generated `*.html` files directly; they are overwritten by the b
 **News, events, videos and experts need no build.** Edit `data/news.js`, `data/lectures.js` or
 `data/experts.js` on GitHub and commit.
 
-`REVIEW.md` is the medical review checklist.
+`REVIEW.md` is the medical review checklist. `ASSETS.md` records where every image comes from and its licence; update it when you add an image.
 
 `tests/test_fib4.py`, `tests/test_nfs.py` and `tests/test_calcs.py` check the calculators (known values and cut-off edges). Run them before changing a calculator.
 

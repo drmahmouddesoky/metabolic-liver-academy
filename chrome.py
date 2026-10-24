@@ -180,8 +180,10 @@ def stay_in_touch(up):
         '</div></div></section>\n'
     ) % (
         bi("Stay in touch", "ابقَ على تواصل"),
-        bi("New patient guides, expert interviews and events, about once a month. No advertising; unsubscribe at any time.",
-           "أدلة جديدة للمرضى ولقاءات مع خبراء وفعاليات، نحو مرة في الشهر. بلا إعلانات، ويمكنك إلغاء الاشتراك في أي وقت."),
+        bi('New patient guides, expert interviews and events, about once a month. No advertising; unsubscribe at any time. '
+           'Your email is stored by our newsletter service, beehiiv, outside Saudi Arabia. See our <a href="%slegal.html#privacy">privacy notice</a>.' % up,
+           'أدلة جديدة للمرضى ولقاءات مع خبراء وفعاليات، نحو مرة في الشهر. بلا إعلانات، ويمكنك إلغاء الاشتراك في أي وقت. '
+           'تحفظ خدمة النشرة beehiiv بريدك الإلكتروني خارج المملكة. اطّلع على <a href="%slegal.html#privacy">بيان الخصوصية</a>.' % up),
         SUBSCRIBE_MAILTO, bi("Join our mailing list", "اشترك في قائمتنا البريدية"),
         up, bi("Contact us", "تواصل معنا"),
     )

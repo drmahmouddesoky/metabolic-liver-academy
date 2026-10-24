@@ -76,9 +76,9 @@
         return {
           score: fx(p, 3), cls: b,
           head: b === 'low' ? t('Advanced fibrosis unlikely', 'التليّف المتقدّم غير مرجّح') : b === 'high' ? t('Advanced fibrosis likely', 'التليّف المتقدّم مرجّح') : t('Indeterminate', 'نتيجة غير حاسمة'),
-          body: b === 'low' ? t('Manage metabolic risk. Reassess in 1 to 3 years.', 'عالج عوامل الخطر الأيضية وأعد التقييم خلال سنة إلى ثلاث سنوات.') :
-            b === 'high' ? t('Manage in a liver clinic. Check eligibility for MASH treatment and look for cirrhosis (Agile 4).', 'تابع المريض في عيادة الكبد، وتحقّق من أهليته لعلاج MASH، وابحث عن التليّف الكامل (Agile 4).') :
-            t('Consider a further test (for example ELF or MR elastography) or specialist review.', 'فكّر في فحص إضافي (مثل ELF أو مرونة الكبد بالرنين) أو في مراجعة اختصاصي.'),
+          body: b === 'low' ? t('Guidelines suggest managing metabolic risk and reassessing in 1 to 3 years.', 'توصي الإرشادات بعلاج عوامل الخطر الأيضية وإعادة التقييم خلال سنة إلى ثلاث سنوات.') :
+            b === 'high' ? t('Guidelines suggest follow-up in a liver clinic, review of eligibility for MASH treatment, and assessment for cirrhosis (Agile 4).', 'توصي الإرشادات بالمتابعة في عيادة الكبد، ومراجعة الأهلية لعلاج MASH، وتقييم التليّف الكامل (Agile 4).') :
+            t('Guidelines suggest a further test (for example ELF or MR elastography) or specialist review.', 'توصي الإرشادات بفحص إضافي (مثل ELF أو مرونة الكبد بالرنين) أو مراجعة اختصاصي.'),
           cut: t('Rule out below 0.451; rule in at 0.679 or above.', 'الاستبعاد تحت 0.451، والتأكيد عند 0.679 فأكثر.')
         };
       },
@@ -96,9 +96,9 @@
         return {
           score: fx(p, 3), cls: b,
           head: b === 'low' ? t('Cirrhosis unlikely', 'التليّف الكامل غير مرجّح') : b === 'high' ? t('Cirrhosis likely', 'التليّف الكامل مرجّح') : t('Indeterminate', 'نتيجة غير حاسمة'),
-          body: b === 'high' ? t('Start cirrhosis care: liver cancer surveillance every 6 months and portal hypertension assessment (Baveno VII).', 'ابدأ رعاية التليّف الكامل: مراقبة سرطان الكبد كل 6 أشهر وتقييم ارتفاع ضغط الوريد البابي (Baveno VII).') :
+          body: b === 'high' ? t('Guidelines suggest cirrhosis care: liver cancer surveillance every 6 months and portal hypertension assessment (Baveno VII).', 'توصي الإرشادات برعاية التليّف الكامل: مراقبة سرطان الكبد كل 6 أشهر وتقييم ارتفاع ضغط الوريد البابي (Baveno VII).') :
             b === 'low' ? t('Cirrhosis is unlikely. Use Agile 3+ to judge advanced fibrosis.', 'التليّف الكامل غير مرجّح. استخدم Agile 3+ لتقييم التليّف المتقدّم.') :
-            t('Specialist review; consider MR elastography or biopsy if it changes management.', 'مراجعة اختصاصي، وفكّر في مرونة الكبد بالرنين أو الخزعة إن كانت ستغيّر الخطة.'),
+            t('Guidelines suggest specialist review, with MR elastography or biopsy only if it would change management.', 'توصي الإرشادات بمراجعة اختصاصي، مع مرونة الكبد بالرنين أو الخزعة فقط إن كانت ستغيّر الخطة.'),
           cut: t('Rule out below 0.251; rule in at 0.565 or above.', 'الاستبعاد تحت 0.251، والتأكيد عند 0.565 فأكثر.')
         };
       },
@@ -114,8 +114,8 @@
         return {
           score: fx(p, 2), cls: b,
           head: b === 'low' ? t('At-risk MASH unlikely', 'MASH عالي الخطورة غير مرجّح') : b === 'high' ? t('At-risk MASH likely', 'MASH عالي الخطورة مرجّح') : t('Indeterminate', 'نتيجة غير حاسمة'),
-          body: b === 'high' ? t('Likely MASH with activity and fibrosis F2 or more. Refer to a liver clinic and check treatment eligibility.', 'يُرجّح وجود MASH نشط مع تليّف F2 فأكثر. حوّل المريض إلى عيادة الكبد وتحقّق من أهليته للعلاج.') :
-            b === 'low' ? t('Treat metabolic risk and follow the fibrosis pathway.', 'عالج عوامل الخطر الأيضية واتبع مسار تقييم التليّف.') :
+          body: b === 'high' ? t('Likely MASH with activity and fibrosis F2 or more. Guidelines suggest liver clinic review and assessment of treatment eligibility.', 'يُرجّح وجود MASH نشط مع تليّف F2 فأكثر. توصي الإرشادات بالمراجعة في عيادة الكبد وتقييم الأهلية للعلاج.') :
+            b === 'low' ? t('Guidelines suggest treating metabolic risk and following the fibrosis pathway.', 'توصي الإرشادات بعلاج عوامل الخطر الأيضية واتباع مسار تقييم التليّف.') :
             t('Interpret with the other tests and the clinical picture.', 'فسّر النتيجة مع بقية الفحوص والصورة السريرية.'),
           cut: t('Rule out at 0.35 or below; rule in at 0.67 or above.', 'الاستبعاد عند 0.35 أو أقل، والتأكيد عند 0.67 فأكثر.')
         };
@@ -124,15 +124,15 @@
     },
     {
       id: 'scan', g: 'scan', en: 'FibroScan result explainer', ar: 'شرح نتيجة الفيبروسكان', kind: ['Interpretation', 'تفسير'],
-      one: ['Turns stiffness (kPa) and CAP (dB/m) into plain next steps.', 'يحوّل الصلابة (kPa) وCAP (dB/m) إلى خطوات واضحة.'],
+      one: ['Explains stiffness (kPa) and CAP (dB/m) against published guideline cut-offs.', 'يشرح الصلابة (kPa) وCAP (dB/m) مقارنةً بالحدود المنشورة في الإرشادات.'],
       fields: ['lsm', 'capOpt', 'iqr', 'pltOpt'],
       calc: function (v) {
         var L = v.lsm, cls, head, body;
-        if (L < 8) { cls = 'low'; head = t('Advanced fibrosis unlikely', 'التليّف المتقدّم غير مرجّح'); body = t('Below 8 kPa. Manage metabolic risk and repeat in about 3 years.', 'أقل من 8 كيلوباسكال. عالج عوامل الخطر الأيضية وأعد الفحص بعد نحو 3 سنوات.'); }
-        else if (L < 12) { cls = 'mid'; head = t('Grey zone', 'منطقة رمادية'); body = t('8 to 12 kPa. Add a second test (Agile 3+ or ELF) or refer to a liver specialist.', 'من 8 إلى 12 كيلوباسكال. أضف فحصًا ثانيًا (Agile 3+ أو ELF) أو حوّل إلى اختصاصي كبد.'); }
-        else if (L < 15) { cls = 'high'; head = t('Advanced fibrosis likely', 'التليّف المتقدّم مرجّح'); body = t('12 kPa or more. Manage in a liver clinic.', '12 كيلوباسكال فأكثر. تابع المريض في عيادة الكبد.'); }
-        else if (L < 25) { cls = 'high'; head = t('Advanced chronic liver disease likely (cACLD)', 'مرض كبدي مزمن متقدّم مرجّح (cACLD)'); body = t('15 kPa or more. Start liver cancer surveillance and assess portal hypertension.', '15 كيلوباسكال فأكثر. ابدأ مراقبة سرطان الكبد وقيّم ضغط الوريد البابي.'); }
-        else { cls = 'high'; head = t('Portal hypertension likely', 'ارتفاع ضغط الوريد البابي مرجّح'); body = t('25 kPa or more: clinically significant portal hypertension is likely (Baveno VII). Specialist care.', '25 كيلوباسكال فأكثر: يُرجّح ارتفاع ضغط بابي ملحوظ سريريًا (Baveno VII). رعاية اختصاصية.'); }
+        if (L < 8) { cls = 'low'; head = t('Advanced fibrosis unlikely', 'التليّف المتقدّم غير مرجّح'); body = t('Below 8 kPa. Guidelines suggest managing metabolic risk and repeating in about 3 years.', 'أقل من 8 كيلوباسكال. توصي الإرشادات بعلاج عوامل الخطر الأيضية وإعادة الفحص بعد نحو 3 سنوات.'); }
+        else if (L < 12) { cls = 'mid'; head = t('Grey zone', 'منطقة رمادية'); body = t('8 to 12 kPa. Guidelines suggest a second test (Agile 3+ or ELF) or liver specialist review.', 'من 8 إلى 12 كيلوباسكال. توصي الإرشادات بفحص ثانٍ (Agile 3+ أو ELF) أو مراجعة اختصاصي كبد.'); }
+        else if (L < 15) { cls = 'high'; head = t('Advanced fibrosis likely', 'التليّف المتقدّم مرجّح'); body = t('12 kPa or more. Guidelines suggest follow-up in a liver clinic.', '12 كيلوباسكال فأكثر. توصي الإرشادات بالمتابعة في عيادة الكبد.'); }
+        else if (L < 25) { cls = 'high'; head = t('Advanced chronic liver disease likely (cACLD)', 'مرض كبدي مزمن متقدّم مرجّح (cACLD)'); body = t('15 kPa or more. Guidelines suggest liver cancer surveillance and portal hypertension assessment.', '15 كيلوباسكال فأكثر. توصي الإرشادات بمراقبة سرطان الكبد وتقييم ضغط الوريد البابي.'); }
+        else { cls = 'high'; head = t('Portal hypertension likely', 'ارتفاع ضغط الوريد البابي مرجّح'); body = t('25 kPa or more: clinically significant portal hypertension is likely (Baveno VII). Guidelines suggest specialist care.', '25 كيلوباسكال فأكثر: يُرجّح ارتفاع ضغط بابي ملحوظ سريريًا (Baveno VII). توصي الإرشادات بالرعاية الاختصاصية.'); }
         return { score: fx(L, 1) + ' kPa', cls: cls, head: head, body: body,
           cut: t('Cut-offs: below 8 low, 8–12 grey, 12 or more high, 15 or more cACLD likely, 25 or more portal hypertension likely.', 'الحدود: أقل من 8 منخفض، 8–12 رمادي، 12 فأكثر مرتفع، 15 فأكثر مرض متقدّم مرجّح، 25 فأكثر ارتفاع ضغط بابي مرجّح.') };
       },
@@ -143,7 +143,7 @@
         if (v.iqr != null && v.iqr > 30 && v.lsm >= 7.1) n.push(t('IQR/median above 30%: the reading is less reliable. Repeat it.', 'نسبة IQR/الوسيط أعلى من 30%: القراءة أقل موثوقية، فأعدها.'));
         if (v.plt != null && v.lsm >= 15) n.push(v.lsm < 20 && v.plt >= 150
           ? t('Stiffness below 20 kPa and platelets 150 or more: Baveno VII says screening endoscopy for varices can be avoided.', 'صلابة أقل من 20 وصفائح 150 فأكثر: حسب Baveno VII يمكن تجنّب منظار الكشف عن الدوالي.')
-          : t('Baveno VII: varices screening (or a beta-blocker) is needed, as stiffness is 20 kPa or more or platelets are below 150.', 'حسب Baveno VII: يلزم الكشف عن الدوالي (أو حاصر بيتا) لأن الصلابة 20 فأكثر أو الصفائح أقل من 150.'));
+          : t('Stiffness 20 kPa or more, or platelets below 150: Baveno VII recommends varices screening (or a beta-blocker).', 'صلابة 20 فأكثر أو صفائح أقل من 150: توصي Baveno VII بالكشف عن الدوالي (أو حاصر بيتا).'));
         n.push(t('Fast for at least 3 hours before the scan. Hepatitis flares, heart failure and cholestasis raise stiffness.', 'يجب الصيام 3 ساعات على الأقل قبل الفحص. نوبات التهاب الكبد وقصور القلب والركود الصفراوي ترفع الصلابة.'));
         return n;
       },
@@ -158,7 +158,7 @@
         var s = 100 * logistic(y), b = band3(s, 30, 60);
         return { score: fx(s, 0), cls: b,
           head: b === 'low' ? t('Fatty liver unlikely', 'الكبد الدهني غير مرجّح') : b === 'high' ? t('Fatty liver likely', 'الكبد الدهني مرجّح') : t('Indeterminate', 'نتيجة غير حاسمة'),
-          body: b === 'high' ? t('Next step: check fibrosis with FIB-4.', 'الخطوة التالية: قيّم التليّف بمؤشر FIB-4.') : b === 'low' ? t('Fat in the liver is unlikely.', 'وجود دهون في الكبد غير مرجّح.') : t('Consider an ultrasound if it changes care.', 'فكّر في الموجات فوق الصوتية إن كانت ستغيّر الخطة.'),
+          body: b === 'high' ? t('Guidelines suggest checking fibrosis next, with FIB-4.', 'توصي الإرشادات بتقييم التليّف بعد ذلك بمؤشر FIB-4.') : b === 'low' ? t('Fat in the liver is unlikely.', 'وجود دهون في الكبد غير مرجّح.') : t('An ultrasound may help if it would change care.', 'قد تفيد الموجات فوق الصوتية إن كانت ستغيّر الخطة.'),
           cut: t('Below 30 rules out; 60 or above rules in.', 'أقل من 30 يستبعد، و60 فأكثر يؤكد.') };
       },
       src: ['Bedogni G et al. BMC Gastroenterol 2006;6:33', 'https://doi.org/10.1186/1471-230X-6-33']
@@ -172,7 +172,7 @@
         var b = s < 30 ? 'low' : s > 36 ? 'high' : 'mid';
         return { score: fx(s, 1), cls: b,
           head: b === 'low' ? t('Fatty liver unlikely', 'الكبد الدهني غير مرجّح') : b === 'high' ? t('Fatty liver likely', 'الكبد الدهني مرجّح') : t('Indeterminate', 'نتيجة غير حاسمة'),
-          body: b === 'high' ? t('Next step: check fibrosis with FIB-4.', 'الخطوة التالية: قيّم التليّف بمؤشر FIB-4.') : b === 'low' ? t('Fat in the liver is unlikely.', 'وجود دهون في الكبد غير مرجّح.') : t('Consider an ultrasound if it changes care.', 'فكّر في الموجات فوق الصوتية إن كانت ستغيّر الخطة.'),
+          body: b === 'high' ? t('Guidelines suggest checking fibrosis next, with FIB-4.', 'توصي الإرشادات بتقييم التليّف بعد ذلك بمؤشر FIB-4.') : b === 'low' ? t('Fat in the liver is unlikely.', 'وجود دهون في الكبد غير مرجّح.') : t('An ultrasound may help if it would change care.', 'قد تفيد الموجات فوق الصوتية إن كانت ستغيّر الخطة.'),
           cut: t('Below 30 rules out; above 36 rules in.', 'أقل من 30 يستبعد، وأعلى من 36 يؤكد.') };
       },
       src: ['Lee JH et al. Dig Liver Dis 2010;42:503–8', 'https://doi.org/10.1016/j.dld.2009.08.002']
@@ -327,7 +327,7 @@
       out.innerHTML = '<div class="score" dir="ltr">' + esc(r.score) + '</div>' +
         '<h4>' + esc(r.head) + '</h4><p>' + esc(r.body) + '</p>' +
         (notes.length ? '<ul class="calc-notes">' + notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul>' : '') +
-        '<p class="fine">' + esc(r.cut) + ' ' + t('Supports, but never replaces, clinical judgement.', 'أداة مساعدة لا تغني أبدًا عن التقييم السريري.') + '</p>';
+        '<p class="fine">' + esc(r.cut) + ' ' + t('A summary of published guidelines, not a decision for an individual patient. Supports, but never replaces, clinical judgement.', 'ملخص للإرشادات المنشورة وليس قرارًا لمريض بعينه. أداة مساعدة لا تغني أبدًا عن التقييم السريري.') + '</p>';
       out.focus();
     });
   });
