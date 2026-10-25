@@ -26,7 +26,7 @@ Do not edit the generated `*.html` files directly; they are overwritten by the b
 
 `REVIEW.md` is the medical review checklist. `ASSETS.md` records where every image comes from and its licence; update it when you add an image.
 
-`tests/test_fib4.py`, `tests/test_nfs.py` and `tests/test_calcs.py` check the calculators (known values and cut-off edges). Run them before changing a calculator.
+`tests/test_fib4.py`, `tests/test_nfs.py` and `tests/test_calcs.py` check the calculators (known values and cut-off edges). Run them before changing a calculator. `tests/test_edges.py` checks that bad inputs (blank, zero, negative, text, extreme) are rejected safely.
 
 Fonts are self-hosted in `fonts/` (IBM Plex, SIL Open Font License), so pages make no requests to Google.
 

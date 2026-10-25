@@ -539,18 +539,18 @@
       if (score < low) {
         cls = 'low';
         head = t('Low risk of advanced fibrosis', 'خطر منخفض للتليف المتقدّم');
-        body = t('Advanced fibrosis is unlikely. Manage metabolic risk and repeat FIB-4 in 1 to 3 years.',
-          'التليف المتقدّم غير مرجّح. عالج عوامل الخطر الأيضية وأعد حساب FIB-4 خلال سنة إلى ثلاث سنوات.');
+        body = t('Advanced fibrosis is unlikely. Guidelines suggest managing metabolic risk and repeating FIB-4 in 1 to 3 years.',
+          'التليف المتقدّم غير مرجّح. توصي الإرشادات بعلاج عوامل الخطر الأيضية وإعادة حساب FIB-4 خلال سنة إلى ثلاث سنوات.');
       } else if (score >= 2.67) {
         cls = 'high';
         head = t('High risk of advanced fibrosis', 'خطر مرتفع للتليف المتقدّم');
-        body = t('Refer to a liver specialist. Confirm with elastography.',
-          'أحِل المريض إلى أخصائي الكبد، وأكّد النتيجة بفحص قياس مرونة الكبد.');
+        body = t('Guidelines suggest liver specialist review and confirmation with elastography.',
+          'توصي الإرشادات بمراجعة أخصائي الكبد وتأكيد النتيجة بفحص قياس مرونة الكبد.');
       } else {
         cls = 'mid';
         head = t('Indeterminate', 'نتيجة غير حاسمة');
-        body = t('Second-line test needed: transient elastography (e.g. FibroScan) or ELF.',
-          'يلزم فحص من الخط الثاني: قياس مرونة الكبد العابر (مثل فيبروسكان) أو اختبار ELF.');
+        body = t('Guidelines suggest a second-line test: transient elastography (e.g. FibroScan) or ELF.',
+          'توصي الإرشادات بفحص من الخط الثاني: قياس مرونة الكبد العابر (مثل فيبروسكان) أو اختبار ELF.');
       }
       var notes = [];
       if (age < 35) notes.push(t('FIB-4 is not reliable under age 35. Interpret with care.', 'مؤشر FIB-4 غير موثوق تحت سن 35. فسّر النتيجة بحذر.'));
@@ -560,8 +560,8 @@
       out.innerHTML = '<div class="score">' + score.toFixed(2) + '</div>' +
         '<h3>' + head + '</h3><p>' + body + '</p>' +
         notes.map(function (n) { return '<p>' + n + '</p>'; }).join('') +
-        '<p class="fine">' + t('Cut-offs: below ' + low.toFixed(1) + ' low, 2.67 and above high. Supports, but never replaces, clinical judgement. Nothing you type is stored or sent. <a href="' + ROOT + 'ref/fib4-method.html">Method and limits</a>',
-          'الحدود: أقل من ' + low.toFixed(1) + ' منخفض، و2.67 فأكثر مرتفع. أداة مساعدة لا تغني أبدًا عن التقييم السريري. لا يُحفظ أو يُرسل أي شيء تكتبه. <a href="' + ROOT + 'ref/fib4-method.html">الطريقة والحدود</a>') + '</p>';
+        '<p class="fine">' + t('Cut-offs: below ' + low.toFixed(1) + ' low, 2.67 and above high. A summary of published guidelines, not a decision for an individual patient. Supports, but never replaces, clinical judgement. Nothing you type is stored or sent. <a href="' + ROOT + 'ref/fib4-method.html">Method and limits</a>',
+          'الحدود: أقل من ' + low.toFixed(1) + ' منخفض، و2.67 فأكثر مرتفع. ملخص للإرشادات المنشورة وليس قرارًا لمريض بعينه. أداة مساعدة لا تغني أبدًا عن التقييم السريري. لا يُحفظ أو يُرسل أي شيء تكتبه. <a href="' + ROOT + 'ref/fib4-method.html">الطريقة والحدود</a>') + '</p>';
       out.focus();
     });
   }
@@ -603,18 +603,18 @@
       if (score < low) {
         cls = 'low';
         head = t('Low risk of advanced fibrosis', 'خطر منخفض للتليف المتقدّم');
-        body = t('Advanced fibrosis is unlikely. Manage metabolic risk and repeat a fibrosis score in 1 to 3 years.',
-          'التليف المتقدّم غير مرجّح. عالج عوامل الخطر الأيضية وأعد حساب مؤشر التليّف خلال سنة إلى ثلاث سنوات.');
+        body = t('Advanced fibrosis is unlikely. Guidelines suggest managing metabolic risk and repeating a fibrosis score in 1 to 3 years.',
+          'التليف المتقدّم غير مرجّح. توصي الإرشادات بعلاج عوامل الخطر الأيضية وإعادة حساب مؤشر التليّف خلال سنة إلى ثلاث سنوات.');
       } else if (score > 0.676) {
         cls = 'high';
         head = t('High risk of advanced fibrosis', 'خطر مرتفع للتليف المتقدّم');
-        body = t('Refer to a liver specialist. Confirm with elastography.',
-          'أحِل المريض إلى أخصائي الكبد، وأكّد النتيجة بفحص قياس مرونة الكبد.');
+        body = t('Guidelines suggest liver specialist review and confirmation with elastography.',
+          'توصي الإرشادات بمراجعة أخصائي الكبد وتأكيد النتيجة بفحص قياس مرونة الكبد.');
       } else {
         cls = 'mid';
         head = t('Indeterminate', 'نتيجة غير حاسمة');
-        body = t('Second-line test needed: transient elastography (e.g. FibroScan) or ELF.',
-          'يلزم فحص من الخط الثاني: قياس مرونة الكبد العابر (مثل فيبروسكان) أو اختبار ELF.');
+        body = t('Guidelines suggest a second-line test: transient elastography (e.g. FibroScan) or ELF.',
+          'توصي الإرشادات بفحص من الخط الثاني: قياس مرونة الكبد العابر (مثل فيبروسكان) أو اختبار ELF.');
       }
       var notes = [t('BMI used: ' + bmi.toFixed(1) + ' kg/m².', 'مؤشر كتلة الجسم المستخدم: ' + bmi.toFixed(1) + ' كغ/م².')];
       if (age < 35) notes.push(t('NFS is not reliable under age 35. Interpret with care.', 'مؤشر NFS غير موثوق تحت سن 35. فسّر النتيجة بحذر.'));
@@ -624,8 +624,8 @@
       out.innerHTML = '<div class="score">' + score.toFixed(2) + '</div>' +
         '<h3>' + head + '</h3><p>' + body + '</p>' +
         notes.map(function (n) { return '<p>' + n + '</p>'; }).join('') +
-        '<p class="fine">' + t('Cut-offs: below ' + low + ' low, above 0.676 high. Supports, but never replaces, clinical judgement. Nothing you type is stored or sent. <a href="' + ROOT + 'ref/nfs-method.html">Method and limits</a>',
-          'الحدود: أقل من ' + low + ' منخفض، وأعلى من 0.676 مرتفع. أداة مساعدة لا تغني أبدًا عن التقييم السريري. لا يُحفظ أو يُرسل أي شيء تكتبه. <a href="' + ROOT + 'ref/nfs-method.html">الطريقة والحدود</a>') + '</p>';
+        '<p class="fine">' + t('Cut-offs: below ' + low + ' low, above 0.676 high. A summary of published guidelines, not a decision for an individual patient. Supports, but never replaces, clinical judgement. Nothing you type is stored or sent. <a href="' + ROOT + 'ref/nfs-method.html">Method and limits</a>',
+          'الحدود: أقل من ' + low + ' منخفض، وأعلى من 0.676 مرتفع. ملخص للإرشادات المنشورة وليس قرارًا لمريض بعينه. أداة مساعدة لا تغني أبدًا عن التقييم السريري. لا يُحفظ أو يُرسل أي شيء تكتبه. <a href="' + ROOT + 'ref/nfs-method.html">الطريقة والحدود</a>') + '</p>';
       out.focus();
     });
   }
