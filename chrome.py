@@ -13,7 +13,7 @@ import os
 # The founder's name as shown on the site. Change it here, then rebuild.
 FOUNDER = {"en": "Dr. Mahmoud Al Desoky", "ar": "د. محمود الدسوقي"}
 
-CONTACT_EMAIL = "mdesoky15@gmail.com"
+CONTACT_EMAIL = "info@metabolicliveracademy.org"
 LINKEDIN = "https://www.linkedin.com/in/drmahmoudaldesoky"
 YOUTUBE = "https://www.youtube.com/channel/UCNzyfqdKJP9BDp35L8eNxGA"
 ORCID = "https://orcid.org/0000-0002-1422-0886"
