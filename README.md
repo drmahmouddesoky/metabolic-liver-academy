@@ -1,7 +1,7 @@
 # Metabolic Liver Academy (MLA)
 
 Free, bilingual (English + Arabic) education on fatty liver disease (MASLD and MASH)
-for patients and doctors. Founded by Dr. Mahmoud Al-Desoky.
+for patients and doctors. Founded by Dr. Mahmoud Al Desoky.
 
 Live at: https://metabolicliveracademy.org/ (the old github.io address forwards here)
 
@@ -107,7 +107,7 @@ The build keeps only the English text in the English pages and only the Arabic t
 
 The tools run only in the visitor's browser. Nothing they type is stored or sent.
 There is no tracking and no cookies. Pages load nothing from other websites,
-except the private visit counter below once it is switched on.
+except the private visit counter below.
 
 ## Private visit counter (only you see the numbers)
 
@@ -118,11 +118,9 @@ https://drmahmouddesoky.goatcounter.com, never on the site. It is switched on
 
 How it was set up:
 
-1. Sign up at https://www.goatcounter.com and pick a site code, e.g. `mla`
-   (your dashboard is then https://mla.goatcounter.com).
+1. Signed up at https://www.goatcounter.com with the site code `drmahmouddesoky`.
 2. Keep "Allow public access to the dashboard" switched off in GoatCounter's settings.
-3. On GitHub, open `main.js`, find `var GOATCOUNTER = '';` and put your code
-   between the quotes: `var GOATCOUNTER = 'mla';`. Commit.
+3. In `main.js`, the code sits between the quotes: `var GOATCOUNTER = 'drmahmouddesoky';`.
 
 To switch it off again, empty the quotes.
 
@@ -163,7 +161,18 @@ Edit `FOUNDER` at the top of `chrome.py` (English and Arabic), run `python3 buil
 The name updates in the footer, page records and search-engine data. The About page text
 (`src/about.html`) is edited by hand.
 
-## When you buy your own domain
+## Your domain (done)
+
+The site lives at https://metabolicliveracademy.org/ (bought on Cloudflare, hosted free on GitHub Pages).
+
+- The `CNAME` file holds the domain. Do not delete it.
+- `build.py` has `SITE = "https://metabolicliveracademy.org/"`. Every page address, the sitemap,
+  `robots.txt` and share pictures come from this line.
+- The DNS records (four `A` records and a `www` `CNAME`) are set in Cloudflare. Leave them as they are.
+- GitHub sends visitors from the old github.io address to the new domain, so old links keep working.
+  Your personal page at drmahmouddesoky.github.io is not affected.
+- Google Search Console: the sitemap to submit is https://metabolicliveracademy.org/sitemap.xml.
+
 
 GitHub Pages hosts custom domains for free. Example below uses `example.org`.
 
