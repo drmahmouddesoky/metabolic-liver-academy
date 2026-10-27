@@ -787,3 +787,9 @@ html[dir="rtl"] .qcard-foot { padding: 8px 18px 10px 12px; }
   html[lang="ar"] .brand-name { font-size: 0.8rem; }
   .lang-btn { padding: 5px 8px; font-size: 0.85rem; }
 }
+
+/* Useful links: a short-name badge on each organisation card (drawn in CSS, no logos) */
+.org-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 3.4rem; height: 3.4rem; padding: 0 0.7rem; margin-bottom: 12px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.02em; line-height: 1; white-space: nowrap; }
+.org-badge.liver { background: var(--pine-tint); color: var(--pine); }
+.org-badge.gastro { background: var(--ok-tint); color: var(--ink); }
+.org-badge.public { background: var(--amber-tint); color: var(--amber-ink); }
