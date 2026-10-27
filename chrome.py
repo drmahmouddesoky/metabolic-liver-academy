@@ -28,6 +28,7 @@ MENU = [
         ("Am I at risk?", "هل أنا معرّض للخطر؟", "patients.html#risk"),
         ("Questions and answers", "أسئلة وأجوبة", "learn.html"),
         ("Printable guides", "أدلة للطباعة", "guides.html"),
+        ("Useful links", "روابط مفيدة", "links.html"),
     ]},
     {"en": "Physicians", "ar": "الأطباء", "key": "physicians", "icon": "steth", "items": [
         ("Physician Portal", "بوابة الأطباء", "academy.html"),
