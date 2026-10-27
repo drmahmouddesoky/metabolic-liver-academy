@@ -790,6 +790,11 @@ html[dir="rtl"] .qcard-foot { padding: 8px 18px 10px 12px; }
 
 /* Useful links: a short-name badge on each organisation card (drawn in CSS, no logos) */
 .org-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 3.4rem; height: 3.4rem; padding: 0 0.7rem; margin-bottom: 12px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.02em; line-height: 1; white-space: nowrap; }
-.org-badge.liver { background: var(--pine-tint); color: var(--pine); }
-.org-badge.gastro { background: var(--ok-tint); color: var(--ink); }
-.org-badge.public { background: var(--amber-tint); color: var(--amber-ink); }
+/* Each group's cards get a light background in that group's colour; the badge sits on white */
+#liver .panel { background: var(--pine-tint); }
+#gastro .panel { background: var(--ok-tint); }
+#public .panel { background: var(--amber-tint); }
+.org-badge { background: var(--white); }
+.org-badge.liver { color: var(--pine); }
+.org-badge.gastro { color: var(--ink); }
+.org-badge.public { color: var(--amber-ink); }
