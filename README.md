@@ -45,6 +45,7 @@ Fonts are self-hosted in `fonts/` (IBM Plex, SIL Open Font License), so pages ma
 | `src/radar.html` | Publication Radar: daily PubMed papers (Global and MENA) |
 | `src/news.html` | News and events with filters |
 | `src/about.html` | Mission, founder, publications |
+| `src/links.html` | Useful links: hepatology and gastroenterology societies, foundations, patient groups |
 | `src/partners.html` | Partners and independence (no partners yet) |
 | `src/contact.html` | Contact: email and LinkedIn only |
 | `src/legal.html` | Disclaimer, privacy, conflicts of interest, editorial policy, terms |
