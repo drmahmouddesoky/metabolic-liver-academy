@@ -523,8 +523,9 @@ def module_page(mod):
                                                    "%s · الوحدة %d من %d" % (G.SERIES["ar"], mod["number"], len(G.MODULES))))
     else:
         out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../academy.html">%s</a> › <a href="../academy.html#modules">%s</a></nav>'
-                   % (bi("Physician Portal", "بوابة الأطباء"), bi("Teaching modules", "الوحدات التعليمية")))
-        out.append('<p class="mod-no">%s</p>' % bi("Module %d" % mod["number"], "الوحدة %d" % mod["number"]))
+                   % (bi("Physician Portal", "بوابة الأطباء"), bi("MASLD &amp; MASH series", "سلسلة الكبد الدهني MASLD وMASH")))
+        out.append('<p class="mod-no">%s</p>' % bi("MASLD &amp; MASH series · Module %d of %d" % (mod["number"], len(M.MODULES)),
+                                                   "سلسلة الكبد الدهني MASLD وMASH · الوحدة %d من %d" % (mod["number"], len(M.MODULES))))
     out.append("<h1>%s</h1>" % bi(esc(mod["title"]["en"]), esc(mod["title"]["ar"])))
     out.append('<p class="mod-sub">%s</p>' % bi(esc(mod["subtitle"]["en"]), esc(mod["subtitle"]["ar"])))
     if os.path.exists(os.path.join(ROOT, "images/modules/covers/%s.webp" % mod["slug"])):  # title image, if one exists
