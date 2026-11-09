@@ -528,8 +528,6 @@ def module_page(mod):
                                                    "سلسلة الكبد الدهني MASLD وMASH · الوحدة %d من %d" % (mod["number"], len(M.MODULES))))
     out.append("<h1>%s</h1>" % bi(esc(mod["title"]["en"]), esc(mod["title"]["ar"])))
     out.append('<p class="mod-sub">%s</p>' % bi(esc(mod["subtitle"]["en"]), esc(mod["subtitle"]["ar"])))
-    if os.path.exists(os.path.join(ROOT, "images/modules/covers/%s.webp" % mod["slug"])):  # title image, if one exists
-        out.append('<figure class="mod-cover"><img src="../images/modules/covers/%s.webp" alt="" width="1600" height="640" decoding="async" fetchpriority="high"></figure>' % mod["slug"])
     meta = [
         (("Author", "المؤلف"), (FOUNDER["en"], FOUNDER["ar"])),
         (("For", "موجّهة إلى"), (mod["audience"]["en"], mod["audience"]["ar"])),
