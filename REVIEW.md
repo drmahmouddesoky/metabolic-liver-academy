@@ -125,3 +125,14 @@ Each module was drafted from the full guideline texts in your folder and then fa
 ## Global research section (2026-10-18)
 
 - [ ] Physician Portal: new "Global research and collaboration" section (academy.html#global, + ar/). Four cards: Global Liver Registry, global consensus 2025 (Younossi et al., Gastroenterology 2025, doi:10.1053/j.gastro.2025.02.044) and educational materials (all linking to the Global NASH Council site), and our Publication Radar. Please open the three Council links (they could not be checked from the build computer) and check the wording, and that you are happy to invite study listings by email.
+
+## GI & Microbiome series (English only for now)
+
+| Done | Module | Page | Reviewed on | Notes |
+| --- | --- | --- | --- | --- |
+| [ ] | 1. Microbiome science essentials – what every clinician should know | modules/gi-microbiome-science.html |  |  |
+| [ ] | 2. Not every gut symptom is the microbiome | modules/gi-not-every-symptom.html |  |  |
+| [ ] | 3. Tests that help, and tests that don't | modules/gi-tests.html |  |  |
+| [ ] | 4. Red flags, referral and teamwork | modules/gi-red-flags-referral.html |  |  |
+| [ ] | 5. Probiotics – when a gastroenterologist uses them | modules/gi-probiotics.html |  |  |
+| [ ] | 6. The gut–liver axis and MASLD | modules/gi-gut-liver-axis.html |  |  |

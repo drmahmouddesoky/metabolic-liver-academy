@@ -25,6 +25,7 @@ sys.path.insert(0, os.path.join(ROOT, "content"))
 import learn as L  # noqa: E402
 import ref as R  # noqa: E402
 import modules as M  # noqa: E402
+import gi_modules as G  # noqa: E402  GI & Microbiome series
 sys.path.insert(0, ROOT)
 import chrome  # noqa: E402  header, menu and footer (chrome.py)
 
@@ -235,6 +236,10 @@ def all_sources():
     d = dict(L.SOURCES)
     d.update(R.SOURCES)
     d.update(M.SOURCES)
+    for k, v in G.SOURCES.items():
+        if k in d and d[k][1] != v[1]:
+            raise ValueError("source key clash: " + k)
+        d.setdefault(k, v)
     return d
 
 
@@ -394,7 +399,36 @@ GRADE = {
 CONS = {"strong": ("Strong consensus", "إجماع قوي"), "consensus": ("Consensus", "إجماع")}
 
 
+def _pairs(mod):
+    """English-only modules (gi_modules.py) use plain strings; turn them into (en, en) pairs."""
+    if not mod.get("en_only"):
+        return mod
+    P = lambda x: x if isinstance(x, tuple) else (x, x)  # noqa: E731
+    blocks = []
+    for b in mod["blocks"]:
+        k = b[0]
+        if k == "h2":
+            blocks.append(("h2", P(b[1]), b[2]))
+        elif k in ("p", "aside"):
+            blocks.append((k, P(b[1])))
+        elif k == "ul":
+            blocks.append(("ul", [P(x) for x in b[1]]))
+        elif k == "img":
+            blocks.append(("img", b[1], P(b[2])))
+        elif k == "mcq":
+            blocks.append(("mcq", [{"q": P(q["q"]), "options": [P(o) for o in q["options"]], "answer": q["answer"], "why": P(q["why"])} for q in b[1]]))
+        else:
+            blocks.append(b)
+    return dict(mod, blocks=blocks, objectives=[P(o) for o in mod["objectives"]])
+
+
 def module_page(mod):
+    S = G if mod.get("series") == "gi" else M  # where this module's version, review and dates live
+    mod = _pairs(mod)
+    gi = mod.get("series") == "gi"
+    en_only = ' lang="en" dir="ltr"' if mod.get("en_only") else ""
+    # English-only modules: everything inside the article stays in English on the Arabic page too
+    A = (lambda en, ar, tag="span": bi(en, en, tag)) if mod.get("en_only") else bi  # noqa: E731
     src = all_sources()
     order = []
 
@@ -407,7 +441,10 @@ def module_page(mod):
                 order.append(k)
 
     for b in mod["blocks"]:
-        for txt in [x for x in b[1:] if isinstance(x, tuple)]:
+        texts = [x for x in b[1:] if isinstance(x, tuple)]
+        if b[0] == "ul":
+            texts += b[1]  # bullet lists can carry citations too
+        for txt in texts:
             for m in CITE.finditer(txt[0]):
                 note(m.group(1).split(","))
         if b[0] == "rec":
@@ -420,10 +457,10 @@ def module_page(mod):
         return CITE.sub(sub, esc(txt))
 
     def pc(p, tag="span"):
-        return bi(cites(p[0]), cites(p[1]), tag)
+        return A(cites(p[0]), cites(p[1]), tag)
 
     def cell(c):
-        return bi(esc(c[0]), esc(c[1])) if isinstance(c, tuple) else '<span dir="ltr">%s</span>' % esc(c)
+        return A(esc(c[0]), esc(c[1])) if isinstance(c, tuple) else '<span dir="ltr">%s</span>' % esc(c)
 
     toc, body = [], []
     n = 0
@@ -431,8 +468,8 @@ def module_page(mod):
         kind = b[0]
         if kind == "h2":
             n += 1
-            toc.append('<li><a href="#%s">%s</a></li>' % (b[2], bi(esc(b[1][0]), esc(b[1][1]))))
-            body.append('<h2 id="%s"><span class="num">%d</span>%s</h2>' % (b[2], n, bi(esc(b[1][0]), esc(b[1][1]))))
+            toc.append('<li><a href="#%s">%s</a></li>' % (b[2], A(esc(b[1][0]), esc(b[1][1]))))
+            body.append('<h2 id="%s"><span class="num">%d</span>%s</h2>' % (b[2], n, A(esc(b[1][0]), esc(b[1][1]))))
         elif kind == "p":
             body.append("<p>%s</p>" % pc(b[1]))
         elif kind == "ul":
@@ -441,81 +478,95 @@ def module_page(mod):
             body.append('<aside class="sidenote">%s</aside>' % pc(b[1]))
         elif kind == "rec":
             _, text, loe, strength, cons, key = b
-            tags = ['<span class="g-loe">%s</span>' % bi("Evidence level %d" % loe, "مستوى الدليل %d" % loe)]
+            tags = ['<span class="g-loe">%s</span>' % A("Evidence level %d" % loe, "مستوى الدليل %d" % loe)]
             if strength:
-                tags.append("<span>%s</span>" % bi(*GRADE[strength]))
-            tags.append("<span>%s</span>" % bi(*CONS[cons]))
+                tags.append("<span>%s</span>" % A(*GRADE[strength]))
+            tags.append("<span>%s</span>" % A(*CONS[cons]))
             num = order.index(key) + 1
             body.append('<div class="rec"><p class="rec-tags"><a href="#grading">%s</a></p><p class="rec-text">%s <sup class="cite">[<a href="#ref-%d">%d</a>]</sup></p></div>'
-                        % ("".join(tags), bi(esc(text[0]), esc(text[1])), num, num))
+                        % ("".join(tags), A(esc(text[0]), esc(text[1])), num, num))
         elif kind == "table":
             t = b[1]
             body.append('<div class="table-wrap"><table class="ref-table"><caption>%s</caption><thead><tr>%s</tr></thead><tbody>%s</tbody></table></div>' % (
-                bi(esc(t["caption"][0]), esc(t["caption"][1])),
+                A(esc(t["caption"][0]), esc(t["caption"][1])),
                 "".join('<th scope="col">%s</th>' % cell(c) for c in t["head"]),
                 "".join("<tr>" + "".join(('<th scope="row">%s</th>' if i == 0 else "<td>%s</td>") % cell(c) for i, c in enumerate(r)) + "</tr>" for r in t["rows"])))
+        elif kind == "img":
+            body.append('<figure class="fig fig-img"><img src="../images/modules/gi/%s.webp" alt="%s" width="1400" height="788" loading="lazy" decoding="async"><figcaption>%s</figcaption></figure>'
+                        % (b[1], esc(b[2][0]), A(esc(b[2][0]), esc(b[2][1]))))
         elif kind == "figure":
-            body.append('<figure class="fig">%s<figcaption>%s</figcaption></figure>' % (M.FIGURES[b[1]], bi(esc(b[2][0]), esc(b[2][1]))))
+            body.append('<figure class="fig">%s<figcaption>%s</figcaption></figure>' % (M.FIGURES[b[1]], A(esc(b[2][0]), esc(b[2][1]))))
         elif kind == "case":
             c = b[1]
-            rows = "".join("<dt>%s</dt><dd>%s</dd>" % (bi(esc(l[0]), esc(l[1])), pc(t)) for l, t in c["parts"])
-            body.append('<section class="case"><h3>%s</h3><dl>%s</dl></section>' % (bi(esc(c["title"][0]), esc(c["title"][1])), rows))
+            rows = "".join("<dt>%s</dt><dd>%s</dd>" % (A(esc(l[0]), esc(l[1])), pc(t)) for l, t in c["parts"])
+            body.append('<section class="case"><h3>%s</h3><dl>%s</dl></section>' % (A(esc(c["title"][0]), esc(c["title"][1])), rows))
         elif kind == "mcq":
             items = []
             for i, q in enumerate(b[1], 1):
-                opts = "".join('<button type="button" class="opt" data-i="%d">%s</button>' % (j, bi(esc(o[0]), esc(o[1]))) for j, o in enumerate(q["options"]))
+                opts = "".join('<button type="button" class="opt" data-i="%d">%s</button>' % (j, A(esc(o[0]), esc(o[1]))) for j, o in enumerate(q["options"]))
                 items.append('<div class="mcq" data-answer="%d"><p class="q"><span class="qn">%d.</span> %s</p><div class="opts">%s</div><p class="why" hidden>%s</p></div>'
-                             % (q["answer"], i, bi(esc(q["q"][0]), esc(q["q"][1])), opts, bi(esc(q["why"][0]), esc(q["why"][1]))))
-            body.append('<p class="muted small">%s</p>%s' % (bi("Choose an answer to see the explanation. Nothing is recorded.", "اختر إجابة لترى الشرح. لا يُسجَّل أي شيء."), "".join(items)))
+                             % (q["answer"], i, A(esc(q["q"][0]), esc(q["q"][1])), opts, A(esc(q["why"][0]), esc(q["why"][1]))))
+            body.append('<p class="muted small">%s</p>%s' % (A("Choose an answer to see the explanation. Nothing is recorded.", "اختر إجابة لترى الشرح. لا يُسجَّل أي شيء."), "".join(items)))
 
     out = [HEAD.format(
         t_en=esc(mod["title"]["en"]) + " | MLA Teaching module",
         t_ar=esc(mod["title"]["ar"]) + " | وحدة تعليمية من أكاديمية الكبد والتمثيل الغذائي",
         d_en=esc(mod["subtitle"]["en"]), d_ar=esc(mod["subtitle"]["ar"]), up="../", page="academy",
         extra_head='<link rel="stylesheet" href="../fonts/serif.css">\n')]
-    ver = M.VERSIONS.get(mod["slug"], "1.0")
-    rev = M.REVIEWED.get(mod["slug"])
+    ver = S.VERSIONS.get(mod["slug"], "1.0")
+    rev = S.REVIEWED.get(mod["slug"])
     out.append('<header class="mod-head"><div class="wrap">')
-    out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../academy.html">%s</a> › <a href="../academy.html#modules">%s</a></nav>'
-               % (bi("Physician Portal", "بوابة الأطباء"), bi("Teaching modules", "الوحدات التعليمية")))
-    out.append('<p class="mod-no">%s</p>' % bi("Module %d" % mod["number"], "الوحدة %d" % mod["number"]))
+    if gi:
+        out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../academy.html">%s</a> › <a href="../academy.html#gi-series">%s</a></nav>'
+                   % (bi("Physician Portal", "بوابة الأطباء"), bi(G.SERIES["en"], G.SERIES["ar"])))
+        out.append('<p class="mod-no">%s</p>' % bi("%s · Module %d of %d" % (G.SERIES["en"], mod["number"], len(G.MODULES)),
+                                                   "%s · الوحدة %d من %d" % (G.SERIES["ar"], mod["number"], len(G.MODULES))))
+    else:
+        out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../academy.html">%s</a> › <a href="../academy.html#modules">%s</a></nav>'
+                   % (bi("Physician Portal", "بوابة الأطباء"), bi("Teaching modules", "الوحدات التعليمية")))
+        out.append('<p class="mod-no">%s</p>' % bi("Module %d" % mod["number"], "الوحدة %d" % mod["number"]))
     out.append("<h1>%s</h1>" % bi(esc(mod["title"]["en"]), esc(mod["title"]["ar"])))
     out.append('<p class="mod-sub">%s</p>' % bi(esc(mod["subtitle"]["en"]), esc(mod["subtitle"]["ar"])))
     meta = [
         (("Author", "المؤلف"), (FOUNDER["en"], FOUNDER["ar"])),
         (("For", "موجّهة إلى"), (mod["audience"]["en"], mod["audience"]["ar"])),
         (("Reading time", "مدة القراءة"), ("About %d minutes" % mod["minutes"], "نحو %d دقيقة" % mod["minutes"])),
-        (("Version", "الإصدار"), ("%s, updated %s" % (ver, M.UPDATED), "%s، حُدّثت في %s" % (ver, M.UPDATED))),
+        (("Version", "الإصدار"), ("%s, updated %s" % (ver, S.UPDATED), "%s، حُدّثت في %s" % (ver, S.UPDATED))),
     ]
     if rev:  # the review row appears only once a page has been signed off
         meta.insert(2, (("Author check", "تدقيق المؤلف"), ("Checked by the author " + rev, "دقّقها المؤلف " + rev)))
-    _peer = getattr(M, "PEER", {}).get(mod["slug"])
+    _peer = getattr(S, "PEER", {}).get(mod["slug"])
     meta.append((("Peer review", "مراجعة الأقران"), ("%s, %s" % _peer, "%s، %s" % _peer) if _peer else ("Not yet peer reviewed", "لم تخضع بعد لمراجعة الأقران")))
     out.append('<dl class="mod-meta">' + "".join("<div><dt>%s</dt><dd>%s</dd></div>" % (bi(*k), bi(esc(v[0]), esc(v[1]))) for k, v in meta) + "</dl>")
+    if en_only:
+        out.append('<p class="lang-note" data-lang="ar">هذه الوحدة متاحة حاليًا باللغة الإنجليزية فقط، وستتوفر النسخة العربية قريبًا.</p>')
     out.append("</div></header>")
     out.append('<div class="wrap mod-layout">')
-    out.append('<nav class="mod-toc" aria-label="Contents"><p class="toc-title">%s</p><ol>%s<li><a href="#references">%s</a></li></ol></nav>'
-               % (bi("Contents", "المحتويات"), "".join(toc), bi("References", "المراجع")))
-    out.append('<article class="mod-body">')
+    out.append('<nav class="mod-toc" aria-label="Contents"><p class="toc-title">%s</p><ol%s>%s<li><a href="#references">%s</a></li></ol></nav>'
+               % (A("Contents", "المحتويات"), en_only, "".join(toc), A("References", "المراجع")))
+    out.append('<article class="mod-body"%s>' % en_only)
     out.append('<section class="objectives"><h2 class="h-small">%s</h2><p>%s</p><ol>%s</ol>' % (
-        bi("Learning objectives", "أهداف التعلّم"), bi("After this module you should be able to:", "بعد هذه الوحدة ستكون قادرًا على:"),
-        "".join("<li>%s</li>" % bi(esc(o[0]), esc(o[1])) for o in mod["objectives"])))
-    out.append('<p class="small" id="grading">%s</p></section>' % bi(
-        "Boxed recommendations are paraphrased from the EASL–EASD–EASO 2024 guideline, with its grades: evidence level from 1 (strongest) to 5; recommendation strong, weak or open; consensus is the panel's agreement (strong means at least 95%).",
-        "التوصيات المؤطّرة مُعاد صياغتها من إرشادات EASL–EASD–EASO لعام 2024 مع درجاتها: مستوى الدليل من 1 (الأقوى) إلى 5؛ والتوصية قوية أو ضعيفة أو مفتوحة؛ والإجماع هو مدى اتفاق اللجنة (القوي يعني 95% على الأقل)."))
+        A("Learning objectives", "أهداف التعلّم"), A("After this module you should be able to:", "بعد هذه الوحدة ستكون قادرًا على:"),
+        "".join("<li>%s</li>" % A(esc(o[0]), esc(o[1])) for o in mod["objectives"])))
+    if not any(b[0] == "rec" for b in mod["blocks"]):
+        out.append("</section>")
+    else:
+        out.append('<p class="small" id="grading">%s</p></section>' % A(
+            "Boxed recommendations are paraphrased from the EASL–EASD–EASO 2024 guideline, with its grades: evidence level from 1 (strongest) to 5; recommendation strong, weak or open; consensus is the panel's agreement (strong means at least 95%).",
+            "التوصيات المؤطّرة مُعاد صياغتها من إرشادات EASL–EASD–EASO لعام 2024 مع درجاتها: مستوى الدليل من 1 (الأقوى) إلى 5؛ والتوصية قوية أو ضعيفة أو مفتوحة؛ والإجماع هو مدى اتفاق اللجنة (القوي يعني 95% على الأقل)."))
     out.extend(body)
-    out.append('<h2 id="references">%s</h2><ol class="pubs small refs" lang="en" dir="ltr">' % bi("References", "المراجع"))
+    out.append('<h2 id="references">%s</h2><ol class="pubs small refs" lang="en" dir="ltr">' % A("References", "المراجع"))
     for i, k in enumerate(order, 1):
         text, url = src[k]
         out.append('<li id="ref-%d">%s <a href="%s" target="_blank" rel="noopener">%s</a></li>' % (i, esc(text), url, esc(url.replace("https://doi.org/", "doi:"))))
     out.append("</ol>")
     url = SITE + "modules/%s.html" % mod["slug"]
     out.append('<div class="cite-box"><h2 class="h-small">%s</h2><p lang="en" dir="ltr">Desoky M. %s. Metabolic Liver Academy, version %s. Updated %s. Available from: <a href="%s">%s</a></p></div>'
-               % (bi("How to cite this module", "كيفية الاستشهاد بهذه الوحدة"), esc(mod["title"]["en"]), ver, M.UPDATED, url, url))
-    out.append('<p class="fine">%s</p>' % bi(
+               % (A("How to cite this module", "كيفية الاستشهاد بهذه الوحدة"), esc(mod["title"]["en"]), ver, S.UPDATED, url, url))
+    out.append('<p class="fine">%s</p>' % A(
         "For education only. This module summarises published evidence and guidelines; it does not replace clinical judgement, full guidelines or local drug labels. It is not accredited for CME credit. <a href=\"../legal.html#disclaimer\">Disclaimer</a>.",
         "للتعليم فقط. تلخّص هذه الوحدة الأدلة والإرشادات المنشورة، ولا تغني عن التقدير السريري أو الإرشادات الكاملة أو نشرات الأدوية المحلية، وهي غير معتمدة لساعات التعليم الطبي المستمر. <a href=\"../legal.html#disclaimer\">إخلاء المسؤولية</a>."))
-    out.append(page_record(M, mod["slug"], mod.get("src_file", "content/modules.py")))
+    out.append(page_record(S, mod["slug"], mod.get("src_file", "content/gi_modules.py" if gi else "content/modules.py")))
     out.append("</article></div>")
     out.append(FOOT.format(up="../"))
     return "".join(out)
@@ -721,7 +772,7 @@ def main():
     pages["learn.html"] = learn_index()
     for it in L.ITEMS:
         pages["learn/%s.html" % it["slug"]] = learn_page(it)
-    for mod in M.MODULES:
+    for mod in M.MODULES + G.MODULES:
         pages["modules/%s.html" % mod["slug"]] = module_page(mod)
     pages["ref.html"] = ref_index()
     for pg in R.PAGES:
@@ -731,7 +782,7 @@ def main():
     with open(os.path.join(ROOT, "calc.js"), encoding="utf-8") as f:
         calc_src = f.read()
     n_calc = len(re.findall(r"^      id: '", calc_src, re.M)) + len(re.findall(r"^    \{ g: '", calc_src, re.M))
-    counts = {"N_LEARN": len(L.ITEMS), "N_MOD": len(M.MODULES), "N_REF": len(R.PAGES), "N_CALC": n_calc,
+    counts = {"N_LEARN": len(L.ITEMS), "N_MOD": len(M.MODULES) + len(G.MODULES), "N_REF": len(R.PAGES), "N_CALC": n_calc,
               "N_GUIDES": pages["guides.html"].count('class="guide"')}
     for k, v in counts.items():
         pages["index.html"] = pages["index.html"].replace("%%" + k + "%%", str(v))
