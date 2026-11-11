@@ -57,6 +57,8 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 
 - Keep two-factor authentication on the GitHub account, the domain registrar, GoatCounter
   and beehiiv. Prefer a passkey or an authenticator app over SMS.
+  Status: GitHub and Cloudflare enabled 11 November 2026 (founder's confirmation). GoatCounter and
+  beehiiv: to be confirmed.
 - Keep "Enforce HTTPS" switched on in the repository's Pages settings.
 - Protect the `main` branch with a ruleset: block force pushes and branch deletion. If you also
   require the "Site checks" status before merging, give the Publication Radar workflow a bypass
