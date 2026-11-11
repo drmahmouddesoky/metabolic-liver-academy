@@ -324,7 +324,7 @@ programme is independent and can run in parallel.
 
 | Phase | When | Deliverable |
 | --- | --- | --- |
-| 1 | Now to December 2026 | MASLD updates signed off; site engine made generic for any number of series (small change to `build.py`); shared cardiometabolic core modules drafted (risk assessment, GLP-1/GIP pharmacology, lifestyle prescription, bariatric surgery) |
+| 1 | Now to December 2026 | MASLD updates signed off; Guidance page turned into a hub by condition (done 11 Nov 2026: MASLD live, lipids, obesity and constipation marked "in preparation"); site engine made generic for any number of series (small change to `build.py`); shared cardiometabolic core modules drafted (risk assessment, GLP-1/GIP pharmacology, lifestyle prescription, bariatric surgery) |
 | 2 | January to mid-February 2027 | **Lipids A to Z** (6-week preceptorship), all 12 modules in English, first mentor cohort opened |
 | 3 | March to May 2027 | **Obesity course**, Parts A–D in English; SCOPE accreditation application; Arabic translation of the lipid course |
 | 4 | In parallel from January 2027 | **Constipation Course 1** (January–February), **Course 4** (March–April), Course 2 (May–June), Course 3 (July–August) |
