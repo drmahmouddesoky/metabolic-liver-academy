@@ -23,6 +23,7 @@ NEXT_REVIEW = "2027-11"
 # Medical review record. When you have reviewed a page, add:  "slug": "YYYY-MM-DD",
 # The page will then show "Medically reviewed by Dr. Mahmoud Al Desoky on <date>".
 REVIEWED = {
+    "cirrhosis": "2026-11-11",
 }
 # Version per page (default "1.0"). Raise it when the medical meaning of a page changes.
 VERSIONS = {

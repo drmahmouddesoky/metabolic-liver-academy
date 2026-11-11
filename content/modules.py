@@ -20,7 +20,7 @@ Cells are a plain string (same in both languages) or a pair.
 
 UPDATED = "2026-11-11"
 NEXT_REVIEW = "2027-11"
-REVIEWED = {}
+REVIEWED = {"diabetes-clinic": "2026-11-11", "cirrhosis-care": "2026-11-11"}
 VERSIONS = {"drug-treatment": "1.1", "diabetes-clinic": "1.1", "cirrhosis-care": "1.1"}
 
 # Extra sources (checked on PubMed). Keys from learn.py and ref.py also work.
