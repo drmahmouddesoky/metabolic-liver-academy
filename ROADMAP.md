@@ -23,14 +23,16 @@ programme below reuses that engine, so the work is medical content, not web deve
 3. **One shared cardiometabolic core.** MASLD, dyslipidaemia and obesity share pathophysiology,
    risk assessment, GLP-1/GIP pharmacology, bariatric surgery and lifestyle prescription. These are
    written once as shared modules and linked from each programme, never duplicated.
-4. **Global by design, adapted by region (decided 11 Nov 2026).** The Academy teaches an
-   international audience, not one country. Every course is anchored on the international guidelines
+4. **Global standards, MENA home (decided 11 Nov 2026).** The Academy teaches an international
+   audience from its base in the Middle East and North Africa, not one country. Every course is anchored on the international guidelines
    (for example ESC/EAS and ACC/AHA for lipids; EASL, AASLD and the global consensus for the liver;
    OMEC, SCOPE, EASO and NICE for obesity; AGA/ACG, Rome and ESNM for the gut) and ends with a
    "Practice around the world" section: drug approval and availability by regulator (FDA, EMA, MHRA,
    SFDA and others), how major national guidelines differ, and adaptation notes for settings such as
-   the Middle East and North Africa, South Asia, Europe and North America. Saudi Arabia and the Gulf
-   appear as one of those regions, because that is where the founder practises, never as the only one.
+   South Asia, Europe and North America. The **Middle East and North Africa (MENA)** is the Academy's
+   home region: every course carries a MENA adaptation section (regional guidelines and consensus
+   documents, epidemiology, drug availability across the region's regulators, diet, Ramadan, access).
+   Saudi Arabia is one country within that region, never the frame of the whole course.
    Faith- and culture-specific topics (Ramadan fasting, regional diets) are written so that a reader
    anywhere can use them.
 5. **Same governance as today.** Page record, version, author check, independent peer review line,
@@ -175,7 +177,7 @@ from memory with every drug on it.
 | 5 | 9. Statins A to Z | Potency and intensity, pharmacokinetics, interactions (CYP3A4, OATP1B1, with resmetirom), muscle symptoms and the SAMS pathway, liver safety and MASLD, new-onset diabetes, adherence and nocebo | Statins in detail |
 | 5 | 10. The modern toolbox and the trials behind it | Ezetimibe (IMPROVE-IT), bempedoic acid (CLEAR Outcomes), evolocumab (FOURIER; VESALIUS-CV primary prevention, 2025), alirocumab (ODYSSEY OUTCOMES), inclisiran (ORION; outcome trials pending), evinacumab for HoFH, icosapent ethyl (REDUCE-IT), fibrates and pemafibrate (PROMINENT), FCS drugs | Choosing and combining; cost and SFDA availability |
 | 6 | 11. Familial hypercholesterolaemia and special populations | Dutch Lipid Clinic criteria, genetic testing, cascade screening, children, HoFH; diabetes, CKD, MASLD, HIV, pregnancy and lactation, older adults, stroke, peripheral artery disease | Pathway targets by population |
-| 6 | 12. Lipid care around the world; running a lipid clinic | How ESC/EAS, ACC/AHA, Canadian, Asian and Middle Eastern guidelines differ; drug approval and availability by regulator (FDA, EMA, MHRA, SFDA and others); access and cost; consanguinity and FH in high-prevalence populations; diet and religious fasting; pathways, referral criteria, patient education, shared decisions | Final case portfolio and sign-off |
+| 6 | 12. Lipid care in the Middle East and around the world; running a lipid clinic | How ESC/EAS, ACC/AHA, Canadian, Asian and MENA national guidelines differ; drug approval and availability by regulator (FDA, EMA, MHRA, SFDA and others); access and cost; consanguinity and FH in high-prevalence populations; diet and religious fasting; pathways, referral criteria, patient education, shared decisions | Final case portfolio and sign-off |
 
 Each week: two chapter modules on the site, two worked cases with model answers, one "bring your
 own case" for the mentor session, and a logbook entry. Sign-off is a 10-case portfolio plus a
@@ -284,8 +286,8 @@ A visible map from every module to:
 **Part D: Populations and systems (OMEC systems-based practice, practice-based learning)**
 13. Children and adolescents, pregnancy and PCOS, older adults and sarcopenic obesity, people with
     diabetes, psychiatric illness and antipsychotics
-14. Building an obesity service anywhere: pathway models from NICE, the Saudi guideline, Obesity Canada
-    and EASO COM centres; multidisciplinary teams, referral, quality measures, policy and prevention;
+14. Building an obesity service in the Middle East and beyond: pathway models from the Saudi and other
+    MENA guidelines, NICE, Obesity Canada and EASO COM centres; multidisciplinary teams, referral, quality measures, policy and prevention;
     drug approval and access by region; a self-audit against OMEC and SCOPE
 
 ### Assessment

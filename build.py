@@ -167,8 +167,8 @@ def learn_page(it):
         out.append('<li>%s <a href="%s" target="_blank" rel="noopener">Link</a></li>' % (esc(text), url))
     out.append("</ol>")
     out.append('<p class="fine">%s</p>' % bi(
-        "Last updated %s. Based on international and Saudi guidelines. Education only: it does not replace your doctor. <a href=\"../legal.html#disclaimer\">Read the disclaimer</a>." % L.UPDATED,
-        "آخر تحديث %s. مبني على الإرشادات الدولية والسعودية. للتثقيف فقط ولا يغني عن طبيبك. <a href=\"../legal.html#disclaimer\">اقرأ إخلاء المسؤولية</a>." % L.UPDATED))
+        "Last updated %s. Based on international guidelines and those of the Middle East and North Africa. Education only: it does not replace your doctor. <a href=\"../legal.html#disclaimer\">Read the disclaimer</a>." % L.UPDATED,
+        "آخر تحديث %s. مبني على الإرشادات الدولية وإرشادات الشرق الأوسط وشمال أفريقيا. للتثقيف فقط ولا يغني عن طبيبك. <a href=\"../legal.html#disclaimer\">اقرأ إخلاء المسؤولية</a>." % L.UPDATED))
     out.append(page_record(L, it["slug"], "content/learn.py"))
     out.append("</div></article>")
     out.append(FOOT.format(up="../"))
@@ -179,8 +179,8 @@ def learn_index():
     out = [HEAD.format(
         t_en="Patient Q&amp;A on fatty liver | Metabolic Liver Academy",
         t_ar="أسئلة وأجوبة عن الكبد الدهني | أكاديمية الكبد والتمثيل الغذائي",
-        d_en="Plain answers to %d common questions about fatty liver (MASLD and MASH), based on international and Saudi guidelines." % len(L.ITEMS),
-        d_ar="إجابات مبسطة عن %d سؤالًا شائعًا حول الكبد الدهني، مبنية على الإرشادات الدولية والسعودية." % len(L.ITEMS),
+        d_en="Plain answers to %d common questions about fatty liver (MASLD and MASH), based on international guidelines and those of the Middle East and North Africa." % len(L.ITEMS),
+        d_ar="إجابات مبسطة عن %d سؤالًا شائعًا حول الكبد الدهني، مبنية على الإرشادات الدولية وإرشادات الشرق الأوسط وشمال أفريقيا." % len(L.ITEMS),
         up="", page="learn")]
     out.append('<header class="page-head"><div class="wrap">')
     out.append("<h1>%s</h1>" % bi("Patient questions and answers", "أسئلة وأجوبة للمرضى"))
