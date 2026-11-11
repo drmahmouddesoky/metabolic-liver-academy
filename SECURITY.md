@@ -58,7 +58,11 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 - Keep two-factor authentication on the GitHub account, the domain registrar, GoatCounter
   and beehiiv. Prefer a passkey or an authenticator app over SMS.
 - Keep "Enforce HTTPS" switched on in the repository's Pages settings.
-- Protect the `main` branch (require the "Site checks" workflow to pass before merging).
+- Protect the `main` branch with a ruleset: block force pushes and branch deletion. If you also
+  require the "Site checks" status before merging, give the Publication Radar workflow a bypass
+  (its daily commit lands on `main` directly and does not run the checks), or the daily update will
+  be refused. Checked 11 November 2026: the branch has no ruleset yet; it must be added by the
+  repository owner in Settings > Rules > Rulesets (this cannot be done by Claude from a cloud session).
 - Never commit secrets. The only secret the site uses, the optional `NCBI_API_KEY`, lives in
   the repository's Actions secrets.
 - When adding a GitHub Action, pin it to a commit hash and let Dependabot update it.
