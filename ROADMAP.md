@@ -23,8 +23,16 @@ programme below reuses that engine, so the work is medical content, not web deve
 3. **One shared cardiometabolic core.** MASLD, dyslipidaemia and obesity share pathophysiology,
    risk assessment, GLP-1/GIP pharmacology, bariatric surgery and lifestyle prescription. These are
    written once as shared modules and linked from each programme, never duplicated.
-4. **Regional reality.** Every course has a "Saudi Arabia and the Gulf" section: local
-   guideline, SFDA approvals and availability, Ramadan, diet patterns, access and referral paths.
+4. **Global by design, adapted by region (decided 11 Nov 2026).** The Academy teaches an
+   international audience, not one country. Every course is anchored on the international guidelines
+   (for example ESC/EAS and ACC/AHA for lipids; EASL, AASLD and the global consensus for the liver;
+   OMEC, SCOPE, EASO and NICE for obesity; AGA/ACG, Rome and ESNM for the gut) and ends with a
+   "Practice around the world" section: drug approval and availability by regulator (FDA, EMA, MHRA,
+   SFDA and others), how major national guidelines differ, and adaptation notes for settings such as
+   the Middle East and North Africa, South Asia, Europe and North America. Saudi Arabia and the Gulf
+   appear as one of those regions, because that is where the founder practises, never as the only one.
+   Faith- and culture-specific topics (Ramadan fasting, regional diets) are written so that a reader
+   anywhere can use them.
 5. **Same governance as today.** Page record, version, author check, independent peer review line,
    disclosure, asset register, and the medical review checklist in `REVIEW.md`.
 6. **Language rule (decided 11 Nov 2026).** Patient-facing content (Q&A, printable guides, patient
@@ -56,7 +64,7 @@ would be squeezed in a three-course layout. A three-course alternative is given 
 
 For primary care, internists, family medicine residents and pharmacists. Six modules.
 
-1. The burden and the patient's story (epidemiology, quality of life, costs; Gulf data where they exist)
+1. The burden and the patient's story (epidemiology, quality of life and costs across regions)
 2. Making the diagnosis safely (red flags, when colonoscopy is needed, screening overlap)
 3. First-line treatment that works (core C0.4 applied; evidence for PEG, senna, magnesium oxide, lactulose)
 4. Prescription agents (linaclotide, plecanatide, prucalopride, lubiprostone, tenapanor where licensed; choosing, dosing, cost)
@@ -66,8 +74,8 @@ For primary care, internists, family medicine residents and pharmacists. Six mod
 Standards: AGA–ACG 2023 clinical practice guideline on the pharmacological management of chronic
 idiopathic constipation (strong for PEG, sodium picosulfate, linaclotide, plecanatide, prucalopride;
 conditional for fibre, lactulose, senna, magnesium oxide, lubiprostone); Rome IV; UEG/ESNM 2020
-functional constipation guideline; ASCRS 2016; NICE CKS. *Check whether a Saudi or Gulf constipation
-consensus exists; if not, this course can propose one.*
+functional constipation guideline; ASCRS 2016; NICE CKS; regional guidelines (Asian, Latin American,
+Middle Eastern) where they exist, compared side by side as the MASLD series does.
 
 ### Course 2: IBS-C and the disorders of gut–brain interaction
 
@@ -167,7 +175,7 @@ from memory with every drug on it.
 | 5 | 9. Statins A to Z | Potency and intensity, pharmacokinetics, interactions (CYP3A4, OATP1B1, with resmetirom), muscle symptoms and the SAMS pathway, liver safety and MASLD, new-onset diabetes, adherence and nocebo | Statins in detail |
 | 5 | 10. The modern toolbox and the trials behind it | Ezetimibe (IMPROVE-IT), bempedoic acid (CLEAR Outcomes), evolocumab (FOURIER; VESALIUS-CV primary prevention, 2025), alirocumab (ODYSSEY OUTCOMES), inclisiran (ORION; outcome trials pending), evinacumab for HoFH, icosapent ethyl (REDUCE-IT), fibrates and pemafibrate (PROMINENT), FCS drugs | Choosing and combining; cost and SFDA availability |
 | 6 | 11. Familial hypercholesterolaemia and special populations | Dutch Lipid Clinic criteria, genetic testing, cascade screening, children, HoFH; diabetes, CKD, MASLD, HIV, pregnancy and lactation, older adults, stroke, peripheral artery disease | Pathway targets by population |
-| 6 | 12. Saudi Arabia and the Gulf; running a lipid clinic | Local guideline, SFDA-registered agents, insurance realities, consanguinity and FH, diet and Ramadan; pathways, referral criteria, patient education, shared decisions | Final case portfolio and sign-off |
+| 6 | 12. Lipid care around the world; running a lipid clinic | How ESC/EAS, ACC/AHA, Canadian, Asian and Middle Eastern guidelines differ; drug approval and availability by regulator (FDA, EMA, MHRA, SFDA and others); access and cost; consanguinity and FH in high-prevalence populations; diet and religious fasting; pathways, referral criteria, patient education, shared decisions | Final case portfolio and sign-off |
 
 Each week: two chapter modules on the site, two worked cases with model answers, one "bring your
 own case" for the mentor session, and a logbook entry. Sign-off is a 10-case portfolio plus a
@@ -180,7 +188,8 @@ written into a module.
 - **B1.** Who are the preceptees in the first cohort (residents, family physicians, pharmacists)? That
   sets the depth of modules 1–6.
 - **B2.** Mentoring format: weekly video sessions, or clinic-based? How many per cohort?
-- **B3.** Which local guideline to anchor module 12 (please send the Saudi document you use).
+- **B3.** Which national guidelines to compare in module 12 besides ESC/EAS and ACC/AHA (please send
+  the regional documents you use, the Saudi one included).
 - **B4.** Confirm the title, or pick one of the alternatives.
 
 ---
@@ -215,7 +224,7 @@ mirrors the AASLD and EASL 2026 ranges (the calculator hub already has the engin
 
 ---
 
-## 4. Obesity: a top-tier course aligned with OMEC, SCOPE, SCFHS, the Saudi guideline and NICE
+## 4. Obesity: a top-tier course aligned with OMEC, SCOPE, EASO, SCFHS, NICE and the Saudi guideline
 
 ### What "aligned" will mean on the page
 
@@ -248,7 +257,7 @@ A visible map from every module to:
 
 **Part A: Foundations (SCOPE core, OMEC medical knowledge)**
 1. Obesity as a chronic disease: definitions, BMI and its limits, waist, body composition, the Lancet
-   Commission's clinical and preclinical obesity; Saudi and Gulf prevalence
+   Commission's clinical and preclinical obesity; prevalence worldwide, with the regions of highest burden
 2. Regulation of body weight and why weight returns: appetite hormones, set point, adaptive thermogenesis
 3. Causes: genetics, environment, medications, sleep, endocrine causes, life stages
 4. Complications: cardiometabolic, MASLD (link), OSA, osteoarthritis, cancer, reproductive, mental health;
@@ -260,7 +269,7 @@ A visible map from every module to:
 6. Investigations and risk stratification; screening for complications; when to refer
 7. Setting goals that matter: health outcomes, not only kilograms; shared decision-making; follow-up plan
 
-**Part C: Treatment (OMEC patient care, medical knowledge; NICE and Saudi guideline)**
+**Part C: Treatment (OMEC patient care, medical knowledge; NICE, EASO and the Saudi guideline)**
 8. Nutrition therapy: evidence-based patterns, calorie deficit, meal replacements and very-low-energy
    diets, Mediterranean and regional diets, Ramadan, the dietitian's role
 9. Physical activity and behaviour change: prescriptions, resistance training, sleep, digital tools, CBT
@@ -275,8 +284,9 @@ A visible map from every module to:
 **Part D: Populations and systems (OMEC systems-based practice, practice-based learning)**
 13. Children and adolescents, pregnancy and PCOS, older adults and sarcopenic obesity, people with
     diabetes, psychiatric illness and antipsychotics
-14. Building an obesity service in Saudi Arabia: the Saudi guideline pathway, multidisciplinary teams,
-    referral, quality measures, policy and prevention; a self-audit against OMEC and SCOPE
+14. Building an obesity service anywhere: pathway models from NICE, the Saudi guideline, Obesity Canada
+    and EASO COM centres; multidisciplinary teams, referral, quality measures, policy and prevention;
+    drug approval and access by region; a self-audit against OMEC and SCOPE
 
 ### Assessment
 
