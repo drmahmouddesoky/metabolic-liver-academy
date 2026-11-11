@@ -1,8 +1,13 @@
 # Site checks: run on every pull request and every change to main.
 # They catch mistakes before visitors see them:
 #   1. the pages were rebuilt after editing src/ or content/ (build.py)
-#   2. every calculator still gives the right answer at known values and cut-offs
+#   2. every page carries its Content Security Policy, with no inline handlers
+#   3. every calculator still gives the right answer at known values and cut-offs
+#   4. the Publication Radar parser still reads PubMed's format
 # A red cross on GitHub means one of these failed; open the run to see which.
+#
+# Actions are pinned to a commit (the comment shows the version) so that a
+# changed tag can never run different code here. Dependabot updates the pins.
 name: Site checks
 
 on:
@@ -21,15 +26,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          persist-credentials: false
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
 
       - name: Install tools
         run: |
-          pip install beautifulsoup4 playwright
+          pip install -r requirements-dev.txt
           python -m playwright install --with-deps chromium
 
       - name: Pages are up to date with their sources
@@ -41,6 +48,9 @@ jobs:
             exit 1
           fi
 
+      - name: Every page has its security policy
+        run: python tests/test_csp.py
+
       - name: Calculators give the right answers
         run: |
           python -m http.server 8765 >/dev/null 2>&1 &
@@ -48,6 +58,7 @@ jobs:
           python tests/test_fib4.py
           python tests/test_nfs.py
           python tests/test_calcs.py
+          python tests/test_edges.py
 
       - name: Radar parser
         run: python tests/test_radar.py

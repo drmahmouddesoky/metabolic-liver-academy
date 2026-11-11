@@ -4,9 +4,28 @@
    - English / Arabic switch (remembers the choice in this browser)
    - News list, video list, risk checklist, FIB-4 calculator
    Nothing typed into the tools is sent anywhere or stored.
+   No code from any other website runs on these pages (see SECURITY.md).
    ============================================================ */
 (function () {
   'use strict';
+
+  /* ---------- Not inside another site's frame ----------
+     Pages are meant to be opened directly. If another site embeds one in a
+     frame (clickjacking), the page jumps out of the frame. GitHub Pages
+     cannot send the X-Frame-Options header, so this is done here. */
+  if (window.top !== window.self) {
+    try { window.top.location.href = window.location.href; } catch (e) { document.documentElement.hidden = true; }
+  }
+
+  /* Links that come from the data files (news, talks, experts) may only use
+     http(s), mailto or tel, or be a path on this site. Anything else is dropped. */
+  function safeUrl(u) {
+    u = String(u == null ? '' : u).trim();
+    if (!u) return '';
+    if (/^(https?:|mailto:|tel:)/i.test(u)) return u;
+    if (/^[a-z][a-z0-9+.-]*:/i.test(u)) return '';   /* javascript:, data:, vbscript: ... */
+    return u;
+  }
 
   /* ---------- Language ----------
      Each page is built in one language: English pages at the site root,
@@ -126,14 +145,25 @@
      the quotes, e.g. 'mla' for https://mla.goatcounter.com.
      Leave it empty ('') to switch it off. */
   var GOATCOUNTER = 'drmahmouddesoky';
-  var dnt = navigator.doNotTrack === '1' || window.doNotTrack === '1';
-  if (GOATCOUNTER && !dnt && location.protocol === 'https:') {
-    var gc = document.createElement('script');
-    gc.async = true;
-    gc.src = 'https://gc.zgo.at/count.js';
-    gc.setAttribute('data-goatcounter', 'https://' + GOATCOUNTER + '.goatcounter.com/count');
-    document.body.appendChild(gc);
+  var dnt = navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.globalPrivacyControl === true;
+  if (GOATCOUNTER && !dnt && location.protocol === 'https:' && location.hostname !== 'localhost') {
+    /* One tiny image request carries the page path, title, referrer and
+       screen size. No code from GoatCounter runs on the site, so its
+       servers can never read or change anything on the page (the Content
+       Security Policy forbids outside scripts altogether). */
+    var pixel = new Image(1, 1);
+    pixel.alt = '';
+    pixel.src = 'https://' + GOATCOUNTER + '.goatcounter.com/count?p=' + encodeURIComponent(location.pathname) +
+      '&t=' + encodeURIComponent(document.title) +
+      '&r=' + encodeURIComponent(document.referrer) +
+      '&s=' + encodeURIComponent(screen.width + ',' + screen.height + ',' + (window.devicePixelRatio || 1)) +
+      '&rnd=' + Date.now();
   }
+
+  /* "Print or save as PDF" buttons (printable guides) */
+  document.querySelectorAll('[data-print]').forEach(function (b) {
+    b.addEventListener('click', function () { window.print(); });
+  });
 
   /* ---------- Install as an app ----------
      Android and desktop Chrome/Edge: the browser's own install prompt.
@@ -211,7 +241,7 @@
     }
     box.innerHTML = items.map(function (n) {
       var tl = TYPE_LABEL[n.type] || TYPE_LABEL.health;
-      var link = n.link ? '<a href="' + esc(n.link) + '" target="_blank" rel="noopener">' + bi(n.linkLabel_en || 'Read the original', n.linkLabel_ar || 'اقرأ المصدر الأصلي') + '</a>' : '';
+      var link = safeUrl(n.link) ? '<a href="' + esc(safeUrl(n.link)) + '" target="_blank" rel="noopener">' + bi(n.linkLabel_en || 'Read the original', n.linkLabel_ar || 'اقرأ المصدر الأصلي') + '</a>' : '';
       var when = n.time ? '<span class="when-extra">' + bi(esc(n.time) + ' Riyadh time (' + esc(n.gmt || '') + ' GMT)', esc(n.time) + ' بتوقيت الرياض (' + esc(n.gmt || '') + ' غرينتش)') + '</span>' : '';
       var where = n.place_en ? '<span class="when-extra">' + bi(esc(n.place_en), esc(n.place_ar || n.place_en)) + '</span>' : '';
       return '<article class="post">' +
@@ -241,8 +271,9 @@
      Lectures page (data-embed): the video plays on the page, but only
      after the visitor presses play (nothing loads from YouTube before). */
   var PLAY = '<svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="currentColor"/><path d="M19 15l15 9-15 9z" fill="#fff"/></svg>';
+  function ytId(id) { return /^[A-Za-z0-9_-]{6,20}$/.test(String(id || '')) ? String(id) : ''; }
   document.querySelectorAll('[data-videos]').forEach(function (box) {
-    var list = (window.MLA_VIDEOS || []).slice(0, +box.getAttribute('data-limit') || 99);
+    var list = (window.MLA_VIDEOS || []).filter(function (v) { return v && ytId(v.id); }).slice(0, +box.getAttribute('data-limit') || 99);
     var embed = box.hasAttribute('data-embed');
     box.innerHTML = list.map(function (v) {
       var info = '<div><strong>' + esc(v.title) + '</strong><small>' + esc(v.length) + ' · ' + esc(v.year) + '</small></div>';
@@ -259,6 +290,7 @@
       if (!b) return;
       var f = document.createElement('iframe');
       f.className = 'video-frame';
+      if (!ytId(b.getAttribute('data-id'))) return;
       f.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(b.getAttribute('data-id')) + '?autoplay=1&rel=0';
       f.title = b.getAttribute('data-title');
       f.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
@@ -281,7 +313,7 @@
     box.innerHTML = list.map(function (x) {
       return '<article class="post"><div><time>' + bi(fmtDate(x.date, 'en'), fmtDate(x.date, 'ar')) + '</time></div><div>' +
         '<h3>' + esc(x.title) + '</h3><p class="muted">' + esc(x.event) + '</p>' +
-        (x.link ? '<a href="' + esc(x.link) + '" target="_blank" rel="noopener">' + esc(x.linkLabel || 'Open') + '</a>' : '') +
+        (safeUrl(x.link) ? '<a href="' + esc(safeUrl(x.link)) + '" target="_blank" rel="noopener">' + esc(x.linkLabel || 'Open') + '</a>' : '') +
         '</div></article>';
     }).join('');
   });
@@ -309,7 +341,7 @@
   }
   var PERSON_ICON = '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="18" r="8" fill="currentColor" opacity=".55"/><path d="M8 42c2-9 9-13 16-13s14 4 16 13" fill="currentColor" opacity=".55"/></svg>';
   function expertPhoto(e, size) {
-    if (e.photo) return '<img src="' + esc(ASSET + e.photo) + '" alt="" width="' + size + '" height="' + size + '" loading="lazy" decoding="async">';
+    if (safeUrl(e.photo)) return '<img src="' + esc(ASSET + safeUrl(e.photo)) + '" alt="" width="' + size + '" height="' + size + '" loading="lazy" decoding="async">';
     return e.sample ? PERSON_ICON : '<span aria-hidden="true">' + esc(initials(e.name_en || e.name_ar)) + '</span>';
   }
   var SAMPLE_BADGE = '<span class="sample-badge">' + t('Sample entry, not a real person', 'مثال، وليس شخصًا حقيقيًا') + '</span>';
@@ -362,7 +394,7 @@
       var langName = { en: t('English', 'الإنجليزية'), ar: t('Arabic', 'العربية') };
       var tk = xlist(ex, 'takeaways');
       var qa = ex.qa || [];
-      var pubs = (ex.publications || []).filter(function (p) { return p && p.url; });
+      var pubs = (ex.publications || []).filter(function (p) { return p && safeUrl(p.url); });
       var h = '<header class="page-head expert-head"><div class="wrap">' +
         '<nav class="crumbs small" aria-label="' + t('Breadcrumb', 'مسار التنقل') + '"><a href="experts.html">' + t('Meet the Expert', 'لقاء مع خبير') + '</a></nav>' +
         (ex.sample ? '<p class="sample-note" role="note">' + t('This is a sample page that shows the layout. It is not a real expert or a real interview.', 'هذه صفحة نموذجية لعرض التصميم، وليست لخبير حقيقي أو لقاء حقيقي.') + '</p>' : '') +
@@ -396,9 +428,9 @@
           (other === 'ar' ? 'النص باللغة العربية' : 'Text in English') + '</summary><div class="tr-text">' + esc(trOther).replace(/\n/g, '<br>') + '</div></details>';
       }
       h += '<h2 class="h-small">' + t('About the expert', 'عن الخبير') + '</h2><p>' + esc(xf(ex, 'bio')) + '</p>';
-      if (pubs.length || (ex.profile && ex.profile.url)) {
+      if (pubs.length || (ex.profile && safeUrl(ex.profile.url))) {
         h += '<ul class="ticks">' + pubs.map(function (p) { return '<li><a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.label || p.url) + '</a></li>'; }).join('') +
-          (ex.profile && ex.profile.url ? '<li><a href="' + esc(ex.profile.url) + '" target="_blank" rel="noopener">' + esc(ex.profile.label || t('Professional profile', 'الملف المهني')) + '</a></li>' : '') + '</ul>';
+          (ex.profile && safeUrl(ex.profile.url) ? '<li><a href="' + esc(safeUrl(ex.profile.url)) + '" target="_blank" rel="noopener">' + esc(ex.profile.label || t('Professional profile', 'الملف المهني')) + '</a></li>' : '') + '</ul>';
       }
       h += '<aside class="record small" aria-label="' + t('Page record', 'سجل الصفحة') + '"><dl>' +
         (ex.recorded ? '<dt>' + t('Recorded', 'تاريخ التسجيل') + '</dt><dd>' + esc(fmtDate(ex.recorded, html.lang)) + '</dd>' : '') +
@@ -410,6 +442,7 @@
       exPage.innerHTML = h;
       exPage.addEventListener('click', function (ev) {
         var b = ev.target.closest('.video-play'); if (!b) return;
+        if (!ytId(b.getAttribute('data-id'))) return;
         var f = document.createElement('iframe');
         f.className = 'video-frame';
         f.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(b.getAttribute('data-id')) + '?autoplay=1&rel=0';
@@ -425,7 +458,7 @@
         var nr = document.createElement('meta'); nr.name = 'robots'; nr.content = 'noindex'; document.head.appendChild(nr);
       } else {
         var person = { '@type': 'Person', name: ex.name_en, alternateName: ex.name_ar, jobTitle: ex.title_en,
-          sameAs: pubs.map(function (p) { return p.url; }).concat(ex.profile && ex.profile.url ? [ex.profile.url] : []) };
+          sameAs: pubs.map(function (p) { return p.url; }).concat(ex.profile && safeUrl(ex.profile.url) ? [ex.profile.url] : []) };
         var ld = [person];
         if (ex.video) ld.push({ '@type': 'VideoObject', name: name + ': ' + xf(ex, 'topic'), description: xf(ex, 'topic'),
           uploadDate: ex.recorded || undefined, thumbnailUrl: 'https://i.ytimg.com/vi/' + ex.video + '/hqdefault.jpg',
