@@ -21,11 +21,52 @@
     "appId": "org.metabolicliveracademy.fattyliverclinic",
     "productName": "Fatty Liver Clinic",
     "artifactName": "FattyLiverClinic-${version}-${os}-${arch}.${ext}",
-    "directories": { "output": "dist", "buildResources": "build" },
-    "files": ["main.js", "preload.js", "app/**/*", "build/icon.png"],
-    "win": { "target": [{ "target": "nsis", "arch": ["x64"] }] },
-    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "perMachine": false, "shortcutName": "Fatty Liver Clinic" },
-    "mac": { "target": [{ "target": "dmg", "arch": ["x64", "arm64"] }], "category": "public.app-category.medical", "identity": null, "hardenedRuntime": false },
-    "dmg": { "sign": false }
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "app/**/*",
+      "build/icon.png"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "shortcutName": "Fatty Liver Clinic"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "category": "public.app-category.medical",
+      "identity": null,
+      "hardenedRuntime": false
+    },
+    "dmg": {
+      "sign": false
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drmahmouddesoky/metabolic-liver-academy.git"
   }
 }
