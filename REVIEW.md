@@ -159,4 +159,4 @@ Content changed against three new documents. Please read the new wording:
 - [ ] Module 4 (modules/diabetes-clinic.html): the ADA citation is now Standards of Care 2026 (Section 4,
       doi:10.2337/dc26-S004); the FIB-4 pathway wording was kept and "repeat every 1–2 years if low risk" added.
       Please confirm against the 2026 text.
-- [ ] Still to confirm locally: SFDA status of resmetirom and semaglutide for MASH (the site says "check SFDA").
+- [ ] SFDA approval of resmetirom and semaglutide for MASH is now stated on the site (your confirmation, 11 Nov 2026). Please add the SFDA registration dates and label links to the "sfda2026" source in content/learn.py when you have them.

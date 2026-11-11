@@ -1,6 +1,6 @@
 # Roadmap: the next four programmes
 
-Working plan for Dr. Mahmoud Al Desoky. Written 11 November 2026 to be discussed and changed; nothing
+Working plan for Dr. Mahmoud Al Desoky. Written 11 November 2026, revised the same day after his answers to be discussed and changed; nothing
 here is published on the site. Each programme below has a recommended shape, the standards it is
 built on, the decisions that are yours to make, and a build order.
 
@@ -118,50 +118,66 @@ If you prefer three: keep Courses 1 and 2; merge Course 3 and the neurogenic hal
 "Refractory and neurogenic bowel"; move the special populations into Course 1 as two extra modules.
 It is faster to build but the neurogenic bowel content loses depth, which is your differentiator.
 
-### Decisions for you (constipation)
+### Decisions (constipation)
 
-- **A1.** Four courses (recommended) or three?
-- **A2.** Build order. Recommended: Course 1 first (widest audience, fastest), then Course 4 (your
-  expertise and existing material), then 2, then 3.
-- **A3.** Will the programme carry a joint name (for example "Bowel Health series") on the Physician
-  Portal beside the MASLD & MASH and GI & Microbiome series?
+- **A1. Decided (11 Nov 2026): four courses with the shared core**, as above.
+- **A2. Decided: build order 1, 4, 2, 3** (general first, then neurogenic bowel, then IBS-C, then refractory).
+- **A3. Open:** the series name on the Physician Portal. Proposed: "Bowel Health series" (English) /
+  "سلسلة صحة الأمعاء" (Arabic). Say if you prefer another.
 
 ---
 
-## 2. Dyslipidaemia and hyperlipidaemia: an A-to-Z preceptorship (foundation)
+## 2. Lipids A to Z: From Pathway to Prescription (dyslipidaemia preceptorship)
 
-You want this to be the base for the competency courses that follow. A *preceptorship* means
-supervised, case-based learning with a mentor, a logbook and sign-off, not only reading. The site can
-hold the curriculum, the cases, the self-tests and the logbook templates; the mentoring happens by
-video call or in clinic.
+**Title.** Recommended: **"Lipids A to Z: From Pathway to Prescription"**, Arabic
+**"الدهون من الألف إلى الياء: من المسار الأيضي إلى الوصفة"**. It says what the course is (an A-to-Z),
+how it is taught (along the metabolic pathway) and where it ends (the prescription). It is our own
+title, not borrowed from any sponsored forum. Alternatives if you prefer: "Mastering Lipids: From
+Biochemistry to Bedside"; "The Lipid Pathway: Metabolism, Risk and Modern Therapy"; "LipidCore:
+From Molecule to Medicine".
 
-### Structure (12 weeks, one module and one case per week)
+**Format.** A preceptorship: supervised, case-based learning with a mentor, a logbook and sign-off.
+Duration cut from 12 weeks to **6 weeks, two modules a week**, with one mentor session a week; the
+twelve modules and their content are unchanged. An **intensive 4-week option** (three modules a week)
+is possible for a resident cohort. The site holds the modules, cases, self-tests and the logbook
+template; mentoring is by video call or in clinic.
 
-| Week | Module | Key standard |
-| --- | --- | --- |
-| 1 | Lipoprotein biology: from chylomicron to LDL, apoB and remnants | ESC/EAS 2019 + 2025 focused update |
-| 2 | Measuring lipids properly: non-fasting, non-HDL, apoB, Lp(a) once in a lifetime, secondary causes | EAS consensus statements |
-| 3 | Cardiovascular risk assessment: SCORE2 and SCORE2-OP, risk modifiers, coronary calcium, lifetime risk; US PREVENT and ACC/AHA pooled cohort for comparison | ESC/EAS 2025; ACC/AHA 2018 |
-| 4 | Targets and intensity: LDL-C goals by risk class, "≥50% and to target", the sooner-the-lower-the-better | ESC/EAS 2025 |
-| 5 | Statins A to Z: potency, pharmacology, interactions, muscle symptoms (SAMS), liver safety (links to MASLD module), diabetes risk, adherence | ESC/EAS; AASLD statin guidance |
-| 6 | Beyond statins: ezetimibe, bempedoic acid, PCSK9 antibodies, inclisiran; combination therapy from day one in very-high-risk patients | ESC/EAS 2025 |
-| 7 | Triglycerides and remnants: severe hypertriglyceridaemia and pancreatitis, fibrates, icosapent ethyl, familial chylomicronaemia and the new APOC3 drugs | ESC/EAS; EAS consensus |
-| 8 | Lipoprotein(a): who to test, how to interpret, what to do now, what is in trials | EAS 2022 Lp(a) consensus |
-| 9 | Familial hypercholesterolaemia: Dutch Lipid Clinic criteria, genetics, cascade screening, children, homozygous FH and evinacumab | EAS FH statements |
-| 10 | Special situations: diabetes, CKD, MASLD, HIV, pregnancy and lactation, older adults, after ACS (in-hospital intensification), stroke, PAD | ESC/EAS 2025 |
-| 11 | Saudi Arabia and the Gulf: local guidelines, SFDA-approved agents, insurance realities, consanguinity and FH, diet and Ramadan | *Local guideline to confirm* |
-| 12 | Running a lipid clinic: pathways, referral criteria, patient education, shared decisions; final case portfolio and sign-off | — |
+**The teaching idea.** The course follows lipid metabolism from the gut to the artery wall, stage by
+stage. At every stage the module marks the site where a drug acts, the drugs that act there today, and
+the drugs in trials. One master pathway figure (drawn in SVG by the site's figure engine) is reused in
+every module with the relevant target highlighted, so by week 6 the learner can draw the whole map
+from memory with every drug on it.
 
-Each week: one chapter module on the site, one worked case with a model answer, one "bring your
+### The six weeks, twelve modules
+
+| Week | Module | Stage of lipid metabolism | Drug targets shown on the pathway |
+| --- | --- | --- | --- |
+| 1 | 1. Lipid biochemistry and lipoprotein structure | Cholesterol, triglycerides, fatty acids, phospholipids; apoB-100 and apoB-48, apoA-I, apoC-II, apoC-III, apoE; lipoprotein classes and densities | The map itself: where each later drug will sit |
+| 1 | 2. The exogenous pathway | Intestinal absorption (NPC1L1, ACAT, MTP), chylomicron assembly, lipoprotein lipase and its regulators (apoC-II, apoC-III, ANGPTL3/4/8), remnant uptake | Ezetimibe (NPC1L1); apoC-III antisense and siRNA (olezarsen, plozasiran) for familial chylomicronaemia and severe hypertriglyceridaemia; ANGPTL3 antibody (evinacumab) |
+| 2 | 3. The endogenous pathway | Hepatic cholesterol synthesis (HMG-CoA reductase, ATP-citrate lyase), VLDL assembly (MTP), VLDL to IDL to LDL, CETP exchange | Statins (HMG-CoA reductase); bempedoic acid (ATP-citrate lyase, liver-selective, muscle-sparing); lomitapide (MTP) for HoFH; CETP inhibition revisited (obicetrapib) |
+| 2 | 4. The LDL receptor cycle and PCSK9 | LDL-receptor recycling, PCSK9 degradation of the receptor, LDLR and APOB mutations, the genetic basis of FH | PCSK9 antibodies (evolocumab, alirocumab), PCSK9 siRNA (inclisiran), oral PCSK9 inhibitors in phase 3 (enlicitide and others); why statins raise PCSK9 |
+| 3 | 5. Reverse cholesterol transport and HDL | ABCA1, LCAT, HDL maturation, SR-B1, CETP; why raising HDL cholesterol did not reduce events | The failed HDL drugs (niacin, CETP inhibitors) and what they taught; obicetrapib's LDL-lowering role |
+| 3 | 6. Lipoprotein(a) | Structure (apo(a) kringles), genetics (LPA), why it is measured once, risk thresholds, aortic stenosis | Antisense and siRNA in outcome trials (pelacarsen, olpasiran, lepodisiran, zerlasiran), oral muvalaplin; what to do today (risk-factor control, apheresis, PCSK9 effect) |
+| 4 | 7. Measuring lipids and estimating risk | Non-fasting samples, non-HDL cholesterol, apoB, remnant cholesterol, Lp(a), secondary causes; SCORE2 and SCORE2-OP, risk modifiers, coronary calcium, lifetime risk; US PREVENT for comparison | Which marker guides which drug |
+| 4 | 8. Targets and treatment strategy | LDL-C goals by risk class, "≥50% lowering and to goal", the sooner-the-lower-the-better, early combination therapy, in-hospital intensification after ACS (ESC/EAS 2019 + 2025 focused update; ACC/AHA 2018; the Saudi guideline) | How the targets translate into the drug ladder |
+| 5 | 9. Statins A to Z | Potency and intensity, pharmacokinetics, interactions (CYP3A4, OATP1B1, with resmetirom), muscle symptoms and the SAMS pathway, liver safety and MASLD, new-onset diabetes, adherence and nocebo | Statins in detail |
+| 5 | 10. The modern toolbox and the trials behind it | Ezetimibe (IMPROVE-IT), bempedoic acid (CLEAR Outcomes), evolocumab (FOURIER; VESALIUS-CV primary prevention, 2025), alirocumab (ODYSSEY OUTCOMES), inclisiran (ORION; outcome trials pending), evinacumab for HoFH, icosapent ethyl (REDUCE-IT), fibrates and pemafibrate (PROMINENT), FCS drugs | Choosing and combining; cost and SFDA availability |
+| 6 | 11. Familial hypercholesterolaemia and special populations | Dutch Lipid Clinic criteria, genetic testing, cascade screening, children, HoFH; diabetes, CKD, MASLD, HIV, pregnancy and lactation, older adults, stroke, peripheral artery disease | Pathway targets by population |
+| 6 | 12. Saudi Arabia and the Gulf; running a lipid clinic | Local guideline, SFDA-registered agents, insurance realities, consanguinity and FH, diet and Ramadan; pathways, referral criteria, patient education, shared decisions | Final case portfolio and sign-off |
+
+Each week: two chapter modules on the site, two worked cases with model answers, one "bring your
 own case" for the mentor session, and a logbook entry. Sign-off is a 10-case portfolio plus a
-structured oral case discussion.
+structured oral case discussion. Trial figures (for example VESALIUS-CV: 12,257 patients, 4.6 years,
+19% relative reduction in four-point MACE) are checked against the primary papers before they are
+written into a module.
 
-### Decisions for you (dyslipidaemia)
+### Decisions (dyslipidaemia)
 
 - **B1.** Who are the preceptees in the first cohort (residents, family physicians, pharmacists)? That
-  sets the depth of weeks 1 and 7–9.
-- **B2.** Mentoring format: fortnightly video sessions, or clinic-based? How many per cohort?
-- **B3.** Which local guideline to anchor week 11 (please send the Saudi document you use).
+  sets the depth of modules 1–6.
+- **B2.** Mentoring format: weekly video sessions, or clinic-based? How many per cohort?
+- **B3.** Which local guideline to anchor module 12 (please send the Saudi document you use).
+- **B4.** Confirm the title, or pick one of the alternatives.
 
 ---
 
@@ -182,8 +198,10 @@ Done on 11 November 2026 (see `REVIEW.md` for the exact pages to check):
   (resmetirom March 2024, semaglutide August 2025), EU conditional approval of resmetirom (August 2025),
   UK approvals (2026), AASLD paediatric statement 2025, Saudi 2026 consensus, global consensus 2025.
 
-Still open for you: the SFDA status of both drugs for MASH; the full-text check of the three items
-above. Proposed cadence: a guideline sweep every quarter (EASL Congress in May/June, AASLD Liver
+Done on 11 November 2026 as well: on your confirmation, the site now states that the **SFDA has
+registered both resmetirom and semaglutide** for MASH with fibrosis (drug reference, Module 2, the
+guidance table and the patient answer). Please add the registration dates and label links when you have
+them. Still open: the full-text check of the three items above. Proposed cadence: a guideline sweep every quarter (EASL Congress in May/June, AASLD Liver
 Meeting in November are the two dates when things change), and the Publication Radar already brings
 the papers daily.
 
@@ -214,6 +232,13 @@ A visible map from every module to:
   tirzepatide).
 - **The Lancet Commission on clinical obesity (January 2025)**: preclinical versus clinical obesity,
   BMI never alone, confirmation of excess adiposity, the organ-dysfunction criteria.
+- **EASO** (European Association for the Study of Obesity): its clinical framework for adult obesity
+  management (2024–2025), the EASO Collaborating Centres for Obesity Management (COMs) criteria, and
+  the EASO/EFAD/ESPEN nutrition and medical-nutrition statements. Prince Sultan Military Medical City's
+  obesity medicine unit (Dr Abdullah Bin Badawi) became the first Saudi EASO International Affiliate
+  COM in November 2026 (status 1 November 2026 to 31 October 2028). A COM-accredited centre next door is
+  a natural partner for cases, peer review and a joint live session; whether to approach them is your
+  call (decision C4).
 
 ### Course design: 14 modules in four parts
 
@@ -257,13 +282,22 @@ A visible map from every module to:
 
 ### Decisions for you (obesity)
 
-- **C1.** Apply for **SCOPE accreditation** of the course (World Obesity accredits external courses for
+- **C1.** Apply for **SCOPE accreditation** of the course? What this means: SCOPE is the World Obesity
+  Federation's professional education programme. *Certification* is for individuals (they pass the
+  SCOPE exams and collect 12 SCOPE points). *Accreditation* is for courses and events: an organiser
+  submits the course overview, slides and speaker biographies at least one month before the start,
+  pays a tiered fee (by participants and duration; World Obesity members get 25% off), the Clinical
+  Care Committee reviews the content, and if approved the course carries the SCOPE badge and awards
+  SCOPE points to every learner who completes it. For us it would mean our obesity course counts
+  towards an international obesity qualification, which is the strongest signal of quality we can
+  offer. Apply for SCOPE accreditation of the course (World Obesity accredits external courses for
   SCOPE points)? It raises the standing of the course and gives learners a path to certification;
   it needs an application, a fee and a review of the content. Recommended: yes, after the English
   version is complete.
 - **C2.** Apply for **SCFHS CME** accreditation for live sessions attached to the course?
 - **C3.** Advisory board: two or three named obesity physicians (one bariatric surgeon, one dietitian)
   as independent peer reviewers, so the "Independent peer review" line on each page is filled.
+- **C4.** Invite the PSMMC EASO-accredited obesity unit as a partner or peer reviewer for the course?
 
 ---
 
@@ -275,7 +309,7 @@ programme is independent and can run in parallel.
 | Phase | When | Deliverable |
 | --- | --- | --- |
 | 1 | Now to December 2026 | MASLD updates signed off; site engine made generic for any number of series (small change to `build.py`); shared cardiometabolic core modules drafted (risk assessment, GLP-1/GIP pharmacology, lifestyle prescription, bariatric surgery) |
-| 2 | January to February 2027 | **Dyslipidaemia preceptorship**, weeks 1–12 in English, first mentor cohort opened |
+| 2 | January to mid-February 2027 | **Lipids A to Z** (6-week preceptorship), all 12 modules in English, first mentor cohort opened |
 | 3 | March to May 2027 | **Obesity course**, Parts A–D in English; SCOPE accreditation application; Arabic translation of the lipid course |
 | 4 | In parallel from January 2027 | **Constipation Course 1** (January–February), **Course 4** (March–April), Course 2 (May–June), Course 3 (July–August) |
 | 5 | June 2027 onwards | Arabic translations, peer review, calculators (treatment eligibility, Lp(a) interpretation, NBD score), live sessions |
@@ -285,7 +319,7 @@ and review in both languages. A course of 6–8 modules is therefore 6–10 week
 
 ## 6. What I need from you to start
 
-1. Answers to decisions A1–A3, B1–B3 and C1–C3 above.
+1. Answers to the open decisions: A3, B1–B4 and C1–C4 above (A1 and A2 are settled).
 2. The full texts (PDF) of: the EASL–EASD–EASO 2026 guidance, Baveno VIII, the ADA 2026 Section 4, the
    AGA–ACG 2023 CIC guideline, the ACG 2021 and AGA 2022 IBS guidelines, the PVA 2020 neurogenic bowel
    guideline, the ESC/EAS 2025 focused update, the EAS Lp(a) and FH statements, the OMEC competencies,

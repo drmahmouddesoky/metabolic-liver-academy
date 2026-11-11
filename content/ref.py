@@ -386,7 +386,7 @@ PAGES = [
  "key": [
   ("Who: adults with MASH and moderate-to-advanced fibrosis (F2–F3), no cirrhosis, alongside lifestyle change.", "لمن: البالغون المصابون بـ MASH مع تليّف متوسط إلى متقدّم (F2–F3)، دون تشمّع، مع تعديل نمط الحياة."),
   ("Biopsy is not required. Non-invasive tests can identify likely F2–F3.", "الخزعة ليست شرطًا، ويمكن للفحوص غير الجراحية تحديد F2–F3 المرجّح."),
-  ("Approvals differ by country. The Saudi 2026 consensus noted that resmetirom was not yet approved in Saudi Arabia; check current SFDA status before prescribing.", "تختلف الموافقات من بلد لآخر. وأشار الإجماع السعودي لعام 2026 إلى أن الريسميتيروم لم يكن معتمدًا بعد في السعودية؛ تحقق من وضعه الحالي لدى هيئة الغذاء والدواء قبل الوصف."),
+  ("Both drugs are now registered by the Saudi Food and Drug Authority (SFDA) for MASH with fibrosis (confirmed November 2026). Follow the SFDA label; the Saudi 2026 consensus was written before resmetirom was approved locally.", "الدواءان مسجّلان الآن لدى الهيئة العامة للغذاء والدواء (SFDA) لعلاج MASH مع التليّف (تأكد ذلك في نوفمبر 2026). اتبع نشرة الهيئة؛ فقد كُتب الإجماع السعودي لعام 2026 قبل اعتماد الريسميتيروم محليًا."),
   ("Neither is approved for cirrhosis yet.", "لم يُعتمد أيٌّ منهما للتشمّع حتى الآن."),
  ],
  "sections": [
@@ -449,7 +449,7 @@ PAGES = [
              ]}},
  ],
  "see": ["lifestyle", "cardiometabolic", "fibrosis-pathway"],
- "src": ["resm2024", "global2025", "maestro", "essence", "easl2024", "easl2026", "aasld2023", "noureddin2024", "global2026", "blt2026", "ec2025"],
+ "src": ["resm2024", "global2025", "maestro", "essence", "easl2024", "easl2026", "aasld2023", "noureddin2024", "global2026", "blt2026", "ec2025", "sfda2026"],
 },
 {
  "slug": "cardiometabolic", "group": "treat",
@@ -653,7 +653,7 @@ PAGES = [
               [("Global consensus 2025", "الإجماع العالمي 2025"), ("VCTE 8–<16 kPa; 16–20 kPa if a second test excludes cirrhosis; not if >20 kPa", "VCTE ‏8 إلى أقل من 16؛ و16–20 إذا نفى فحص ثانٍ التشمّع؛ ولا يُعطى فوق 20"), ("Only selected people without diabetes or cirrhosis", "فقط لأشخاص مختارين دون سكري أو تشمّع"), ("For diabetes, not as MASH treatment", "للسكري، وليس علاجًا لـ MASH")],
               ["APASL 2025", ("Improves inflammation and fibrosis; prescribe within a specialist team", "يحسّن الالتهاب والتليّف؛ ويوصف ضمن فريق متخصص"), ("May improve histology", "قد يحسّن النسيج"), ("Improves histology", "يحسّن النسيج")],
               [("Egyptian 2022", "المصرية 2022"), ("Before approval", "قبل اعتماده"), ("May improve histology", "قد يحسّن النسيج"), ("Improves histology", "يحسّن النسيج")],
-              [("Saudi consensus 2026", "الإجماع السعودي 2026"), ("80–100 mg daily may be considered for MASH with fibrosis; more real-world evidence needed; not yet approved in Saudi Arabia at the time of writing", "يمكن النظر في 80–100 ملغ يوميًا لـ MASH مع تليّف؛ ويلزم مزيد من بيانات الواقع؛ وغير معتمد في السعودية وقت كتابة الإجماع"), ("Can be considered in MASH without type 2 diabetes", "يمكن النظر فيه في MASH دون سكري من النوع الثاني"), ("Recommended in type 2 diabetes with biopsy-proven MASH and advanced fibrosis", "يوصى به مع السكري من النوع الثاني وMASH مؤكد بالخزعة وتليّف متقدّم")],
+              [("Saudi consensus 2026", "الإجماع السعودي 2026"), ("80–100 mg daily may be considered for MASH with fibrosis; more real-world evidence needed; not yet approved in Saudi Arabia at the time of writing (SFDA has since approved both resmetirom and semaglutide for MASH)", "يمكن النظر في 80–100 ملغ يوميًا لـ MASH مع تليّف؛ ويلزم مزيد من بيانات الواقع؛ وغير معتمد في السعودية وقت كتابة الإجماع (وقد اعتمدت الهيئة منذ ذلك الحين الريسميتيروم والسيماغلوتايد لـ MASH)"), ("Can be considered in MASH without type 2 diabetes", "يمكن النظر فيه في MASH دون سكري من النوع الثاني"), ("Recommended in type 2 diabetes with biopsy-proven MASH and advanced fibrosis", "يوصى به مع السكري من النوع الثاني وMASH مؤكد بالخزعة وتليّف متقدّم")],
              ]},
    "note": ("Summaries of each document's own words, checked against the full texts in October 2026.", "ملخصات لنصوص كل وثيقة، رُوجعت مقابل النصوص الكاملة في أكتوبر 2026.")},
  ],
