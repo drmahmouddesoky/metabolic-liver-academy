@@ -136,3 +136,27 @@ Each module was drafted from the full guideline texts in your folder and then fa
 | [ ] | 4. Red flags, referral and teamwork | modules/gi-red-flags-referral.html |  |  |
 | [ ] | 5. Probiotics – when a gastroenterologist uses them | modules/gi-probiotics.html |  |  |
 | [ ] | 6. The gut–liver axis and MASLD | modules/gi-gut-liver-axis.html |  |  |
+
+## Security rebuild and guideline update (2026-11-11)
+
+Technical (no medical check needed): every page now carries a Content Security Policy, no outside
+code runs on the site (the visit counter is a plain image request), and the build checks are pinned.
+See `SECURITY.md`.
+
+Content changed against three new documents. Please read the new wording:
+
+- [ ] Module 2 (modules/drug-treatment.html), section "Semaglutide 2.4 mg" and "Choosing between them": the
+      new EASL–EASD–EASO 2026 guidance on resmetirom and semaglutide (J Hepatol, doi:10.1016/j.jhep.2026.08.028).
+      Only the abstract could be read from the build computer: please check the candidate ranges
+      (VCTE 10–20 kPa, MRE 3.1–5.0 kPa, ELF 9.8–11.3), the drug-preference wording and the combination statement
+      against the full text.
+- [ ] Reference: Drug treatment (ref/drugs.html) note and "Choosing between them"; Guidelines side by side
+      (ref/guidelines-compared.html) EASL row.
+- [ ] Module 5 (modules/cirrhosis-care.html) and Cirrhosis quick reference (ref/cirrhosis.html): a note that
+      Baveno VIII (J Hepatol 2026;85:993–1018) has replaced Baveno VII and revised some cut-offs. The cut-offs on the
+      site are still the Baveno VII values. When you have the full text, update the rule-of-five table and the
+      CSPH thresholds, or confirm they are unchanged.
+- [ ] Module 4 (modules/diabetes-clinic.html): the ADA citation is now Standards of Care 2026 (Section 4,
+      doi:10.2337/dc26-S004); the FIB-4 pathway wording was kept and "repeat every 1–2 years if low risk" added.
+      Please confirm against the 2026 text.
+- [ ] Still to confirm locally: SFDA status of resmetirom and semaglutide for MASH (the site says "check SFDA").

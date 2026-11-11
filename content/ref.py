@@ -18,14 +18,15 @@ Fields
   src       source keys (SOURCES here, or learn.SOURCES)
 """
 
-UPDATED = "2026-10-03"
-NEXT_REVIEW = "2027-10"
+UPDATED = "2026-11-11"
+NEXT_REVIEW = "2027-11"
 # Medical review record. When you have reviewed a page, add:  "slug": "YYYY-MM-DD",
 # The page will then show "Medically reviewed by Dr. Mahmoud Al Desoky on <date>".
 REVIEWED = {
 }
 # Version per page (default "1.0"). Raise it when the medical meaning of a page changes.
 VERSIONS = {
+    "drugs": "1.1", "guidelines-compared": "1.1", "cirrhosis": "1.1",
 }
 
 GROUPS = [
@@ -39,6 +40,9 @@ GROUPS = [
 SOURCES = {
     "maestro": ("Harrison SA, et al. A phase 3, randomized, controlled trial of resmetirom in NASH with liver fibrosis (MAESTRO-NASH). N Engl J Med 2024;390:497–509.", "https://doi.org/10.1056/NEJMoa2309000"),
     "essence": ("Sanyal AJ, et al. Phase 3 trial of semaglutide in metabolic dysfunction-associated steatohepatitis (ESSENCE). N Engl J Med 2025;392:2089–99.", "https://doi.org/10.1056/NEJMoa2413258"),
+    "easl2026": ("EASL–EASD–EASO guidance on the use of resmetirom and semaglutide as MASH-targeted therapy. J Hepatol 2026 (published online 29 September 2026).", "https://doi.org/10.1016/j.jhep.2026.08.028"),
+    "baveno8": ("Baveno VIII Faculty. Baveno VIII – Advancing consensus in portal hypertension. J Hepatol 2026;85:993–1018.", "https://doi.org/10.1016/j.jhep.2026.07.030"),
+    "ada2026": ("American Diabetes Association Professional Practice Committee. 4. Comprehensive medical evaluation and assessment of comorbidities: Standards of Care in Diabetes—2026. Diabetes Care 2026;49(Suppl 1):S61–88.", "https://doi.org/10.2337/dc26-S004"),
     "baveno7": ("de Franchis R, et al. Baveno VII – Renewing consensus in portal hypertension. J Hepatol 2022;76:959–74.", "https://doi.org/10.1016/j.jhep.2021.12.022"),
     "nfs":     ("Angulo P, et al. The NAFLD fibrosis score: a noninvasive system that identifies liver fibrosis in patients with NAFLD. Hepatology 2007;45:846–54.", "https://doi.org/10.1002/hep.21496"),
     "fib4":    ("Sterling RK, et al. Development of a simple noninvasive index to predict significant fibrosis in patients with HIV/HCV coinfection. Hepatology 2006;43:1317–25.", "https://doi.org/10.1002/hep.21178"),
@@ -398,8 +402,8 @@ PAGES = [
               [("Main side effects", "أهم الآثار الجانبية"), ("Diarrhoea, nausea", "إسهال، غثيان"), ("Nausea, vomiting, diarrhoea, constipation", "غثيان، قيء، إسهال، إمساك")],
               [("Watch for", "انتبه إلى"), ("Interactions: with a CYP2C8 inhibitor such as clopidogrel, lower the dose (80 mg if ≥100 kg, 60 mg if <100 kg). Statin caps: rosuvastatin and simvastatin 20 mg, atorvastatin and pravastatin 40 mg. Check TSH and free T4 if on levothyroxine.", "التداخلات: مع مثبط لـ CYP2C8 مثل الكلوبيدوغريل تُخفّض الجرعة (80 ملغ لمن وزنه ≥100 كغ، و60 ملغ لمن وزنه <100 كغ). الحد الأعلى للستاتين: روزوفاستاتين وسيمفاستاتين 20 ملغ، وأتورفاستاتين وبرافاستاتين 40 ملغ. افحص TSH وfree T4 لمن يتناول الليفوثيروكسين."), ("Gallstones, pancreatitis history, muscle loss; not in pregnancy", "حصى المرارة، تاريخ التهاب البنكرياس، فقدان العضلات؛ لا يُستخدم في الحمل")],
              ]},
-   "note": ("Approved in the US (resmetirom 2024, semaglutide 2025), the EU (resmetirom, conditional, 2025) and the UK (both, 2026). Long-term outcome trials are ongoing.",
-            "معتمدان في الولايات المتحدة (الريسميتيروم 2024، والسيماغلوتايد 2025)، والاتحاد الأوروبي (الريسميتيروم، اعتماد مشروط، 2025)، والمملكة المتحدة (كلاهما، 2026). وما زالت تجارب المآلات طويلة المدى جارية.")},
+   "note": ("Approved in the US (resmetirom 2024, semaglutide 2025), the EU (resmetirom, conditional, 2025) and the UK (both, 2026). In September 2026 EASL, EASD and EASO issued joint guidance recommending either drug for adults with non-cirrhotic MASH and F2–F3 fibrosis, on top of structured lifestyle change and treatment of comorbidities. Long-term outcome trials are ongoing.",
+            "معتمدان في الولايات المتحدة (الريسميتيروم 2024، والسيماغلوتايد 2025)، والاتحاد الأوروبي (الريسميتيروم، مشروط، 2025)، والمملكة المتحدة (كلاهما، 2026). وفي سبتمبر 2026 أصدرت EASL وEASD وEASO إرشادات مشتركة توصي بأي من الدواءين للبالغين المصابين بـ MASH دون تشمّع مع تليّف F2–F3، فوق تغيير نمط الحياة المنظّم وعلاج الأمراض المصاحبة. وتجارب المآلات طويلة المدى مستمرة.")},
   {"h": ("Who qualifies for resmetirom (AASLD 2024)", "مَن يناسبه الريسميتيروم (AASLD 2024)"),
    "table": {"head": [("Recommended", "يوصى به"), ("Not recommended", "لا يوصى به")],
              "rows": [
@@ -412,9 +416,10 @@ PAGES = [
             "ويسمح الإجماع العالمي لعام 2025 أيضًا بالعلاج عند 16–20 كيلوباسكال إذا نفى فحص ثانٍ التشمّع ولم توجد علامات لارتفاع ضغط الوريد البابي.")},
   {"h": ("Choosing between them", "الاختيار بينهما"),
    "ul": [
+    ("EASL–EASD–EASO 2026: choose by the cardio-renal-metabolic profile. Semaglutide may be preferred with obesity, type 2 diabetes, established cardiovascular disease or high cardiovascular risk; resmetirom may be prioritised without obesity, or when a GLP-1 drug is already taken or not tolerated.", "إرشادات EASL–EASD–EASO لعام 2026: اختر وفق الصورة القلبية الكلوية الأيضية. قد يُفضَّل السيماغلوتايد مع السمنة أو السكري من النوع الثاني أو مرض القلب الوعائي الثابت أو ارتفاع خطره، وقد يُقدَّم الريسميتيروم دون سمنة أو عند تناول دواء GLP-1 أصلًا أو عدم تحمّله."),
     ("Obesity or type 2 diabetes needing treatment anyway: semaglutide treats both.", "سمنة أو سكري يحتاج علاجًا في كل الأحوال: السيماغلوتايد يعالج الاثنين."),
     ("Normal weight, GLP-1 not tolerated, or already on a GLP-1 drug: resmetirom is an option.", "وزن طبيعي، أو عدم تحمّل GLP-1، أو يتناول دواء GLP-1 أصلًا: الريسميتيروم خيار."),
-    ("Data on using both together are still limited.", "البيانات عن الجمع بينهما ما زالت محدودة."),
+    ("Data on using both together are still limited; EASL–EASD–EASO 2026 does not recommend starting both together as first-line MASH treatment.", "البيانات عن الجمع بينهما ما زالت محدودة، ولا توصي إرشادات EASL–EASD–EASO لعام 2026 ببدء الدواءين معًا علاجًا أوليًا لـ MASH."),
    ]},
   {"h": ("Monitoring resmetirom", "متابعة العلاج بالريسميتيروم"),
    "ul": [
@@ -444,7 +449,7 @@ PAGES = [
              ]}},
  ],
  "see": ["lifestyle", "cardiometabolic", "fibrosis-pathway"],
- "src": ["resm2024", "global2025", "maestro", "essence", "easl2024", "aasld2023", "noureddin2024", "global2026", "blt2026", "ec2025"],
+ "src": ["resm2024", "global2025", "maestro", "essence", "easl2024", "easl2026", "aasld2023", "noureddin2024", "global2026", "blt2026", "ec2025"],
 },
 {
  "slug": "cardiometabolic", "group": "treat",
@@ -552,7 +557,12 @@ PAGES = [
   ("Approved MASH drugs are not yet licensed for cirrhosis.", "أدوية MASH المعتمدة غير مرخّصة للتشمّع حتى الآن."),
  ],
  "sections": [
-  {"h": ("Liver stiffness: the rule of five", "صلابة الكبد: قاعدة الخمسات"),
+  {"h": ("Baveno VIII (2026): what changed", "Baveno VIII (2026): ما الذي تغيّر"),
+   "p": [("Baveno VIII, published in August 2026, replaces Baveno VII as the reference consensus on portal hypertension. It keeps the central role of clinically significant portal hypertension (CSPH) and of non-invasive tests, adds spleen stiffness and probabilistic models to diagnose CSPH, revises several diagnostic and prognostic cut-offs, and adds guidance on modifiers of steatotic liver disease, on cirrhosis recompensation and, for the first time, on children. Recommendations it did not revise, such as HVPG measurement, remain valid.",
+           "صدر إجماع Baveno VIII في أغسطس 2026 ليحل محل Baveno VII مرجعًا لارتفاع ضغط الوريد البابي. يحافظ على الدور المحوري لارتفاع ضغط الوريد البابي المهم سريريًا (CSPH) وللفحوص غير الباضعة، ويضيف صلابة الطحال والنماذج الاحتمالية لتشخيص CSPH، ويراجع عددًا من الحدود التشخيصية والإنذارية، ويضيف إرشادات حول عوامل مرض الكبد الدهني وحول استعادة المعاوضة، وللمرة الأولى حول الأطفال. وتبقى التوصيات التي لم يراجعها، مثل قياس HVPG، سارية."),
+          ("The stiffness and platelet cut-offs below are the Baveno VII values that the MASLD guidelines on this site were written against. Check the Baveno VIII text before applying a cut-off to an individual patient.",
+           "حدود الصلابة والصفائح أدناه هي قيم Baveno VII التي كُتبت على أساسها إرشادات MASLD في هذا الموقع. راجع نص Baveno VIII قبل تطبيق أي حد على مريض بعينه.")]},
+  {"h": ("Liver stiffness: the rule of five (Baveno VII)", "صلابة الكبد: قاعدة الخمسات (Baveno VII)"),
    "table": {"head": [("LSM (VCTE)", "الصلابة (VCTE)"), ("Meaning", "المعنى")],
              "rows": [
               ["<10 kPa", ("Compensated advanced chronic liver disease (cACLD) unlikely", "المرض الكبدي المزمن المتقدّم المعاوَض غير مرجّح")],
@@ -574,7 +584,7 @@ PAGES = [
           "قد يحدث سرطان الكبد في MASLD قبل التشمّع. وتنصح EASL بالمراقبة في F3 بعد تقييم فردي للخطر فقط، ويجعلها الإجماع العالمي فردية لكل المرضى دون تشمّع. أما الإجماع السعودي لعام 2026 فأكثر فاعلية: إذ ينصح نصّه بالمراقبة كل 6 أشهر متى أشارت الفحوص غير الجراحية إلى F3 أو أسوأ (مثل FIB-4 أعلى من 2.67 أو صلابة أعلى من 12 كيلوباسكال).")]},
  ],
  "see": ["follow-up", "nit-reference", "surgery"],
- "src": ["baveno7", "easl2024", "aasld2023", "global2025", "saudi2026", "nit2021"],
+ "src": ["baveno8", "baveno7", "easl2024", "aasld2023", "global2025", "saudi2026", "nit2021"],
 },
 {
  "slug": "special-groups", "group": "follow",
@@ -638,7 +648,7 @@ PAGES = [
   {"h": ("Medicines", "الأدوية"),
    "table": {"head": [("Guideline", "الإرشادات"), ("Resmetirom", "الريسميتيروم"), ("Vitamin E", "فيتامين E"), ("Pioglitazone", "البيوغليتازون")],
              "rows": [
-              ["EASL–EASD–EASO 2024", ("Consider where approved, in non-cirrhotic MASH with significant fibrosis (e.g. VCTE ≥10 kPa, MRE ≥5 kPa or ELF ≥9.8, without cirrhosis)", "يُنظر فيه حيث يُعتمد، في MASH دون تشمّع مع تليّف ملحوظ (مثل VCTE ‏≥10 أو MRE ‏≥5 كيلوباسكال أو ELF ‏≥9.8، دون تشمّع)"), ("Not as MASH treatment", "ليس علاجًا لـ MASH"), ("Safe; not as MASH treatment", "آمن؛ وليس علاجًا لـ MASH")],
+              [("EASL–EASD–EASO 2024 + 2026 guidance", "EASL–EASD–EASO 2024 + إرشادات 2026"), ("2024: consider where approved, in non-cirrhotic MASH with significant fibrosis. 2026: resmetirom or semaglutide recommended for non-cirrhotic MASH F2–F3 (e.g. VCTE 10–20 kPa, MRE 3.1–5.0 kPa or ELF 9.8–11.3); semaglutide preferred with obesity, type 2 diabetes or cardiovascular disease, resmetirom without obesity or on a GLP-1 drug; not in cirrhosis", "2024: يُنظر فيه حيث يُعتمد في MASH دون تشمّع مع تليّف ملحوظ. 2026: يوصى بالريسميتيروم أو السيماغلوتايد في MASH دون تشمّع مع تليّف F2–F3 (مثل VCTE ‏10–20 أو MRE ‏3.1–5.0 كيلوباسكال أو ELF ‏9.8–11.3)؛ ويُفضَّل السيماغلوتايد مع السمنة أو السكري من النوع الثاني أو مرض القلب الوعائي، والريسميتيروم دون سمنة أو مع دواء GLP-1؛ ولا يُستخدمان في التشمّع"), ("Not as MASH treatment", "ليس علاجًا لـ MASH"), ("Safe; not as MASH treatment", "آمن؛ وليس علاجًا لـ MASH")],
               [("AASLD 2023 + 2024 update", "AASLD 2023 + تحديث 2024"), ("VCTE 8–15 kPa or MRE 3.1–4.4 kPa; not if VCTE >20 kPa", "VCTE ‏8–15 أو MRE ‏3.1–4.4 كيلوباسكال؛ ولا يُعطى إذا تجاوزت VCTE ‏20"), ("Consider in selected people", "يُنظر فيه لأشخاص مختارين"), ("Consider with type 2 diabetes", "يُنظر فيه مع السكري من النوع الثاني")],
               [("Global consensus 2025", "الإجماع العالمي 2025"), ("VCTE 8–<16 kPa; 16–20 kPa if a second test excludes cirrhosis; not if >20 kPa", "VCTE ‏8 إلى أقل من 16؛ و16–20 إذا نفى فحص ثانٍ التشمّع؛ ولا يُعطى فوق 20"), ("Only selected people without diabetes or cirrhosis", "فقط لأشخاص مختارين دون سكري أو تشمّع"), ("For diabetes, not as MASH treatment", "للسكري، وليس علاجًا لـ MASH")],
               ["APASL 2025", ("Improves inflammation and fibrosis; prescribe within a specialist team", "يحسّن الالتهاب والتليّف؛ ويوصف ضمن فريق متخصص"), ("May improve histology", "قد يحسّن النسيج"), ("Improves histology", "يحسّن النسيج")],
@@ -648,7 +658,7 @@ PAGES = [
    "note": ("Summaries of each document's own words, checked against the full texts in October 2026.", "ملخصات لنصوص كل وثيقة، رُوجعت مقابل النصوص الكاملة في أكتوبر 2026.")},
  ],
  "see": ["fibrosis-pathway", "drugs", "middle-east"],
- "src": ["easl2024", "aasld2023", "resm2024", "global2025", "apasl2025", "china2024", "egypt2022", "saudi2026"],
+ "src": ["easl2024", "easl2026", "aasld2023", "resm2024", "global2025", "apasl2025", "china2024", "egypt2022", "saudi2026"],
 },
 {
  "slug": "middle-east", "group": "context",
