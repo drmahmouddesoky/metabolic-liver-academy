@@ -27,8 +27,12 @@ programme below reuses that engine, so the work is medical content, not web deve
    guideline, SFDA approvals and availability, Ramadan, diet patterns, access and referral paths.
 5. **Same governance as today.** Page record, version, author check, independent peer review line,
    disclosure, asset register, and the medical review checklist in `REVIEW.md`.
-6. **English first, Arabic within one release.** As with the GI series, a module can go live in
-   English with the "Arabic coming soon" note, then be translated.
+6. **Language rule (decided 11 Nov 2026).** Patient-facing content (Q&A, printable guides, patient
+   pages) is always bilingual. Physician courses (constipation, lipids, obesity) are written in
+   English, with an Arabic page header, summary and key messages (about 200 words) so Arabic-speaking
+   doctors and search engines find them; the body stays English, as in the GI & Microbiome series.
+   A full Arabic translation of a physician course is made only when usage shows demand or a
+   sponsor funds it.
 
 ---
 

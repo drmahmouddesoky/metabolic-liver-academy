@@ -97,6 +97,13 @@ In `src/`, every piece of text is written twice, side by side:
 
 The build keeps only the English text in the English pages and only the Arabic text in the Arabic pages.
 
+Language rule (decided November 2026):
+
+- Patient content (Q&A, guides, patient pages) is always written in both languages.
+- Physician teaching modules are written in English, with an Arabic header, summary and key messages
+  (mark the module `en_only` as in `content/gi_modules.py`). The body is translated only when there is
+  demand for it.
+
 ## Publication Radar (updates itself)
 
 `radar.html` lists new MASLD / MASH and obesity papers from PubMed, with a Global tab and a MENA tab.
