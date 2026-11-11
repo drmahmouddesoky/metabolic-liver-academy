@@ -136,19 +136,23 @@ It is faster to build but the neurogenic bowel content loses depth, which is you
 
 - **A1. Decided (11 Nov 2026): four courses with the shared core**, as above.
 - **A2. Decided: build order 1, 4, 2, 3** (general first, then neurogenic bowel, then IBS-C, then refractory).
-- **A3. Open:** the series name on the Physician Portal. Proposed: "Bowel Health series" (English) /
-  "سلسلة صحة الأمعاء" (Arabic). Say if you prefer another.
+- **A3. Decided (11 Nov 2026): "Bowel Health series"** (English) / "سلسلة صحة الأمعاء" (Arabic) on the
+  Physician Portal, beside the MASLD & MASH and GI & Microbiome series.
 
 ---
 
-## 2. Lipids A to Z: From Pathway to Prescription (dyslipidaemia preceptorship)
+## 2. Mastering Hyperlipidemia Management (dyslipidaemia preceptorship)
 
-**Title.** Recommended: **"Lipids A to Z: From Pathway to Prescription"**, Arabic
-**"الدهون من الألف إلى الياء: من المسار الأيضي إلى الوصفة"**. It says what the course is (an A-to-Z),
-how it is taught (along the metabolic pathway) and where it ends (the prescription). It is our own
-title, not borrowed from any sponsored forum. Alternatives if you prefer: "Mastering Lipids: From
-Biochemistry to Bedside"; "The Lipid Pathway: Metabolism, Risk and Modern Therapy"; "LipidCore:
-From Molecule to Medicine".
+**Title (decided 11 Nov 2026): "Mastering Hyperlipidemia Management"**, Arabic
+**"إتقان علاج فرط شحميات الدم"**. The subtitle on the course page carries the teaching idea:
+"from lipid metabolism to the prescription, A to Z".
+
+**Audience (decided): four groups at once**: internal medicine and family medicine residents, primary
+care and family physicians, clinical pharmacists, and specialists in cardiology, endocrinology and
+hepatology. The course therefore has one core text for everyone, plus marked boxes: "For the
+pharmacist" (pharmacokinetics, interactions, dosing of the new agents) and "Advanced" (Lp(a), FH
+genetics, combination strategy, trial detail) that specialists read and others may skip. Cases come in
+two levels, clinic and specialist.
 
 **Format.** A preceptorship: supervised, case-based learning with a mentor, a logbook and sign-off.
 Duration cut from 12 weeks to **6 weeks, two modules a week**, with one mentor session a week; the
@@ -187,12 +191,12 @@ written into a module.
 
 ### Decisions (dyslipidaemia)
 
-- **B1.** Who are the preceptees in the first cohort (residents, family physicians, pharmacists)? That
-  sets the depth of modules 1–6.
-- **B2.** Mentoring format: weekly video sessions, or clinic-based? How many per cohort?
+- **B1. Decided:** all four audiences (see above), with core text plus pharmacist and advanced boxes.
+- **B2. Open:** mentoring format (weekly or fortnightly video, clinic-based, or self-paced with
+  portfolio sign-off). Decide before the first cohort opens; the modules do not depend on it.
 - **B3.** Which national guidelines to compare in module 12 besides ESC/EAS and ACC/AHA (please send
   the regional documents you use, the Saudi one included).
-- **B4.** Confirm the title, or pick one of the alternatives.
+- **B4. Decided:** title "Mastering Hyperlipidemia Management".
 
 ---
 
@@ -298,22 +302,19 @@ A visible map from every module to:
 
 ### Decisions for you (obesity)
 
-- **C1.** Apply for **SCOPE accreditation** of the course? What this means: SCOPE is the World Obesity
-  Federation's professional education programme. *Certification* is for individuals (they pass the
-  SCOPE exams and collect 12 SCOPE points). *Accreditation* is for courses and events: an organiser
-  submits the course overview, slides and speaker biographies at least one month before the start,
-  pays a tiered fee (by participants and duration; World Obesity members get 25% off), the Clinical
-  Care Committee reviews the content, and if approved the course carries the SCOPE badge and awards
-  SCOPE points to every learner who completes it. For us it would mean our obesity course counts
-  towards an international obesity qualification, which is the strongest signal of quality we can
-  offer. Apply for SCOPE accreditation of the course (World Obesity accredits external courses for
-  SCOPE points)? It raises the standing of the course and gives learners a path to certification;
-  it needs an application, a fee and a review of the content. Recommended: yes, after the English
-  version is complete.
-- **C2.** Apply for **SCFHS CME** accreditation for live sessions attached to the course?
-- **C3.** Advisory board: two or three named obesity physicians (one bariatric surgeon, one dietitian)
-  as independent peer reviewers, so the "Independent peer review" line on each page is filled.
-- **C4.** Invite the PSMMC EASO-accredited obesity unit as a partner or peer reviewer for the course?
+- **C1. Decided (11 Nov 2026): apply for SCOPE accreditation once the English version of all 14
+  modules is complete.** What this means: SCOPE is the World Obesity Federation's professional
+  education programme. *Certification* is for individuals (they pass the SCOPE exams and collect
+  12 SCOPE points). *Accreditation* is for courses and events: the organiser submits the course
+  overview, slides and speaker biographies at least a month before the start, pays a tiered fee
+  (by participants and duration; World Obesity members get 25% off), the Clinical Care Committee
+  reviews the content, and an approved course carries the SCOPE badge and awards SCOPE points to
+  every learner who completes it.
+- **C2. Open:** SCFHS CME accreditation for live sessions. Decide when the first live session is planned.
+- **C3. Open:** advisory board names (target: two or three obesity physicians, a bariatric surgeon and
+  a dietitian, as independent peer reviewers). To be decided later.
+- **C4. Decided: not now.** The PSMMC EASO-accredited obesity unit stays noted here as a possible
+  future partner or peer reviewer.
 
 ---
 
@@ -325,7 +326,7 @@ programme is independent and can run in parallel.
 | Phase | When | Deliverable |
 | --- | --- | --- |
 | 1 | Now to December 2026 | MASLD updates signed off; Guidance page turned into a hub by condition (done 11 Nov 2026: MASLD live, lipids, obesity and constipation marked "in preparation"); site engine made generic for any number of series (small change to `build.py`); shared cardiometabolic core modules drafted (risk assessment, GLP-1/GIP pharmacology, lifestyle prescription, bariatric surgery) |
-| 2 | January to mid-February 2027 | **Lipids A to Z** (6-week preceptorship), all 12 modules in English, first mentor cohort opened |
+| 2 | January to mid-February 2027 | **Mastering Hyperlipidemia Management** (6-week preceptorship), all 12 modules in English, first cohort opened once the mentoring format is chosen |
 | 3 | March to May 2027 | **Obesity course**, Parts A–D in English; SCOPE accreditation application; Arabic translation of the lipid course |
 | 4 | In parallel from January 2027 | **Constipation Course 1** (January–February), **Course 4** (March–April), Course 2 (May–June), Course 3 (July–August) |
 | 5 | June 2027 onwards | Arabic translations, peer review, calculators (treatment eligibility, Lp(a) interpretation, NBD score), live sessions |
@@ -335,7 +336,8 @@ and review in both languages. A course of 6–8 modules is therefore 6–10 week
 
 ## 6. What I need from you to start
 
-1. Answers to the open decisions: A3, B1–B4 and C1–C4 above (A1 and A2 are settled).
+1. The remaining open decisions: B2 (mentoring format), B3 (regional lipid documents), C2 (CME) and
+   C3 (advisory names). Everything else is settled.
 2. The full texts (PDF) of: the EASL–EASD–EASO 2026 guidance, Baveno VIII, the ADA 2026 Section 4, the
    AGA–ACG 2023 CIC guideline, the ACG 2021 and AGA 2022 IBS guidelines, the PVA 2020 neurogenic bowel
    guideline, the ESC/EAS 2025 focused update, the EAS Lp(a) and FH statements, the OMEC competencies,
