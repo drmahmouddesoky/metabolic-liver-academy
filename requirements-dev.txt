@@ -1,0 +1,3 @@
+# Tools used by build.py and the tests (pinned; Dependabot proposes updates).
+beautifulsoup4==4.15.0
+playwright==1.63.0

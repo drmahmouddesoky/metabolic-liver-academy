@@ -18,10 +18,10 @@ Blocks (all text as (English, Arabic) pairs):
 Cells are a plain string (same in both languages) or a pair.
 """
 
-UPDATED = "2026-10-03"
-NEXT_REVIEW = "2027-10"
+UPDATED = "2026-11-11"
+NEXT_REVIEW = "2027-11"
 REVIEWED = {}
-VERSIONS = {}
+VERSIONS = {"drug-treatment": "1.1", "diabetes-clinic": "1.1", "cirrhosis-care": "1.1"}
 
 # Extra sources (checked on PubMed). Keys from learn.py and ref.py also work.
 SOURCES = {
@@ -200,7 +200,7 @@ FIGURES = {
  <path d="M380 310 V368" marker-end="url(#arr)"/>
  <path d="M625 310 V368" marker-end="url(#arr)"/>
 </g>
-<g font-size="13" fill="#0F2B2C" text-anchor="middle" font-weight="600" stroke="#FFFFFF" stroke-width="5" paint-order="stroke" style="direction:ltr;unicode-bidi:isolate">
+<g font-size="13" fill="#0F2B2C" text-anchor="middle" font-weight="600" stroke="#FFFFFF" stroke-width="5" paint-order="stroke" direction="ltr" unicode-bidi="isolate">
  <text x="200" y="195">FIB-4 &lt;1.3 (≥65 y: &lt;2.0)</text>
  <text x="560" y="195">FIB-4 ≥1.3</text>
  <text x="135" y="344">&lt;8 kPa | ELF &lt;7.7</text>

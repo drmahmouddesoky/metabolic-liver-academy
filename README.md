@@ -24,7 +24,12 @@ Do not edit the generated `*.html` files directly; they are overwritten by the b
 **News, events, videos and experts need no build.** Edit `data/news.js`, `data/lectures.js` or
 `data/experts.js` on GitHub and commit.
 
-`REVIEW.md` is the medical review checklist. `ASSETS.md` records where every image comes from and its licence; update it when you add an image.
+`SECURITY.md` explains the site's security measures and how to report a problem;
+`ROADMAP.md` is the plan for the next courses. `REVIEW.md` is the medical review checklist. `ASSETS.md` records where every image comes from and its licence; update it when you add an image.
+
+`tests/test_csp.py` checks that every built page carries its Content Security Policy and has no
+inline handlers or styles (the policy would block them). Use classes from `style.css` instead of
+`style="..."`, and `data-` attributes plus `main.js` instead of `onclick=`.
 
 `tests/test_fib4.py`, `tests/test_nfs.py` and `tests/test_calcs.py` check the calculators (known values and cut-off edges). Run them before changing a calculator. `tests/test_edges.py` checks that bad inputs (blank, zero, negative, text, extreme) are rejected safely.
 
@@ -92,6 +97,13 @@ In `src/`, every piece of text is written twice, side by side:
 
 The build keeps only the English text in the English pages and only the Arabic text in the Arabic pages.
 
+Language rule (decided November 2026):
+
+- Patient content (Q&A, guides, patient pages) is always written in both languages.
+- Physician teaching modules are written in English, with an Arabic header, summary and key messages
+  (mark the module `en_only` as in `content/gi_modules.py`). The body is translated only when there is
+  demand for it.
+
 ## Publication Radar (updates itself)
 
 `radar.html` lists new MASLD / MASH and obesity papers from PubMed, with a Global tab and a MENA tab.
@@ -113,7 +125,9 @@ except the private visit counter below.
 ## Private visit counter (only you see the numbers)
 
 The site counts visits with GoatCounter (free, no cookies, no personal data,
-so no cookie banner is needed). The numbers appear only on your own dashboard,
+so no cookie banner is needed). It works through a single one-pixel image request made by
+`main.js`; no GoatCounter script runs on the site, so the page's Content Security Policy
+allows no outside code at all. The numbers appear only on your own dashboard,
 https://drmahmouddesoky.goatcounter.com, never on the site. It is switched on
 (`var GOATCOUNTER = 'drmahmouddesoky';` in `main.js`).
 

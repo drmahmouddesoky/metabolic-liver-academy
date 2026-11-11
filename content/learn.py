@@ -15,14 +15,15 @@ Fields
   src      source keys (see SOURCES)
 """
 
-UPDATED = "2026-10-03"
-NEXT_REVIEW = "2027-10"
+UPDATED = "2026-11-11"
+NEXT_REVIEW = "2027-11"
 # Medical review record. When you have reviewed a page, add:  "slug": "YYYY-MM-DD",
 # The page will then show "Medically reviewed by Dr. Mahmoud Al Desoky on <date>".
 REVIEWED = {
 }
 # Version per page (default "1.0"). Raise it when the medical meaning of a page changes.
 VERSIONS = {
+    "is-there-a-medicine": "1.1",
 }
 
 CATEGORIES = [
@@ -48,6 +49,7 @@ SOURCES = {
     "mena2024": ("Younossi ZM, et al. Prevalence of metabolic dysfunction-associated steatotic liver disease in the Middle East and North Africa. Liver Int 2024;44(4):1061–70.", "https://doi.org/10.1111/liv.15852"),
     "ksaburden2024": ("Alqahtani SA, et al. The burden of metabolic dysfunction-associated steatotic liver disease and viral hepatitis in Saudi Arabia. Saudi J Gastroenterol 2024;30(5):310–8.", "https://doi.org/10.4103/sjg.sjg_62_24"),
     "peds2025": ("Xanthakos SA, et al. AASLD Practice Statement on the evaluation and management of MASLD in children. Hepatology 2025;82(5):1352–94.", "https://doi.org/10.1097/HEP.0000000000001368"),
+    "sfda2026": ("Saudi Food and Drug Authority (SFDA). Registered drug list and product labels: resmetirom and semaglutide 2.4 mg for MASH with fibrosis.", "https://www.sfda.gov.sa/en"),
     "ec2025": ("Madrigal Pharmaceuticals. European Commission approval of Rezdiffra, 19 August 2025.", "https://ir.madrigalpharma.com/node/16716"),
 }
 
@@ -323,12 +325,12 @@ ITEMS = [
            "ar": "نعم، لبعض المرضى. يوجد اليوم دواءان معتمدان في عدة دول لالتهاب الكبد الدهني مع تليّف متوسط أو متقدّم، ويعملان إلى جانب تغيير نمط الحياة لا بديلًا عنه."},
  "body": {"en": ["One is a daily tablet that helps the liver burn fat. The other is a weekly injection from the GLP-1 family that also lowers weight.",
                  "They are for adults with MASH and stage F2–F3 fibrosis, without cirrhosis. People with only simple fatty liver usually do not need them.",
-                 "Medicines for diabetes and weight, such as GLP-1 injections, can also help the liver. Your doctor will decide what fits you, and what is available in your country."],
+                 "Both medicines are approved in Saudi Arabia, as well as in the United States, Europe and the United Kingdom. Medicines for diabetes and weight, such as GLP-1 injections, can also help the liver. Your doctor will decide what fits you."],
           "ar": ["أحدهما قرص يومي يساعد الكبد على حرق الدهون، والآخر حقنة أسبوعية من عائلة GLP-1 تخفّض الوزن أيضًا.",
                  "وهما للبالغين المصابين بالتهاب الكبد الدهني مع تليّف في المرحلة F2–F3 دون تشمّع. أما من لديهم دهون بسيطة فقط فلا يحتاجون إليهما عادةً.",
-                 "كما أن أدوية السكري والوزن، مثل حقن GLP-1، قد تفيد الكبد أيضًا. وسيحدّد طبيبك ما يناسبك وما هو متاح في بلدك."]},
+                 "الدواءان معتمدان في السعودية، وكذلك في الولايات المتحدة وأوروبا والمملكة المتحدة. كما أن أدوية السكري والوزن، مثل حقن GLP-1، قد تفيد الكبد أيضًا. وسيحدّد طبيبك ما يناسبك."]},
  "see": ["statins", "weight-loss-surgery", "herbs-and-supplements"],
- "src": ["easl2024", "ec2025", "blt2026", "global2026"],
+ "src": ["easl2024", "ec2025", "blt2026", "global2026", "sfda2026"],
 },
 {
  "slug": "statins", "cat": "treatment",

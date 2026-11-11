@@ -13,6 +13,8 @@ Output (what GitHub Pages serves):
 
 Run:  python3 build.py
 """
+import base64
+import hashlib
 import html as H
 import os
 import re
@@ -21,6 +23,8 @@ from bs4 import BeautifulSoup, Comment
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = "https://metabolicliveracademy.org/"
+# security.txt must carry a future date; bump it once a year (checked by tests/test_csp.py)
+SECURITY_TXT_EXPIRES = "2027-11-01T00:00:00.000Z"
 sys.path.insert(0, os.path.join(ROOT, "content"))
 import learn as L  # noqa: E402
 import ref as R  # noqa: E402
@@ -163,8 +167,8 @@ def learn_page(it):
         out.append('<li>%s <a href="%s" target="_blank" rel="noopener">Link</a></li>' % (esc(text), url))
     out.append("</ol>")
     out.append('<p class="fine">%s</p>' % bi(
-        "Last updated %s. Based on international and Saudi guidelines. Education only: it does not replace your doctor. <a href=\"../legal.html#disclaimer\">Read the disclaimer</a>." % L.UPDATED,
-        "آخر تحديث %s. مبني على الإرشادات الدولية والسعودية. للتثقيف فقط ولا يغني عن طبيبك. <a href=\"../legal.html#disclaimer\">اقرأ إخلاء المسؤولية</a>." % L.UPDATED))
+        "Last updated %s. Based on international guidelines and those of the Middle East and North Africa. Education only: it does not replace your doctor. <a href=\"../legal.html#disclaimer\">Read the disclaimer</a>." % L.UPDATED,
+        "آخر تحديث %s. مبني على الإرشادات الدولية وإرشادات الشرق الأوسط وشمال أفريقيا. للتثقيف فقط ولا يغني عن طبيبك. <a href=\"../legal.html#disclaimer\">اقرأ إخلاء المسؤولية</a>." % L.UPDATED))
     out.append(page_record(L, it["slug"], "content/learn.py"))
     out.append("</div></article>")
     out.append(FOOT.format(up="../"))
@@ -175,8 +179,8 @@ def learn_index():
     out = [HEAD.format(
         t_en="Patient Q&amp;A on fatty liver | Metabolic Liver Academy",
         t_ar="أسئلة وأجوبة عن الكبد الدهني | أكاديمية الكبد والتمثيل الغذائي",
-        d_en="Plain answers to %d common questions about fatty liver (MASLD and MASH), based on international and Saudi guidelines." % len(L.ITEMS),
-        d_ar="إجابات مبسطة عن %d سؤالًا شائعًا حول الكبد الدهني، مبنية على الإرشادات الدولية والسعودية." % len(L.ITEMS),
+        d_en="Plain answers to %d common questions about fatty liver (MASLD and MASH), based on international guidelines and those of the Middle East and North Africa." % len(L.ITEMS),
+        d_ar="إجابات مبسطة عن %d سؤالًا شائعًا حول الكبد الدهني، مبنية على الإرشادات الدولية وإرشادات الشرق الأوسط وشمال أفريقيا." % len(L.ITEMS),
         up="", page="learn")]
     out.append('<header class="page-head"><div class="wrap">')
     out.append("<h1>%s</h1>" % bi("Patient questions and answers", "أسئلة وأجوبة للمرضى"))
@@ -202,7 +206,7 @@ def learn_index():
                           share_btn("learn/%s.html" % it["slug"], it["q"]["en"], it["q"]["ar"])))
         out.append("</div></section>")
     out.append("</div>")
-    out.append('<div class="panel" style="margin-top:32px"><h2 class="h-small">%s</h2><p class="muted small">%s</p><ul class="plain" lang="en" dir="ltr">'
+    out.append('<div class="panel mt-32"><h2 class="h-small">%s</h2><p class="muted small">%s</p><ul class="plain" lang="en" dir="ltr">'
                % (bi("Official organisations", "الجهات الرسمية"),
                   bi("Our answers follow guidance from these societies and patient charities. Visit them for more.",
                      "تتبع إجاباتنا إرشادات هذه الجمعيات والجمعيات الخيرية للمرضى. زرها لمزيد من المعلومات.")))
@@ -364,7 +368,7 @@ def ref_index():
         bi("Teaching modules", "الوحدات التعليمية"),
         bi("Chapter-length modules with graded recommendations, a clinical case and self-test questions.", "وحدات بطول فصل دراسي مع توصيات مصنّفة وحالة سريرية وأسئلة للتقييم الذاتي."),
         "".join('<li><a href="modules/%s.html">%s</a></li>' % (m["slug"], bi("Module %d. %s" % (m["number"], esc(m["title"]["en"])), "الوحدة %d. %s" % (m["number"], esc(m["title"]["ar"])))) for m in M.MODULES)))
-    out.append('<h2 class="h-small" style="margin-top:28px">%s</h2><div class="grid three">' % bi("Quick reference pages", "صفحات المرجع السريع"))
+    out.append('<h2 class="h-small mt-28">%s</h2><div class="grid three">' % bi("Quick reference pages", "صفحات المرجع السريع"))
     for key, name in R.GROUPS:
         out.append('<section class="panel" id="%s"><h2 class="h-small">%s</h2><ul class="qlist">' % (key, pair((name["en"], name["ar"]))))
         for pg in [p for p in R.PAGES if p["group"] == key]:
@@ -372,12 +376,12 @@ def ref_index():
                        % (pg["slug"], pair((pg["title"]["en"], pg["title"]["ar"])), pair((pg["lead"]["en"], pg["lead"]["ar"]))))
         out.append("</ul></section>")
     out.append("</div>")
-    out.append('<div class="panel" style="margin-top:32px"><h2 class="h-small">%s</h2><p class="muted small">%s</p><ul class="plain" lang="en" dir="ltr">'
+    out.append('<div class="panel mt-32"><h2 class="h-small">%s</h2><p class="muted small">%s</p><ul class="plain" lang="en" dir="ltr">'
                % (bi("Guidelines we follow", "الإرشادات التي نعتمد عليها"),
                   bi("Read the full guidelines before making decisions. Links open the official publication.",
                      "اقرأ الإرشادات كاملة قبل اتخاذ القرار. تفتح الروابط النشر الرسمي.")))
     src = all_sources()
-    for k in ("easl2024", "aasld2023", "resm2024", "aga2021", "aace2022", "apasl2025", "china2024", "egypt2022", "delphi2023", "global2025", "global2026", "saudi2026", "baveno7", "nit2021", "peds2025"):
+    for k in ("easl2024", "easl2026", "aasld2023", "resm2024", "aga2021", "aace2022", "apasl2025", "china2024", "egypt2022", "delphi2023", "global2025", "global2026", "saudi2026", "baveno7", "nit2021", "peds2025"):
         text, url = src[k]
         out.append('<li><a href="%s" target="_blank" rel="noopener">%s</a></li>' % (url, esc(text)))
     out.append("</ul></div>")
@@ -609,7 +613,8 @@ def structured_data(soup, rel, lang):
            "url": SITE, "logo": SITE + "icons/icon-512.png",
            "founder": {"@id": SITE + "#founder"}}
     person = {"@type": "Person", "@id": SITE + "#founder", "name": FOUNDER["en"],
-              "alternateName": [FOUNDER["ar"], "Mahmoud Desoky", "Desoky MS"],  # names used on publications "jobTitle": "Founder, Metabolic Liver Academy",
+              "alternateName": [FOUNDER["ar"], "Mahmoud Desoky", "Desoky MS"],  # names used on publications
+              "jobTitle": "Founder, Metabolic Liver Academy",
               "sameAs": FOUNDER["same_as"]}
     title = soup.title.get_text() if soup.title else ""
     d = soup.head.find("meta", attrs={"name": "description"})
@@ -631,6 +636,75 @@ def structured_data(soup, rel, lang):
     tag = soup.new_tag("script", type="application/ld+json")
     tag.string = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False, separators=(",", ":"))
     soup.head.append(tag)
+
+
+
+# ------------------------------------------------------------------ security headers (as <meta>)
+# GitHub Pages cannot send custom HTTP headers, so the Content Security Policy
+# travels inside each page. It is strict: scripts and styles only from this
+# site, plus the exact hash of each small inline script and style the build
+# itself writes (the dark-mode boot, the Q&A search, the print stylesheet).
+# Anything else inline is refused by the browser, so an injected script or
+# a pasted onclick= cannot run. See SECURITY.md.
+COUNTER_HOST = "https://drmahmouddesoky.goatcounter.com"  # the visit-counter pixel (main.js)
+VIDEO_HOST = "https://www.youtube-nocookie.com"            # videos play here after the visitor presses play
+
+
+def sha256_src(text):
+    return "'sha256-%s'" % base64.b64encode(hashlib.sha256(text.encode("utf-8")).digest()).decode("ascii")
+
+
+def csp_for(soup):
+    """The policy for one page, with a hash for each inline <script> and <style>."""
+    script_hashes, style_hashes = [], []
+    for el in soup.find_all("script"):
+        if el.get("src"):
+            continue
+        if el.get("type") and el["type"] != "text/javascript":
+            continue  # application/ld+json is data for search engines, never run
+        h = sha256_src(el.string or "")
+        if h not in script_hashes:
+            script_hashes.append(h)
+    for el in soup.find_all("style"):
+        h = sha256_src(el.string or "")
+        if h not in style_hashes:
+            style_hashes.append(h)
+    return "; ".join([
+        "default-src 'self'",
+        "script-src 'self' " + " ".join(script_hashes),
+        "style-src 'self' " + " ".join(style_hashes),
+        "img-src 'self' data: " + COUNTER_HOST,
+        "font-src 'self'",
+        "connect-src 'self'",
+        "frame-src " + VIDEO_HOST,
+        "media-src 'self'",
+        "manifest-src 'self'",
+        "worker-src 'self'",
+        "object-src 'none'",
+        # the "page not found" page is served at any address, so it carries <base href="/">;
+        # 'self' still forbids pointing the base at another site
+        "base-uri " + ("'self'" if soup.find("base") is not None else "'none'"),
+        "form-action 'self'",
+        "upgrade-insecure-requests",
+    ]).strip()
+
+
+def add_security_meta(soup):
+    """Content Security Policy and referrer policy, right after <meta charset>."""
+    head = soup.head
+    for el in head.find_all("meta", attrs={"http-equiv": re.compile("^Content-Security-Policy$", re.I)}):
+        el.decompose()
+    for el in head.find_all("meta", attrs={"name": "referrer"}):
+        el.decompose()
+    charset = head.find("meta", charset=True)
+    ref = soup.new_tag("meta", attrs={"name": "referrer", "content": "strict-origin-when-cross-origin"})
+    csp = soup.new_tag("meta", attrs={"http-equiv": "Content-Security-Policy", "content": csp_for(soup)})
+    if charset is not None:
+        charset.insert_after(csp)
+        csp.insert_after(ref)
+    else:
+        head.insert(0, ref)
+        head.insert(0, csp)
 
 
 # ------------------------------------------------------------------ split one bilingual page
@@ -754,6 +828,7 @@ def split(src_html, rel, lang):
     head.append(soup.new_tag("link", rel="alternate", hreflang="x-default", href=url_en))
     head.append(soup.new_tag("link", rel="canonical", href=url_ar if lang == "ar" else url_en))
     head.append(soup.new_tag("meta", property="og:locale", content="ar_SA" if lang == "ar" else "en_GB"))
+    add_security_meta(soup)  # last: the hashes must cover the final inline scripts and styles
     return str(soup)
 
 
@@ -815,8 +890,18 @@ def main():
     nf = chrome.add_chrome(nf, "404.html")
     nf = re.sub(r'<span data-lang="ar">.*?</span>', "", nf)
     nf = nf.replace('<span data-lang="en">', "<span>")
-    write("404.html", nf.replace('href="ar/404.html"', 'href="ar/index.html"'))
+    nf = nf.replace('href="ar/404.html"', 'href="ar/index.html"')
+    nf_soup = BeautifulSoup(nf, "html.parser")
+    add_security_meta(nf_soup)
+    write("404.html", str(nf_soup))
     write("robots.txt", "User-agent: *\nAllow: /\nSitemap: %ssitemap.xml\n" % SITE)
+    # RFC 9116: where security researchers should report a problem (see SECURITY.md)
+    write(".well-known/security.txt",
+          "Contact: mailto:%s\n"
+          "Expires: %s\n"
+          "Preferred-Languages: en, ar\n"
+          "Canonical: %s.well-known/security.txt\n"
+          "Policy: %s/blob/main/SECURITY.md\n" % (chrome.CONTACT_EMAIL, SECURITY_TXT_EXPIRES, SITE, REPO))
     print("Built %d pages x 2 languages" % len(pages))
 
 

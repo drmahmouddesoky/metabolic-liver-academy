@@ -5,7 +5,7 @@
 SOURCES = {
     "encho2023": ("En Li Cho E, et al. Global prevalence of non-alcoholic fatty liver disease in type 2 diabetes mellitus: an updated systematic review and meta-analysis. Gut 2023;72(11):2138–48.", "https://doi.org/10.1136/gutjnl-2023-330110"),
     "cjd2025": ("Diabetes Canada Clinical Practice Guidelines Expert Working Group; Kim J, et al. Diabetes and metabolic dysfunction-associated steatotic liver disease in adults: a clinical practice guideline. Can J Diabetes 2025;49(4):222–36.", "https://doi.org/10.1016/j.jcjd.2025.04.003"),
-    "ada2025": ("American Diabetes Association Professional Practice Committee. 4. Comprehensive medical evaluation and assessment of comorbidities: Standards of Care in Diabetes—2025. Diabetes Care 2025;48(Suppl 1):S59–85.", "https://doi.org/10.2337/dc25-S004"),
+    "ada2026": ("American Diabetes Association Professional Practice Committee. 4. Comprehensive medical evaluation and assessment of comorbidities: Standards of Care in Diabetes—2026. Diabetes Care 2026;49(Suppl 1):S61–88.", "https://doi.org/10.2337/dc26-S004"),
     "sema2025": ("Bansal MB, et al. Semaglutide therapy for metabolic dysfunction-associated steatohepatitis: November 2025 updates to AASLD Practice Guidance. Hepatology 2026;83(5):1326–40.", "https://doi.org/10.1097/HEP.0000000000001608"),
 }
 
@@ -40,8 +40,8 @@ MODULE = {
   # 2 ------------------------------------------------------------------
   ("h2", ("Who to test and how", "مَن نفحص وكيف"), "whom"),
   ("rec", ("Clinicians should actively look for MASLD with fibrosis in adults with type 2 diabetes, in those with abdominal obesity plus at least one more metabolic risk factor, and in those with abnormal liver tests.", "ينبغي للأطباء البحث بفاعلية عن MASLD المصحوب بتليّف لدى البالغين المصابين بالسكري من النوع الثاني، ولدى من لديهم سمنة بطنية مع عامل خطر أيضي آخر على الأقل، ولدى من لديهم فحوص كبد غير طبيعية."), 3, "strong", "consensus", "easl2024"),
-  ("p", ("All major guidelines agree that type 2 diabetes alone justifies a fibrosis assessment, and that the first test is FIB-4, not ALT or ultrasound [[easl2024,aasld2023,global2025]]. The American Diabetes Association Standards of Care 2025 advise FIB-4 in adults with type 2 diabetes or prediabetes, and transient elastography (or ELF) when FIB-4 is 1.3 or more (grade B) [[ada2025]]. Diabetes Canada 2025 makes a similar recommendation (grade B, level 2) [[cjd2025]].",
-         "تتفق الإرشادات الكبرى على أن السكري من النوع الثاني وحده يبرر تقييم التليّف، وأن الفحص الأول هو FIB-4 لا ALT ولا الأشعة الصوتية [[easl2024,aasld2023,global2025]]. وتوصي معايير الرعاية للجمعية الأمريكية للسكري 2025 بحساب FIB-4 لدى البالغين المصابين بالسكري من النوع الثاني أو مقدماته، وبقياس المرونة العابر (أو ELF) عندما يكون FIB-4 ‏1.3 فأكثر (الدرجة B) [[ada2025]]. وتقدّم إرشادات السكري الكندية 2025 توصية مماثلة (الدرجة B، المستوى 2) [[cjd2025]].")),
+  ("p", ("All major guidelines agree that type 2 diabetes alone justifies a fibrosis assessment, and that the first test is FIB-4, not ALT or ultrasound [[easl2024,aasld2023,global2025]]. The American Diabetes Association Standards of Care 2026 advise FIB-4 in adults with type 2 diabetes or prediabetes, and transient elastography (or ELF) when FIB-4 is 1.3 or more (grade B) [[ada2026]]. Diabetes Canada 2025 makes a similar recommendation (grade B, level 2) [[cjd2025]].",
+         "تتفق الإرشادات الكبرى على أن السكري من النوع الثاني وحده يبرر تقييم التليّف، وأن الفحص الأول هو FIB-4 لا ALT ولا الأشعة الصوتية [[easl2024,aasld2023,global2025]]. وتوصي معايير الرعاية للجمعية الأمريكية للسكري 2025 بحساب FIB-4 لدى البالغين المصابين بالسكري من النوع الثاني أو مقدماته، وبقياس المرونة العابر (أو ELF) عندما يكون FIB-4 ‏1.3 فأكثر (الدرجة B) [[ada2026]]. وتقدّم إرشادات السكري الكندية 2025 توصية مماثلة (الدرجة B، المستوى 2) [[cjd2025]].")),
   ("p", ("Ultrasound for steatosis is not a useful screening step; in diabetes the question is fibrosis [[cjd2025,global2025]]. The Saudi consensus agrees, recommends FIB-4 first (93.3% agreement), and extends FIB-4 screening to type 1 diabetes with cardiometabolic risk factors, aminotransferases above 30 U/L or steatosis on imaging [[saudi2026]].",
          "الأشعة الصوتية للبحث عن التشحّم ليست خطوة فحص مفيدة، فالسؤال في السكري هو التليّف [[cjd2025,global2025]]. ويتفق الإجماع السعودي مع ذلك، ويوصي بـ FIB-4 أولًا (بنسبة اتفاق 93.3%)، ويمد فحص FIB-4 إلى مرضى السكري من النوع الأول الذين لديهم عوامل خطر قلبية أيضية أو إنزيمات كبد أعلى من 30 وحدة/ل أو تشحّم في التصوير [[saudi2026]].")),
   ("table", {"caption": ("Table 1. Fibrosis testing in diabetes: what each guideline says", "الجدول 1. فحص التليّف في السكري: ماذا تقول كل إرشادات"),
@@ -49,13 +49,13 @@ MODULE = {
              "rows": [
               ["EASL–EASD–EASO 2024", ("Type 2 diabetes; abdominal obesity + ≥1 risk factor; abnormal liver tests", "السكري من النوع الثاني؛ سمنة بطنية مع عامل خطر أو أكثر؛ فحوص كبد غير طبيعية"), ("Elastography or ELF", "قياس المرونة أو ELF"), ("1–3 years", "1–3 سنوات")],
               ["AASLD 2023", ("Type 2 diabetes, complicated obesity, family history of cirrhosis", "السكري من النوع الثاني، السمنة المعقّدة، قصة عائلية للتشمّع"), ("VCTE, MRE or ELF", "VCTE أو MRE أو ELF"), ("1–2 years with diabetes", "1–2 سنة مع السكري")],
-              ["ADA 2025", ("Type 2 diabetes or prediabetes", "السكري من النوع الثاني أو مقدماته"), ("If ≥1.3: VCTE, or ELF", "إذا ≥1.3: VCTE أو ELF"), "—"],
+              ["ADA 2026", ("Type 2 diabetes or prediabetes", "السكري من النوع الثاني أو مقدماته"), ("If ≥1.3: VCTE, or ELF", "إذا ≥1.3: VCTE أو ELF"), ("1–2 years if low risk", "كل 1–2 سنة عند الخطر المنخفض")],
               ["Diabetes Canada 2025", ("All with prediabetes or type 2 diabetes", "جميع المصابين بمقدمات السكري أو السكري من النوع الثاني"), ("1.3–2.67: VCTE or ELF; >2.67: refer", "1.3–2.67: VCTE أو ELF؛ >2.67: الإحالة"), ("1–2 years", "1–2 سنة")],
               [("Global consensus 2025", "الإجماع العالمي 2025"), ("Type 2 diabetes; obesity + ≥1 risk factor; raised ALT/AST for 6 months", "السكري من النوع الثاني؛ سمنة مع عامل خطر أو أكثر؛ ارتفاع ALT/AST لمدة 6 أشهر"), ("≥1.3 (≥2.0 at 65+): VCTE", "≥1.3 (≥2.0 لمن 65 فأكثر): VCTE"), ("1–3 years", "1–3 سنوات")],
               [("Saudi consensus 2026", "الإجماع السعودي 2026"), ("Abdominal obesity + ≥1 risk factor such as diabetes; type 1 diabetes with risk factors", "سمنة بطنية مع عامل خطر أو أكثر مثل السكري؛ السكري من النوع الأول مع عوامل خطر"), ("Liver stiffness", "صلابة الكبد"), ("LSM <8 kPa: repeat in 2–3 years", "الصلابة <8: الإعادة بعد 2–3 سنوات")],
              ]}),
-  ("p", ("The message is the same everywhere; the details differ [[easl2024,aasld2023,ada2025,cjd2025,global2025,saudi2026]].",
-         "الرسالة واحدة في كل مكان، والتفاصيل تختلف [[easl2024,aasld2023,ada2025,cjd2025,global2025,saudi2026]].")),
+  ("p", ("The message is the same everywhere; the details differ [[easl2024,aasld2023,ada2026,cjd2025,global2025,saudi2026]].",
+         "الرسالة واحدة في كل مكان، والتفاصيل تختلف [[easl2024,aasld2023,ada2026,cjd2025,global2025,saudi2026]].")),
 
   # 3 ------------------------------------------------------------------
   ("h2", ("Reading FIB-4 in people with diabetes", "تفسير FIB-4 لدى مرضى السكري"), "fib4"),
@@ -65,8 +65,8 @@ MODULE = {
              "قد يبقى ALT وAST طبيعيين لدى ما يصل إلى 15% من المصابين بتليّف متقدّم، لذا افحص بغض النظر عن الإنزيمات أو الأعراض [[cjd2025]].")),
   ("p", ("Three points matter in diabetes. First, non-invasive tests may perform less well in type 2 diabetes [[cjd2025]]; the Saudi consensus cites a study of 1,115 people with diabetes in which a low FIB-4 still carried a fourfold likelihood of significant or advanced fibrosis [[saudi2026]]. Second, many patients are over 65, where the 2.0 cut-off prevents needless referrals [[mcpherson,global2025]]. Third, NFS below −1.455 rules out advanced fibrosis about as well with diabetes as without, whereas APRI is less accurate in diabetes [[cjd2025]].",
          "ثلاث نقاط مهمة في السكري. أولًا، قد يكون أداء الفحوص غير الجراحية أضعف في السكري من النوع الثاني [[cjd2025]]، ويستشهد الإجماع السعودي بدراسة شملت 1,115 مريضًا بالسكري ظل فيها احتمال التليّف الملحوظ أو المتقدّم أعلى بأربعة أضعاف رغم انخفاض FIB-4 [[saudi2026]]. ثانيًا، كثير من المرضى تجاوزوا 65 عامًا، وهنا يمنع الحد 2.0 الإحالات غير الضرورية [[mcpherson,global2025]]. ثالثًا، قيمة NFS الأقل من −1.455 تنفي التليّف المتقدّم بدقة مماثلة لدى مرضى السكري وغير المصابين به، بينما يكون APRI أقل دقة في السكري [[cjd2025]].")),
-  ("p", ("A low FIB-4 is reassuring but not a guarantee. If there are clinical or imaging signs of chronic liver disease, use a second-line test or refer. If ALT or AST stay raised for more than 6 months despite a low FIB-4, look for other causes [[ada2025]].",
-         "لذلك فانخفاض FIB-4 مطمئن لكنه ليس ضمانًا. فإذا وُجدت علامات سريرية أو تصويرية لمرض كبدي مزمن، فاستخدم فحص الخط الثاني أو أحِل المريض. وإذا ظل ALT أو AST مرتفعًا أكثر من 6 أشهر رغم انخفاض FIB-4، فابحث عن أسباب أخرى [[ada2025]].")),
+  ("p", ("A low FIB-4 is reassuring but not a guarantee. If there are clinical or imaging signs of chronic liver disease, use a second-line test or refer. If ALT or AST stay raised for more than 6 months despite a low FIB-4, look for other causes [[ada2026]].",
+         "لذلك فانخفاض FIB-4 مطمئن لكنه ليس ضمانًا. فإذا وُجدت علامات سريرية أو تصويرية لمرض كبدي مزمن، فاستخدم فحص الخط الثاني أو أحِل المريض. وإذا ظل ALT أو AST مرتفعًا أكثر من 6 أشهر رغم انخفاض FIB-4، فابحث عن أسباب أخرى [[ada2026]].")),
 
   # 4 ------------------------------------------------------------------
   ("h2", ("Choosing glucose-lowering drugs when MASLD is present", "اختيار أدوية خفض السكر عند وجود MASLD"), "drugs"),
@@ -149,8 +149,8 @@ MODULE = {
               ["6", ("FIB-4 >2.67 or high second-line result: refer", "FIB-4 >2.67 أو نتيجة مرتفعة في الخط الثاني: الإحالة"), ("Hepatology", "عيادة الكبد")],
               ["7", ("All: statin, blood pressure, kidneys, drug choice (Table 2)", "للجميع: ستاتين، الضغط، الكلى، اختيار الدواء (الجدول 2)"), ("Clinic", "العيادة")],
              ]}),
-  ("p", ("The steps follow the guideline pathways and MASLD alcohol limits [[global2025,cjd2025,ada2025]].",
-         "تتبع هذه الخطوات مسارات الإرشادات وحدود الكحول في تعريف MASLD [[global2025,cjd2025,ada2025]].")),
+  ("p", ("The steps follow the guideline pathways and MASLD alcohol limits [[global2025,cjd2025,ada2026]].",
+         "تتبع هذه الخطوات مسارات الإرشادات وحدود الكحول في تعريف MASLD [[global2025,cjd2025,ada2026]].")),
 
   # 9 ------------------------------------------------------------------
   ("h2", ("Clinical case", "حالة سريرية"), "case"),

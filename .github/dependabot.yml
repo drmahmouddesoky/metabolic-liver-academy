@@ -1,0 +1,15 @@
+# Keeps the pinned GitHub Actions and Python tools up to date with a pull
+# request, so the site checks always run on reviewed, current versions.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: monthly
