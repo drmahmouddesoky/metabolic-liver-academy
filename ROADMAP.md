@@ -147,6 +147,14 @@ It is faster to build but the neurogenic bowel content loses depth, which is you
 **"إتقان علاج فرط شحميات الدم"**. The subtitle on the course page carries the teaching idea:
 "from lipid metabolism to the prescription, A to Z".
 
+**Status (12 Nov 2026): all 12 modules written, still hidden.** Module 1 is in the public repository
+(`content/lipids_m1.py`, with the master map in `content/lipid_map.py`). Modules 2 to 12 (about 17,500
+words, 61 quiz questions, 68 checked references) are in the founder's private files, never in this
+repository; they have been encrypted and tested with a throw-away code in a preview copy only. To
+open the course: (1) the founder reviews the text (review copy in Google Drive, 01 Lipids folder);
+(2) the private files go into the private repository; (3) `scripts/lock_modules.py --new-codes lipids N`
+publishes the encrypted modules; (4) set `"live": True` for lipids in `content/courses.py`.
+
 **Audience (decided): four groups at once**: internal medicine and family medicine residents, primary
 care and family physicians, clinical pharmacists, and specialists in cardiology, endocrinology and
 hepatology. The course therefore has one core text for everyone, plus marked boxes: "For the
