@@ -1,7 +1,8 @@
 # Site checks: run on every pull request and every change to main.
 # They catch mistakes before visitors see them:
 #   1. the pages were rebuilt after editing src/ or content/ (build.py)
-#   2. every page carries its Content Security Policy, with no inline handlers
+#   2. every page carries its Content Security Policy, with no inline handlers;
+#      locked course modules open only with a valid code
 #   3. every calculator still gives the right answer at known values and cut-offs
 #   4. the Publication Radar parser still reads PubMed's format
 # A red cross on GitHub means one of these failed; open the run to see which.
@@ -50,6 +51,16 @@ jobs:
 
       - name: Every page has its security policy
         run: python tests/test_csp.py
+
+      - name: No access codes or readable locked text in this public repository
+        run: |
+          if [ -d access ] || [ -d courses ]; then
+            echo "::error::access/ or courses/ belongs in the private repository only."
+            exit 1
+          fi
+
+      - name: Locked modules open only with a valid code
+        run: python tests/test_locked.py
 
       - name: Calculators give the right answers
         run: |

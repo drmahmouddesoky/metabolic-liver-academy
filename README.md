@@ -55,6 +55,28 @@ Fonts are self-hosted in `fonts/` (IBM Plex, SIL Open Font License), so pages ma
 | `src/contact.html` | Contact: email and LinkedIn only |
 | `src/legal.html` | Disclaimer, privacy, conflicts of interest, editorial policy, terms |
 
+## Locked courses (access codes)
+
+The newer physician courses (lipids, bowel health, obesity; registry in `content/courses.py`)
+keep Module 1 open to everyone and lock the others.
+
+- The readable text of locked modules lives only in the founder's **private** repository
+  (`courses/<course>.py`), with the course key and the access codes (`access/<course>.json`).
+  Never copy those two folders here; `.gitignore` and the CI check refuse them.
+- `scripts/lock_modules.py --source ../mla-courses` encrypts every locked module into
+  `locked/<course>/` (AES-256-GCM), writes the public title list (`index.json`) and the
+  wrapped keys for active codes (`keys.json`), then rebuilds the site.
+- A visitor types a code; `unlock.js` checks it in the browser, opens the module and
+  remembers the course on that device. Nothing is sent to a server.
+- No code yet? The **Request access** form on each locked page prepares an email to the
+  Academy with the person's name, email, profession, institution and reason.
+- Approving someone: `--new-codes lipids 1 --label "Dr Name, email"` prints a personal code;
+  email it to them. `--list lipids` shows who holds which code.
+- Withdrawing access: `--revoke CODE`. The course key changes, the code stops working on
+  every device, and other learners simply type their own code once more.
+- A course stays hidden (no pages, no links) until `"live": True` in `content/courses.py`.
+- `tests/test_locked.py` checks all of this end to end in a real browser.
+
 ## Posting news or an event (the file you will use most)
 
 1. On GitHub, open `data/news.js` and click the pencil icon.

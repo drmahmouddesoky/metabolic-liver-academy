@@ -16,6 +16,7 @@ Run:  python3 build.py
 import base64
 import hashlib
 import html as H
+import json
 import os
 import re
 import sys
@@ -30,6 +31,7 @@ import learn as L  # noqa: E402
 import ref as R  # noqa: E402
 import modules as M  # noqa: E402
 import gi_modules as G  # noqa: E402  GI & Microbiome series
+import courses as C  # noqa: E402  newer courses (lipids, bowel health, obesity); see content/courses.py
 sys.path.insert(0, ROOT)
 import chrome  # noqa: E402  header, menu and footer (chrome.py)
 
@@ -236,11 +238,14 @@ def learn_index():
 
 
 # ------------------------------------------------------------------ physician reference library
+EXTRA_SOURCES = {}  # filled by scripts/lock_modules.py with the private modules' sources
+
+
 def all_sources():
     d = dict(L.SOURCES)
     d.update(R.SOURCES)
     d.update(M.SOURCES)
-    for k, v in G.SOURCES.items():
+    for k, v in list(G.SOURCES.items()) + list(C.SOURCES.items()) + list(EXTRA_SOURCES.items()):
         if k in d and d[k][1] != v[1]:
             raise ValueError("source key clash: " + k)
         d.setdefault(k, v)
@@ -426,10 +431,91 @@ def _pairs(mod):
     return dict(mod, blocks=blocks, objectives=[P(o) for o in mod["objectives"]])
 
 
-def module_page(mod):
-    S = G if mod.get("series") == "gi" else M  # where this module's version, review and dates live
-    mod = _pairs(mod)
-    gi = mod.get("series") == "gi"
+# ------------------------------------------------------------------ course series
+def locked_index(series):
+    """Titles of a course's locked modules (public), written by scripts/lock_modules.py."""
+    path = os.path.join(ROOT, "locked", series, "index.json")
+    if not os.path.exists(path):
+        return []
+    with open(path, encoding="utf-8") as f:
+        items = json.load(f)["modules"]
+    for it in items:
+        it["objectives"] = [tuple(o) for o in it["objectives"]]
+    return items
+
+
+def course_modules(series):
+    """Every module of a course in order: the open Module 1 (and any other open ones) plus the locked ones."""
+    mods = [dict(m) for m in C.PUBLIC_MODULES if m["series"] == series]
+    mods += [dict(m, locked=True) for m in locked_index(series)]
+    return sorted(mods, key=lambda m: m["number"])
+
+
+def series_ctx(series):
+    """Labels, anchor on the Physician Portal, module count and record-keeping module for a series."""
+    if series == "gi":
+        return {"S": G, "en": G.SERIES["en"], "ar": G.SERIES["ar"], "anchor": "gi-series",
+                "total": len(G.MODULES), "src": "content/gi_modules.py"}
+    if series in C.SERIES:
+        c = C.SERIES[series]
+        return {"S": C, "en": esc(c["en"]), "ar": esc(c["ar"]), "anchor": c["anchor"],
+                "total": len(course_modules(series)), "src": "content/courses.py"}
+    return {"S": M, "en": "MASLD &amp; MASH series", "ar": "سلسلة الكبد الدهني MASLD وMASH", "anchor": "modules",
+            "total": len(M.MODULES), "src": "content/modules.py"}
+
+
+def lock_panel(series):
+    """Shown in place of a locked module: enter a code, or ask the founder for one."""
+    c = C.SERIES.get(series, {"en": series, "ar": series})
+    return (
+        '<section class="lock-panel" aria-labelledby="lock-h">'
+        '<h2 class="h-small" id="lock-h">%s</h2><p>%s</p>'
+        '<form class="lock-form" id="lock-form" novalidate>'
+        '<div class="field"><label for="lock-code">%s</label>'
+        '<input id="lock-code" name="code" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" '
+        'placeholder="XXXX-XXXX-XXXX" dir="ltr" maxlength="40"></div>'
+        '<button class="btn" type="submit">%s</button>'
+        '<p class="lock-msg" id="lock-msg" role="status" aria-live="polite"></p></form>'
+        '<details class="lock-request"><summary>%s</summary><p class="small">%s</p>'
+        '<form class="request-form" id="request-form" novalidate>'
+        '<div class="field"><label for="rq-name">%s</label><input id="rq-name" type="text" autocomplete="name" required maxlength="120"></div>'
+        '<div class="field"><label for="rq-email">%s</label><input id="rq-email" type="email" autocomplete="email" required maxlength="160" dir="ltr"></div>'
+        '<div class="field"><label for="rq-role">%s</label><select id="rq-role" required>'
+        '<option value="">%s</option><option>Physician</option><option>Resident / trainee</option><option>Pharmacist</option>'
+        '<option>Dietitian</option><option>Nurse</option><option>Other healthcare professional</option></select></div>'
+        '<div class="field"><label for="rq-specialty">%s</label><input id="rq-specialty" type="text" maxlength="120"></div>'
+        '<div class="field"><label for="rq-place">%s</label><input id="rq-place" type="text" required maxlength="160"></div>'
+        '<div class="field"><label for="rq-why">%s</label><textarea id="rq-why" rows="3" maxlength="600"></textarea></div>'
+        '<label class="check"><input id="rq-consent" type="checkbox" required> <span>%s</span></label>'
+        '<button class="btn ghost" type="submit">%s</button>'
+        '<p class="lock-msg" id="request-msg" role="status" aria-live="polite"></p>'
+        '<a class="visually-hidden" id="request-send" href="#">%s</a></form></details>'
+        '<p class="fine">%s</p></section>'
+    ) % (
+        bi("This module is for registered learners", "هذه الوحدة للمتعلّمين المسجّلين"),
+        bi("Module 1 of %s is open to everyone. To read this module, enter your access code, or request one below." % esc(c["en"]),
+           "الوحدة الأولى من %s متاحة للجميع. لقراءة هذه الوحدة أدخل رمز الدخول، أو اطلب رمزًا من النموذج أدناه." % esc(c["ar"])),
+        bi("Access code", "رمز الدخول"),
+        bi("Open the module", "افتح الوحدة"),
+        bi("Request access", "اطلب الدخول"),
+        bi("Your request is sent by email to the Academy. %s reviews each request and replies with your personal access code." % FOUNDER["en"],
+           "يُرسل طلبك بالبريد الإلكتروني إلى الأكاديمية. يراجع %s كل طلب ويرسل إليك رمز الدخول الشخصي." % FOUNDER["ar"]),
+        bi("Full name", "الاسم الكامل"), bi("Email", "البريد الإلكتروني"), bi("Profession", "المهنة"),
+        bi("Choose one", "اختر"), bi("Specialty (optional)", "التخصص (اختياري)"),
+        bi("Institution and country", "جهة العمل والدولة"), bi("How will you use the course? (optional)", "كيف ستستفيد من الدورة؟ (اختياري)"),
+        bi('I agree that the Academy keeps this request to decide on access and to send me my code. <a href="../legal.html#privacy">Privacy</a>',
+           'أوافق على احتفاظ الأكاديمية بهذا الطلب للبتّ في الدخول وإرسال الرمز إليّ. <a href="../legal.html#privacy">الخصوصية</a>'),
+        bi("Prepare my request email", "جهّز رسالة الطلب"),
+        bi("Open the email", "افتح الرسالة"),
+        bi("Your code is checked inside your browser and is never sent to us or anyone else. Once accepted, this browser remembers it for this course.",
+           "يُتحقَّق من الرمز داخل متصفحك ولا يُرسل إلينا أو إلى أي جهة. وبعد قبوله يتذكّره هذا المتصفح لهذه الدورة."),
+    )
+
+
+def module_page(mod, locked=False):
+    ctx = series_ctx(mod.get("series"))
+    S = ctx["S"]  # where this module's version, review and dates live
+    mod = _pairs(dict(mod, blocks=mod.get("blocks", [])))  # a locked page carries no text
     en_only = ' lang="en" dir="ltr"' if mod.get("en_only") else ""
     # English-only modules: everything inside the article stays in English on the Arabic page too
     A = (lambda en, ar, tag="span": bi(en, en, tag)) if mod.get("en_only") else bi  # noqa: E731
@@ -517,26 +603,21 @@ def module_page(mod):
         t_ar=esc(mod["title"]["ar"]) + " | وحدة تعليمية من أكاديمية الكبد والتمثيل الغذائي",
         d_en=esc(mod["subtitle"]["en"]), d_ar=esc(mod["subtitle"]["ar"]), up="../", page="academy",
         extra_head='<link rel="stylesheet" href="../fonts/serif.css">\n')]
-    ver = S.VERSIONS.get(mod["slug"], "1.0")
+    ver = mod.get("version") or S.VERSIONS.get(mod["slug"], "1.0")
+    updated = mod.get("updated") or S.UPDATED
     rev = S.REVIEWED.get(mod["slug"])
     out.append('<header class="mod-head"><div class="wrap">')
-    if gi:
-        out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../academy.html">%s</a> › <a href="../academy.html#gi-series">%s</a></nav>'
-                   % (bi("Physician Portal", "بوابة الأطباء"), bi(G.SERIES["en"], G.SERIES["ar"])))
-        out.append('<p class="mod-no">%s</p>' % bi("%s · Module %d of %d" % (G.SERIES["en"], mod["number"], len(G.MODULES)),
-                                                   "%s · الوحدة %d من %d" % (G.SERIES["ar"], mod["number"], len(G.MODULES))))
-    else:
-        out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../academy.html">%s</a> › <a href="../academy.html#modules">%s</a></nav>'
-                   % (bi("Physician Portal", "بوابة الأطباء"), bi("MASLD &amp; MASH series", "سلسلة الكبد الدهني MASLD وMASH")))
-        out.append('<p class="mod-no">%s</p>' % bi("MASLD &amp; MASH series · Module %d of %d" % (mod["number"], len(M.MODULES)),
-                                                   "سلسلة الكبد الدهني MASLD وMASH · الوحدة %d من %d" % (mod["number"], len(M.MODULES))))
+    out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../academy.html">%s</a> › <a href="../academy.html#%s">%s</a></nav>'
+               % (bi("Physician Portal", "بوابة الأطباء"), ctx["anchor"], bi(ctx["en"], ctx["ar"])))
+    out.append('<p class="mod-no">%s</p>' % bi("%s · Module %d of %d" % (ctx["en"], mod["number"], ctx["total"]),
+                                               "%s · الوحدة %d من %d" % (ctx["ar"], mod["number"], ctx["total"])))
     out.append("<h1>%s</h1>" % bi(esc(mod["title"]["en"]), esc(mod["title"]["ar"])))
     out.append('<p class="mod-sub">%s</p>' % bi(esc(mod["subtitle"]["en"]), esc(mod["subtitle"]["ar"])))
     meta = [
         (("Author", "المؤلف"), (FOUNDER["en"], FOUNDER["ar"])),
         (("For", "موجّهة إلى"), (mod["audience"]["en"], mod["audience"]["ar"])),
         (("Reading time", "مدة القراءة"), ("About %d minutes" % mod["minutes"], "نحو %d دقيقة" % mod["minutes"])),
-        (("Version", "الإصدار"), ("%s, updated %s" % (ver, S.UPDATED), "%s، حُدّثت في %s" % (ver, S.UPDATED))),
+        (("Version", "الإصدار"), ("%s, updated %s" % (ver, updated), "%s، حُدّثت في %s" % (ver, updated))),
     ]
     if rev:  # the review row appears only once a page has been signed off
         meta.insert(2, (("Author check", "تدقيق المؤلف"), ("Checked by the author " + rev, "دقّقها المؤلف " + rev)))
@@ -546,6 +627,15 @@ def module_page(mod):
     if en_only:
         out.append('<p class="lang-note" data-lang="ar">هذه الوحدة متاحة حاليًا باللغة الإنجليزية فقط، وستتوفر النسخة العربية قريبًا.</p>')
     out.append("</div></header>")
+    if locked:  # the text arrives encrypted (locked/<series>/<slug>.<lang>.json) and unlock.js opens it
+        out.append('<div class="wrap mod-layout is-locked" id="locked-root" data-series="%s" data-slug="%s">' % (esc(mod["series"]), esc(mod["slug"])))
+        out.append('<article class="mod-body"><section class="objectives"><h2 class="h-small">%s</h2><p>%s</p><ol%s>%s</ol></section>' % (
+            bi("Learning objectives", "أهداف التعلّم"), bi("After this module you should be able to:", "بعد هذه الوحدة ستكون قادرًا على:"), en_only,
+            "".join("<li>%s</li>" % A(esc(o[0]), esc(o[1])) for o in mod["objectives"])))
+        out.append(lock_panel(mod["series"]))
+        out.append("</article></div>")
+        out.append('\n</main>\n<script src="../main.js"></script>\n<script src="../unlock.js"></script>\n</body>\n</html>\n')
+        return "".join(out)
     out.append('<div class="wrap mod-layout">')
     out.append('<nav class="mod-toc" aria-label="Contents"><p class="toc-title">%s</p><ol%s>%s<li><a href="#references">%s</a></li></ol></nav>'
                % (A("Contents", "المحتويات"), en_only, "".join(toc), A("References", "المراجع")))
@@ -567,11 +657,11 @@ def module_page(mod):
     out.append("</ol>")
     url = SITE + "modules/%s.html" % mod["slug"]
     out.append('<div class="cite-box"><h2 class="h-small">%s</h2><p lang="en" dir="ltr">Desoky M. %s. Metabolic Liver Academy, version %s. Updated %s. Available from: <a href="%s">%s</a></p></div>'
-               % (A("How to cite this module", "كيفية الاستشهاد بهذه الوحدة"), esc(mod["title"]["en"]), ver, S.UPDATED, url, url))
+               % (A("How to cite this module", "كيفية الاستشهاد بهذه الوحدة"), esc(mod["title"]["en"]), ver, updated, url, url))
     out.append('<p class="fine">%s</p>' % A(
         "For education only. This module summarises published evidence and guidelines; it does not replace clinical judgement, full guidelines or local drug labels. It is not accredited for CME credit. <a href=\"../legal.html#disclaimer\">Disclaimer</a>.",
         "للتعليم فقط. تلخّص هذه الوحدة الأدلة والإرشادات المنشورة، ولا تغني عن التقدير السريري أو الإرشادات الكاملة أو نشرات الأدوية المحلية، وهي غير معتمدة لساعات التعليم الطبي المستمر. <a href=\"../legal.html#disclaimer\">إخلاء المسؤولية</a>."))
-    out.append(page_record(S, mod["slug"], mod.get("src_file", "content/gi_modules.py" if gi else "content/modules.py")))
+    out.append(page_record(S, mod["slug"], mod.get("src_file", ctx["src"])))
     out.append("</article></div>")
     out.append(FOOT.format(up="../"))
     return "".join(out)
@@ -832,6 +922,22 @@ def split(src_html, rel, lang):
     return str(soup)
 
 
+def courses_listing(live):
+    """Physician Portal sections for the courses that are live (none while they are hidden)."""
+    out = []
+    for series in live:
+        c = C.SERIES[series]
+        out.append('<section class="section" id="%s"><div class="wrap"><h2>%s</h2><p class="read muted">%s</p><ol class="module-list">'
+                   % (c["anchor"], bi(esc(c["en"]), esc(c["ar"])), bi(esc(c["lead_en"]), esc(c["lead_ar"]))))
+        for m in course_modules(series):
+            tag = (bi("Access code", "برمز دخول") if m.get("locked") else bi("Open to all", "متاحة للجميع"))
+            out.append('<li class="ready"><a href="modules/%s.html"><strong>%s</strong><span class="muted small">%s · %s</span></a></li>'
+                       % (m["slug"], bi("Module %d. %s" % (m["number"], esc(m["title"]["en"])), "الوحدة %d. %s" % (m["number"], esc(m["title"]["ar"]))),
+                          bi("About %d minutes" % m["minutes"], "نحو %d دقيقة" % m["minutes"]), tag))
+        out.append("</ol></div></section>")
+    return "\n".join(out)
+
+
 def write(path, text):
     full = os.path.join(ROOT, path)
     os.makedirs(os.path.dirname(full) or ROOT, exist_ok=True)
@@ -850,6 +956,13 @@ def main():
         pages["learn/%s.html" % it["slug"]] = learn_page(it)
     for mod in M.MODULES + G.MODULES:
         pages["modules/%s.html" % mod["slug"]] = module_page(mod)
+    live = [s for s, c in C.SERIES.items() if c.get("live")]  # hidden courses get no pages at all
+    n_course = 0
+    for series in live:
+        for mod in course_modules(series):
+            pages["modules/%s.html" % mod["slug"]] = module_page(mod, locked=mod.get("locked", False))
+            n_course += 1
+    pages["academy.html"] = pages["academy.html"].replace("%%COURSES%%", courses_listing(live))
     pages["ref.html"] = ref_index()
     for pg in R.PAGES:
         pages["ref/%s.html" % pg["slug"]] = ref_page(pg)
@@ -858,7 +971,7 @@ def main():
     with open(os.path.join(ROOT, "calc.js"), encoding="utf-8") as f:
         calc_src = f.read()
     n_calc = len(re.findall(r"^      id: '", calc_src, re.M)) + len(re.findall(r"^    \{ g: '", calc_src, re.M))
-    counts = {"N_LEARN": len(L.ITEMS), "N_MOD": len(M.MODULES) + len(G.MODULES), "N_REF": len(R.PAGES), "N_CALC": n_calc,
+    counts = {"N_LEARN": len(L.ITEMS), "N_MOD": len(M.MODULES) + len(G.MODULES) + n_course, "N_REF": len(R.PAGES), "N_CALC": n_calc,
               "N_GUIDES": pages["guides.html"].count('class="guide"')}
     for k, v in counts.items():
         pages["index.html"] = pages["index.html"].replace("%%" + k + "%%", str(v))

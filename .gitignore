@@ -1,2 +1,7 @@
 __pycache__/
 *.pyc
+
+# Locked courses: the access codes and readable course text belong in the PRIVATE
+# repository only (see README "Locked courses"). Never commit them here.
+access/
+courses/
