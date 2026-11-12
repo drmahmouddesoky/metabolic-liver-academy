@@ -41,7 +41,7 @@ Fonts are self-hosted in `fonts/` (IBM Plex, SIL Open Font License), so pages ma
 | `src/patients.html` | Patient Portal: plain guide, risk check, liver journey, questions, urgent care |
 | `content/learn.py` | Patient Q&A: `learn.html` plus one page per question |
 | `content/ref.py` | Doctors' reference: `ref.html` plus 11 topic pages |
-| `src/academy.html` | Physician Portal: hubs, learning by role, FIB-4 and NFS calculators, lectures |
+| `src/academy.html` | Professional Portal: hubs, learning by role, FIB-4 and NFS calculators, lectures |
 | `src/calculators.html` + `calc.js` | Calculator hub: Agile 3+, Agile 4, FAST, FibroScan explainer, FLI, HSI, HOMA-IR, BMI and waist-to-height (each with its original paper) |
 | `src/guidance.html` | Fibrosis pathway, lifestyle, drugs, surgery, heart risk, special groups, sources |
 | `src/guides.html` | Printable patient guides: plate, shopping, walking plan, Ramadan |

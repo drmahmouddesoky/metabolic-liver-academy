@@ -23,15 +23,15 @@ SUBSCRIBE_MAILTO = "mailto:%s?subject=Subscribe%%20to%%20the%%20Metabolic%%20Liv
 
 MENU = [
     {"en": "Home", "ar": "الرئيسية", "href": "index.html", "key": "home", "icon": "home"},
-    {"en": "Patients", "ar": "المرضى", "key": "patients", "icon": "heart", "items": [
+    {"en": "Public & patients", "ar": "الجمهور والمرضى", "key": "patients", "icon": "heart", "items": [
         ("Patient Portal", "بوابة المرضى", "patients.html"),
         ("Am I at risk?", "هل أنا معرّض للخطر؟", "patients.html#risk"),
         ("Questions and answers", "أسئلة وأجوبة", "learn.html"),
         ("Printable guides", "أدلة للطباعة", "guides.html"),
         ("Useful links", "روابط مفيدة", "links.html"),
     ]},
-    {"en": "Physicians", "ar": "الأطباء", "key": "physicians", "icon": "steth", "items": [
-        ("Physician Portal", "بوابة الأطباء", "academy.html"),
+    {"en": "Healthcare professionals", "ar": "العاملون في الصحة", "key": "physicians", "icon": "steth", "items": [
+        ("Professional Portal", "بوابة المهنيين الصحيين", "academy.html"),
         ("Teaching modules", "الوحدات التعليمية", "academy.html#modules"),
         ("Reference library", "المكتبة المرجعية", "ref.html"),
         ("Guidance", "الإرشادات", "guidance.html"),

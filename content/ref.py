@@ -173,7 +173,7 @@ PAGES = [
   ("Step 1: FIB-4. Below 1.3 (below 2.0 if aged 65+) = low risk.", "الخطوة 1: FIB-4. أقل من 1.3 (أقل من 2.0 لمن هم 65 سنة فأكثر) = خطر منخفض."),
   ("Step 2: liver stiffness (VCTE) or ELF if FIB-4 is 1.3 or more.", "الخطوة 2: قياس صلابة الكبد (VCTE) أو ELF إذا كان FIB-4 ‏1.3 فأكثر."),
   ("LSM below 8 kPa = low risk. 8–12 = indeterminate. 12 or more = high risk: refer to hepatology.", "صلابة أقل من 8 كيلوباسكال = خطر منخفض، و8–12 = غير حاسم، و12 فأكثر = خطر مرتفع: أحِل إلى طبيب الكبد."),
-  ("FIB-4 is not reliable under age 35.", "FIB-4 غير موثوق تحت سن 35."),
+  ("FIB-4 is not validated under age 35: use elastography if concerned.", "مؤشر FIB-4 غير مُعتمد تحت سن 35؛ استخدم قياس مرونة الكبد عند القلق."),
  ],
  "sections": [
   {"h": ("Step 1: FIB-4", "الخطوة 1: FIB-4"),
@@ -198,7 +198,7 @@ PAGES = [
             "الحدود وفق إرشادات EASL–EASD–EASO لعام 2024 وAASLD لعام 2023. وبعض الجهات تستخدم حدودًا أخرى لـ ELF، فراجع مختبرك.")},
   {"h": ("Pitfalls", "مواطن الخطأ"),
    "ul": [
-    ("Age under 35: FIB-4 and NFS perform poorly. Go straight to VCTE if you are worried.", "تحت سن 35: أداء FIB-4 وNFS ضعيف. انتقل مباشرة إلى VCTE إذا كنت قلقًا."),
+    ("Age under 35: FIB-4 and NFS are not validated. Use VCTE if concerned.", "تحت سن 35: مؤشرا FIB-4 وNFS غير مُعتمدين. استخدم VCTE عند القلق."),
     ("Age 65+: use the 2.0 lower cut-off to cut false positives.", "65 سنة فأكثر: استخدم الحد الأدنى 2.0 لتقليل النتائج الإيجابية الكاذبة."),
     ("Acute hepatitis, very high ALT, or low platelets from another cause can mislead FIB-4.", "التهاب الكبد الحاد، أو ارتفاع ALT الشديد، أو نقص الصفائح لسبب آخر قد يضلّل FIB-4."),
     ("A low score in a patient with clinical signs of cirrhosis does not exclude it.", "النتيجة المنخفضة لدى مريض لديه علامات سريرية للتشمّع لا تنفيه."),
@@ -222,7 +222,7 @@ PAGES = [
   {"h": ("Blood-based scores", "مؤشرات الدم"),
    "table": {"head": [("Test", "الفحص"), ("Inputs", "المدخلات"), ("Rule out", "النفي"), ("Rule in", "الإثبات"), ("Notes", "ملاحظات")],
              "rows": [
-              ["FIB-4", ("Age, AST, ALT, platelets", "العمر، AST، ALT، الصفائح"), ("<1.3 (<2.0 if ≥65)", "<1.3 (<2.0 لمن ≥65)"), "≥2.67", ("Free, first-line. Not for under 35.", "مجاني وخط أول. لا يصلح تحت 35 سنة.")],
+              ["FIB-4", ("Age, AST, ALT, platelets", "العمر، AST، ALT، الصفائح"), ("<1.3 (<2.0 if ≥65)", "<1.3 (<2.0 لمن ≥65)"), "≥2.67", ("Free, first-line. Not validated under 35.", "مجاني وخط أول. غير مُعتمد تحت سن 35.")],
               ["NFS", ("Age, BMI, diabetes/IFG, AST/ALT, platelets, albumin", "العمر، مؤشر الكتلة، السكري، AST/ALT، الصفائح، الألبومين"), ("<−1.455 (<0.12 if ≥65)", "<−1.455 (<0.12 لمن ≥65)"), ">0.676", ("Similar accuracy to FIB-4. BMI and diabetes push it up.", "دقته مقاربة لـ FIB-4. ويرتفع مع زيادة الوزن والسكري.")],
               ["APRI", ("AST, platelets", "AST، الصفائح"), "—", "—", ("Low accuracy in MASLD. Use FIB-4 instead.", "دقته منخفضة في MASLD. استخدم FIB-4 بدلًا منه.")],
               ["ELF", ("HA, PIIINP, TIMP-1 (lab test)", "HA وPIIINP وTIMP-1 (فحص مخبري)"), "<7.7", "≥9.8", ("Second-line. Raised by other fibrotic conditions and age.", "خط ثانٍ. يرتفع مع أمراض تليّفية أخرى ومع العمر.")],
@@ -290,7 +290,7 @@ PAGES = [
             "الحدود من إرشادات EASL–EASD–EASO لعام 2024 وAASLD لعام 2023، وحد عمر 65 من دراسة McPherson لعام 2017.")},
   {"h": ("Do not rely on FIB-4 alone when", "لا تعتمد على FIB-4 وحده في الحالات التالية"),
    "ul": [
-    ("The patient is under 35 (accuracy is poor). The calculator shows a warning.", "عمر المريض أقل من 35 سنة (الدقة ضعيفة)، وتُظهر الحاسبة تنبيهًا."),
+    ("The patient is under 35 (not validated at this age). The calculator shows a warning.", "عمر المريض أقل من 35 سنة (غير مُعتمد في هذا العمر)، وتُظهر الحاسبة تنبيهًا."),
     ("AST or ALT is very high, or there is acute liver injury. The calculator warns above 200 U/L.", "ارتفاع شديد في AST أو ALT، أو إصابة كبدية حادة. تنبّه الحاسبة عند تجاوز 200 وحدة/ل."),
     ("Platelets are low for another reason (e.g. blood disease, hypersplenism from another cause, recent chemotherapy).", "نقص الصفائح لسبب آخر (مثل أمراض الدم، أو تضخّم الطحال لسبب آخر، أو علاج كيميائي حديث)."),
     ("There are clinical or imaging signs of cirrhosis. A low score does not exclude it.", "وجود علامات سريرية أو تصويرية للتشمّع، فالنتيجة المنخفضة لا تنفيه."),
@@ -332,7 +332,7 @@ PAGES = [
    "note": ("Cut-offs from Angulo 2007; the age-65 cut-off from McPherson 2017.", "الحدود من دراسة Angulo لعام 2007، وحد عمر 65 من دراسة McPherson لعام 2017.")},
   {"h": ("Do not rely on NFS alone when", "لا تعتمد على NFS وحده في الحالات التالية"),
    "ul": [
-    ("The patient is under 35 (accuracy is poor).", "عمر المريض أقل من 35 سنة (الدقة ضعيفة)."),
+    ("The patient is under 35 (not validated at this age).", "عمر المريض أقل من 35 سنة (غير مُعتمد في هذا العمر)."),
     ("BMI is 35 or more, or the patient has diabetes: the score runs high. Confirm with a second-line test.", "مؤشر الكتلة 35 فأكثر أو وجود السكري: ترتفع النتيجة، فأكّدها بفحص من الخط الثاني."),
     ("Albumin is low for another reason (e.g. kidney or bowel protein loss, malnutrition, acute illness).", "انخفاض الألبومين لسبب آخر (مثل فقد البروتين عبر الكلى أو الأمعاء، أو سوء التغذية، أو مرض حاد)."),
     ("Platelets are low for another reason, or there is acute liver injury.", "نقص الصفائح لسبب آخر، أو وجود إصابة كبدية حادة."),
@@ -612,8 +612,8 @@ PAGES = [
    "p": [("Check waist size, diet, activity and genetics (e.g. PNPLA3). Rule out other causes carefully. A 3–5% weight loss can help.",
           "افحص محيط الخصر والنظام الغذائي والنشاط والعوامل الوراثية (مثل PNPLA3)، واستبعد الأسباب الأخرى بعناية. وخسارة 3–5% من الوزن قد تفيد.")]},
   {"h": ("Under 35 and over 65", "تحت 35 سنة وفوق 65 سنة"),
-   "p": [("Blood scores perform poorly under 35; use elastography if concerned. At 65 or over, use the age-adjusted cut-offs to avoid over-referral.",
-          "أداء مؤشرات الدم ضعيف تحت 35 سنة، فاستخدم قياس المرونة عند القلق. ومن عمر 65 فأكثر استخدم الحدود المعدّلة حسب العمر لتجنّب الإحالات الزائدة.")]},
+   "p": [("Blood scores are not validated under 35; use elastography if concerned. At 65 or over, use the age-adjusted cut-offs to avoid over-referral.",
+          "مؤشرات الدم غير مُعتمدة تحت سن 35، فاستخدم قياس المرونة عند القلق. ومن عمر 65 فأكثر استخدم الحدود المعدّلة حسب العمر لتجنّب الإحالات الزائدة.")]},
   {"h": ("MetALD", "MetALD"),
    "p": [("Ask about alcohol in grams per week. Use a validated tool (AUDIT-C) and offer support for alcohol use. Fibrosis progresses faster when both causes are present.",
           "اسأل عن الكحول بالغرامات أسبوعيًا، واستخدم أداة معتمدة (AUDIT-C)، وقدّم الدعم لتعاطي الكحول. ويتطور التليّف أسرع عند اجتماع السببين.")]},
@@ -645,7 +645,7 @@ PAGES = [
               [("Egyptian 2022", "المصرية 2022"), "MAFLD", ("FIB-4 1.3 / 2.67, NFS, or APRI 0.5 / 1.5", "FIB-4 ‏1.3 / 2.67، أو NFS، أو APRI ‏0.5 / 1.5"), ("Elastography; LSM >15 kPa suggests cirrhosis", "قياس المرونة؛ والصلابة >15 كيلوباسكال تشير إلى التشمّع"), "—"],
               [("Saudi consensus 2026", "الإجماع السعودي 2026"), "MASLD", ("FIB-4 <1.3 low; ≥2.67 high (refer without delay)", "FIB-4 ‏<1.3 منخفض؛ ≥2.67 مرتفع (إحالة دون تأخير)"), ("VCTE <8 low; 8–12 intermediate: refer to gastroenterology/hepatology; >12 kPa high", "VCTE ‏<8 منخفض؛ 8–12 متوسط: إحالة إلى الجهاز الهضمي/الكبد؛ >12 كيلوباسكال مرتفع"), ("LSM <8 kPa: every 2–3 years", "صلابة <8: كل 2–3 سنوات")],
              ]},
-   "note": ("\"—\" means we have not summarised that point yet. It does not mean the guideline is silent. The Saudi consensus sends the 8–12 kPa group to a specialist, where EASL and AASLD treat it as a grey zone that may be resolved with a further test.", "تعني \"—\" أننا لم نلخّص هذه النقطة بعد، ولا تعني أن الإرشادات لا تتناولها. ويحيل الإجماع السعودي فئة 8–12 كيلوباسكال إلى المختص، بينما تعدّها EASL وAASLD منطقة رمادية قد يحسمها فحص إضافي.")},
+   "note": ("\"—\" means we have not summarised that point yet. It does not mean the guideline is silent. The Saudi consensus sends the 8–12 kPa group to a specialist, where EASL and AASLD treat it as a grey zone that may be resolved with a further test. FIB-4 cut-offs in the table are each document's headline values; whichever guideline you follow, use the higher rule-out cut-off of 2.0 from age 65 (as the global consensus does) and do not rely on FIB-4 under 35.", "تعني \"—\" أننا لم نلخّص هذه النقطة بعد، ولا تعني أن الإرشادات لا تتناولها. ويحيل الإجماع السعودي فئة 8–12 كيلوباسكال إلى المختص، بينما تعدّها EASL وAASLD منطقة رمادية قد يحسمها فحص إضافي. وحدود FIB-4 في الجدول هي القيم الرئيسية لكل وثيقة؛ وأيًّا كانت الإرشادات التي تتبعها، استخدم حد الاستبعاد الأعلى 2.0 من عمر 65 (كما يفعل الإجماع العالمي)، ولا تعتمد على FIB-4 تحت سن 35.")},
   {"h": ("Medicines", "الأدوية"),
    "table": {"head": [("Guideline", "الإرشادات"), ("Resmetirom", "الريسميتيروم"), ("Vitamin E", "فيتامين E"), ("Pioglitazone", "البيوغليتازون")],
              "rows": [
