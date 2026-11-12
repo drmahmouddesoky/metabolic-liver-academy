@@ -1,0 +1,518 @@
+{
+ "course": "lipids",
+ "modules": [
+  {
+   "audience": {
+    "ar": "الأطباء المقيمون وأطباء الرعاية الأولية والصيادلة السريريون والاختصاصيون",
+    "en": "Residents, primary care physicians, clinical pharmacists and specialists"
+   },
+   "en_only": true,
+   "minutes": 45,
+   "number": 2,
+   "objectives": [
+    [
+     "Trace dietary triglyceride and cholesterol from the gut lumen to the chylomicron.",
+     "Trace dietary triglyceride and cholesterol from the gut lumen to the chylomicron."
+    ],
+    [
+     "Explain the roles of NPC1L1, ABCG5/G8, ACAT2 and MTP in the enterocyte.",
+     "Explain the roles of NPC1L1, ABCG5/G8, ACAT2 and MTP in the enterocyte."
+    ],
+    [
+     "Describe how lipoprotein lipase, its activator apoC-II and its brakes (apoC-III, ANGPTL3, ANGPTL4) control triglyceride clearance.",
+     "Describe how lipoprotein lipase, its activator apoC-II and its brakes (apoC-III, ANGPTL3, ANGPTL4) control triglyceride clearance."
+    ],
+    [
+     "Explain how chylomicron remnants are cleared and why apoE is needed.",
+     "Explain how chylomicron remnants are cleared and why apoE is needed."
+    ],
+    [
+     "Match ezetimibe, bile acid sequestrants, lomitapide, plant sterols and the newer lipase-targeted drugs to their site of action, effect size and main cautions.",
+     "Match ezetimibe, bile acid sequestrants, lomitapide, plant sterols and the newer lipase-targeted drugs to their site of action, effect size and main cautions."
+    ],
+    [
+     "Recognise familial chylomicronaemia syndrome and outline its management.",
+     "Recognise familial chylomicronaemia syndrome and outline its management."
+    ]
+   ],
+   "series": "lipids",
+   "slug": "lipids-exogenous",
+   "subtitle": {
+    "ar": "كيف تُمتص الدهون والكوليسترول الغذائي وتُعبّأ وتُوزَّع، وأين يعمل الإيزيتيمايب والراتنجات واللوميتابيد والأدوية الموجّهة إلى إنزيم الليباز.",
+    "en": "How dietary fat and cholesterol are absorbed, packaged and delivered, and where ezetimibe, resins, lomitapide and the lipase-targeted drugs act."
+   },
+   "title": {
+    "ar": "من الطبق إلى الكيلومكرون: المسار الخارجي",
+    "en": "From plate to chylomicron: the exogenous pathway"
+   },
+   "updated": "2026-11-12",
+   "version": "1.0"
+  },
+  {
+   "audience": {
+    "ar": "الأطباء المقيمون وأطباء الرعاية الأولية والصيادلة السريريون والاختصاصيون",
+    "en": "Residents, primary care physicians, clinical pharmacists and specialists"
+   },
+   "en_only": true,
+   "minutes": 50,
+   "number": 3,
+   "objectives": [
+    [
+     "Outline the mevalonate pathway and name the two steps that drugs block.",
+     "Outline the mevalonate pathway and name the two steps that drugs block."
+    ],
+    [
+     "Explain how SREBP-2 senses liver cholesterol and why that matters for every LDL-lowering drug.",
+     "Explain how SREBP-2 senses liver cholesterol and why that matters for every LDL-lowering drug."
+    ],
+    [
+     "Describe VLDL assembly and its conversion to IDL and LDL.",
+     "Describe VLDL assembly and its conversion to IDL and LDL."
+    ],
+    [
+     "Explain how insulin resistance and MASLD produce atherogenic dyslipidaemia.",
+     "Explain how insulin resistance and MASLD produce atherogenic dyslipidaemia."
+    ],
+    [
+     "Apply ESC/EAS 2025 and ACC/AHA 2026 advice to moderate and severe hypertriglyceridaemia, including secondary causes.",
+     "Apply ESC/EAS 2025 and ACC/AHA 2026 advice to moderate and severe hypertriglyceridaemia, including secondary causes."
+    ],
+    [
+     "Summarise the outcome trials of fibrates, omega-3 fatty acids and the new apoC-III drugs.",
+     "Summarise the outcome trials of fibrates, omega-3 fatty acids and the new apoC-III drugs."
+    ]
+   ],
+   "series": "lipids",
+   "slug": "lipids-endogenous",
+   "subtitle": {
+    "ar": "مسار الميفالونات وحسّاساته، وكيف يصنع الكبد VLDL ويصدّره، ولماذا ترفع مقاومة الإنسولين والكبد الدهني الدهون الثلاثية، وما تفعله الستاتينات وحمض البيمبيدويك والفايبرات وأوميغا-3 وأدوية apoC-III.",
+    "en": "The mevalonate pathway and its sensors, how the liver builds and exports VLDL, why insulin resistance and MASLD raise triglycerides, and what statins, bempedoic acid, fibrates, omega-3 and the apoC-III drugs do."
+   },
+   "title": {
+    "ar": "مصنع الدهون في الكبد: تخليق الكوليسترول وVLDL والدهون الثلاثية",
+    "en": "The liver's lipid factory: cholesterol synthesis, VLDL and triglycerides"
+   },
+   "updated": "2026-11-12",
+   "version": "1.0"
+  },
+  {
+   "audience": {
+    "ar": "الأطباء المقيمون وأطباء الرعاية الأولية والصيادلة السريريون والاختصاصيون",
+    "en": "Residents, primary care physicians, clinical pharmacists and specialists"
+   },
+   "en_only": true,
+   "minutes": 45,
+   "number": 4,
+   "objectives": [
+    [
+     "Describe the LDL receptor cycle and the cell's response to the cholesterol it delivers.",
+     "Describe the LDL receptor cycle and the cell's response to the cholesterol it delivers."
+    ],
+    [
+     "Explain how PCSK9 sends the receptor to the lysosome and why statins raise PCSK9.",
+     "Explain how PCSK9 sends the receptor to the lysosome and why statins raise PCSK9."
+    ],
+    [
+     "Relate gain- and loss-of-function variants in LDLR, APOB and PCSK9 to LDL-C and coronary risk.",
+     "Relate gain- and loss-of-function variants in LDLR, APOB and PCSK9 to LDL-C and coronary risk."
+    ],
+    [
+     "Compare monoclonal antibodies, inclisiran and enlicitide by mechanism, dosing, effect size and evidence.",
+     "Compare monoclonal antibodies, inclisiran and enlicitide by mechanism, dosing, effect size and evidence."
+    ],
+    [
+     "Explain why LDL-receptor–independent drugs are needed in homozygous familial hypercholesterolaemia.",
+     "Explain why LDL-receptor–independent drugs are needed in homozygous familial hypercholesterolaemia."
+    ],
+    [
+     "Apply the Saudi Heart Association position on early PCSK9-targeted therapy.",
+     "Apply the Saudi Heart Association position on early PCSK9-targeted therapy."
+    ]
+   ],
+   "series": "lipids",
+   "slug": "lipids-ldlr-pcsk9",
+   "subtitle": {
+    "ar": "كيف يزيل الكبد LDL، وكيف يدمّر PCSK9 المستقبل، وما علّمتنا إياه الوراثة البشرية، وكيف تستفيد الأجسام المضادة وأدوية siRNA وأول مثبّط فموي لـ PCSK9 من ذلك.",
+    "en": "How the liver clears LDL, how PCSK9 destroys the receptor, what human genetics taught us, and how antibodies, siRNA and the first oral PCSK9 inhibitor use that knowledge."
+   },
+   "title": {
+    "ar": "حارس البوابة: مستقبل LDL وبروتين PCSK9",
+    "en": "The gatekeeper: the LDL receptor and PCSK9"
+   },
+   "updated": "2026-11-12",
+   "version": "1.0"
+  },
+  {
+   "audience": {
+    "ar": "الأطباء المقيمون وأطباء الرعاية الأولية والصيادلة السريريون والاختصاصيون",
+    "en": "Residents, primary care physicians, clinical pharmacists and specialists"
+   },
+   "en_only": true,
+   "minutes": 35,
+   "number": 5,
+   "objectives": [
+    [
+     "Describe how apoA-I, ABCA1, LCAT and SR-BI build and empty HDL.",
+     "Describe how apoA-I, ABCA1, LCAT and SR-BI build and empty HDL."
+    ],
+    [
+     "Explain the role of CETP in moving cholesteryl ester between HDL and apoB particles.",
+     "Explain the role of CETP in moving cholesteryl ester between HDL and apoB particles."
+    ],
+    [
+     "Summarise the genetic and trial evidence that HDL-C is a marker, not a target.",
+     "Summarise the genetic and trial evidence that HDL-C is a marker, not a target."
+    ],
+    [
+     "Explain why anacetrapib's small benefit followed its effect on non-HDL-C.",
+     "Explain why anacetrapib's small benefit followed its effect on non-HDL-C."
+    ],
+    [
+     "Place obicetrapib in practice: what it does, what is proven and what is awaited.",
+     "Place obicetrapib in practice: what it does, what is proven and what is awaited."
+    ],
+    [
+     "Counsel a patient with low HDL-C.",
+     "Counsel a patient with low HDL-C."
+    ]
+   ],
+   "series": "lipids",
+   "slug": "lipids-hdl-cetp",
+   "subtitle": {
+    "ar": "كيف يتكوّن HDL وينقل الكوليسترول إلى الكبد، ولماذا لم يمنع رفع HDL-C النوبات القلبية، ولماذا يُعدّ مثبّط CETP الجديد دواءً لخفض LDL.",
+    "en": "How HDL forms and carries cholesterol back to the liver, why raising HDL-C has not prevented heart attacks, and why the new CETP inhibitor is an LDL drug."
+   },
+   "title": {
+    "ar": "رحلة العودة: HDL والنقل العكسي للكوليسترول وCETP",
+    "en": "The return trip: HDL, reverse cholesterol transport and CETP"
+   },
+   "updated": "2026-11-12",
+   "version": "1.0"
+  },
+  {
+   "audience": {
+    "ar": "الأطباء المقيمون وأطباء الرعاية الأولية والصيادلة السريريون والاختصاصيون",
+    "en": "Residents, primary care physicians, clinical pharmacists and specialists"
+   },
+   "en_only": true,
+   "minutes": 45,
+   "number": 6,
+   "objectives": [
+    [
+     "Describe the structure of Lp(a) and the genetic basis of its concentration.",
+     "Describe the structure of Lp(a) and the genetic basis of its concentration."
+    ],
+    [
+     "Explain how Lp(a) promotes atherosclerosis and calcific aortic stenosis.",
+     "Explain how Lp(a) promotes atherosclerosis and calcific aortic stenosis."
+    ],
+    [
+     "Compare the Lp(a) thresholds and testing advice in ESC/EAS 2025, ACC/AHA 2026, the EAS 2022 consensus and the Saudi 2025 guideline.",
+     "Compare the Lp(a) thresholds and testing advice in ESC/EAS 2025, ACC/AHA 2026, the EAS 2022 consensus and the Saudi 2025 guideline."
+    ],
+    [
+     "Choose and interpret an Lp(a) assay, including the mg/dL versus nmol/L problem.",
+     "Choose and interpret an Lp(a) assay, including the mg/dL versus nmol/L problem."
+    ],
+    [
+     "Manage a patient with high Lp(a) today, including cascade testing.",
+     "Manage a patient with high Lp(a) today, including cascade testing."
+    ],
+    [
+     "Interpret Lp(a)HORIZON and the status of olpasiran, lepodisiran and muvalaplin.",
+     "Interpret Lp(a)HORIZON and the status of olpasiran, lepodisiran and muvalaplin."
+    ]
+   ],
+   "series": "lipids",
+   "slug": "lipids-lpa",
+   "subtitle": {
+    "ar": "البنية والوراثة، والمستوى المرتفع في كل إرشاد، وكيفية القياس والتقرير، وما يُفعل اليوم لمريض لديه Lp(a) مرتفع، وما وجدته أول تجربة نتائج لدواء خافض له.",
+    "en": "Structure and genetics, what level is high in each guideline, how to measure and report it, what to do today for a patient with high Lp(a), and what the first outcome trial of an Lp(a)-lowering drug found."
+   },
+   "title": {
+    "ar": "البروتين الدهني (a): عامل الخطر الموروث",
+    "en": "Lipoprotein(a): the inherited risk factor"
+   },
+   "updated": "2026-11-12",
+   "version": "1.0"
+  },
+  {
+   "audience": {
+    "ar": "الأطباء المقيمون وأطباء الرعاية الأولية والصيادلة السريريون والاختصاصيون",
+    "en": "Residents, primary care physicians, clinical pharmacists and specialists"
+   },
+   "en_only": true,
+   "minutes": 50,
+   "number": 7,
+   "objectives": [
+    [
+     "Order a lipid assessment that fits the patient, including when to add apoB, Lp(a) and a fasting sample.",
+     "Order a lipid assessment that fits the patient, including when to add apoB, Lp(a) and a fasting sample."
+    ],
+    [
+     "Identify and test for the common secondary causes of dyslipidaemia.",
+     "Identify and test for the common secondary causes of dyslipidaemia."
+    ],
+    [
+     "List the patients whose risk is high or very high without any calculator.",
+     "List the patients whose risk is high or very high without any calculator."
+    ],
+    [
+     "Use PREVENT (ACC/AHA 2026) and SCORE2/SCORE2-OP (ESC/EAS 2025) correctly, including their age ranges and categories.",
+     "Use PREVENT (ACC/AHA 2026) and SCORE2/SCORE2-OP (ESC/EAS 2025) correctly, including their age ranges and categories."
+    ],
+    [
+     "Apply risk enhancers or modifiers, hs-CRP and coronary artery calcium to borderline decisions.",
+     "Apply risk enhancers or modifiers, hs-CRP and coronary artery calcium to borderline decisions."
+    ],
+    [
+     "Recognise when the Saudi 2025 guideline's thresholds differ and why each must be used within its own framework.",
+     "Recognise when the Saudi 2025 guideline's thresholds differ and why each must be used within its own framework."
+    ]
+   ],
+   "series": "lipids",
+   "slug": "lipids-risk",
+   "subtitle": {
+    "ar": "أي التحاليل تُطلب وكيف تُقرأ، والأسباب الثانوية، ومن لا يحتاج إلى حاسبة، وكيف تُستخدم PREVENT وSCORE2 ومعدّلات الخطر وتكلّس الشرايين التاجية في الإرشادات الثلاثة الرئيسية.",
+    "en": "Which tests to order and how to read them, secondary causes, who needs no calculator, and how PREVENT, SCORE2, risk modifiers and coronary calcium are used in the three main guidelines."
+   },
+   "title": {
+    "ar": "قياس الدهون وتقدير الخطر",
+    "en": "Measuring lipids and estimating risk"
+   },
+   "updated": "2026-11-12",
+   "version": "1.0"
+  },
+  {
+   "audience": {
+    "ar": "الأطباء المقيمون وأطباء الرعاية الأولية والصيادلة السريريون والاختصاصيون",
+    "en": "Residents, primary care physicians, clinical pharmacists and specialists"
+   },
+   "en_only": true,
+   "minutes": 50,
+   "number": 8,
+   "objectives": [
+    [
+     "Quantify the relationship between absolute LDL-C reduction and cardiovascular events.",
+     "Quantify the relationship between absolute LDL-C reduction and cardiovascular events."
+    ],
+    [
+     "State the LDL-C, non-HDL-C and apoB goals of the three main guidelines and where they differ.",
+     "State the LDL-C, non-HDL-C and apoB goals of the three main guidelines and where they differ."
+    ],
+    [
+     "Calculate the percentage LDL-C reduction a patient needs and pick a regimen that can deliver it.",
+     "Calculate the percentage LDL-C reduction a patient needs and pick a regimen that can deliver it."
+    ],
+    [
+     "Apply 'strike early and strike strong' after acute coronary syndrome.",
+     "Apply 'strike early and strike strong' after acute coronary syndrome."
+    ],
+    [
+     "Plan follow-up testing and recognise the treatment gap in practice.",
+     "Plan follow-up testing and recognise the treatment gap in practice."
+    ],
+    [
+     "Estimate a patient's absolute benefit to support shared decisions.",
+     "Estimate a patient's absolute benefit to support shared decisions."
+    ]
+   ],
+   "series": "lipids",
+   "slug": "lipids-targets",
+   "subtitle": {
+    "ar": "الأدلة على أن الأقل أفضل، والأهداف في ESC/EAS 2025 وACC/AHA 2026 والإرشاد السعودي، وكيف تُحسب نسبة الخفض المطلوبة، ولماذا أصبح العلاج المركّب المبكر هو الأساس للمرضى الأعلى خطورة.",
+    "en": "The evidence that lower LDL-C is better, the goals in ESC/EAS 2025, ACC/AHA 2026 and the Saudi guideline, how to calculate the reduction a patient needs, and why early combination therapy is now the default for the highest-risk patients."
+   },
+   "title": {
+    "ar": "الأهداف والاستراتيجية: إلى أي حد، وبأي سرعة، وبأي دواء",
+    "en": "Targets and strategy: how low, how fast, with what"
+   },
+   "updated": "2026-11-12",
+   "version": "1.0"
+  },
+  {
+   "audience": {
+    "ar": "الأطباء المقيمون وأطباء الرعاية الأولية والصيادلة السريريون والاختصاصيون",
+    "en": "Residents, primary care physicians, clinical pharmacists and specialists"
+   },
+   "en_only": true,
+   "minutes": 55,
+   "number": 9,
+   "objectives": [
+    [
+     "Choose a statin and dose by intensity, metabolism, kidney function and interacting drugs.",
+     "Choose a statin and dose by intensity, metabolism, kidney function and interacting drugs."
+    ],
+    [
+     "Recognise and avoid the dangerous statin interactions, including systemic fusidic acid.",
+     "Recognise and avoid the dangerous statin interactions, including systemic fusidic acid."
+    ],
+    [
+     "Explain what blinded trials show about statin side effects, and the size of the nocebo effect.",
+     "Explain what blinded trials show about statin side effects, and the size of the nocebo effect."
+    ],
+    [
+     "Apply a stepwise approach to statin-associated muscle symptoms without abandoning the class.",
+     "Apply a stepwise approach to statin-associated muscle symptoms without abandoning the class."
+    ],
+    [
+     "Counsel on new-onset diabetes and liver enzymes, including use in MASLD.",
+     "Counsel on new-onset diabetes and liver enzymes, including use in MASLD."
+    ],
+    [
+     "Decide on statin therapy in people older than 75.",
+     "Decide on statin therapy in people older than 75."
+    ]
+   ],
+   "series": "lipids",
+   "slug": "lipids-statins",
+   "subtitle": {
+    "ar": "آلية العمل، ومقارنة الستاتينات السبعة، والشدة والجرعات، والتداخلات المهمة، والأعراض العضلية وتأثير النوسيبو، والسكري، والكبد، وكبار السن.",
+    "en": "Mechanism, the seven statins compared, intensity and dosing, interactions that matter, muscle symptoms and the nocebo effect, diabetes, the liver, and older adults."
+   },
+   "title": {
+    "ar": "الستاتينات من الألف إلى الياء",
+    "en": "Statins from A to Z"
+   },
+   "updated": "2026-11-12",
+   "version": "1.0"
+  },
+  {
+   "audience": {
+    "ar": "الأطباء المقيمون وأطباء الرعاية الأولية والصيادلة السريريون والاختصاصيون",
+    "en": "Residents, primary care physicians, clinical pharmacists and specialists"
+   },
+   "en_only": true,
+   "minutes": 55,
+   "number": 10,
+   "objectives": [
+    [
+     "Summarise the design and main result of IMPROVE-IT, FOURIER, ODYSSEY OUTCOMES, VESALIUS-CV and CLEAR Outcomes.",
+     "Summarise the design and main result of IMPROVE-IT, FOURIER, ODYSSEY OUTCOMES, VESALIUS-CV and CLEAR Outcomes."
+    ],
+    [
+     "Distinguish drugs with outcome evidence from drugs with LDL-C evidence only.",
+     "Distinguish drugs with outcome evidence from drugs with LDL-C evidence only."
+    ],
+    [
+     "Choose the next drug for a patient above goal, considering size of gap, tolerance, evidence, access and cost.",
+     "Choose the next drug for a patient above goal, considering size of gap, tolerance, evidence, access and cost."
+    ],
+    [
+     "Prescribe, monitor and counsel for each non-statin drug.",
+     "Prescribe, monitor and counsel for each non-statin drug."
+    ],
+    [
+     "Place the drugs for homozygous FH (evinacumab, lomitapide, apheresis) in specialist care.",
+     "Place the drugs for homozygous FH (evinacumab, lomitapide, apheresis) in specialist care."
+    ],
+    [
+     "List the outcome trials expected from 2027 and what each could change.",
+     "List the outcome trials expected from 2027 and what each could change."
+    ]
+   ],
+   "series": "lipids",
+   "slug": "lipids-toolbox",
+   "subtitle": {
+    "ar": "الإيزيتيمايب ومضادات PCSK9 وإنكليسيران وإنليسيتايد وحمض البيمبيدويك وأوبيسيترابيب وإيفيناكوماب واللوميتابيد: ماذا أظهرت كل تجربة، وكيف يُختار الدواء التالي، وما المنتظر في 2027.",
+    "en": "Ezetimibe, PCSK9 antibodies, inclisiran, enlicitide, bempedoic acid, obicetrapib, evinacumab and lomitapide: what each trial showed, how to choose the next drug, and what is coming in 2027."
+   },
+   "title": {
+    "ar": "ما بعد الستاتينات: الأدوات الحديثة والتجارب التي تدعمها",
+    "en": "Beyond statins: the modern toolbox and the trials behind it"
+   },
+   "updated": "2026-11-12",
+   "version": "1.0"
+  },
+  {
+   "audience": {
+    "ar": "الأطباء المقيمون وأطباء الرعاية الأولية والصيادلة السريريون والاختصاصيون",
+    "en": "Residents, primary care physicians, clinical pharmacists and specialists"
+   },
+   "en_only": true,
+   "minutes": 60,
+   "number": 11,
+   "objectives": [
+    [
+     "Suspect familial hypercholesterolaemia and score it with the Dutch Lipid Clinic Network criteria.",
+     "Suspect familial hypercholesterolaemia and score it with the Dutch Lipid Clinic Network criteria."
+    ],
+    [
+     "Plan genetic and cascade testing and start treatment at the right intensity and age.",
+     "Plan genetic and cascade testing and start treatment at the right intensity and age."
+    ],
+    [
+     "Recognise homozygous FH early and refer urgently.",
+     "Recognise homozygous FH early and refer urgently."
+    ],
+    [
+     "Apply guideline advice for diabetes, chronic kidney disease and dialysis.",
+     "Apply guideline advice for diabetes, chronic kidney disease and dialysis."
+    ],
+    [
+     "Use statins appropriately in people with HIV and in those receiving anthracyclines.",
+     "Use statins appropriately in people with HIV and in those receiving anthracyclines."
+    ],
+    [
+     "Manage lipids before conception, in pregnancy and in breastfeeding.",
+     "Manage lipids before conception, in pregnancy and in breastfeeding."
+    ]
+   ],
+   "series": "lipids",
+   "slug": "lipids-fh-special",
+   "subtitle": {
+    "ar": "اكتشاف فرط الكوليسترول العائلي وعلاجه لدى البالغين والأطفال، والشكل متماثل الألائل، وعلاج الدهون في السكري وأمراض الكلى وفيروس نقص المناعة والسرطان والحمل والنساء.",
+    "en": "Finding and treating FH in adults and children, homozygous FH, and lipid care in diabetes, kidney disease, HIV, cancer, pregnancy and women."
+   },
+   "title": {
+    "ar": "فرط كوليسترول الدم العائلي والفئات الخاصة",
+    "en": "Familial hypercholesterolaemia and special populations"
+   },
+   "updated": "2026-11-12",
+   "version": "1.0"
+  },
+  {
+   "audience": {
+    "ar": "الأطباء المقيمون وأطباء الرعاية الأولية والصيادلة السريريون والاختصاصيون",
+    "en": "Residents, primary care physicians, clinical pharmacists and specialists"
+   },
+   "en_only": true,
+   "minutes": 55,
+   "number": 12,
+   "objectives": [
+    [
+     "Compare ESC/EAS 2025, ACC/AHA 2026 and the Saudi 2022/2025 documents on risk tools, goals and drug sequencing.",
+     "Compare ESC/EAS 2025, ACC/AHA 2026 and the Saudi 2022/2025 documents on risk tools, goals and drug sequencing."
+    ],
+    [
+     "Describe the burden of dyslipidaemia and the treatment gap in the Gulf and wider MENA region.",
+     "Describe the burden of dyslipidaemia and the treatment gap in the Gulf and wider MENA region."
+    ],
+    [
+     "Adapt lipid care to regional realities: access, regulation, Ramadan fasting and family-based screening.",
+     "Adapt lipid care to regional realities: access, regulation, Ramadan fasting and family-based screening."
+    ],
+    [
+     "Design a lipid clinic with clear referral criteria, protocols, a team and quality indicators.",
+     "Design a lipid clinic with clear referral criteria, protocols, a team and quality indicators."
+    ],
+    [
+     "Integrate the whole course in complex cases.",
+     "Integrate the whole course in complex cases."
+    ]
+   ],
+   "series": "lipids",
+   "slug": "lipids-clinic",
+   "subtitle": {
+    "ar": "مقارنة الإرشادات الثلاثة الرئيسية، وما تُظهره البيانات الإقليمية، وكيف تُنشأ خدمة الدهون وتُقاس جودتها، ومتى تُحال الحالات، وثلاث حالات ختامية تجمع الدورة.",
+    "en": "How the three main guidelines compare, what regional data show, how to set up and measure a lipid service, when to refer, and three capstone cases that bring the course together."
+   },
+   "title": {
+    "ar": "من الإرشاد إلى العيادة: رعاية الدهون في الشرق الأوسط والعالم",
+    "en": "From guideline to clinic: lipid care in the Middle East and worldwide"
+   },
+   "updated": "2026-11-12",
+   "version": "1.0"
+  }
+ ]
+}
