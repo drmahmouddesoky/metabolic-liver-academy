@@ -843,3 +843,23 @@ html[dir="rtl"] .qcard-foot { padding: 8px 18px 10px 12px; }
 .lock-panel .check { display: flex; gap: 8px; align-items: flex-start; font-size: 0.92rem; }
 .lock-again .linkish { background: none; border: 0; padding: 0; font: inherit; color: var(--pine); text-decoration: underline; cursor: pointer; }
 .mod-layout.is-locked { display: block; }
+
+/* course boxes: pharmacist, advanced, pearl, regional, drug-action; Arabic summary */
+.box { margin: 1.2em 0; padding: 10px 16px; border: 1px solid var(--line); border-left: 4px solid var(--pine); border-radius: 6px; background: var(--white); }
+[dir="rtl"] .box { border-left: 1px solid var(--line); border-right: 4px solid var(--pine); }
+.box p { margin: 0 0 6px; }
+.box .box-h { font-family: "IBM Plex Sans", "IBM Plex Sans Arabic", sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--pine-2); }
+.box-pharm { border-left-color: #7A5BB5; }
+.box-adv { border-left-color: #B5523B; }
+.box-pearl { border-left-color: #E0B43C; }
+.box-mena { border-left-color: #2E8B6E; }
+.box-drug { border-left-color: #C2185B; }
+[dir="rtl"] .box-pharm { border-right-color: #7A5BB5; }
+[dir="rtl"] .box-adv { border-right-color: #B5523B; }
+[dir="rtl"] .box-pearl { border-right-color: #E0B43C; }
+[dir="rtl"] .box-mena { border-right-color: #2E8B6E; }
+[dir="rtl"] .box-drug { border-right-color: #C2185B; }
+.ar-summary { margin: 2em 0; padding: 14px 18px; border: 1px solid var(--rec-line); background: var(--rec-bg); border-radius: 6px; font-family: "IBM Plex Sans Arabic", "IBM Plex Sans", sans-serif; text-align: right; }
+.ar-summary .h-small { margin-top: 0; }
+.mod-body h3 { margin: 1.4em 0 0.4em; font-size: 1.05rem; }
+.refs li, .refs a { overflow-wrap: anywhere; }

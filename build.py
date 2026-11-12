@@ -424,6 +424,20 @@ def _pairs(mod):
             blocks.append(("ul", [P(x) for x in b[1]]))
         elif k == "img":
             blocks.append(("img", b[1], P(b[2])))
+        elif k == "figure":
+            blocks.append(("figure", b[1], P(b[2])))
+        elif k == "h3":
+            blocks.append(("h3", P(b[1])))
+        elif k == "box":
+            blocks.append(("box", b[1], P(b[2])))
+        elif k == "gl":
+            blocks.append(("gl", P(b[1])) + tuple(b[2:]))
+        elif k == "case":
+            c = b[1]
+            blocks.append(("case", {"title": P(c["title"]), "parts": [(P(l), P(t)) for l, t in c["parts"]]}))
+        elif k == "table":
+            t = b[1]
+            blocks.append(("table", dict(t, caption=P(t["caption"]))))
         elif k == "mcq":
             blocks.append(("mcq", [{"q": P(q["q"]), "options": [P(o) for o in q["options"]], "answer": q["answer"], "why": P(q["why"])} for q in b[1]]))
         else:
@@ -432,6 +446,25 @@ def _pairs(mod):
 
 
 # ------------------------------------------------------------------ course series
+EXTRA_FIGURES = {}  # private course drawings, added by scripts/lock_modules.py
+
+
+def figure_svg(key):
+    for table in (EXTRA_FIGURES, getattr(C, "FIGURES", {}), M.FIGURES):
+        if key in table:
+            return table[key]
+    raise KeyError("unknown figure " + key)
+
+
+BOXES = {
+    "pharm": ("For the pharmacist", "للصيدلي"),
+    "adv": ("Advanced", "للمستوى المتقدّم"),
+    "pearl": ("Clinical pearl", "لؤلؤة سريرية"),
+    "mena": ("Middle East and North Africa", "الشرق الأوسط وشمال أفريقيا"),
+    "drug": ("Where drugs act", "أين تعمل الأدوية"),
+}
+
+
 def locked_index(series):
     """Titles of a course's locked modules (public), written by scripts/lock_modules.py."""
     path = os.path.join(ROOT, "locked", series, "index.json")
@@ -537,7 +570,7 @@ def module_page(mod, locked=False):
         for txt in texts:
             for m in CITE.finditer(txt[0]):
                 note(m.group(1).split(","))
-        if b[0] == "rec":
+        if b[0] in ("rec", "gl"):
             note([b[5]])
 
     def cites(txt):
@@ -575,6 +608,23 @@ def module_page(mod, locked=False):
             num = order.index(key) + 1
             body.append('<div class="rec"><p class="rec-tags"><a href="#grading">%s</a></p><p class="rec-text">%s <sup class="cite">[<a href="#ref-%d">%d</a>]</sup></p></div>'
                         % ("".join(tags), A(esc(text[0]), esc(text[1])), num, num))
+        elif kind == "h3":
+            body.append("<h3>%s</h3>" % pc(b[1]))
+        elif kind == "box":
+            body.append('<aside class="box box-%s"><p class="box-h">%s</p><p>%s</p></aside>' % (b[1], A(*BOXES[b[1]]), pc(b[2])))
+        elif kind == "gl":
+            _, text, soc, cls, loe, key = b
+            tags = ['<span class="g-loe">%s</span>' % esc(soc)]
+            if cls:
+                tags.append("<span>%s</span>" % A("Class " + cls, "الفئة " + cls))
+            if loe:
+                tags.append("<span>%s</span>" % A("Level " + loe, "المستوى " + loe))
+            num = order.index(key) + 1
+            body.append('<div class="rec"><p class="rec-tags"><a href="#grading">%s</a></p><p class="rec-text">%s <sup class="cite">[<a href="#ref-%d">%d</a>]</sup></p></div>'
+                        % ("".join(tags), cites(text[0]) if mod.get("en_only") else A(cites(text[0]), cites(text[1])), num, num))
+        elif kind == "arsum":
+            body.append('<section class="ar-summary" lang="ar" dir="rtl"><h2 class="h-small">ملخص بالعربية</h2>%s</section>'
+                        % "".join("<p>%s</p>" % esc(x) for x in b[1]))
         elif kind == "table":
             t = b[1]
             body.append('<div class="table-wrap"><table class="ref-table"><caption>%s</caption><thead><tr>%s</tr></thead><tbody>%s</tbody></table></div>' % (
@@ -585,7 +635,7 @@ def module_page(mod, locked=False):
             body.append('<figure class="fig fig-img"><img src="../images/modules/gi/%s.webp" alt="%s" width="1400" height="788" loading="lazy" decoding="async"><figcaption>%s</figcaption></figure>'
                         % (b[1], esc(b[2][0]), A(esc(b[2][0]), esc(b[2][1]))))
         elif kind == "figure":
-            body.append('<figure class="fig">%s<figcaption>%s</figcaption></figure>' % (M.FIGURES[b[1]], A(esc(b[2][0]), esc(b[2][1]))))
+            body.append('<figure class="fig">%s<figcaption>%s</figcaption></figure>' % (figure_svg(b[1]), A(esc(b[2][0]), esc(b[2][1]))))
         elif kind == "case":
             c = b[1]
             rows = "".join("<dt>%s</dt><dd>%s</dd>" % (A(esc(l[0]), esc(l[1])), pc(t)) for l, t in c["parts"])
@@ -643,7 +693,11 @@ def module_page(mod, locked=False):
     out.append('<section class="objectives"><h2 class="h-small">%s</h2><p>%s</p><ol>%s</ol>' % (
         A("Learning objectives", "أهداف التعلّم"), A("After this module you should be able to:", "بعد هذه الوحدة ستكون قادرًا على:"),
         "".join("<li>%s</li>" % A(esc(o[0]), esc(o[1])) for o in mod["objectives"])))
-    if not any(b[0] == "rec" for b in mod["blocks"]):
+    if any(b[0] == "gl" for b in mod["blocks"]):
+        out.append('<p class="small" id="grading">%s</p></section>' % A(
+            "Boxed recommendations are paraphrased from the guideline named on each box, with that guideline's own grades. ESC/EAS and ACC/AHA: Class I = recommended, IIa = should be considered (reasonable), IIb = may be considered, III = not recommended or harmful; Level A = several randomised trials or meta-analyses, B = one trial or large non-randomised studies, C = expert opinion or small studies. Always read the full guideline before applying a recommendation.",
+            "التوصيات المؤطّرة مُعاد صياغتها من الإرشادات المذكورة على كل إطار مع درجاتها."))
+    elif not any(b[0] == "rec" for b in mod["blocks"]):
         out.append("</section>")
     else:
         out.append('<p class="small" id="grading">%s</p></section>' % A(
