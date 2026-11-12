@@ -663,8 +663,12 @@
     });
   }
 
-  /* ---------- Module self-test (nothing stored) ---------- */
-  document.querySelectorAll('.mcq').forEach(function (box) {
+  /* ---------- Module self-test and contents ----------
+     Run once for the page, and again when a locked module is opened
+     (unlock.js sends the 'mla:unlocked' event with the new content). */
+  function initModule(root) {
+  /* Module self-test (nothing stored) */
+  root.querySelectorAll('.mcq').forEach(function (box) {
     var ans = +box.getAttribute('data-answer');
     box.querySelectorAll('.opt').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -683,8 +687,8 @@
     });
   });
 
-  /* ---------- Module contents: highlight the section in view ---------- */
-  var tocLinks = document.querySelectorAll('.mod-toc a');
+  /* Module contents: highlight the section in view */
+  var tocLinks = root.querySelectorAll('.mod-toc a');
   if (tocLinks.length && 'IntersectionObserver' in window) {
     var map = {};
     tocLinks.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
@@ -698,4 +702,7 @@
     }, { rootMargin: '-20% 0px -70% 0px' });
     Object.keys(map).forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
   }
+  }
+  initModule(document);
+  document.addEventListener('mla:unlocked', function (e) { initModule((e.detail && e.detail.root) || document); });
 })();

@@ -31,6 +31,7 @@ Please do not test against the site in a way that could disturb visitors
 | **Supply chain:** GitHub Actions are pinned to commit hashes, Python tools are pinned in `requirements-dev.txt`, Dependabot proposes updates, and the checks workflow has read-only permissions. The Radar workflow can write only two data files. | `.github/` |
 | **Reproducible build:** CI rebuilds the site from `src/` and `content/` and fails if the committed pages differ. | `.github/workflows/checks.yml` |
 | **Offline copy** (service worker) caches only this site's own files. | `sw.js` |
+| **Locked course modules** are published only encrypted (AES-256-GCM). Each access code unlocks the course key through PBKDF2-SHA256 (600 000 rounds), checked in the browser; codes and readable text live in a separate private repository. Withdrawing a code changes the course key. | `scripts/lock_modules.py`, `unlock.js`, `tests/test_locked.py` |
 
 ## Limits of a static host
 
