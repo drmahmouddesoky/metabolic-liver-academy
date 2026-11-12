@@ -59,7 +59,7 @@
 <section class="section tint" id="risk">
 <div class="wrap">
 <h2><span data-lang="en">Am I at risk?</span></h2>
-<p class="read muted"><span data-lang="en">Answer five quick questions. You will not get a score, only a suggestion about whether to ask your doctor for a liver check.</span></p>
+<p class="read muted"><span data-lang="en">Answer five quick questions. If you have not had a check, or cannot remember, choose “I don't know”. You will not get a score, only a suggestion about whether to ask for a liver check, and questions you can take to your next appointment.</span></p>
 <div class="tool">
 <div class="consent">
 <label>
@@ -69,7 +69,7 @@
 </div>
 <form id="risk-form" novalidate="">
 <fieldset id="risk-fields">
-<legend class="small muted"><span data-lang="en">Answer yes or no</span></legend>
+<legend class="small muted"><span data-lang="en">Answer yes, no or I don't know</span></legend>
 <div class="q">
 <p><span data-lang="en">Do you have overweight, obesity, or a large waist?</span></p>
 <div class="yn">
@@ -82,6 +82,7 @@
 <div class="yn">
 <label><input name="sugar" type="radio" value="yes"/><span><span data-lang="en">Yes</span></span></label>
 <label><input name="sugar" type="radio" value="no"/><span><span data-lang="en">No</span></span></label>
+<label><input name="sugar" type="radio" value="unknown"/><span><span data-lang="en">I don't know</span></span></label>
 </div>
 </div>
 <div class="q">
@@ -89,6 +90,7 @@
 <div class="yn">
 <label><input name="pressure" type="radio" value="yes"/><span><span data-lang="en">Yes</span></span></label>
 <label><input name="pressure" type="radio" value="no"/><span><span data-lang="en">No</span></span></label>
+<label><input name="pressure" type="radio" value="unknown"/><span><span data-lang="en">I don't know</span></span></label>
 </div>
 </div>
 <div class="q">
@@ -96,6 +98,7 @@
 <div class="yn">
 <label><input name="fats" type="radio" value="yes"/><span><span data-lang="en">Yes</span></span></label>
 <label><input name="fats" type="radio" value="no"/><span><span data-lang="en">No</span></span></label>
+<label><input name="fats" type="radio" value="unknown"/><span><span data-lang="en">I don't know</span></span></label>
 </div>
 </div>
 <div class="q">
@@ -113,7 +116,7 @@
 <div class="panel maxw-760 mt-20">
 <span class="tag soon"><span data-lang="en">Coming soon</span></span>
 <h3><span data-lang="en">FIB-4 calculator for patients</span></h3>
-<p class="muted"><span data-lang="en">A simple tool to read the FIB-4 score from your own blood test, in plain words. It is being reviewed before it goes live. Doctors can already use the clinician version in the Academy.</span></p>
+<p class="muted"><span data-lang="en">A simple tool to read the FIB-4 score from your own blood test, in plain words. Every result will come with what it means, who can help you interpret it, and what to do next, using the same age-adjusted cut-offs as the rest of the site. It is being reviewed before it goes live. Doctors can already use the clinician version in the Academy.</span></p>
 </div>
 </div>
 </section>
@@ -133,11 +136,11 @@
 </li>
 <li>
 <h3><span data-lang="en">A liver scan, if needed</span></h3>
-<p><span data-lang="en">If FIB-4 is not low, a quick, painless scan (such as FibroScan) measures liver stiffness. A liver biopsy is now rarely needed.</span></p>
+<p><span data-lang="en">If FIB-4 is not low, a quick, painless scan (such as FibroScan) measures liver stiffness, which may indicate scarring. The result is read alongside your other tests. A liver biopsy is now rarely needed.</span></p>
 </li>
 <li>
 <h3><span data-lang="en">Seeing a liver specialist</span></h3>
-<p><span data-lang="en">If the scan shows more scarring, a liver specialist reviews your results and checks for other causes of liver disease.</span></p>
+<p><span data-lang="en">If the scan suggests more scarring, a liver specialist reviews your results and checks for other causes of liver disease.</span></p>
 </li>
 <li>
 <h3><span data-lang="en">Your treatment plan</span></h3>
@@ -148,6 +151,40 @@
 <p><span data-lang="en">The tests are repeated over time to see how your liver responds. People with cirrhosis also need a liver ultrasound about every 6 months to look for early cancer.</span></p>
 </li>
 </ol>
+</div>
+</section>
+
+<section class="section" id="next">
+<div class="wrap">
+<h2><span data-lang="en">What can I do next?</span></h2>
+<p class="read muted"><span data-lang="en">Realistic next steps, whatever tests and follow-up are available where you live.</span></p>
+<div class="grid three">
+<div class="panel">
+<h3><span data-lang="en">If you have not been checked</span></h3>
+<ul class="ticks">
+<li><span data-lang="en">Ask your family doctor or primary care clinic for routine checks: weight and waist, blood pressure, blood sugar (HbA1c), cholesterol, and liver blood tests with a platelet count.</span></li>
+<li><span data-lang="en">With those results, your doctor can work out FIB-4 at no extra cost.</span></li>
+<li><span data-lang="en">Take the <a href="#questions">questions to ask your doctor</a> with you.</span></li>
+</ul>
+</div>
+<div class="panel">
+<h3><span data-lang="en">If you have a result you do not understand</span></h3>
+<ul class="ticks">
+<li><span data-lang="en">A single number is not a diagnosis. FIB-4 and FibroScan results are read together with your history and other tests.</span></li>
+<li><span data-lang="en">Ask the person who ordered the test, or your nurse or pharmacist, to explain what it means for you and what happens next.</span></li>
+<li><span data-lang="en">Keep a copy of your results with the dates, so they can be compared next time. Read <a href="learn/what-is-fib4.html">What is FIB-4?</a> and <a href="learn/fibroscan.html">What is a FibroScan?</a></span></li>
+</ul>
+</div>
+<div class="panel">
+<h3><span data-lang="en">If tests or follow-up are hard to get</span></h3>
+<ul class="ticks">
+<li><span data-lang="en">You can start now: the steps that protect the liver are the same whatever the result. Losing 5–10% of your weight if you are overweight, moving more, eating well and avoiding alcohol all help.</span></li>
+<li><span data-lang="en">Keeping diabetes, blood pressure and cholesterol under control protects your heart and your liver.</span></li>
+<li><span data-lang="en">Ask whether FIB-4 can be added to your next routine blood test, and whether follow-up by telephone or online is possible. Start with our <a href="guides.html">free guides</a>.</span></li>
+</ul>
+</div>
+</div>
+<p class="small muted mt-10"><span data-lang="en">If you have any of the <a href="#urgent">warning signs below</a>, do not wait for a routine appointment.</span></p>
 </div>
 </section>
 

@@ -49,7 +49,7 @@
   <section class="section tint" id="risk">
     <div class="wrap">
       <h2><span data-lang="en">Am I at risk?</span><span data-lang="ar">هل أنا معرّض للخطر؟</span></h2>
-      <p class="read muted"><span data-lang="en">Answer five quick questions. You will not get a score, only a suggestion about whether to ask your doctor for a liver check.</span><span data-lang="ar">أجب عن خمسة أسئلة سريعة. لن تحصل على درجة، بل على اقتراح حول ما إذا كان عليك أن تطلب من طبيبك فحص الكبد.</span></p>
+      <p class="read muted"><span data-lang="en">Answer five quick questions. If you have not had a check, or cannot remember, choose “I don't know”. You will not get a score, only a suggestion about whether to ask for a liver check, and questions you can take to your next appointment.</span><span data-lang="ar">أجب عن خمسة أسئلة سريعة. وإن لم تُجرِ الفحص أو لا تتذكر، فاختر "لا أعرف". لن تحصل على درجة، بل على اقتراح حول ما إذا كان عليك طلب فحص للكبد، وأسئلة تحملها إلى موعدك القادم.</span></p>
 
       <div class="tool">
         <div class="consent">
@@ -61,7 +61,7 @@
 
         <form id="risk-form" novalidate>
           <fieldset id="risk-fields">
-            <legend class="small muted"><span data-lang="en">Answer yes or no</span><span data-lang="ar">أجب بنعم أو لا</span></legend>
+            <legend class="small muted"><span data-lang="en">Answer yes, no or I don't know</span><span data-lang="ar">أجب بنعم أو لا أو لا أعرف</span></legend>
             <div class="q">
               <p><span data-lang="en">Do you have overweight, obesity, or a large waist?</span><span data-lang="ar">هل لديك وزن زائد أو سمنة أو محيط خصر كبير؟</span></p>
               <div class="yn">
@@ -74,6 +74,7 @@
               <div class="yn">
                 <label><input type="radio" name="sugar" value="yes"><span><span data-lang="en">Yes</span><span data-lang="ar">نعم</span></span></label>
                 <label><input type="radio" name="sugar" value="no"><span><span data-lang="en">No</span><span data-lang="ar">لا</span></span></label>
+                <label><input type="radio" name="sugar" value="unknown"><span><span data-lang="en">I don't know</span><span data-lang="ar">لا أعرف</span></span></label>
               </div>
             </div>
             <div class="q">
@@ -81,6 +82,7 @@
               <div class="yn">
                 <label><input type="radio" name="pressure" value="yes"><span><span data-lang="en">Yes</span><span data-lang="ar">نعم</span></span></label>
                 <label><input type="radio" name="pressure" value="no"><span><span data-lang="en">No</span><span data-lang="ar">لا</span></span></label>
+                <label><input type="radio" name="pressure" value="unknown"><span><span data-lang="en">I don't know</span><span data-lang="ar">لا أعرف</span></span></label>
               </div>
             </div>
             <div class="q">
@@ -88,6 +90,7 @@
               <div class="yn">
                 <label><input type="radio" name="fats" value="yes"><span><span data-lang="en">Yes</span><span data-lang="ar">نعم</span></span></label>
                 <label><input type="radio" name="fats" value="no"><span><span data-lang="en">No</span><span data-lang="ar">لا</span></span></label>
+                <label><input type="radio" name="fats" value="unknown"><span><span data-lang="en">I don't know</span><span data-lang="ar">لا أعرف</span></span></label>
               </div>
             </div>
             <div class="q">
@@ -106,7 +109,7 @@
       <div class="panel maxw-760 mt-20">
         <span class="tag soon"><span data-lang="en">Coming soon</span><span data-lang="ar">قريبًا</span></span>
         <h3><span data-lang="en">FIB-4 calculator for patients</span><span data-lang="ar">حاسبة FIB-4 للمرضى</span></h3>
-        <p class="muted"><span data-lang="en">A simple tool to read the FIB-4 score from your own blood test, in plain words. It is being reviewed before it goes live. Doctors can already use the clinician version in the Academy.</span><span data-lang="ar">أداة بسيطة لقراءة مؤشر FIB-4 من نتيجة تحليل دمك بكلمات واضحة. تخضع الآن للمراجعة قبل إطلاقها. ويمكن للأطباء استخدام نسخة الأطباء في الأكاديمية.</span></p>
+        <p class="muted"><span data-lang="en">A simple tool to read the FIB-4 score from your own blood test, in plain words. Every result will come with what it means, who can help you interpret it, and what to do next, using the same age-adjusted cut-offs as the rest of the site. It is being reviewed before it goes live. Doctors can already use the clinician version in the Academy.</span><span data-lang="ar">أداة بسيطة لقراءة مؤشر FIB-4 من نتيجة تحليل دمك بكلمات واضحة. ستأتي كل نتيجة مع شرح لمعناها، ومن يمكنه مساعدتك في تفسيرها، وما الخطوة التالية، وبالحدود نفسها المعدّلة حسب العمر المستخدمة في بقية الموقع. تخضع الآن للمراجعة قبل إطلاقها. ويمكن للأطباء استخدام نسخة الأطباء في الأكاديمية.</span></p>
       </div>
     </div>
   </section>
@@ -127,11 +130,11 @@
         </li>
         <li>
           <h3><span data-lang="en">A liver scan, if needed</span><span data-lang="ar">فحص للكبد عند الحاجة</span></h3>
-          <p><span data-lang="en">If FIB-4 is not low, a quick, painless scan (such as FibroScan) measures liver stiffness. A liver biopsy is now rarely needed.</span><span data-lang="ar">إذا لم يكن مؤشر FIB-4 منخفضًا، يقيس فحص سريع غير مؤلم (مثل فيبروسكان) صلابة الكبد. ونادرًا ما تحتاج اليوم إلى خزعة من الكبد.</span></p>
+          <p><span data-lang="en">If FIB-4 is not low, a quick, painless scan (such as FibroScan) measures liver stiffness, which may indicate scarring. The result is read alongside your other tests. A liver biopsy is now rarely needed.</span><span data-lang="ar">إذا لم يكن مؤشر FIB-4 منخفضًا، يقيس فحص سريع غير مؤلم (مثل فيبروسكان) صلابة الكبد، وقد تشير إلى وجود تليّف. وتُقرأ النتيجة مع فحوصك الأخرى. ونادرًا ما تحتاج اليوم إلى خزعة من الكبد.</span></p>
         </li>
         <li>
           <h3><span data-lang="en">Seeing a liver specialist</span><span data-lang="ar">زيارة أخصائي الكبد</span></h3>
-          <p><span data-lang="en">If the scan shows more scarring, a liver specialist reviews your results and checks for other causes of liver disease.</span><span data-lang="ar">إذا أظهر الفحص تليّفًا أكبر، يراجع أخصائي الكبد نتائجك ويتأكد من عدم وجود أسباب أخرى لمرض الكبد.</span></p>
+          <p><span data-lang="en">If the scan suggests more scarring, a liver specialist reviews your results and checks for other causes of liver disease.</span><span data-lang="ar">إذا أوحى الفحص بتليّف أكبر، يراجع أخصائي الكبد نتائجك ويتأكد من عدم وجود أسباب أخرى لمرض الكبد.</span></p>
         </li>
         <li>
           <h3><span data-lang="en">Your treatment plan</span><span data-lang="ar">خطة علاجك</span></h3>
@@ -142,6 +145,41 @@
           <p><span data-lang="en">The tests are repeated over time to see how your liver responds. People with cirrhosis also need a liver ultrasound about every 6 months to look for early cancer.</span><span data-lang="ar">تُعاد الفحوصات مع الوقت لمعرفة استجابة الكبد. ويحتاج مرضى التشمّع أيضًا إلى أشعة صوتية للكبد كل 6 أشهر تقريبًا للكشف المبكر عن السرطان.</span></p>
         </li>
       </ol>
+    </div>
+  </section>
+
+  <!-- ===================== WHAT CAN I DO NEXT ===================== -->
+  <section class="section" id="next">
+    <div class="wrap">
+      <h2><span data-lang="en">What can I do next?</span><span data-lang="ar">ما الذي يمكنني فعله الآن؟</span></h2>
+      <p class="read muted"><span data-lang="en">Realistic next steps, whatever tests and follow-up are available where you live.</span><span data-lang="ar">خطوات عملية تالية، أيًّا كانت الفحوص والمتابعة المتاحة حيث تعيش.</span></p>
+      <div class="grid three">
+        <div class="panel">
+          <h3><span data-lang="en">If you have not been checked</span><span data-lang="ar">إن لم تُجرِ فحوصًا بعد</span></h3>
+          <ul class="ticks">
+            <li><span data-lang="en">Ask your family doctor or primary care clinic for routine checks: weight and waist, blood pressure, blood sugar (HbA1c), cholesterol, and liver blood tests with a platelet count.</span><span data-lang="ar">اطلب من طبيب الأسرة أو مركز الرعاية الأولية فحوصًا روتينية: الوزن ومحيط الخصر، وضغط الدم، والسكر التراكمي (HbA1c)، والكوليسترول، وتحاليل الكبد مع عدد الصفائح الدموية.</span></li>
+            <li><span data-lang="en">With those results, your doctor can work out FIB-4 at no extra cost.</span><span data-lang="ar">ومن هذه النتائج يستطيع طبيبك حساب مؤشر FIB-4 دون تكلفة إضافية.</span></li>
+            <li><span data-lang="en">Take the <a href="#questions">questions to ask your doctor</a> with you.</span><span data-lang="ar">احمل معك <a href="#questions">الأسئلة التي تطرحها على طبيبك</a>.</span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3><span data-lang="en">If you have a result you do not understand</span><span data-lang="ar">إن كانت لديك نتيجة لا تفهمها</span></h3>
+          <ul class="ticks">
+            <li><span data-lang="en">A single number is not a diagnosis. FIB-4 and FibroScan results are read together with your history and other tests.</span><span data-lang="ar">الرقم الواحد ليس تشخيصًا؛ فنتائج FIB-4 وفيبروسكان تُقرأ مع تاريخك المرضي وفحوصك الأخرى.</span></li>
+            <li><span data-lang="en">Ask the person who ordered the test, or your nurse or pharmacist, to explain what it means for you and what happens next.</span><span data-lang="ar">اطلب ممن طلب الفحص، أو من ممرضك أو الصيدلي، أن يشرح لك معناه بالنسبة إليك وما الخطوة التالية.</span></li>
+            <li><span data-lang="en">Keep a copy of your results with the dates, so they can be compared next time. Read <a href="learn/what-is-fib4.html">What is FIB-4?</a> and <a href="learn/fibroscan.html">What is a FibroScan?</a></span><span data-lang="ar">احتفظ بنسخة من نتائجك مع تواريخها لتُقارن في المرة القادمة. واقرأ <a href="learn/what-is-fib4.html">ما هو مؤشر FIB-4؟</a> و<a href="learn/fibroscan.html">ما هو فحص فيبروسكان؟</a></span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3><span data-lang="en">If tests or follow-up are hard to get</span><span data-lang="ar">إن كان الوصول إلى الفحوص أو المتابعة صعبًا</span></h3>
+          <ul class="ticks">
+            <li><span data-lang="en">You can start now: the steps that protect the liver are the same whatever the result. Losing 5–10% of your weight if you are overweight, moving more, eating well and avoiding alcohol all help.</span><span data-lang="ar">يمكنك أن تبدأ الآن؛ فالخطوات التي تحمي الكبد واحدة أيًّا كانت النتيجة: خسارة 5–10% من الوزن عند زيادته، والحركة أكثر، والأكل الصحي، وتجنّب الكحول.</span></li>
+            <li><span data-lang="en">Keeping diabetes, blood pressure and cholesterol under control protects your heart and your liver.</span><span data-lang="ar">وضبط السكري وضغط الدم والكوليسترول يحمي قلبك وكبدك معًا.</span></li>
+            <li><span data-lang="en">Ask whether FIB-4 can be added to your next routine blood test, and whether follow-up by telephone or online is possible. Start with our <a href="guides.html">free guides</a>.</span><span data-lang="ar">اسأل إن كان يمكن إضافة FIB-4 إلى تحليل دمك الروتيني القادم، وإن كانت المتابعة بالهاتف أو عبر الإنترنت ممكنة. وابدأ <a href="guides.html">بأدلتنا المجانية</a>.</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="small muted mt-10"><span data-lang="en">If you have any of the <a href="#urgent">warning signs below</a>, do not wait for a routine appointment.</span><span data-lang="ar">إن ظهرت عليك أي من <a href="#urgent">العلامات التحذيرية أدناه</a>، فلا تنتظر موعدًا روتينيًا.</span></p>
     </div>
   </section>
 

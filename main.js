@@ -504,27 +504,45 @@
       var answered = names.every(function (n) { return checklist.querySelector('input[name="' + n + '"]:checked'); });
       if (!answered) {
         out.hidden = false; out.className = 'result';
-        out.innerHTML = '<p class="error">' + bi('Please answer all four questions.', 'يرجى الإجابة عن الأسئلة الأربعة.') + '</p>';
+        out.innerHTML = '<p class="error">' + bi('Please answer the first four questions. You can choose "I don\'t know".', 'يرجى الإجابة عن الأسئلة الأربعة الأولى، ويمكنك اختيار "لا أعرف".') + '</p>';
         out.focus();
         return;
       }
-      var yes = names.filter(function (n) { return checklist.querySelector('input[name="' + n + '"]:checked').value === 'yes'; }).length;
+      function val(n) { return checklist.querySelector('input[name="' + n + '"]:checked').value; }
+      var yes = names.filter(function (n) { return val(n) === 'yes'; }).length;
+      var unknown = names.filter(function (n) { return val(n) === 'unknown'; });
       var alcohol = (checklist.querySelector('input[name="alcohol"]:checked') || {}).value === 'yes';
+      var ask = {
+        sugar: bi('"Could you check my blood sugar (for example HbA1c) for diabetes or prediabetes?"', '"هل يمكن فحص السكر في دمي (مثل السكر التراكمي HbA1c) للتأكد من السكري أو مرحلة ما قبل السكري؟"'),
+        pressure: bi('"Could you check my blood pressure?"', '"هل يمكن قياس ضغط دمي؟"'),
+        fats: bi('"Could you check my cholesterol and triglycerides?"', '"هل يمكن فحص الكوليسترول والدهون الثلاثية؟"')
+      };
       var html2;
       if (yes > 0) {
         out.className = 'result mid';
         html2 = '<h3>' + bi('You may be at higher risk of fatty liver.', 'قد تكون أكثر عرضة لمرض الكبد الدهني.') + '</h3>' +
           '<p>' + bi('You have ' + yes + ' of the common risk factors. Ask your doctor about a liver check. It often starts with a simple blood-test score called FIB-4.',
             'لديك ' + yes + ' من عوامل الخطر الشائعة. اسأل طبيبك عن فحص الكبد. غالبًا يبدأ بحساب بسيط من تحليل الدم اسمه FIB-4.') + '</p>';
+      } else if (unknown.length) {
+        out.className = 'result mid';
+        html2 = '<h3>' + bi('We cannot tell yet: some simple checks may be missing.', 'لا يمكننا الحكم بعد: قد تنقصك بعض الفحوص البسيطة.') + '</h3>' +
+          '<p>' + bi('That is common. These are routine, inexpensive checks that your family doctor, primary care clinic or pharmacy can usually arrange.',
+            'هذا أمر شائع. فهذه فحوص روتينية غير مكلفة يستطيع عادة طبيب الأسرة أو مركز الرعاية الأولية أو الصيدلية ترتيبها.') + '</p>';
       } else {
         out.className = 'result low';
         html2 = '<h3>' + bi('Your answers do not show the common risk factors.', 'إجاباتك لا تُظهر عوامل الخطر الشائعة.') + '</h3>' +
           '<p>' + bi('Keep up healthy habits. If you have symptoms or worries, talk to your doctor.', 'حافظ على عاداتك الصحية. إذا كانت لديك أعراض أو مخاوف، تحدّث مع طبيبك.') + '</p>';
       }
+      if (unknown.length) {
+        var qs = unknown.filter(function (n) { return ask[n]; });
+        html2 += '<p><strong>' + bi('Questions to take to your next appointment:', 'أسئلة تحملها إلى موعدك القادم:') + '</strong></p><ul class="ticks">' +
+          qs.map(function (n) { return '<li>' + ask[n] + '</li>'; }).join('') + '</ul>';
+      }
       if (alcohol) {
         html2 += '<p>' + bi('You said you drink alcohol regularly. Tell your doctor, because alcohol and metabolic risk together can harm the liver faster.',
           'ذكرت أنك تتناول الكحول بانتظام. أخبر طبيبك، لأن اجتماع الكحول مع عوامل الخطر الأيضية قد يضرّ الكبد أسرع.') + '</p>';
       }
+      html2 += '<p><a href="#next">' + bi('What can I do next?', 'ما الذي يمكنني فعله الآن؟') + '</a></p>';
       html2 += '<p class="fine">' + bi('This is an education tool, not a diagnosis. It does not replace your doctor.', 'هذه أداة تثقيفية وليست تشخيصًا، ولا تُغني عن طبيبك.') + '</p>';
       out.hidden = false;
       out.innerHTML = html2;

@@ -157,6 +157,16 @@ def learn_page(it):
         for en, ar in zip(it["bullets"]["en"], it["bullets"]["ar"]):
             out.append("<li>%s</li>" % bi(esc(en), esc(ar)))
         out.append("</ul>")
+    nxt = it.get("next", {"en": [], "ar": []})
+    out.append('<div class="shortbox mt-20"><p><strong>%s</strong></p><ul class="ticks">' % bi("What can I do next?", "ما الذي يمكنني فعله الآن؟"))
+    for en, ar in list(zip(nxt["en"], nxt["ar"])) + [
+            ("Write down your questions and take this page to your next appointment with your doctor, nurse or pharmacist.",
+             "اكتب أسئلتك واحمل هذه الصفحة إلى موعدك القادم مع طبيبك أو ممرضك أو الصيدلي."),
+            ("Whatever your results, the steps that protect the liver are in your hands: losing weight if you are overweight, moving more, eating well and avoiding alcohol.",
+             "أيًّا كانت نتائجك، فالخطوات التي تحمي الكبد بين يديك: خسارة الوزن عند زيادته، والحركة أكثر، والأكل الصحي، وتجنّب الكحول.")]:
+        out.append("<li>%s</li>" % bi(esc(en), esc(ar)))
+    out.append('</ul><p class="small"><a href="../patients.html#next">%s</a></p></div>' % bi(
+        "More on what to do next, including when tests are hard to get", "المزيد عن الخطوة التالية، حتى عندما يصعب الوصول إلى الفحوص"))
     if it.get("see"):
         out.append('<h2 class="h-small">%s</h2><ul class="qlist">' % bi("Related questions", "أسئلة ذات صلة"))
         for s in it["see"]:
