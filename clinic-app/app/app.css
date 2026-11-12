@@ -80,3 +80,17 @@ dialog textarea{width:100%;font:inherit;padding:8px;border:1px solid #c9d2dc;bor
 body.compact #left,body.compact #right,body.compact #search,body.compact #top .actions,body.compact #tabs,body.compact .visits .btn{display:none}
 body.compact #layout{grid-template-columns:1fr}body.compact #center{padding:8px}body.compact .trow{grid-template-columns:1fr auto}body.compact .tlab{grid-column:1/-1}
 body.compact #ph h2{font-size:15px}
+
+.quickhead{display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:-14px;z-index:5;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.btn.big{padding:10px 28px;font-size:15px}.gen{margin:6px 0 14px}
+.notecard{border:2px solid var(--brand2)}.notecard .thead{margin-bottom:6px}
+.keyline{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}.chip.inline{display:inline-flex;margin:0;font-weight:600}
+.chip.inline.cirrhosis,.chip.inline.significant{background:var(--highbg);color:var(--high)}
+pre.note{white-space:pre-wrap;font:13px/1.5 "Segoe UI",system-ui,sans-serif;background:#fbfcfd;border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin:0;max-height:none}
+
+.pastecard textarea{width:100%;font:inherit;padding:8px;border:1px solid #c9d2dc;border-radius:6px;resize:vertical}
+table.found{border-collapse:collapse;font-size:13px;margin:4px 0;width:100%}table.found td{padding:2px 8px;border-bottom:1px solid var(--line)}
+table.found tr.conflict{background:var(--midbg)}table.found tr.same{color:var(--muted)}
+.conds{display:flex;flex-wrap:wrap;gap:6px}
+.cond{border:1px solid #c9d2dc;background:#fff;border-radius:16px;padding:5px 12px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink)}
+.cond:hover{border-color:var(--brand2)}.cond.on{background:var(--brand2);border-color:var(--brand2);color:#fff;font-weight:600}

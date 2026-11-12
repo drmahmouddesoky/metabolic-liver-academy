@@ -78,6 +78,10 @@
 
     /* ---------------- 2. Encounter ---------------- */
     { id: 'encounter', title: 'Complaint', level: 'visit', groups: [
+      { title: 'Pasted patient data', fields: [
+        f('paste_text', 'textarea', 'Pasted text', { cols: 4, rows: 6 }),
+        f('paste_in_note', 'check', 'Include the pasted text in the note as "Previous records"', { cols: 4 })
+      ] },
       { title: 'Visit', fields: [
         f('date', 'date', 'Visit date', { req: true, cols: 1 }),
         f('type', 'select', 'Visit type', { cols: 1, opts: [['initial', 'Initial assessment'], ['followup', 'Follow-up'], ['review', 'Results review']] }),
@@ -119,6 +123,7 @@
         f('pm_htn', YN, 'Hypertension', { cols: 1 }),
         f('pm_htn_treated', YN, 'On antihypertensive treatment', { cols: 1, show: function (v) { return v.pm_htn === 'yes'; } }),
         f('pm_lipid', YN, 'Dyslipidaemia', { cols: 1 }),
+        f('pm_obesity', YN, 'Known obesity', { cols: 1, help: 'Counts when weight and waist are not measured' }),
         f('pm_lipid_treated', YN, 'On lipid-lowering treatment', { cols: 1, show: function (v) { return v.pm_lipid === 'yes'; } }),
         f('pm_cvd', 'multi', 'Cardiovascular disease', { cols: 4, opts: [['cad', 'Coronary artery disease / MI'], ['stroke', 'Stroke / TIA'], ['hf', 'Heart failure'], ['pad', 'Peripheral arterial disease'], ['af', 'Atrial fibrillation']] }),
         f('pm_osa', 'select', 'Obstructive sleep apnoea', { cols: 1, opts: [['no', 'No'], ['suspected', 'Suspected'], ['yes', 'Diagnosed'], ['cpap', 'On CPAP']] }),
@@ -233,7 +238,8 @@
         f('ex_ascites_grade', 'select', 'Ascites grade', { cols: 1, opts: [['none', 'None'], ['mild', 'Grade 1 (only on ultrasound)'], ['moderate', 'Grade 2 (moderate)'], ['severe', 'Grade 3 (tense)']], show: function (v) { return !v.ex_abd_normal; } }),
         f('ex_abd_text', 'text', 'Details', { cols: 4 })
       ] },
-      { title: 'Other systems', fields: [
+      { title: 'Other findings', fields: [
+        f('ex_text', 'textarea', 'Findings', { cols: 4, rows: 3, ph: 'Free text, e.g. firm liver edge 2 cm below costal margin, no ascites' }),
         f('ex_other_text', 'textarea', 'Neurological, musculoskeletal, other', { cols: 4, rows: 2 })
       ] }
     ] },

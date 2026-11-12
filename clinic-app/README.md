@@ -34,6 +34,27 @@ Default data folder: `Documents/Fatty Liver Clinic/`
 Back up the whole folder (copy it to a USB stick or cloud drive). To move to another computer, copy the
 folder and point the app to it in **Settings → Change folder**.
 
+## Quick entry (one page)
+
+The first tab, **Quick entry**, holds the whole visit on one screen:
+
+1. **Patient**: name, URN, date of birth or age, sex.
+2. **Paste patient data**: paste anything (old notes, lab results, ultrasound or FibroScan report, the TrakCare banner)
+   and click **Read values**. The app lists every value it recognised (labs with unit conversion, BP, weight, height,
+   waist, ultrasound grade, LSM, CAP, HBsAg, anti-HCV, diabetes and its duration, hypertension, dyslipidaemia, obesity,
+   fatty liver, smoking, alcohol, age and sex). Tick what is right and click **Fill ticked values**. It ignores negated
+   phrases such as "no history of cirrhosis" and does not read "portal hypertension" as hypertension.
+   Reading is offline pattern matching: nothing leaves the computer. Check every value before relying on it.
+3. **Known conditions**: one-click buttons for type 2 diabetes, pre-diabetes, hypertension, dyslipidaemia, obesity,
+   known fatty liver, cirrhosis, heart disease, stroke, sleep apnoea, PCOS, hypothyroidism, CKD, gout, hepatitis B and C.
+   "Obesity" and "Fatty liver (known)" count for the diagnosis when weight or imaging are not available today.
+4. Complaint, history, other history and drugs (one per line), examination (pre-ticked normal; untick to record
+   findings), radiology and FibroScan, laboratory.
+5. **Generate note**: the complete structured note with FIB-4, NFS, APRI, Agile 3+, Agile 4, FAST, the assessment
+   and the full plan of care. It updates as you type. Copy it, save the PDF report, or go to the TrakCare tab.
+
+The other tabs hold the full sheet for when you want more detail; they share the same data.
+
 ## Daily use with TrakCare
 
 1. Open the patient in TrakCare. Select the patient banner at the top (name, URN, gender, DOB, height, weight)

@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   var S = window.Schema, C = window.Calc, R = window.Rules, Rep = window.Report, Store = window.Store, Emr = window.Emr;
-  var TABS = [['patient', 'Personal'], ['encounter', 'Complaint'], ['hpi', 'Present illness'], ['past', 'Past & drugs'], ['family', 'Family'],
+  var TABS = [['quick', 'Quick entry'], ['patient', 'Personal'], ['encounter', 'Complaint'], ['hpi', 'Present illness'], ['past', 'Past & drugs'], ['family', 'Family'],
     ['exam', 'Examination'], ['labs', 'Laboratory'], ['imaging', 'Imaging'], ['assess', 'Assessment & plan'], ['trakcare', 'TrakCare'], ['report', 'Report']];
   var HISTORY_SECTIONS = ['past', 'family'];
   var st = { patients: [], p: null, vi: 0, settings: {}, tab: 'patient', filter: '', dirty: false, saveTimer: null, copied: {}, seq: null, compact: false };
@@ -44,11 +44,11 @@
     if (!pre || !(pre.name || pre.fileNo)) pre = null;
     var p = { id: uid(), schemaVersion: 1, fileNo: nextFileNo(), name: '', sex: '', ethnicity: 'other', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), visits: [newVisit('initial')] };
     if (pre) applyBanner(p, p.visits[0], pre);
-    st.p = p; st.vi = 0; st.tab = 'patient';
+    st.p = p; st.vi = 0; st.tab = 'quick'; st.noteShown = false;
     st.patients.push(p);
     save(true);
     renderAll();
-    setTimeout(function () { var n = $('[data-k="name"]'); if (n) n.focus(); }, 50);
+    setTimeout(function () { var n = $('[data-k="' + (st.p.name ? 'complaint' : 'name') + '"]'); if (n) n.focus(); }, 50);
   }
   function save(now) {
     if (!st.p) return Promise.resolve();
@@ -94,7 +94,7 @@
     return Store.getPatient(id).then(function (p) {
       if (!p) { toast('Could not open this patient', true); return null; }
       if (!p.visits || !p.visits.length) p.visits = [newVisit('initial')];
-      st.p = p; st.vi = p.visits.length - 1; st.tab = 'patient'; stopSeq();
+      st.p = p; st.vi = p.visits.length - 1; st.tab = 'quick'; st.noteShown = false; stopSeq();
       var i = st.patients.findIndex(function (x) { return x.id === p.id; }); if (i >= 0) st.patients[i] = p; else st.patients.push(p);
       renderAll();
       return p;
@@ -121,7 +121,7 @@
     var prev = visit();
     if (st.dirty) save(true);
     st.p.visits.push(newVisit('followup', prev));
-    st.vi = st.p.visits.length - 1; st.tab = 'encounter';
+    st.vi = st.p.visits.length - 1; st.tab = 'quick'; st.noteShown = false;
     save(); renderAll(); toast('Follow-up visit created; history copied from the previous visit.');
   }
   function deleteVisit() {
@@ -147,6 +147,7 @@
     if (st.tab === 'assess') return renderAssess(m);
     if (st.tab === 'report') return renderReport(m);
     if (st.tab === 'trakcare') return renderTrak(m);
+    if (st.tab === 'quick') return renderQuick(m);
     var sec = S.SECTIONS.filter(function (s) { return s.id === st.tab; })[0];
     var data = sec.level === 'patient' ? st.p : visit();
     if (sec.id === 'labs') m.appendChild(unitsBar());
@@ -254,6 +255,7 @@
     updateVisibility();
     if (fd.k === 'name' || fd.k === 'fileNo' || fd.k === 'sex' || fd.k === 'dob' || fd.k === 'age' || fd.k === 'date' || fd.k === 'type') renderHeader();
     save(); renderSummary();
+    if (st.tab === 'quick' && st.noteShown) drawNote();
   }
   function updateVisibility() {
     rendered.forEach(function (r) {
@@ -349,6 +351,176 @@
   function autosize(ta) { ta.style.height = 'auto'; ta.style.height = (ta.scrollHeight + 2) + 'px'; }
   function fieldFree(k, t, label, data, extra) { var fd = { k: k, t: t, label: label }; for (var x in extra) fd[x] = extra[x]; return buildField(fd, data); }
 
+
+
+  /* ---------- quick entry: everything on one page ---------- */
+  var QUICK = [
+    { title: 'Patient', level: 'patient', keys: ['name', 'fileNo', 'dob', 'age', 'sex'] },
+    { paste: true },
+    { conditions: true },
+    { title: 'Complaint', keys: ['date', 'complaint', 'complaint_duration', 'complaint_onset', 'reasons'] },
+    { title: 'History of present illness', keys: ['hpi_text', 'hpi_symptoms', 'hpi_decomp_none', 'hpi_decomp'] },
+    { title: 'Other history, drugs, habits, family', keys: ['pm_dm_years', 'pm_htn_treated', 'pm_lipid_treated', 'pm_other',
+      'q_meds', 'dh_allergy', 'hab_smoking', 'hab_cigs', 'hab_smoke_years', 'hab_alcohol', 'hab_alc_g', 'mh_status', 'fh', 'fh_text'] },
+    { title: 'Examination', keys: ['ex_sbp', 'ex_dbp', 'ex_hr', 'ex_wt', 'ex_ht', 'ex_waist', 'ex_general_normal', 'ex_mental', 'ex_ext', 'ex_cardiac_normal', 'ex_cardiac', 'ex_chest_normal', 'ex_chest',
+      'ex_abd_normal', 'ex_abd', 'ex_ascites_grade', 'ex_text'] },
+    { title: 'Radiology', keys: ['us_date', 'us_steatosis', 'us_spleen', 'us_findings', 'us_focal', 'us_text', 'te_date', 'te_lsm', 'te_iqr', 'te_cap', 'mri_pdff', 'mri_mre'] },
+    { title: 'Laboratory', units: true, keys: ['lab_date', 'lab_hb', 'lab_plt', 'lab_ast', 'lab_alt', 'lab_ggt', 'lab_alp', 'lab_tbil', 'lab_alb', 'lab_inr', 'lab_glu', 'lab_hba1c', 'lab_ins',
+      'lab_ldl', 'lab_hdl', 'lab_tg', 'lab_creat', 'lab_na', 'lab_ferritin', 'lab_tsat', 'lab_tsh', 'lab_hbsag', 'lab_antihcv', 'lab_elf', 'lab_other'] }
+  ];
+  function splitDrug(line) { var m = /^(.*?[A-Za-z)])\s+(\d.*)$/.exec(line); return m ? { drug: m[1].trim(), dose: m[2].trim() } : { drug: line }; }
+  function medsField(v) {
+    var ta = el('textarea', { rows: 3, placeholder: 'One drug per line, e.g. Metformin 1 g twice daily' });
+    ta.value = (v.dh_meds || []).filter(function (r) { return r && r.drug; }).map(function (r) { return [r.drug, r.dose].filter(Boolean).join(' '); }).join('\n');
+    ta.addEventListener('input', function () {
+      v.dh_meds = this.value.split(/\n/).map(function (x) { return x.trim(); }).filter(Boolean).map(splitDrug);
+      save(); renderSummary(); if (st.noteShown) drawNote();
+    });
+    return el('div', { class: 'f c2' }, [el('label', { text: 'Current medications (one per line)' }), ta]);
+  }
+  function renderQuick(m) {
+    var p = st.p, v = visit(), FMq = S.fieldMap();
+    m.appendChild(el('div', { class: 'card quickhead' }, [
+      el('div', null, [el('b', { text: 'Quick entry' }), el('span', { class: 'muted', text: ' Fill what you have; empty boxes are skipped. Examination boxes are pre-ticked normal: untick to record findings.' })]),
+      el('button', { class: 'btn primary', text: 'Generate note ↓', onclick: showNote })]));
+    QUICK.forEach(function (q) {
+      if (q.paste) { m.appendChild(pasteCard(v)); return; }
+      if (q.conditions) { m.appendChild(conditionsCard(p, v)); return; }
+      var card = el('section', { class: 'card' }, [el('h3', { text: q.title })]);
+      if (q.units) card.appendChild(unitsBar());
+      var grid = el('div', { class: 'fields' });
+      q.keys.forEach(function (k) {
+        if (k === 'q_meds') { grid.appendChild(medsField(v)); return; }
+        var fd = FMq[k]; if (!fd) return;
+        var data = q.level === 'patient' ? p : v;
+        var w = buildField(fd, data); grid.appendChild(w);
+        rendered.push({ fd: fd, wrap: w, data: data, group: {}, card: card });
+      });
+      card.appendChild(grid); m.appendChild(card);
+    });
+    m.appendChild(el('div', { class: 'row center gen' }, [el('button', { class: 'btn primary big', text: 'Generate note', onclick: showNote })]));
+    m.appendChild(el('div', { id: 'quick-note' }));
+    updateVisibility();
+    if (st.noteShown) drawNote();
+  }
+
+  /* paste box: the doctor pastes anything, the app reads values, the doctor confirms */
+  function pasteCard(v) {
+    var card = el('section', { class: 'card pastecard' }, [el('h3', { text: 'Paste patient data' }),
+      el('p', { class: 'muted small', text: 'Paste notes, lab results, radiology or FibroScan reports, or the TrakCare banner. Click "Read values": the app lists what it found and fills only what you tick. The text itself is kept with the visit.' })]);
+    var ta = el('textarea', { rows: 7, placeholder: 'e.g. 56 y/o M, T2DM 8 years, HTN. AST 45 ALT 62 Platelets 180 Albumin 42 g/L. US: fatty liver grade II. FibroScan LSM 9.5 kPa CAP 310.' });
+    ta.value = v.paste_text || '';
+    ta.addEventListener('input', function () { v.paste_text = this.value; save(); });
+    var res = el('div', { class: 'pasteres' });
+    var inc = el('input', { type: 'checkbox', onchange: function () { v.paste_in_note = this.checked; save(); if (st.noteShown) drawNote(); } }); inc.checked = !!v.paste_in_note;
+    card.appendChild(ta);
+    card.appendChild(el('div', { class: 'row' }, [
+      el('button', { class: 'btn primary', text: 'Read values', onclick: function () { readPaste(ta.value, res); } }),
+      el('label', { class: 'chk' }, [inc, ' Also put the pasted text in the note as "Previous records"'])]));
+    card.appendChild(res);
+    return card;
+  }
+  function currentDisplay(item) {
+    var data = item.level === 'patient' ? st.p : visit(), cur = data[item.k];
+    if (cur == null || cur === '' || (Array.isArray(cur) && !cur.length)) return null;
+    var fd = S.fieldMap()[item.k];
+    return fd ? (Rep.fieldValue(fd, data, visit().units || 'base') || String(cur)) : String(cur);
+  }
+  function readPaste(text, res) {
+    res.innerHTML = '';
+    if (!text.trim()) { toast('Paste some text first', true); return; }
+    var found = Emr.parseClinical(text, visit().units || 'base');
+    if (!found.length) { res.appendChild(el('p', { class: 'missing', text: 'No values recognised. Type them in the boxes below.' })); return; }
+    var rows = found.map(function (it) {
+      var data = it.level === 'patient' ? st.p : visit(), raw = data[it.k], cur = currentDisplay(it);
+      var same = cur != null && (Array.isArray(it.value) ? Array.isArray(raw) && it.value.every(function (x) { return raw.indexOf(x) >= 0; })
+        : (String(raw) === String(it.value) || (C.num(raw) != null && C.num(raw) === C.num(it.value))));
+      var cb = el('input', { type: 'checkbox' }); cb.checked = cur == null; if (same) cb.disabled = true;
+      it.cb = cb;
+      return el('tr', { class: same ? 'same' : cur != null ? 'conflict' : '' }, [el('td', null, [cb]), el('td', { text: it.label }), el('td', null, [el('b', { text: it.display })]),
+        el('td', { class: 'muted small', text: same ? 'already entered' : cur != null ? 'now: ' + cur : '' })]);
+    });
+    res.appendChild(el('p', { class: 'small', text: 'Found ' + found.length + ' values. Ticked ones fill empty boxes; tick a "now:" row to replace what is there. Check every value before using it.' }));
+    res.appendChild(el('table', { class: 'found' }, rows));
+    res.appendChild(el('div', { class: 'row' }, [el('button', { class: 'btn primary', text: 'Fill ticked values', onclick: function () {
+      var n = 0, v = visit();
+      found.forEach(function (it) {
+        if (!it.cb.checked || it.cb.disabled) return;
+        var data = it.level === 'patient' ? st.p : v;
+        if (Array.isArray(it.value)) { var cur = Array.isArray(data[it.k]) ? data[it.k] : []; it.value.forEach(function (x) { if (cur.indexOf(x) < 0) cur.push(x); }); data[it.k] = cur; }
+        else data[it.k] = it.value;
+        if (it.k.indexOf('lab_') === 0) { if (!v.labs_entered) v.labs_entered = {}; v.labs_entered[it.k] = { value: String(it.value), units: v.units || 'base' }; }
+        n++;
+      });
+      save(true); var sc = $('#center').scrollTop; renderHeader(); renderSection(); renderSummary(); $('#center').scrollTop = sc;
+      toast(n + ' values filled');
+    } }), el('button', { class: 'btn ghost', text: 'Close', onclick: function () { res.innerHTML = ''; } })]));
+  }
+  /* key conditions as one-click boxes */
+  var CONDS = [
+    ['Type 2 diabetes', function (v) { return v.pm_dm === 't2'; }, function (v, on) { v.pm_dm = on ? 't2' : 'no'; }],
+    ['Pre-diabetes', function (v) { return v.pm_dm === 'pre'; }, function (v, on) { v.pm_dm = on ? 'pre' : 'no'; }],
+    ['Hypertension', function (v) { return v.pm_htn === 'yes'; }, function (v, on) { v.pm_htn = on ? 'yes' : 'no'; }],
+    ['Dyslipidaemia', function (v) { return v.pm_lipid === 'yes'; }, function (v, on) { v.pm_lipid = on ? 'yes' : 'no'; }],
+    ['Obesity', function (v) { return v.pm_obesity === 'yes'; }, function (v, on) { v.pm_obesity = on ? 'yes' : 'no'; }],
+    ['Fatty liver (known)', function (v) { return (v.pm_liver || []).indexOf('steatosis') >= 0; }, function (v, on) { tog(v, 'pm_liver', 'steatosis', on); }],
+    ['Cirrhosis', function (v) { return (v.pm_liver || []).indexOf('cirrhosis') >= 0; }, function (v, on) { tog(v, 'pm_liver', 'cirrhosis', on); }],
+    ['Heart disease', function (v) { return (v.pm_cvd || []).indexOf('cad') >= 0; }, function (v, on) { tog(v, 'pm_cvd', 'cad', on); }],
+    ['Stroke', function (v) { return (v.pm_cvd || []).indexOf('stroke') >= 0; }, function (v, on) { tog(v, 'pm_cvd', 'stroke', on); }],
+    ['Sleep apnoea', function (v) { return v.pm_osa === 'yes' || v.pm_osa === 'cpap'; }, function (v, on) { v.pm_osa = on ? 'yes' : 'no'; }],
+    ['PCOS', function (v) { return v.pm_pcos === 'yes'; }, function (v, on) { v.pm_pcos = on ? 'yes' : 'no'; }, function (p) { return p.sex === 'female'; }],
+    ['Hypothyroidism', function (v) { return v.pm_thyroid === 'hypo'; }, function (v, on) { v.pm_thyroid = on ? 'hypo' : 'no'; }],
+    ['Chronic kidney disease', function (v) { return v.pm_ckd === 'yes'; }, function (v, on) { v.pm_ckd = on ? 'yes' : 'no'; }],
+    ['Gout', function (v) { return v.pm_gout === 'yes'; }, function (v, on) { v.pm_gout = on ? 'yes' : 'no'; }],
+    ['Hepatitis B', function (v) { return (v.pm_liver || []).indexOf('hbv') >= 0; }, function (v, on) { tog(v, 'pm_liver', 'hbv', on); }],
+    ['Hepatitis C', function (v) { return (v.pm_liver || []).indexOf('hcv') >= 0; }, function (v, on) { tog(v, 'pm_liver', 'hcv', on); }]
+  ];
+  function tog(v, k, x, on) { var a = Array.isArray(v[k]) ? v[k].slice() : []; var i = a.indexOf(x); if (on && i < 0) a.push(x); if (!on && i >= 0) a.splice(i, 1); v[k] = a; }
+  function conditionsCard(p, v) {
+    var card = el('section', { class: 'card' }, [el('h3', { text: 'Known conditions' }), el('p', { class: 'muted small', text: 'Click to mark what the patient has. Details (duration, treatment) appear below.' })]);
+    var box = el('div', { class: 'conds' });
+    CONDS.forEach(function (c) {
+      if (c[3] && !c[3](p)) return;
+      var on = c[1](v);
+      box.appendChild(el('button', { class: 'cond' + (on ? ' on' : ''), 'aria-pressed': on ? 'true' : 'false', text: (on ? '✓ ' : '') + c[0], onclick: function () {
+        c[2](v, !c[1](v)); save(); var sc = $('#center').scrollTop; renderSection(); renderSummary(); $('#center').scrollTop = sc;
+      } }));
+    });
+    card.appendChild(box);
+    return card;
+  }
+
+  function showNote() {
+    st.noteShown = true; drawNote();
+    var n = $('#quick-note'); if (n) n.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function drawNote() {
+    var box = $('#quick-note'); if (!box) return;
+    var r = evaluate(); if (!r) return;
+    var v = visit(), text = Emr.consultText(st.p, v, r, st.settings, 'note');
+    var missing = [];
+    if (!st.p.name) missing.push('name'); if (!st.p.sex) missing.push('sex'); if (r.age == null) missing.push('age or date of birth');
+    if (r.steatosis.status === 'unknown') missing.push('ultrasound or CAP (steatosis)');
+    if (!r.scores.fib4) missing.push('AST, ALT and platelets (FIB-4)');
+    box.innerHTML = '';
+    var card = el('section', { class: 'card notecard' }, [
+      el('div', { class: 'thead' }, [el('h4', { text: 'Medical note' }), el('div', { class: 'row' }, [
+        el('button', { class: 'btn primary small', text: 'Copy note', onclick: function () { copyText(text); } }),
+        el('button', { class: 'btn small', text: 'PDF report', onclick: function () { Store.exportPdf(Rep.build(st.p, v, evaluate(), st.settings), reportName()).then(function (x) { if (x && x.ok) toast('PDF saved'); else if (x && x.error) toast(x.error, true); }); } }),
+        el('button', { class: 'btn small ghost', text: 'Edit plan', onclick: function () { st.tab = 'assess'; renderTabs(); renderSection(); } }),
+        el('button', { class: 'btn small ghost', text: 'TrakCare', onclick: function () { st.tab = 'trakcare'; renderTabs(); renderSection(); } })])]),
+      el('div', { class: 'keyline' }, [
+        el('span', { class: 'chip inline ' + (r.scores.fib4 ? r.scores.fib4.band : ''), text: 'FIB-4 ' + (r.scores.fib4 ? r.scores.fib4.value + ' · ' + r.scores.fib4.band : '—') }),
+        r.scores.nfs ? el('span', { class: 'chip inline ' + r.scores.nfs.band, text: 'NFS ' + r.scores.nfs.value }) : null,
+        r.scores.lsm ? el('span', { class: 'chip inline ' + r.scores.lsm.band, text: 'LSM ' + r.scores.lsm.value + ' kPa' }) : null,
+        r.scores.agile3 ? el('span', { class: 'chip inline ' + r.scores.agile3.band, text: 'Agile 3+ ' + r.scores.agile3.value }) : null,
+        r.scores.fast ? el('span', { class: 'chip inline ' + r.scores.fast.band, text: 'FAST ' + r.scores.fast.value }) : null,
+        el('span', { class: 'chip inline ' + r.fibrosis.level, text: r.fibrosis.label })]),
+      missing.length ? el('p', { class: 'missing', text: 'Still missing: ' + missing.join(', ') + '.' }) : null,
+      (v.plan_items || []).length ? el('p', { class: 'muted small', text: 'The plan uses your edited list from Assessment & plan. If you changed the data since, press "Regenerate from assessment" there.' }) : null,
+      el('pre', { class: 'note', text: text })]);
+    box.appendChild(card);
+  }
 
   /* ---------- TrakCare ---------- */
   function copyText(text, key) {
@@ -500,7 +672,7 @@
           var last = p.visits[p.visits.length - 1];
           if (last.date !== today()) { p.visits.push(newVisit('followup', last)); st.vi = p.visits.length - 1; }
           applyBanner(p, p.visits[st.vi], b);
-          st.tab = 'encounter'; save(); renderAll();
+          st.tab = 'quick'; save(); renderAll();
           toast(last.date !== today() ? 'Follow-up visit started; history copied from the last visit' : 'Today’s visit opened');
         });
       } })]));

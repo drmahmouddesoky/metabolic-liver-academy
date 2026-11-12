@@ -53,7 +53,7 @@
       if (fd.show && !fd.show(v, p)) return;
       var x = Rep.fieldValue(fd, v, units); if (x == null) return;
       if (fd.t === 'check') parts.push(fd.label);
-      else if (/^(Other|Details|Narrative|Report summary)$/.test(fd.label)) parts.push(x);
+      else if (/^(Other|Details|Narrative|Report summary|Findings)$/.test(fd.label)) parts.push(x);
       else parts.push(fd.label + ': ' + x);
     });
     return parts.join('; ');
@@ -434,6 +434,7 @@
     if (v.reason_other) reasons.push(v.reason_other);
     line(v.complaint ? 'Patient’s words: "' + v.complaint + '"' + (v.complaint_duration ? ' for ' + v.complaint_duration : '') + '.' : '');
     line(reasons.length ? 'Coded: ' + reasons.join('; ') + '.' : '');
+    if (v.paste_in_note && v.paste_text) { h('Previous records (pasted)'); line(String(v.paste_text).trim()); }
     var hpi = groupText(SEC.hpi.groups[0], v, p, units, ['hpi_text', 'hpi_symptoms', 'hpi_decomp', 'hpi_decomp_none']), r0 = rosText(v);
     if (hpi || v.hpi_text || r0) { h('History of present illness'); line(sentence(hpi)); line(r0); line(v.hpi_text); }
     var pmhT = groupText(group('past', 'Cardiometabolic'), v, p, units), livT = groupText(group('past', 'Liver and other'), v, p, units);
@@ -486,6 +487,127 @@
     return q;
   }
 
+
+  /* ---------- reading pasted clinical text (offline pattern matching) ----------
+     Returns found items: { k, label, value (in the visit's units, or option key), level: 'visit'|'patient', show }.
+     Nothing is applied here; the page asks the doctor to confirm. */
+  var NUM = '(\\d+(?:[.,]\\d+)?)';
+  var LABS = [
+    // key, label, name pattern, kind (unit conversion), base-unit sanity [min,max], heuristic(value, unitText) -> base value
+    ['lab_ast', 'AST', 'AST|SGOT|aspartate aminotransferase', null, [3, 3000]],
+    ['lab_alt', 'ALT', 'ALT|SGPT|alanine aminotransferase', null, [3, 3000]],
+    ['lab_ggt', 'GGT', 'GGT|gamma[- ]?GT|gamma[- ]glutamyl\\s*transferase', null, [3, 3000]],
+    ['lab_alp', 'ALP', 'ALP|alk(?:aline)?\\.?\\s*phos(?:phatase)?', null, [10, 3000]],
+    ['lab_plt', 'Platelets', 'PLT|platelets?(?:\\s*count)?', 'plt', [5, 1500], function (x) { return x > 2000 ? x / 1000 : x; }],
+    ['lab_hb', 'Haemoglobin', 'Hb|HGB|ha?emoglobin', 'hb', [3, 25], function (x) { return x > 25 ? x / 10 : x; }],
+    ['lab_wbc', 'WBC', 'WBC|white (?:blood )?cells?|TLC', 'wbc', [0.5, 100], function (x) { return x > 500 ? x / 1000 : x; }],
+    ['lab_alb', 'Albumin', 'albumin|ALB', 'albumin', [1, 7], function (x) { return x > 10 ? x / 10 : x; }],
+    ['lab_tbil', 'Total bilirubin', 'total bilirubin|T\\.?\\s*bili(?:rubin)?|bilirubin(?:,)?\\s*total|bilirubin', 'bili', [0.05, 40], function (x, u) { return /mol/i.test(u) || x > 15 ? x / 17.104 : x; }],
+    ['lab_dbil', 'Direct bilirubin', 'direct bilirubin|D\\.?\\s*bili(?:rubin)?|conjugated bilirubin', 'bili', [0.01, 30], function (x, u) { return /mol/i.test(u) || x > 10 ? x / 17.104 : x; }],
+    ['lab_inr', 'INR', 'INR', null, [0.7, 10]],
+    ['lab_hba1c', 'HbA1c', 'HbA1c|A1c|glycated ha?emoglobin|glycosylated ha?emoglobin', 'hba1c', [3, 20], function (x) { return x > 20 ? x / 10.929 + 2.15 : x; }],
+    ['lab_glu', 'Fasting glucose', 'FBS|FBG|FPG|fasting (?:blood |plasma )?(?:glucose|sugar)|glucose(?:,)?\\s*fasting', 'glucose', [30, 700], function (x) { return x < 35 ? x * 18.016 : x; }],
+    ['lab_ins', 'Fasting insulin', '(?:fasting )?insulin(?:\\s*level)?', 'insulin', [0.5, 300]],
+    ['lab_tc', 'Total cholesterol', 'total cholesterol|cholesterol(?:,)?\\s*total|T\\.?\\s*chol', 'chol', [50, 600], function (x) { return x < 20 ? x * 38.67 : x; }],
+    ['lab_ldl', 'LDL', 'LDL(?:[- ]?C(?:holesterol)?)?', 'chol', [10, 400], function (x) { return x < 20 ? x * 38.67 : x; }],
+    ['lab_hdl', 'HDL', 'HDL(?:[- ]?C(?:holesterol)?)?', 'chol', [5, 150], function (x) { return x < 5 ? x * 38.67 : x; }],
+    ['lab_tg', 'Triglycerides', 'TG|triglycerides?|TRIG', 'tg', [20, 5000], function (x) { return x < 25 ? x * 88.57 : x; }],
+    ['lab_creat', 'Creatinine', 'creatinine|creat|Cr', 'creat', [0.2, 20], function (x) { return x > 20 ? x / 88.42 : x; }],
+    ['lab_na', 'Sodium', 'Na|sodium', null, [100, 170]],
+    ['lab_k', 'Potassium', 'K|potassium', null, [2, 8]],
+    ['lab_urate', 'Uric acid', 'uric acid|urate', 'urate', [1, 20], function (x) { return x > 20 ? x / 59.48 : x; }],
+    ['lab_ferritin', 'Ferritin', 'ferritin', null, [1, 20000]],
+    ['lab_tsat', 'Transferrin saturation', 'transferrin saturation|TSAT|iron saturation', null, [1, 100]],
+    ['lab_tsh', 'TSH', 'TSH', null, [0.01, 100]],
+    ['lab_afp', 'AFP', 'AFP|alpha[- ]?feto\\s*protein', null, [0.1, 100000]],
+    ['lab_vitd', 'Vitamin D', 'vitamin D|vit\\.?\\s*D|25[- ]?OH(?:[- ]?vitamin)?\\s*D', 'vitd', [2, 200], function (x, u) { return /nmol/i.test(u) || x > 150 ? x / 2.496 : x; }],
+    ['lab_elf', 'ELF score', 'ELF(?:\\s*score|\\s*test)?', null, [5, 15]],
+    ['te_lsm', 'Liver stiffness (kPa)', 'LSM|liver stiffness(?: measurement)?|stiffness|E\\s*(?:median)?', null, [1.5, 75]],
+    ['te_cap', 'CAP (dB/m)', 'CAP', null, [100, 400]],
+    ['te_iqr', 'IQR/median (%)', 'IQR\\s*/\\s*(?:median|med|M)', null, [0, 100]],
+    ['mri_pdff', 'MRI-PDFF (%)', 'PDFF|proton density fat fraction', null, [0, 60]],
+    ['us_spleen', 'Spleen length (cm)', 'spleen(?:\\s*(?:length|size|span))?', null, [5, 30], function (x, u) { return /mm/i.test(u) ? x / 10 : x; }]
+  ];
+  function negated(text, idx) { var pre = text.slice(Math.max(0, idx - 22), idx).toLowerCase(); return /\b(no|not|non|denies|denied|negative for|without|nil|free of|rule out|r\/o)\b[\s-]*\w*\s*$/.test(pre) || /\bno\s+(?:history of|h\/o|known)\s*$/.test(pre); }
+  function findTerm(text, re) {
+    var g = new RegExp(re.source, re.flags.indexOf('g') >= 0 ? re.flags : re.flags + 'g'), m;
+    while ((m = g.exec(text))) { if (!negated(text, m.index)) return m; }
+    return null;
+  }
+  function parseClinical(text, units) {
+    text = String(text || '').replace(/\u00a0/g, ' ').replace(/\r/g, '');
+    units = units || 'base';
+    var out = [], seen = {};
+    function push(k, label, value, display, level) { if (seen[k] || value == null || value === '') return; seen[k] = 1; out.push({ k: k, label: label, value: value, display: display == null ? String(value) : display, level: level || 'visit' }); }
+    LABS.forEach(function (L) {
+      var re = new RegExp('(?:^|[^A-Za-z0-9])(?:' + L[2] + ')(?![A-Za-z])[^0-9\\n]{0,25}?' + NUM + '\\s*([a-zA-Zµμ/%^0-9.]*)', 'i');
+      var m = re.exec(text); if (!m) return;
+      var x = parseFloat(m[1].replace(',', '.')); if (!isFinite(x)) return;
+      var base = L[5] ? L[5](x, m[2] || '') : x;
+      if (base < L[4][0] || base > L[4][1]) return;
+      var val = L[3] ? C.convert(L[3], base, 'base', units) : base;
+      val = C.round(val, val >= 100 ? 0 : val >= 10 ? 1 : 2);
+      push(L[0], L[1], val, val + (L[3] ? ' ' + C.unitLabel(L[3], units) : ''));
+    });
+    var bp = /\b(?:BP|blood pressure)\b[^0-9\n]{0,10}(\d{2,3})\s*\/\s*(\d{2,3})/i.exec(text);
+    if (bp) { push('ex_sbp', 'Systolic BP', +bp[1], bp[1] + ' mmHg'); push('ex_dbp', 'Diastolic BP', +bp[2], bp[2] + ' mmHg'); }
+    var hr = /\b(?:HR|pulse|heart rate)\b[^0-9\n]{0,8}(\d{2,3})/i.exec(text); if (hr && +hr[1] >= 30 && +hr[1] <= 200) push('ex_hr', 'Heart rate', +hr[1], hr[1] + '/min');
+    var wt = /\b(?:weight|wt)\b[^0-9\n]{0,8}(\d{2,3}(?:\.\d)?)\s*(?:kg)?/i.exec(text); if (wt && +wt[1] >= 25 && +wt[1] <= 350) push('ex_wt', 'Weight', +wt[1], wt[1] + ' kg');
+    var ht = /\b(?:height|ht)\b[^0-9\n]{0,8}(\d{3}(?:\.\d)?)\s*(?:cm)?/i.exec(text); if (ht && +ht[1] >= 100 && +ht[1] <= 230) push('ex_ht', 'Height', +ht[1], ht[1] + ' cm');
+    var wc = /\b(?:waist(?: circumference)?|WC)\b[^0-9\n]{0,8}(\d{2,3}(?:\.\d)?)/i.exec(text); if (wc && +wc[1] >= 40 && +wc[1] <= 250) push('ex_waist', 'Waist', +wc[1], wc[1] + ' cm');
+    /* ultrasound steatosis grade */
+    var g = /(?:fatty liver|steatosis|fatty infiltration|hepatic steatosis)[^\n.]{0,25}?grade\s*(I{1,3}|[123])\b|grade\s*(I{1,3}|[123])\s*(?:fatty|steatosis|hepatic steatosis)/i.exec(text);
+    var grade = g ? (g[1] || g[2]) : null;
+    if (grade) grade = { I: '1', II: '2', III: '3' }[grade.toUpperCase()] || grade;
+    else { var w = /\b(mild|moderate|severe|marked)\b[^\n.]{0,15}?(?:fatty|steatosis|fatty infiltration)/i.exec(text); if (w) grade = { mild: '1', moderate: '2', severe: '3', marked: '3' }[w[1].toLowerCase()]; }
+    if (grade) push('us_steatosis', 'Ultrasound steatosis grade', grade, 'Grade ' + grade);
+    /* hepatitis serology */
+    function sero(k, label, re) { var m = re.exec(text); if (m) { var pos = /^(positive|reactive|detected)/i.test(m[1]); push(k, label, pos ? 'pos' : 'neg', pos ? 'Positive' : 'Negative'); } }
+    sero('lab_hbsag', 'HBsAg', /HBs\s*Ag[^\n]{0,20}?\b(negative|non[- ]?reactive|not detected|positive|reactive|detected)\b/i);
+    sero('lab_antihcv', 'Anti-HCV', /(?:anti[- ]?HCV|HCV\s*(?:Ab|antibody))[^\n]{0,20}?\b(negative|non[- ]?reactive|not detected|positive|reactive|detected)\b/i);
+    /* conditions */
+    if (findTerm(text, /\bpre[- ]?diabet\w*|\bimpaired fasting glucose\b|\bIFG\b/i)) push('pm_dm', 'Diabetes', 'pre', 'Pre-diabetes');
+    else if (findTerm(text, /\b(?:type\s*1|T1DM|type\s*I)\s*(?:diabetes|DM)?\b/i) && /diabet|DM/i.test(text)) push('pm_dm', 'Diabetes', 't1', 'Type 1 diabetes');
+    else if (findTerm(text, /\bT2DM\b|\bT2D\b|\bDM\s*(?:II|2|type\s*2)?\b|\btype\s*(?:2|II)\s*(?:diabetes|DM)\b|\bdiabet(?:es|ic)\b|\bNIDDM\b/i)) push('pm_dm', 'Diabetes', 't2', 'Type 2 diabetes');
+    var dmy = /(?:T2DM|DM|diabet\w*)[^\n.]{0,15}?(?:for\s*)?(\d{1,2})\s*(?:y|yr|yrs|years)\b/i.exec(text) || /(\d{1,2})\s*(?:y|yr|yrs|years)\s*(?:history of\s*)?(?:T2DM|DM|diabet)/i.exec(text);
+    if (dmy && seen.pm_dm) push('pm_dm_years', 'Diabetes duration (years)', +dmy[1], dmy[1] + ' years');
+    if (findTerm(text, /\bHTN\b|(?<!portal\s)(?<!pulmonary\s)\bhypertensi(?:on|ve)\b/i)) push('pm_htn', 'Hypertension', 'yes', 'Yes');
+    if (findTerm(text, /\bdyslipid\w*|\bhyperlipid\w*|\bhypercholesterol\w*|\bhypertriglycerid\w*/i)) push('pm_lipid', 'Dyslipidaemia', 'yes', 'Yes');
+    if (findTerm(text, /\bobes(?:e|ity)\b|\bmorbid(?:ly)? obese\b/i)) push('pm_obesity', 'Known obesity', 'yes', 'Yes');
+    var liver = [];
+    if (findTerm(text, /\bfatty liver\b|\bsteatosis\b|\bNAFLD\b|\bMASLD\b|\bNASH\b|\bMASH\b|\bsteatotic\b|\bfatty infiltration\b/i)) liver.push('steatosis');
+    if (findTerm(text, /\bcirrho\w*/i)) liver.push('cirrhosis');
+    if (findTerm(text, /\bgall\s*stones?\b|\bcholelithiasis\b/i)) liver.push('gallstones');
+    if (liver.length) push('pm_liver', 'Liver history', liver, liver.map(function (x) { return { steatosis: 'Fatty liver', cirrhosis: 'Cirrhosis', gallstones: 'Gallstones' }[x]; }).join(', '));
+    var cvd = [];
+    if (findTerm(text, /\bIHD\b|\bCAD\b|\bischa?emic heart\b|\bcoronary (?:artery )?disease\b|\bmyocardial infarction\b|\bMI\b|\bPCI\b|\bCABG\b/i)) cvd.push('cad');
+    if (findTerm(text, /\bstroke\b|\bCVA\b|\bTIA\b/i)) cvd.push('stroke');
+    if (findTerm(text, /\bheart failure\b|\bHF\b|\bCHF\b/i)) cvd.push('hf');
+    if (findTerm(text, /\bAF\b|\batrial fibrillation\b/i)) cvd.push('af');
+    if (cvd.length) push('pm_cvd', 'Cardiovascular disease', cvd, cvd.join(', ').replace('cad', 'Coronary disease').replace('stroke', 'Stroke/TIA').replace('hf', 'Heart failure').replace('af', 'Atrial fibrillation'));
+    if (findTerm(text, /\bOSA\b|\bsleep apno?ea\b/i)) push('pm_osa', 'Obstructive sleep apnoea', 'yes', 'Diagnosed');
+    if (findTerm(text, /\bPCOS\b|\bpolycystic ovar/i)) push('pm_pcos', 'PCOS', 'yes', 'Yes');
+    if (findTerm(text, /\bhypothyroid\w*/i)) push('pm_thyroid', 'Thyroid', 'hypo', 'Hypothyroidism');
+    if (findTerm(text, /\bCKD\b|\bchronic kidney disease\b/i)) push('pm_ckd', 'Chronic kidney disease', 'yes', 'Yes');
+    if (findTerm(text, /\bgout\b/i)) push('pm_gout', 'Gout', 'yes', 'Yes');
+    if (/\b(?:non[- ]?smoker|never smok\w*|doesn'?t smoke|does not smoke)\b/i.test(text)) push('hab_smoking', 'Smoking', 'never', 'Never');
+    else if (/\bex[- ]?smoker\b|\bquit smoking\b|\bstopped smoking\b/i.test(text)) push('hab_smoking', 'Smoking', 'ex', 'Ex-smoker');
+    else if (findTerm(text, /\bsmoker\b|\bsmokes\b|\bsmoking\b|\bcigarettes?\b/i)) push('hab_smoking', 'Smoking', 'current', 'Current');
+    var py = /(\d{1,3})\s*(?:pack[- ]?years?|PY)\b/i.exec(text); if (py) push('hab_smoke_years', 'Years smoked (from pack-years, 1 pack/day)', +py[1], py[1]);
+    if (/\b(?:no alcohol|non[- ]?alcoholic drinker|doesn'?t drink|does not drink|denies alcohol|never (?:drinks|drank))\b/i.test(text)) push('hab_alcohol', 'Alcohol', 'never', 'Never');
+    /* patient banner details */
+    var b = parseBanner(text);
+    if (/URN|DOB|Gender/i.test(text)) {
+      if (b.fileNo) push('fileNo', 'URN', b.fileNo, null, 'patient');
+      if (b.sex) push('sex', 'Sex', b.sex, b.sex === 'male' ? 'Male' : 'Female', 'patient');
+      if (b.dob) push('dob', 'Date of birth', b.dob, dmy(b.dob), 'patient');
+      if (b.phone) push('phone', 'Phone', b.phone, null, 'patient');
+    }
+    if (!seen.sex) { var sx = /\b(\d{1,3})\s*(?:y(?:ears?)?(?:\s*old|\/o)?)?\s*[-\/ ]?\s*(M|F|male|female)\b/i.exec(text) || /\b(male|female)\b/i.exec(text);
+      if (sx) { var w2 = (sx[2] || sx[1]).toLowerCase(); var sv = w2[0] === 'f' ? 'female' : 'male'; if (/^(m|f|male|female)$/.test(w2)) push('sex', 'Sex', sv, sv === 'male' ? 'Male' : 'Female', 'patient'); if (sx[2] && +sx[1] > 0 && +sx[1] < 120) push('age', 'Age', +sx[1], sx[1] + ' years', 'patient'); } }
+    return out;
+  }
+
   /* ---------- TrakCare patient banner ---------- */
   var LABELS = 'URN|Episode No|Gender|Full Age|DOB|Mobile Phone|Telephone|Height|Weight|BSA|BMI|Care Provider|Location|Episode Date|Length of Stay|Discharge Date|Payor';
   function grab(text, label) {
@@ -517,5 +639,5 @@
     return out;
   }
 
-  return { trakcare: trakcare, queue: queue, parseBanner: parseBanner, onsetFromText: onsetFromText, consultText: consultText, dmy: dmy };
+  return { trakcare: trakcare, queue: queue, parseBanner: parseBanner, parseClinical: parseClinical, onsetFromText: onsetFromText, consultText: consultText, dmy: dmy };
 });

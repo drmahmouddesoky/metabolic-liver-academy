@@ -74,13 +74,15 @@
     if (S.alcohol && v.hab_alcohol === 'ex') S.alcohol.text += ' (stopped)';
 
     /* ---- cardiometabolic criteria ---- */
+    var obeseHx = yes(v.pm_obesity) && bmi == null && waist == null;
     var cm = C.cardiometabolic({
-      bmi: bmi, waist: waist, female: female, ethnicity: p.ethnicity,
+      bmi: obeseHx ? 30 : bmi, waist: waist, female: female, ethnicity: p.ethnicity,
       glucoseMg: L.glu, glucose2hMg: L.glu2h, hba1c: L.hba1c, dm: dm, dmTreated: dm,
       sbp: C.num(v.ex_sbp), dbp: C.num(v.ex_dbp), htnTreated: yes(v.pm_htn_treated),
       tgMg: L.tg, hdlMg: L.hdl, lipidTreated: yes(v.pm_lipid_treated)
     });
     if (pre && !cm.met.some(function (m) { return /glucose|diabetes/i.test(m); })) { cm.met.push('Pre-diabetes (history)'); cm.count++; cm.unmet = cm.unmet.filter(function (x) { return x !== 'Glucose'; }); cm.unknown = cm.unknown.filter(function (x) { return !/Glucose/.test(x); }); }
+    if (obeseHx) cm.met = cm.met.map(function (m) { return /^BMI/.test(m) ? 'Known obesity (not measured today)' : m; });
     cm.satisfied = cm.count >= 1;
     R.cm = cm;
 
@@ -93,6 +95,7 @@
     var bxS = C.num(v.bx_steatosis);
     if (bxS != null) { if (bxS >= 1) ev.push('Biopsy steatosis grade ' + bxS); else against.push('Biopsy: no steatosis'); }
     var bxFib = v.bx_fibrosis != null && v.bx_fibrosis !== '' ? String(v.bx_fibrosis) : null;
+    if (inList(v.pm_liver, 'steatosis') && !ev.length && !against.length) ev.push('Previously diagnosed fatty liver (history)');
     if (S.fli && S.fli.band === 'high' && !ev.length) ev.push('FLI ' + S.fli.value + ' (≥60, suggestive)');
     var steatosis = ev.length ? 'present' : against.length ? 'absent' : 'unknown';
     if (ev.length === 1 && /FLI/.test(ev[0])) steatosis = 'probable';
@@ -212,7 +215,7 @@
     if (cirr) dx.codes.push(alcBand === 'high' ? (decomp.indexOf('ascites') >= 0 ? 'K70.31' : 'K70.30') : 'K74.60');
     if (fib.level === 'cirrhosis' && decomp.indexOf('ascites') >= 0) dx.codes.push('R18.8');
     if (dm) dx.codes.push('E11.9'); else if (pre || (has(L.hba1c) && L.hba1c >= 5.7 && L.hba1c < 6.5)) dx.codes.push('R73.03');
-    if (bmi != null && bmi >= 40) dx.codes.push('E66.01'); else if (bmi != null && bmi >= 30) dx.codes.push('E66.9');
+    if (bmi != null && bmi >= 40) dx.codes.push('E66.01'); else if ((bmi != null && bmi >= 30) || obeseHx) dx.codes.push('E66.9');
     if (yes(v.pm_htn) || (has(C.num(v.ex_sbp)) && C.num(v.ex_sbp) >= 140)) dx.codes.push('I10');
     if (yes(v.pm_lipid) || (has(L.tg) && L.tg >= 150) || (has(L.ldl) && L.ldl >= 160)) dx.codes.push('E78.5');
     dx.codes = dx.codes.filter(function (c, i, a) { return a.indexOf(c) === i; });
@@ -220,6 +223,7 @@
     if (dm) dx.problems.push('Type 2 diabetes' + (has(L.hba1c) ? ' (HbA1c ' + L.hba1c + '%)' : ''));
     else if (pre || (has(L.hba1c) && L.hba1c >= 5.7)) dx.problems.push('Pre-diabetes');
     if (bmi != null && bmi >= 25) dx.problems.push(C.bmiClass(bmi) + ' (BMI ' + C.round(bmi, 1) + ')');
+    else if (obeseHx) dx.problems.push('Obesity (by history; weight not measured today)');
     if (R.body.whtr != null && R.body.whtr >= 0.5) dx.problems.push('Central adiposity (waist-to-height ' + R.body.whtr + ')');
     if (yes(v.pm_htn) || (has(C.num(v.ex_sbp)) && (C.num(v.ex_sbp) >= 140 || C.num(v.ex_dbp) >= 90))) dx.problems.push('Hypertension');
     if (yes(v.pm_lipid) || (has(L.tg) && L.tg >= 150) || (has(L.ldl) && L.ldl >= 130)) dx.problems.push('Dyslipidaemia');
