@@ -175,7 +175,6 @@ def publish(source, series, out=ROOT, quiet=False):
     save_access(source, series, acc)  # creates the course key on first use
     key, salt = unb64(acc["key"]), unb64(acc["salt"])
     build.EXTRA_SOURCES.update(getattr(course, "SOURCES", {}))
-    build.EXTRA_FIGURES.update(getattr(course, "FIGURES", {}))
     updated = getattr(course, "UPDATED", datetime.date.today().isoformat())
     mods = sorted(course.MODULES, key=lambda m: m["number"])
     for m in mods:
