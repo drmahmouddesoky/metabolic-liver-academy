@@ -61,4 +61,4 @@ jobs:
         with:
           files: clinic-app/${{ matrix.files }}
           name: Fatty Liver Clinic ${{ github.ref_name }}
-          body: "Windows: download the .exe. Mac: download the .dmg for your chip (arm64 = Apple silicon, x64 = Intel). See clinic-app/README.md for first-launch steps."
+          body: "Windows: download the -win-x64.exe installer, or the -win-portable.exe to run without installing. Mac: download the .dmg for your chip (arm64 = Apple silicon, x64 = Intel). See clinic-app/README.md for first-launch steps."

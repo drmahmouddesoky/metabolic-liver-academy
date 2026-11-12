@@ -17,32 +17,34 @@
 
   /* Reason for encounter: SNOMED CT-style terms. Codes are SNOMED CT concept IDs where known;
      the doctor can edit the code column. */
+  /* Reason for encounter: [key, label, SNOMED CT concept id, TrakCare search term, body site].
+     Search terms use SNOMED CT (US) spelling so they match the TrakCare lookup. */
   var REASONS = [
-    ['steatosis_imaging', 'Steatosis of liver found on imaging (incidental)', '197321007'],
-    ['abnormal_lft', 'Liver function tests abnormal (raised ALT/AST)', '166603001'],
-    ['referral', 'Patient referral for liver assessment', '3457005'],
-    ['dm_screen', 'Screening for liver disease in type 2 diabetes', '44054006'],
-    ['obesity_screen', 'Screening for liver disease in obesity', '414916001'],
-    ['followup', 'Follow-up visit', '185389009'],
-    ['fatigue', 'Fatigue', '84229001'],
-    ['ruq_pain', 'Right upper quadrant pain', '301717006'],
-    ['abd_pain', 'Abdominal pain', '21522001'],
-    ['dyspepsia', 'Dyspepsia', '162031009'],
-    ['nausea', 'Nausea', '422587007'],
-    ['anorexia', 'Loss of appetite', '79890006'],
-    ['weight_gain', 'Weight gain', '8943002'],
-    ['weight_loss', 'Weight loss', '89362005'],
-    ['jaundice', 'Jaundice', '18165001'],
-    ['pruritus', 'Itching', '418290006'],
-    ['distension', 'Swollen abdomen', '60728008'],
-    ['oedema', 'Oedema of legs', '267038008'],
-    ['hepatomegaly', 'Large liver', '80515008'],
-    ['hematemesis', 'Vomiting blood', '8765009'],
-    ['melena', 'Melaena', '2901004'],
-    ['confusion', 'Hepatic encephalopathy', '13920009'],
-    ['dyspnoea', 'Shortness of breath', '267036007'],
-    ['second_opinion', 'Second opinion', ''],
-    ['other', 'Other (describe)', '']
+    ['steatosis_imaging', 'Steatosis of liver found on imaging (incidental)', '197321007', 'Steatosis of liver', 'Liver'],
+    ['abnormal_lft', 'Liver function tests abnormal (raised ALT/AST)', '166603001', 'Abnormal liver function', 'Liver'],
+    ['referral', 'Patient referral for liver assessment', '3457005', 'Fatty liver', 'Liver'],
+    ['dm_screen', 'Screening for liver disease in type 2 diabetes', '44054006', 'Fatty liver', 'Liver'],
+    ['obesity_screen', 'Screening for liver disease in obesity', '414916001', 'Fatty liver', 'Liver'],
+    ['followup', 'Follow-up visit', '185389009', 'Follow-up', ''],
+    ['fatigue', 'Fatigue', '84229001', 'Fatigue', ''],
+    ['ruq_pain', 'Right upper quadrant pain', '301717006', 'Right upper quadrant pain', 'Right upper quadrant of abdomen'],
+    ['abd_pain', 'Abdominal pain', '21522001', 'Abdominal pain', 'Abdomen'],
+    ['dyspepsia', 'Dyspepsia', '162031009', 'Dyspepsia', ''],
+    ['nausea', 'Nausea', '422587007', 'Nausea', ''],
+    ['anorexia', 'Loss of appetite', '79890006', 'Loss of appetite', ''],
+    ['weight_gain', 'Weight gain', '8943002', 'Weight gain', ''],
+    ['weight_loss', 'Weight loss', '89362005', 'Weight loss', ''],
+    ['jaundice', 'Jaundice', '18165001', 'Jaundice', ''],
+    ['pruritus', 'Itching', '418290006', 'Itching', 'Skin'],
+    ['distension', 'Swollen abdomen', '60728008', 'Abdominal distension', 'Abdomen'],
+    ['oedema', 'Oedema of legs', '267038008', 'Edema of lower extremity', 'Lower limb'],
+    ['hepatomegaly', 'Large liver', '80515008', 'Hepatomegaly', 'Liver'],
+    ['hematemesis', 'Vomiting blood', '8765009', 'Hematemesis', ''],
+    ['melena', 'Melaena', '2901004', 'Melena', ''],
+    ['confusion', 'Hepatic encephalopathy', '13920009', 'Hepatic encephalopathy', ''],
+    ['dyspnoea', 'Shortness of breath', '267036007', 'Dyspnea', ''],
+    ['second_opinion', 'Second opinion', '', 'Second opinion', ''],
+    ['other', 'Other (describe)', '', '', '']
   ];
 
   var STEATOGENIC = ['Amiodarone', 'Methotrexate', 'Tamoxifen', 'Corticosteroids (systemic)', 'Valproate', 'Oestrogens / HRT',
@@ -56,7 +58,7 @@
     /* ---------------- 1. Personal history (patient level) ---------------- */
     { id: 'patient', title: 'Personal history', level: 'patient', groups: [
       { title: 'Identification', fields: [
-        f('fileNo', 'text', 'File number', { cols: 1 }),
+        f('fileNo', 'text', 'File number / URN', { cols: 1 }),
         f('name', 'text', 'Full name', { req: true, cols: 2 }),
         f('phone', 'text', 'Phone', { cols: 1 }),
         f('dob', 'date', 'Date of birth', { cols: 1, help: 'Leave blank and enter the age instead if unknown' }),
@@ -79,11 +81,14 @@
       { title: 'Visit', fields: [
         f('date', 'date', 'Visit date', { req: true, cols: 1 }),
         f('type', 'select', 'Visit type', { cols: 1, opts: [['initial', 'Initial assessment'], ['followup', 'Follow-up'], ['review', 'Results review']] }),
+        f('episodeNo', 'text', 'Episode number', { cols: 1 }),
         f('source', 'select', 'Source', { cols: 1, opts: [['self', 'Self-referred'], ['gp', 'Primary care'], ['diabetes', 'Diabetes / endocrine clinic'], ['cardio', 'Cardiology'], ['bariatric', 'Bariatric clinic'], ['other', 'Other']] })
       ] },
       { title: 'Reason for encounter', fields: [
         f('complaint', 'textarea', 'In the patient’s own words', { cols: 4, rows: 2, ph: 'e.g. "The doctor found fat on my liver in an ultrasound"' }),
         f('complaint_duration', 'text', 'Duration', { cols: 1, ph: 'e.g. 3 months' }),
+        f('complaint_onset', 'date', 'Onset date', { cols: 1, help: 'Required by TrakCare. If blank, worked out from the duration.' }),
+        f('complaint_severity', 'select', 'Severity', { cols: 1, opts: [['mild', 'Mild'], ['moderate', 'Moderate'], ['severe', 'Severe']] }),
         f('reasons', 'multi', 'Coded reason(s), SNOMED CT style', { cols: 4, opts: REASONS.map(function (r) { return [r[0], r[1] + (r[2] ? ' · ' + r[2] : '')]; }) }),
         f('reason_other', 'text', 'Other reason / code', { cols: 2, show: function (v) { return (v.reasons || []).indexOf('other') >= 0; } })
       ] }
@@ -96,6 +101,7 @@
         f('hpi_discovery', 'select', 'How it was discovered', { cols: 1, opts: [['incidental', 'Incidental imaging'], ['labs', 'Abnormal blood tests'], ['symptoms', 'Symptoms'], ['screening', 'Screening (diabetes / obesity)'], ['other', 'Other']] }),
         f('hpi_course', 'select', 'Course', { cols: 1, opts: [['stable', 'Stable'], ['progressive', 'Progressive'], ['improving', 'Improving'], ['fluctuating', 'Fluctuating']] }),
         f('hpi_symptoms', 'multi', 'Symptoms', { cols: 4, opts: [['none', 'Asymptomatic'], ['fatigue', 'Fatigue'], ['ruq', 'Right upper quadrant discomfort'], ['dyspepsia', 'Dyspepsia / bloating'], ['nausea', 'Nausea'], ['anorexia', 'Loss of appetite'], ['pruritus', 'Itching'], ['sleep', 'Poor sleep / snoring'], ['daytime', 'Daytime sleepiness'], ['arthralgia', 'Joint pains'], ['depression', 'Low mood']] }),
+        f('hpi_decomp_none', 'check', 'Asked: no jaundice, abdominal or leg swelling, GI bleeding or confusion', { cols: 4 }),
         f('hpi_decomp', 'multi', 'Features of decompensation', { cols: 4, opts: [['jaundice', 'Jaundice'], ['ascites', 'Abdominal swelling'], ['oedema', 'Leg swelling'], ['bleed', 'Haematemesis / melaena'], ['confusion', 'Confusion / sleep reversal'], ['fever', 'Fever']] }),
         f('hpi_weight_max', 'number', 'Maximum lifetime weight (kg)', { cols: 1 }),
         f('hpi_weight_change', 'text', 'Weight change in last year', { cols: 1, ph: 'e.g. +6 kg' }),

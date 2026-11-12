@@ -1,7 +1,7 @@
 {
   "name": "fatty-liver-clinic",
   "productName": "Fatty Liver Clinic",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Comprehensive MASLD / MASH evaluation, medical report and local registry for the clinic desktop",
   "main": "main.js",
   "author": "Metabolic Liver Academy",
@@ -38,6 +38,12 @@
           "arch": [
             "x64"
           ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
         }
       ]
     },
@@ -63,6 +69,9 @@
     },
     "dmg": {
       "sign": false
+    },
+    "portable": {
+      "artifactName": "FattyLiverClinic-${version}-win-portable.exe"
     }
   },
   "repository": {

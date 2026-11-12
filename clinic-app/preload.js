@@ -11,5 +11,10 @@ contextBridge.exposeInMainWorld('api', {
   exportPdf: (html, name) => ipcRenderer.invoke('pdf:export', { html, name }),
   printHtml: (html) => ipcRenderer.invoke('print', { html }),
   exportCsv: (csv, name) => ipcRenderer.invoke('csv:export', { csv, name }),
-  version: () => ipcRenderer.invoke('app:version')
+  version: () => ipcRenderer.invoke('app:version'),
+  copy: (text) => ipcRenderer.invoke('clipboard:write', text),
+  setQueue: (items) => ipcRenderer.invoke('queue:set', items),
+  queueGoto: (i) => ipcRenderer.invoke('queue:goto', i),
+  onQueue: (cb) => { ipcRenderer.removeAllListeners('queue:pos'); ipcRenderer.on('queue:pos', (e, d) => cb(d)); },
+  compact: (on) => ipcRenderer.invoke('window:compact', on)
 });

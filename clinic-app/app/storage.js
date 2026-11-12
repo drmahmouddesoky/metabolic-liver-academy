@@ -19,7 +19,12 @@
       exportPdf: function (html, name) { return api.exportPdf(html, name); },
       printHtml: function (html) { return api.printHtml(html); },
       exportCsv: function (csv, name) { return api.exportCsv(csv, name); },
-      version: function () { return api.version(); }
+      version: function () { return api.version(); },
+      copy: function (t) { return api.copy(t); },
+      setQueue: function (items) { return api.setQueue(items); },
+      queueGoto: function (i) { return api.queueGoto(i); },
+      onQueue: function (cb) { api.onQueue(cb); },
+      compact: function (on) { return api.compact(on); }
     };
   } else {
     var KEY = 'flc.patients', SKEY = 'flc.settings';
@@ -39,7 +44,19 @@
       exportPdf: function (html) { return popup(html); },
       printHtml: function (html) { return popup(html); },
       exportCsv: function (csv, name) { var a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,﻿' + encodeURIComponent(csv); a.download = name; document.body.appendChild(a); a.click(); a.remove(); return Promise.resolve({ ok: true }); },
-      version: function () { return Promise.resolve('browser'); }
+      version: function () { return Promise.resolve('browser'); },
+      copy: function (t) { return navigator.clipboard.writeText(String(t == null ? '' : t)).then(function () { return { ok: true }; }); },
+      /* browser mode: no global shortcuts, the page steps through the list itself */
+      setQueue: function (items) { Store._q = items || []; Store._qi = -1; return Promise.resolve({ ok: true }); },
+      queueGoto: function (i) {
+        var q = Store._q || []; if (!q.length) return Promise.resolve({ ok: false });
+        if (i < 0) i = 0;
+        if (i >= q.length) { Store._qi = q.length; if (Store._cb) Store._cb({ index: q.length, total: q.length, done: true }); return Promise.resolve({ ok: true, done: true }); }
+        Store._qi = i;
+        return navigator.clipboard.writeText(String(q[i].value)).then(function () { if (Store._cb) Store._cb({ index: i, total: q.length, label: q[i].label, key: q[i].key }); return { ok: true }; });
+      },
+      onQueue: function (cb) { Store._cb = cb; },
+      compact: function () { return Promise.resolve({ ok: true }); }
     };
   }
   window.Store = Store;

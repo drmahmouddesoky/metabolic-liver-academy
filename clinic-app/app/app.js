@@ -1,11 +1,11 @@
 /* Fatty Liver Clinic: user interface. Schema-driven form, live assessment, report, registry. */
 (function () {
   'use strict';
-  var S = window.Schema, C = window.Calc, R = window.Rules, Rep = window.Report, Store = window.Store;
+  var S = window.Schema, C = window.Calc, R = window.Rules, Rep = window.Report, Store = window.Store, Emr = window.Emr;
   var TABS = [['patient', 'Personal'], ['encounter', 'Complaint'], ['hpi', 'Present illness'], ['past', 'Past & drugs'], ['family', 'Family'],
-    ['exam', 'Examination'], ['labs', 'Laboratory'], ['imaging', 'Imaging'], ['assess', 'Assessment & plan'], ['report', 'Report']];
+    ['exam', 'Examination'], ['labs', 'Laboratory'], ['imaging', 'Imaging'], ['assess', 'Assessment & plan'], ['trakcare', 'TrakCare'], ['report', 'Report']];
   var HISTORY_SECTIONS = ['past', 'family'];
-  var st = { patients: [], p: null, vi: 0, settings: {}, tab: 'patient', filter: '', dirty: false, saveTimer: null };
+  var st = { patients: [], p: null, vi: 0, settings: {}, tab: 'patient', filter: '', dirty: false, saveTimer: null, copied: {}, seq: null, compact: false };
   var $ = function (s, root) { return (root || document).querySelector(s); };
   function el(tag, attrs, kids) {
     var e = document.createElement(tag);
@@ -40,8 +40,10 @@
     st.patients.forEach(function (p) { var n = parseInt(String(p.fileNo || '').replace(/\D/g, ''), 10); if (n > max) max = n; });
     return String(max + 1);
   }
-  function newPatient() {
+  function newPatient(pre) {
+    if (!pre || !(pre.name || pre.fileNo)) pre = null;
     var p = { id: uid(), schemaVersion: 1, fileNo: nextFileNo(), name: '', sex: '', ethnicity: 'other', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), visits: [newVisit('initial')] };
+    if (pre) applyBanner(p, p.visits[0], pre);
     st.p = p; st.vi = 0; st.tab = 'patient';
     st.patients.push(p);
     save(true);
@@ -89,12 +91,13 @@
   }
   function openPatient(id) {
     if (st.p && st.dirty) save(true);
-    Store.getPatient(id).then(function (p) {
-      if (!p) { toast('Could not open this patient', true); return; }
+    return Store.getPatient(id).then(function (p) {
+      if (!p) { toast('Could not open this patient', true); return null; }
       if (!p.visits || !p.visits.length) p.visits = [newVisit('initial')];
-      st.p = p; st.vi = p.visits.length - 1; st.tab = 'patient';
+      st.p = p; st.vi = p.visits.length - 1; st.tab = 'patient'; stopSeq();
       var i = st.patients.findIndex(function (x) { return x.id === p.id; }); if (i >= 0) st.patients[i] = p; else st.patients.push(p);
       renderAll();
+      return p;
     });
   }
 
@@ -105,7 +108,7 @@
     if (!st.p) { $('#main').hidden = true; $('#welcome').hidden = false; return; }
     $('#main').hidden = false; $('#welcome').hidden = true;
     var p = st.p, v = visit(), age = R.ageAt(p, v.date);
-    var sel = el('select', { id: 'visit-sel', onchange: function () { st.vi = +this.value; st.tab = st.tab === 'patient' ? 'encounter' : st.tab; renderHeader(); renderTabs(); renderSection(); renderSummary(); } });
+    var sel = el('select', { id: 'visit-sel', onchange: function () { stopSeq(); st.vi = +this.value; st.tab = st.tab === 'patient' ? 'encounter' : st.tab; renderHeader(); renderTabs(); renderSection(); renderSummary(); } });
     p.visits.forEach(function (x, i) { sel.appendChild(el('option', { value: i, text: (i + 1) + '. ' + Rep.fmtDate(x.date) + ' · ' + (S.optLabel(S.fieldMap().type, x.type) || x.type), selected: i === st.vi ? '' : null })); });
     h.appendChild(el('div', { class: 'who' }, [el('h2', { text: p.name || 'New patient' }), el('span', { class: 'meta', text: [p.fileNo ? 'File ' + p.fileNo : null, age != null ? age + ' years' : null, p.sex === 'female' ? 'Female' : p.sex === 'male' ? 'Male' : null].filter(Boolean).join(' · ') })]));
     h.appendChild(el('div', { class: 'visits' }, [el('label', { text: 'Visit ' }), sel,
@@ -133,7 +136,7 @@
   }
   function renderTabs() {
     var t = $('#tabs'); t.innerHTML = '';
-    TABS.forEach(function (x) { t.appendChild(el('button', { class: 'tab' + (st.tab === x[0] ? ' active' : ''), onclick: function () { st.tab = x[0]; renderTabs(); renderSection(); }, text: x[1] })); });
+    TABS.forEach(function (x) { t.appendChild(el('button', { class: 'tab' + (st.tab === x[0] ? ' active' : ''), onclick: function () { if (x[0] !== 'trakcare') stopSeq(); st.tab = x[0]; renderTabs(); renderSection(); }, text: x[1] })); });
   }
 
   /* ---------- schema-driven form ---------- */
@@ -143,6 +146,7 @@
     if (!st.p) return;
     if (st.tab === 'assess') return renderAssess(m);
     if (st.tab === 'report') return renderReport(m);
+    if (st.tab === 'trakcare') return renderTrak(m);
     var sec = S.SECTIONS.filter(function (s) { return s.id === st.tab; })[0];
     var data = sec.level === 'patient' ? st.p : visit();
     if (sec.id === 'labs') m.appendChild(unitsBar());
@@ -345,6 +349,164 @@
   function autosize(ta) { ta.style.height = 'auto'; ta.style.height = (ta.scrollHeight + 2) + 'px'; }
   function fieldFree(k, t, label, data, extra) { var fd = { k: k, t: t, label: label }; for (var x in extra) fd[x] = extra[x]; return buildField(fd, data); }
 
+
+  /* ---------- TrakCare ---------- */
+  function copyText(text, key) {
+    return Store.copy(text).then(function () { if (key) markCopied(key); toast('Copied'); }).catch(function () { toast('Could not copy', true); });
+  }
+  function ckey(key) { return visit().id + '|' + key; }
+  function markCopied(key) {
+    st.copied[ckey(key)] = true;
+    var row = document.querySelector('[data-key="' + key + '"]'); if (row) row.classList.add('done');
+  }
+  function stopSeq() {
+    if (!st.seq) return;
+    st.seq = null; Store.setQueue([]);
+    document.querySelectorAll('.trow.current').forEach(function (x) { x.classList.remove('current'); });
+    var b = $('#seqbar'); if (b) drawSeqBar();
+  }
+  function startSeq() {
+    var q = Emr.queue(st.trak);
+    if (!q.length) { toast('Nothing to copy yet', true); return; }
+    st.seq = { items: q, index: -1, keys: { next: null, prev: null } };
+    Store.setQueue(q).then(function (r) {
+      if (r) { st.seq.keys.next = r.next || null; st.seq.keys.prev = r.prev || null; }
+      return Store.queueGoto(0);
+    });
+    drawSeqBar();
+  }
+  function onQueue(d) {
+    if (!st.seq) return;
+    document.querySelectorAll('.trow.current').forEach(function (x) { x.classList.remove('current'); });
+    if (d.done) { st.seq.index = d.total; drawSeqBar(); toast('All ' + d.total + ' items copied'); return; }
+    st.seq.index = d.index;
+    var it = st.seq.items[d.index];
+    if (it) { markCopied(it.key); var row = document.querySelector('[data-key="' + it.key + '"]'); if (row) { row.classList.add('current'); row.scrollIntoView({ block: 'center', behavior: 'smooth' }); } }
+    drawSeqBar();
+  }
+  function seqStep(delta) { if (st.seq) Store.queueGoto(st.seq.index + delta); }
+  function drawSeqBar() {
+    var b = $('#seqbar'); if (!b) return; b.innerHTML = '';
+    if (!st.seq) {
+      b.appendChild(el('button', { class: 'btn primary', text: '▶ Copy in sequence', title: 'Copies the first field; each press of the shortcut copies the next one', onclick: startSeq }));
+      b.appendChild(el('span', { class: 'muted', text: 'Steps through every field below in TrakCare order. Or use the Copy buttons one by one.' }));
+    } else {
+      var s = st.seq, cur = s.items[s.index], nxt = s.items[s.index + 1];
+      b.appendChild(el('button', { class: 'btn small', text: '◀ Back', onclick: function () { seqStep(-1); } }));
+      b.appendChild(el('button', { class: 'btn small primary', text: 'Copy next ▶', onclick: function () { seqStep(1); } }));
+      b.appendChild(el('button', { class: 'btn small ghost', text: 'Stop', onclick: stopSeq }));
+      var info = el('div', { class: 'seqinfo' });
+      if (s.index >= s.items.length) info.appendChild(el('b', { text: 'Done: all ' + s.items.length + ' items copied.' }));
+      else if (cur) {
+        info.appendChild(el('div', null, [el('span', { class: 'muted', text: 'On clipboard (' + (s.index + 1) + '/' + s.items.length + '): ' }), el('b', { text: cur.label })]));
+        info.appendChild(el('div', { class: 'muted', text: nxt ? 'Next: ' + nxt.label : 'This is the last item.' }));
+      }
+      if (s.keys.next) info.appendChild(el('div', { class: 'keys', text: 'In TrakCare: paste with Ctrl+V, then press ' + s.keys.next.replace('CommandOrControl', 'Ctrl') + ' for the next item' + (s.keys.prev ? ' (' + s.keys.prev.replace('CommandOrControl', 'Ctrl') + ' goes back)' : '') + '.' }));
+      else info.appendChild(el('div', { class: 'keys', text: 'Paste with Ctrl+V in TrakCare, then click "Copy next" here.' }));
+      b.appendChild(info);
+    }
+  }
+  function toggleCompact() {
+    st.compact = !st.compact;
+    document.body.classList.toggle('compact', st.compact);
+    Store.compact(st.compact);
+    if (st.tab !== 'trakcare') { st.tab = 'trakcare'; renderTabs(); renderSection(); }
+    var b = $('#compact-btn'); if (b) b.textContent = st.compact ? 'Full window' : 'Side panel mode';
+  }
+  function renderTrak(m) {
+    var r = evaluate(); if (!r) return;
+    var T = Emr.trakcare(st.p, visit(), r, st.settings);
+    st.trak = T;
+    var top = el('div', { class: 'trakbar card' }, [
+      el('div', { class: 'row' }, [el('b', { text: 'TrakCare entry for this visit' }),
+        el('button', { id: 'compact-btn', class: 'btn small', text: st.compact ? 'Full window' : 'Side panel mode', title: 'Narrow window kept on top of TrakCare', onclick: toggleCompact }),
+        el('button', { class: 'btn small ghost', text: 'Reset ticks', onclick: function () { Object.keys(st.copied).forEach(function (k) { if (k.indexOf(visit().id + '|') === 0) delete st.copied[k]; }); renderSection(); } })]),
+      el('p', { class: 'muted small', text: 'Order follows the TrakCare Actions Panel. "Search" fields: paste into the lookup box, then pick the match from the TrakCare list. Dates are dd/mm/yyyy. ✓ marks what you have copied.' }),
+      el('div', { id: 'seqbar', class: 'seqbar' })]);
+    m.appendChild(top);
+    drawSeqBar();
+    var lastGroup = null;
+    T.forms.forEach(function (f) {
+      if (f.group !== lastGroup) { m.appendChild(el('h3', { class: 'tgroup', text: f.group })); lastGroup = f.group; }
+      var card = el('section', { class: 'card tform' });
+      var head = el('div', { class: 'thead' }, [el('h4', { text: f.menu })]);
+      if (f.text && f.fields.length > 1) head.appendChild(el('button', { class: 'btn tiny', text: 'Copy all', onclick: function () { copyText(f.text); } }));
+      card.appendChild(head);
+      if (f.note) card.appendChild(el('p', { class: 'muted small', text: f.note }));
+      if (f.missing) card.appendChild(el('p', { class: 'missing', text: f.missing }));
+      if (f.info) card.appendChild(el('p', { class: 'muted small', text: f.info }));
+      f.fields.forEach(function (x, i) { card.appendChild(trow(x, f.id + '.f' + i)); });
+      f.entries.forEach(function (e, j) {
+        var box = el('div', { class: 'tentry' }, [el('div', { class: 'etitle', text: (j + 1) + '. ' + e.title })]);
+        e.fields.forEach(function (x, i) { box.appendChild(trow(x, f.id + '.e' + j + '.' + i)); });
+        card.appendChild(box);
+      });
+      if (f.entries.length > 1 && f.id === 'orders') card.appendChild(el('div', { class: 'row' }, [el('button', { class: 'btn tiny ghost', text: 'Copy order list', onclick: function () { copyText(f.text); } })]));
+      if (f.result) card.appendChild(el('p', { class: 'result', text: 'App result: ' + f.result }));
+      m.appendChild(card);
+    });
+    if (st.seq) { var cur = st.seq.items[st.seq.index]; if (cur) { var row = document.querySelector('[data-key="' + cur.key + '"]'); if (row) row.classList.add('current'); } }
+  }
+  function trow(x, key) {
+    var done = st.copied[ckey(key)];
+    var row = el('div', { class: 'trow k-' + x.kind + (done ? ' done' : ''), 'data-key': key });
+    var lab = el('div', { class: 'tlab' }, [el('span', { text: x.label + (x.req ? ' *' : '') })]);
+    if (x.kind === 'lookup') lab.appendChild(el('span', { class: 'badge', text: 'search' }));
+    if (x.kind === 'date') lab.appendChild(el('span', { class: 'badge', text: 'date' }));
+    row.appendChild(lab);
+    var val = el('div', { class: 'tval' + (x.value.length > 160 || /\n/.test(x.value) ? ' long' : '') });
+    if (x.kind === 'check') val.appendChild(el('span', { class: 'tick', text: '☐ ' + (x.value === 'Tick' ? 'tick this box' : x.value) }));
+    else if (x.value === '') val.appendChild(el('span', { class: 'missing', text: x.hint || 'missing' }));
+    else { val.appendChild(el('span', { text: x.value })); if (x.hint) val.appendChild(el('span', { class: 'hint', text: ' ' + x.hint })); }
+    row.appendChild(val);
+    if (x.kind !== 'check' && x.value !== '') row.appendChild(el('button', { class: 'btn tiny copy', text: done ? '✓ Copy' : 'Copy', onclick: function () {
+      var qi = st.seq ? st.seq.items.findIndex(function (q) { return q.key === key; }) : -1;
+      if (qi >= 0) Store.queueGoto(qi); else copyText(x.value, key);
+      this.textContent = '✓ Copy';
+    } }));
+    return row;
+  }
+
+  /* ---------- TrakCare banner import ---------- */
+  function applyBanner(p, v, b) {
+    ['name', 'fileNo', 'sex', 'dob', 'phone', 'insurance', 'nameAr'].forEach(function (k) { if (b[k]) p[k] = b[k]; });
+    if (!b.dob && b.age) p.age = b.age;
+    if (v) { if (b.episodeNo) v.episodeNo = b.episodeNo; if (b.height) v.ex_ht = b.height; if (b.weight) v.ex_wt = b.weight; }
+  }
+  function importBanner() {
+    var d = $('#settings'); d.innerHTML = '';
+    var ta = el('textarea', { rows: 8, placeholder: 'In TrakCare, select the patient banner (name, URN, gender, DOB, height, weight...) with the mouse, press Ctrl+C, then paste here with Ctrl+V.' });
+    var prev = el('div', { class: 'bprev' });
+    function read() {
+      var b = Emr.parseBanner(ta.value); prev.innerHTML = '';
+      var rows = [['Name', b.name], ['URN', b.fileNo], ['Episode', b.episodeNo], ['Sex', b.sex], ['DOB', b.dob ? Emr.dmy(b.dob) : (b.age ? b.age + ' years' : '')], ['Mobile', b.phone], ['Height', b.height ? b.height + ' cm' : ''], ['Weight', b.weight ? b.weight + ' kg' : ''], ['Payor', b.insurance]];
+      prev.appendChild(el('table', { class: 'btab' }, rows.filter(function (r) { return r[1]; }).map(function (r) { return el('tr', null, [el('td', { text: r[0] }), el('td', null, [el('b', { text: String(r[1]) })])]); })));
+      var ex = b.fileNo ? st.patients.filter(function (p) { return String(p.fileNo) === String(b.fileNo); })[0] : null;
+      if (ex) prev.appendChild(el('p', { class: 'warn', text: 'URN ' + b.fileNo + ' already exists (' + (ex.name || '') + '). Continuing opens that patient and starts today’s visit.' }));
+      return b;
+    }
+    ta.addEventListener('input', read);
+    d.appendChild(el('h3', { text: 'Start from the TrakCare banner' }));
+    d.appendChild(ta); d.appendChild(prev);
+    d.appendChild(el('div', { class: 'row end' }, [el('button', { class: 'btn ghost', text: 'Cancel', onclick: function () { d.close(); } }),
+      el('button', { class: 'btn primary', text: 'Continue', onclick: function () {
+        var b = read();
+        if (!b.name && !b.fileNo) { toast('Could not find the name or URN in the pasted text', true); return; }
+        d.close();
+        var ex = b.fileNo ? st.patients.filter(function (p) { return String(p.fileNo) === String(b.fileNo); })[0] : null;
+        if (!ex) { newPatient(b); toast('Patient created from TrakCare'); return; }
+        openPatient(ex.id).then(function (p) {
+          if (!p) return;
+          var last = p.visits[p.visits.length - 1];
+          if (last.date !== today()) { p.visits.push(newVisit('followup', last)); st.vi = p.visits.length - 1; }
+          applyBanner(p, p.visits[st.vi], b);
+          st.tab = 'encounter'; save(); renderAll();
+          toast(last.date !== today() ? 'Follow-up visit started; history copied from the last visit' : 'Today’s visit opened');
+        });
+      } })]));
+    d.showModal(); ta.focus();
+  }
+
   /* ---------- report ---------- */
   function reportName() { var p = st.p, v = visit(); return [p.fileNo ? 'File' + p.fileNo : null, p.name, v.date].filter(Boolean).join(' - '); }
   function renderReport(m) {
@@ -404,10 +566,13 @@
   function reload() { return Store.listPatients().then(function (list) { st.patients = list.filter(function (p) { return !p.corrupt; }); var bad = list.filter(function (p) { return p.corrupt; }); if (bad.length) toast(bad.length + ' patient file(s) could not be read; see the data folder.', true); renderAll(); }); }
   function init() {
     Store.getSettings().then(function (s) { st.settings = s || {}; if (!st.settings.clinicName) st.settings.clinicName = 'Fatty liver clinic'; return reload(); }).then(function () {
-      $('#new').onclick = newPatient;
+      $('#new').onclick = function () { newPatient(); };
+      $('#from-trak').onclick = importBanner;
+      Store.onQueue(onQueue);
       $('#export').onclick = exportRegistry;
       $('#settings-btn').onclick = openSettings;
-      $('#welcome-new').onclick = newPatient;
+      $('#welcome-new').onclick = function () { newPatient(); };
+      $('#welcome-trak').onclick = importBanner;
       $('#search').oninput = function () { st.filter = this.value; renderList(); };
       Store.version().then(function (v) { $('#ver').textContent = Store.kind === 'browser' ? 'browser mode' : 'v' + v; });
       document.addEventListener('keydown', function (e) { if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); save(true).then(function () { toast('Saved'); }); } });

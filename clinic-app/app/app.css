@@ -59,3 +59,24 @@ dialog code{font-size:12px;background:#f1f4f7;padding:3px 6px;border-radius:4px;
 #toast.show{opacity:1;transform:translateX(-50%)}#toast.bad{background:var(--high)}
 ul{margin:4px 0 4px 18px;padding:0}
 @media (max-width:1100px){#layout{grid-template-columns:220px 1fr 220px}.fields{grid-template-columns:repeat(2,1fr)}.f.c3,.f.c4{grid-column:span 2}}
+
+.row.center{justify-content:center}
+.tgroup{margin:18px 0 8px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--line);padding-bottom:3px}
+.tform{padding:10px 12px}.thead{display:flex;justify-content:space-between;align-items:center;gap:8px}.thead h4{margin:0;font-size:14px;color:var(--brand)}
+.tform>p.small{margin:2px 0 6px}
+.tentry{border-left:3px solid #d5e3ec;padding:2px 0 2px 8px;margin:6px 0}.etitle{font-size:12px;font-weight:600;color:#36506a;margin:2px 0}
+.trow{display:grid;grid-template-columns:minmax(150px,32%) 1fr auto;gap:8px;align-items:start;padding:4px 6px;border-radius:5px}
+.trow:hover{background:#f4f8fb}.trow.done{background:#eef8f1}.trow.done .copy{border-color:var(--low);color:var(--low)}
+.trow.current{outline:2px solid var(--brand2);background:#e6f2f8}
+.tlab{font-size:12px;color:var(--muted);display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.badge{font-size:10px;text-transform:uppercase;background:#e4ecf2;color:#36506a;border-radius:3px;padding:0 4px}
+.tval{font-size:13px;white-space:pre-wrap;word-break:break-word}.tval.long{max-height:7.5em;overflow:auto;background:#fafbfc;border:1px solid var(--line);border-radius:4px;padding:4px 6px;font-size:12px}
+.tval .hint{color:var(--muted);font-size:11.5px}.tick{color:var(--mid)}
+.missing{color:var(--high);font-size:12.5px}.result{font-size:12.5px;color:#36506a;margin:6px 0 0}
+.trakbar{position:sticky;top:-14px;z-index:5;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.seqbar{display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap}.seqinfo{flex:1 1 260px;font-size:12.5px}.seqinfo .keys{margin-top:3px;color:var(--brand2)}
+dialog textarea{width:100%;font:inherit;padding:8px;border:1px solid #c9d2dc;border-radius:6px}
+.btab{border-collapse:collapse;margin:8px 0;font-size:13px}.btab td{padding:2px 10px 2px 0}.bprev .warn{padding:6px 8px;border-radius:6px}
+body.compact #left,body.compact #right,body.compact #search,body.compact #top .actions,body.compact #tabs,body.compact .visits .btn{display:none}
+body.compact #layout{grid-template-columns:1fr}body.compact #center{padding:8px}body.compact .trow{grid-template-columns:1fr auto}body.compact .tlab{grid-column:1/-1}
+body.compact #ph h2{font-size:15px}

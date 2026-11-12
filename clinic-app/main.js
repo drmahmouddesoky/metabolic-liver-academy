@@ -1,7 +1,7 @@
 /* Fatty Liver Clinic: Electron main process.
    Keeps every patient as one JSON file in the data folder (default: Documents/Fatty Liver Clinic/patients),
    settings in the app's user-data folder, and exports reports as PDF next to the data. */
-const { app, BrowserWindow, ipcMain, dialog, shell, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell, Menu, clipboard, globalShortcut, screen } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const fsp = fs.promises;
@@ -11,6 +11,18 @@ const DEFAULT_DATA_DIR = () => process.env.FLC_TEST_DIR || path.join(app.getPath
 
 let settings = {};
 let win;
+/* TrakCare copy sequence: the main process holds the list so global shortcuts work while TrakCare has focus */
+let queue = [], qi = -1, normalBounds = null;
+function qSend(extra) { if (win && !win.isDestroyed()) win.webContents.send('queue:pos', Object.assign({ index: qi, total: queue.length }, extra || {})); }
+function qCopy(i) {
+  if (!queue.length) return { ok: false };
+  if (i < 0) i = 0;
+  if (i >= queue.length) { qi = queue.length; qSend({ done: true }); return { ok: true, done: true }; }
+  qi = i; clipboard.writeText(String(queue[qi].value || ''));
+  qSend({ label: queue[qi].label, key: queue[qi].key });
+  return { ok: true, index: qi };
+}
+function reg(list, fn) { for (const a of list) { try { if (globalShortcut.register(a, fn)) return a; } catch (e) { /* try next */ } } return null; }
 
 async function loadSettings() {
   try { settings = JSON.parse(await fsp.readFile(SETTINGS_FILE(), 'utf8')); } catch (e) { settings = {}; }
@@ -102,6 +114,31 @@ app.whenReady().then(async () => {
   ipcMain.handle('patient:save', (e, p) => savePatient(p));
   ipcMain.handle('patient:delete', (e, id) => deletePatient(id));
   ipcMain.handle('app:version', () => app.getVersion());
+  ipcMain.handle('clipboard:write', (e, t) => { clipboard.writeText(String(t == null ? '' : t)); return { ok: true }; });
+  ipcMain.handle('queue:set', (e, items) => {
+    queue = Array.isArray(items) ? items : []; qi = -1;
+    globalShortcut.unregisterAll();
+    if (!queue.length) return { ok: true };
+    const next = reg(['CommandOrControl+Shift+Space', 'F9'], () => qCopy(qi + 1));
+    const prev = reg(['CommandOrControl+Shift+Backspace', 'F8'], () => qCopy(qi - 1));
+    return { ok: true, next, prev };
+  });
+  ipcMain.handle('queue:goto', (e, i) => qCopy(i));
+  ipcMain.handle('window:compact', (e, on) => {
+    if (!win) return { ok: false };
+    if (on) {
+      normalBounds = win.getBounds();
+      const wa = screen.getDisplayMatching(normalBounds).workArea;
+      win.setMinimumSize(340, 400);
+      win.setBounds({ x: wa.x + wa.width - 460, y: wa.y, width: 460, height: wa.height });
+      win.setAlwaysOnTop(true, 'floating');
+    } else {
+      win.setAlwaysOnTop(false);
+      win.setMinimumSize(1000, 650);
+      if (normalBounds) win.setBounds(normalBounds);
+    }
+    return { ok: true };
+  });
   ipcMain.handle('folder:open', () => shell.openPath(dirs().root).then(() => ({ ok: true })));
   ipcMain.handle('folder:choose', async () => {
     const r = await dialog.showOpenDialog(win, { title: 'Choose the folder that holds patient files', defaultPath: dirs().root, properties: ['openDirectory', 'createDirectory'] });
@@ -132,4 +169,5 @@ app.whenReady().then(async () => {
   createWindow();
   app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
 });
+app.on('will-quit', () => globalShortcut.unregisterAll());
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });

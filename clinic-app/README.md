@@ -12,8 +12,10 @@ Nothing leaves the computer. There is no server and no account.
 
 Download the installer from the repository's **Releases** page:
 
-- Windows: `FattyLiverClinic-<version>-win-x64.exe` (double-click, Next, Finish).
+- Windows: `FattyLiverClinic-<version>-win-x64.exe` (double-click, Next, Finish; no administrator rights needed).
   Windows SmartScreen may warn because the app is not code-signed: click "More info" then "Run anyway".
+- Windows without installing (for locked-down hospital computers): `FattyLiverClinic-<version>-win-portable.exe`.
+  Keep it on the desktop and double-click to run. If the hospital blocks unknown programs, ask IT to allow it.
 - Mac: `FattyLiverClinic-<version>-mac-arm64.dmg` (Apple silicon) or `-mac-x64.dmg` (Intel).
   The app is not notarised: on first launch, right-click the app, choose **Open**, then **Open** again.
   If macOS still refuses, run `xattr -dr com.apple.quarantine "/Applications/Fatty Liver Clinic.app"` in Terminal.
@@ -31,6 +33,29 @@ Default data folder: `Documents/Fatty Liver Clinic/`
 
 Back up the whole folder (copy it to a USB stick or cloud drive). To move to another computer, copy the
 folder and point the app to it in **Settings → Change folder**.
+
+## Daily use with TrakCare
+
+1. Open the patient in TrakCare. Select the patient banner at the top (name, URN, gender, DOB, height, weight)
+   with the mouse and press Ctrl+C.
+2. In the app, click **Paste from TrakCare** and press Ctrl+V. Name, URN, episode, sex, DOB, mobile, height and
+   weight fill in. If the URN already exists, the app opens that patient and starts today's visit with the
+   history copied from the last one.
+3. Take the history and examine the patient in the app as usual (tabs below).
+4. Open the **TrakCare** tab. It lists every TrakCare form in the order of the Actions Panel:
+   Chief Complaint, Allergy, Medical History Problem, Surgical, Family, Social History & Habits, Medication History,
+   Review of Systems, Physical Exam, Vital Signs, Diagnosis, Clinician Reported Outcome Measure, FIB-4 score,
+   NAFLD score, Treatment Plan, Orders, Outpatient Note, Referral / Follow up, Health Education, Medical Report.
+5. Either click **Copy** beside each value, or click **Copy in sequence**: the first value goes on the clipboard;
+   paste it in TrakCare with Ctrl+V, then press **Ctrl+Shift+Space** (works while TrakCare is in front) to put
+   the next value on the clipboard. Ctrl+Shift+Backspace goes back. If another program already uses those keys,
+   the app uses F9 and F8 instead and says so on screen.
+6. **Side panel mode** shrinks the app to a narrow strip on the right of the screen that stays on top of TrakCare.
+
+Field types: **search** values go into a TrakCare lookup box (type or paste, then pick the match from the list);
+**date** values are dd/mm/yyyy; **tick this box** is a checkbox to tick by hand. SNOMED search terms use US
+spelling (Edema, Hyperlipidemia) because that is how SNOMED CT is written.
+The FIB-4 and NAFLD score forms show the app's own result so you can check TrakCare gives the same number.
 
 ## Daily use
 
