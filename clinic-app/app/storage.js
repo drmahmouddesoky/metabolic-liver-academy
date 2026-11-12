@@ -16,9 +16,13 @@
       saveSettings: function (s) { return api.saveSettings(s); },
       chooseFolder: function () { return api.chooseFolder(); },
       openFolder: function () { return api.openFolder(); },
-      exportPdf: function (html, name) { return api.exportPdf(html, name); },
+      exportPdf: function (html, name, pid, date) { return api.exportPdf(html, name, pid, date); },
       printHtml: function (html) { return api.printHtml(html); },
-      exportCsv: function (csv, name) { return api.exportCsv(csv, name); },
+      patientFolder: function (id) { return api.patientFolder(id); },
+      openRegistry: function () { return api.openRegistry(); },
+      onRegistry: function (cb) { api.onRegistry(cb); },
+      makeBackup: function () { return api.makeBackup(); },
+      importBackup: function (f) { return api.importBackup(f); },
       version: function () { return api.version(); },
       copy: function (t) { return api.copy(t); },
       setQueue: function (items) { return api.setQueue(items); },
@@ -43,6 +47,17 @@
       openFolder: function () { return Promise.resolve({ ok: false }); },
       exportPdf: function (html) { return popup(html); },
       printHtml: function (html) { return popup(html); },
+      patientFolder: function () { return Promise.resolve({ ok: false, error: 'Folders are only available in the desktop app.' }); },
+      openRegistry: function () {
+        return Store.listPatients().then(function (list) {
+          var csv = window.Registry.toCsv(window.Registry.visitRows(list, {}));
+          var a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(csv); a.download = 'MASLD registry.csv'; document.body.appendChild(a); a.click(); a.remove();
+          return { ok: true, patients: list.length };
+        });
+      },
+      onRegistry: function () {},
+      makeBackup: function () { return Promise.resolve({ ok: false, error: 'Backups are only available in the desktop app.' }); },
+      importBackup: function () { return Promise.resolve({ ok: false, error: 'Import is only available in the desktop app.' }); },
       exportCsv: function (csv, name) { var a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,﻿' + encodeURIComponent(csv); a.download = name; document.body.appendChild(a); a.click(); a.remove(); return Promise.resolve({ ok: true }); },
       version: function () { return Promise.resolve('browser'); },
       copy: function (t) { return navigator.clipboard.writeText(String(t == null ? '' : t)).then(function () { return { ok: true }; }); },

@@ -94,3 +94,5 @@ table.found tr.conflict{background:var(--midbg)}table.found tr.same{color:var(--
 .conds{display:flex;flex-wrap:wrap;gap:6px}
 .cond{border:1px solid #c9d2dc;background:#fff;border-radius:16px;padding:5px 12px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink)}
 .cond:hover{border-color:var(--brand2)}.cond.on{background:var(--brand2);border-color:var(--brand2);color:#fff;font-weight:600}
+
+.warnbar{background:#fff1d6;color:#5c3b00;padding:7px 14px;font-size:13px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #f0d49a}.warnbar[hidden]{display:none}

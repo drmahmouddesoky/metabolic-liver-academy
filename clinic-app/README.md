@@ -20,19 +20,40 @@ Download the installer from the repository's **Releases** page:
   The app is not notarised: on first launch, right-click the app, choose **Open**, then **Open** again.
   If macOS still refuses, run `xattr -dr com.apple.quarantine "/Applications/Fatty Liver Clinic.app"` in Terminal.
 
-## Where the data lives
+## Works offline; data stays on this computer
 
-Default data folder: `Documents/Fatty Liver Clinic/`
+The app never uses the internet: every network request is blocked inside the app, the spell-checker download is
+switched off, and there is no update check. All data is written to one folder on the Desktop:
 
-| Folder | Contents |
-| --- | --- |
-| `patients/` | one JSON file per patient, all visits inside |
-| `reports/` | the PDF reports you export |
-| `exports/` | registry CSV exports |
-| `trash/` | deleted patients (nothing is destroyed) |
+```
+Desktop/Fatty Liver Clinic/
+  Patients/
+    <URN> - <Name>/
+      patient.json            the patient and every visit
+      <date> note.txt         the full note of each visit (rewritten after every change)
+      <date> report.pdf       the PDF report (when you click PDF report)
+      history/                earlier versions of patient.json (kept for safety)
+  Registry/
+    MASLD registry.csv        one row per visit: demographics, labs, scores, stage, diagnosis (opens in Excel)
+    Patient index.csv         one row per patient: URN, name, visits, last and next visit, latest diagnosis
+  Backups/                    backup files for moving data to another laptop
+  Trash/                      deleted patients (folders are moved here, never destroyed)
+```
 
-Back up the whole folder (copy it to a USB stick or cloud drive). To move to another computer, copy the
-folder and point the app to it in **Settings → Change folder**.
+The registry rebuilds itself a moment after every save. If the CSV is open in Excel at that moment, the app waits and
+updates it after you close Excel. **Registry (Excel)** in the top bar rebuilds it and opens it.
+
+If the Desktop is synced to OneDrive or iCloud, files would be copied to the internet. The app detects this and shows
+a yellow bar with **Choose local folder** (for example `C:\Fatty Liver Clinic`). Settings → Change folder does the same
+and offers to copy the existing patients.
+
+## Moving data between laptops (no internet)
+
+- **Backup file**: top bar → **Backup / other laptop** → **Save backup file** onto a USB stick. On the other laptop,
+  same button → **Import backup file**. New patients are added; a patient with the same URN is merged visit by visit,
+  keeping the most recent edit, so nothing is duplicated or lost. A safety copy of the receiving laptop is saved in
+  Backups first.
+- **Whole folder**: copy the `Fatty Liver Clinic` folder to the other laptop's Desktop. The app reads it as it is.
 
 ## Quick entry (one page)
 

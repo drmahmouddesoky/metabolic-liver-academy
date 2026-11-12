@@ -56,6 +56,7 @@
     clearTimeout(st.saveTimer);
     var doSave = function () {
       st.p.updatedAt = new Date().toISOString();
+      var cv = visit(); if (cv) cv.updatedAt = st.p.updatedAt;
       var copy = JSON.parse(JSON.stringify(st.p));
       return Store.savePatient(copy).then(function (r) {
         if (r && r.ok === false) { setStatus('Save failed: ' + (r.error || ''), true); toast('Could not save: ' + (r.error || ''), true); return; }
@@ -114,6 +115,7 @@
     h.appendChild(el('div', { class: 'visits' }, [el('label', { text: 'Visit ' }), sel,
       el('button', { class: 'btn', onclick: addVisit, text: '+ New visit' }),
       el('button', { class: 'btn ghost', onclick: deleteVisit, text: 'Delete visit' }),
+      el('button', { class: 'btn ghost', onclick: function () { save(true).then(function () { Store.patientFolder(st.p.id).then(function (x) { if (x && x.error) toast(x.error, true); }); }); }, text: 'Patient folder' }),
       el('button', { class: 'btn ghost danger', onclick: deletePatient, text: 'Delete patient' }),
       el('span', { id: 'save-status', class: '' })]));
   }
@@ -130,7 +132,7 @@
     st.p.visits.splice(st.vi, 1); st.vi = Math.max(0, st.vi - 1); save(true); renderAll();
   }
   function deletePatient() {
-    if (!confirm('Delete ' + (st.p.name || 'this patient') + ' and all visits? The file is moved to the trash folder inside the data folder.')) return;
+    if (!confirm('Delete ' + (st.p.name || 'this patient') + ' and all visits? The patient folder is moved to the Trash folder inside the clinic folder.')) return;
     var id = st.p.id;
     Store.deletePatient(id).then(function () { st.patients = st.patients.filter(function (x) { return x.id !== id; }); st.p = null; renderAll(); toast('Patient deleted'); });
   }
@@ -506,7 +508,7 @@
     var card = el('section', { class: 'card notecard' }, [
       el('div', { class: 'thead' }, [el('h4', { text: 'Medical note' }), el('div', { class: 'row' }, [
         el('button', { class: 'btn primary small', text: 'Copy note', onclick: function () { copyText(text); } }),
-        el('button', { class: 'btn small', text: 'PDF report', onclick: function () { Store.exportPdf(Rep.build(st.p, v, evaluate(), st.settings), reportName()).then(function (x) { if (x && x.ok) toast('PDF saved'); else if (x && x.error) toast(x.error, true); }); } }),
+        el('button', { class: 'btn small', text: 'PDF report', onclick: function () { Store.exportPdf(Rep.build(st.p, v, evaluate(), st.settings), reportName(), st.p.id, v.date).then(function (x) { if (x && x.ok) toast('PDF saved in the patient folder'); else if (x && x.error) toast(x.error, true); }); } }),
         el('button', { class: 'btn small ghost', text: 'Edit plan', onclick: function () { st.tab = 'assess'; renderTabs(); renderSection(); } }),
         el('button', { class: 'btn small ghost', text: 'TrakCare', onclick: function () { st.tab = 'trakcare'; renderTabs(); renderSection(); } })])]),
       el('div', { class: 'keyline' }, [
@@ -685,7 +687,7 @@
     var r = evaluate(); if (!r) return;
     var html = Rep.build(st.p, visit(), r, st.settings);
     var bar = el('div', { class: 'row' }, [
-      el('button', { class: 'btn primary', text: 'Export PDF', onclick: function () { Store.exportPdf(html, reportName()).then(function (x) { if (x && x.ok) toast('PDF saved' + (x.file ? ': ' + x.file : '')); else if (x && x.error) toast(x.error, true); }); } }),
+      el('button', { class: 'btn primary', text: 'Export PDF', onclick: function () { Store.exportPdf(html, reportName(), st.p.id, visit().date).then(function (x) { if (x && x.ok) toast('PDF saved in the patient folder'); else if (x && x.error) toast(x.error, true); }); } }),
       el('button', { class: 'btn', text: 'Print', onclick: function () { Store.printHtml(html); } }),
       el('button', { class: 'btn ghost', text: 'Copy report text', onclick: function () { var d = document.createElement('div'); d.innerHTML = html; navigator.clipboard.writeText(d.innerText).then(function () { toast('Copied'); }); } }),
       el('span', { class: 'muted', text: 'Letterhead and signature come from Settings.' })]);
@@ -695,28 +697,37 @@
     fr.srcdoc = html;
   }
 
-  /* ---------- registry export ---------- */
-  function csvCell(x) { if (x == null) return ''; var s = String(x); return /[",\n;]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+  /* ---------- registry, backup, folder ---------- */
   function exportRegistry() {
-    var cols = ['File no', 'Name', 'Sex', 'Age', 'Visit date', 'Visit type', 'Weight kg', 'BMI', 'Waist cm', 'Waist/height', 'SBP', 'DBP', 'Diabetes', 'Hypertension', 'Dyslipidaemia', 'Smoking', 'Alcohol g/week', 'Alcohol class',
-      'AST', 'ALT', 'GGT', 'Platelets', 'Albumin g/dL', 'HbA1c %', 'Glucose mg/dL', 'TG mg/dL', 'HDL mg/dL', 'LDL mg/dL', 'Ferritin', 'HBsAg', 'Anti-HCV',
-      'US steatosis', 'LSM kPa', 'CAP', 'MRI-PDFF', 'MRE', 'Biopsy fibrosis', 'FIB-4', 'FIB-4 band', 'NFS', 'APRI', 'Agile 3+', 'Agile 4', 'FAST', 'ELF', 'FLI', 'HOMA-IR', 'eGFR',
-      'CM criteria', 'Steatosis', 'Fibrosis level', 'Stage', 'Decompensated', 'MASH', 'Diagnosis (suggested)', 'Diagnosis (final)', 'ICD-10', 'Follow-up months', 'Patient id', 'Visit id'];
-    var lines = [cols.map(csvCell).join(',')];
-    var n = 0;
-    st.patients.forEach(function (p) {
-      (p.visits || []).forEach(function (v) {
-        var r; try { r = R.evaluate(p, v, st.settings); } catch (e) { return; }
-        var s = r.scores, L = r.labs;
-        function b(x) { return x ? x.value : ''; }
-        var row = [p.fileNo, p.name, p.sex, r.age, v.date, v.type, v.ex_wt, r.body.bmi, v.ex_waist, r.body.whtr, v.ex_sbp, v.ex_dbp, v.pm_dm, v.pm_htn, v.pm_lipid, v.hab_smoking, v.hab_alc_g, s.alcohol ? s.alcohol.cls : '',
-          L.ast, L.alt, L.ggt, L.plt, L.alb, L.hba1c, L.glu, L.tg, L.hdl, L.ldl, L.ferritin, v.lab_hbsag, v.lab_antihcv,
-          v.us_steatosis, v.te_lsm, v.te_cap, v.mri_pdff, v.mri_mre, v.bx_fibrosis, b(s.fib4), s.fib4 ? s.fib4.band : '', b(s.nfs), b(s.apri), b(s.agile3), b(s.agile4), b(s.fast), b(s.elf), b(s.fli), b(s.homa), b(s.egfr),
-          r.cm.count, r.steatosis.status, r.fibrosis.level, r.fibrosis.stage, r.fibrosis.decompensated ? 'yes' : 'no', r.mash || '', r.diagnosis.primary, v.dx_final || '', v.dx_codes || r.diagnosis.codes.join(' '), r.followUp.months, p.id, v.id];
-        lines.push(row.map(csvCell).join(',')); n++;
-      });
+    save(true).then(function () { return Store.openRegistry(); }).then(function (x) {
+      if (x && x.ok) toast('Registry updated: ' + (x.patients != null ? x.patients + ' patients' : '') + (Store.kind === 'electron' ? '. Opening in Excel.' : ''));
+      else if (x && x.error) toast(x.error, true);
     });
-    Store.exportCsv(lines.join('\r\n'), 'MASLD registry ' + today()).then(function (x) { if (x && x.ok) toast('Registry exported: ' + n + ' visit rows'); });
+  }
+  function backupDialog() {
+    var d = $('#settings'); d.innerHTML = '';
+    var out = el('div', { class: 'small' });
+    d.appendChild(el('h3', { text: 'Move data between laptops' }));
+    d.appendChild(el('p', { class: 'small', text: 'No internet is used. On this laptop, save a backup file onto a USB stick. On the other laptop, open the app and import that file: new patients are added and visits are merged by date of last change, so nothing is duplicated or lost. A safety copy of the receiving laptop is saved first in the Backups folder.' }));
+    d.appendChild(el('div', { class: 'row' }, [
+      el('button', { class: 'btn primary', text: '1. Save backup file', onclick: function () { Store.makeBackup().then(function (x) { out.textContent = x && x.ok ? 'Saved ' + x.patients + ' patients, ' + x.visits + ' visits to: ' + x.file : (x && x.error) || 'Cancelled.'; }); } }),
+      el('button', { class: 'btn', text: '2. Import backup file', onclick: function () { Store.importBackup().then(function (x) {
+        if (!x || !x.ok) { out.textContent = (x && x.error) || 'Cancelled.'; return; }
+        out.textContent = 'Imported' + (x.from ? ' from ' + x.from : '') + ': ' + x.newPatients + ' new patients, ' + x.mergedPatients + ' patients updated, ' + x.addedVisits + ' visits added, ' + x.updatedVisits + ' visits updated.';
+        reload();
+      }); } })]));
+    d.appendChild(el('p', { class: 'small muted', text: 'Another way: copy the whole "Fatty Liver Clinic" folder to the other laptop\u2019s Desktop. The app reads it as it is.' }));
+    d.appendChild(out);
+    d.appendChild(el('div', { class: 'row end' }, [el('button', { class: 'btn ghost', text: 'Close', onclick: function () { d.close(); } })]));
+    d.showModal();
+  }
+  function cloudWarning() {
+    var bar = $('#cloudbar'); if (!bar) return;
+    var c = st.settings.cloud;
+    bar.hidden = !c; bar.innerHTML = '';
+    if (!c) return;
+    bar.appendChild(el('span', { text: 'The clinic folder is inside ' + c + ', which copies files to the internet. To keep patient files only on this computer, choose a local folder (for example C:\\Fatty Liver Clinic). ' }));
+    bar.appendChild(el('button', { class: 'btn small', text: 'Choose local folder', onclick: function () { Store.chooseFolder().then(function (x) { if (x && x.ok) { st.settings.dataDir = x.dataDir; st.settings.cloud = x.cloud; cloudWarning(); reload(); toast('Clinic folder: ' + x.dataDir); } }); } }));
   }
 
   /* ---------- settings ---------- */
@@ -727,8 +738,8 @@
     fields.forEach(function (f) { form.appendChild(el('div', { class: 'f c4' }, [el('label', { text: f[1] }), el('input', { id: 's-' + f[0], type: 'text', value: s[f[0]] || (f[0] === 'clinicName' ? 'Fatty liver clinic' : f[0] === 'astUln' ? '40' : '') })])); });
     var us = el('select', { id: 's-units' }); [['base', 'Conventional (mg/dL)'], ['si', 'SI (mmol/L)']].forEach(function (o) { us.appendChild(el('option', { value: o[0], text: o[1], selected: (s.units || 'base') === o[0] ? '' : null })); });
     form.appendChild(el('div', { class: 'f c4' }, [el('label', { text: 'Default units for new visits' }), us]));
-    form.appendChild(el('div', { class: 'f c4' }, [el('label', { text: 'Data folder (one JSON file per patient, reports and exports)' }), el('div', { class: 'row' }, [el('code', { text: s.dataDir || (Store.kind === 'browser' ? 'browser storage (no folder in browser mode)' : '') }),
-      el('button', { class: 'btn small', type: 'button', text: 'Change folder', onclick: function () { Store.chooseFolder().then(function (x) { if (x && x.ok) { st.settings.dataDir = x.dataDir; d.close(); reload(); toast('Data folder changed'); } else if (x && x.error) toast(x.error, true); }); } }),
+    form.appendChild(el('div', { class: 'f c4' }, [el('label', { text: 'Clinic folder (one folder per patient, Registry, Backups). Nothing is sent over the internet.' }), el('div', { class: 'row' }, [el('code', { text: s.dataDir || (Store.kind === 'browser' ? 'browser storage (no folder in browser mode)' : '') }),
+      el('button', { class: 'btn small', type: 'button', text: 'Change folder', onclick: function () { Store.chooseFolder().then(function (x) { if (x && x.ok) { st.settings.dataDir = x.dataDir; st.settings.cloud = x.cloud; cloudWarning(); d.close(); reload(); toast('Clinic folder changed'); } else if (x && x.error) toast(x.error, true); }); } }),
       el('button', { class: 'btn small ghost', type: 'button', text: 'Open folder', onclick: function () { Store.openFolder(); } })])]));
     form.appendChild(el('div', { class: 'row end' }, [el('button', { class: 'btn ghost', type: 'button', text: 'Cancel', onclick: function () { d.close(); } }), el('button', { class: 'btn primary', type: 'submit', text: 'Save settings' })]));
     d.appendChild(el('h3', { text: 'Settings' })); d.appendChild(form); d.showModal();
@@ -742,6 +753,9 @@
       $('#from-trak').onclick = importBanner;
       Store.onQueue(onQueue);
       $('#export').onclick = exportRegistry;
+      $('#backup').onclick = backupDialog;
+      cloudWarning();
+      Store.onRegistry(function (r) { if (r && !r.ok && r.error) toast(r.error, true); });
       $('#settings-btn').onclick = openSettings;
       $('#welcome-new').onclick = function () { newPatient(); };
       $('#welcome-trak').onclick = importBanner;

@@ -13,16 +13,18 @@
   <div class="actions">
     <button id="from-trak" class="btn primary">Paste from TrakCare</button>
     <button id="new" class="btn">+ New patient</button>
-    <button id="export" class="btn">Export registry (CSV)</button>
+    <button id="export" class="btn">Registry (Excel)</button>
+    <button id="backup" class="btn ghost">Backup / other laptop</button>
     <button id="settings-btn" class="btn ghost">Settings</button>
   </div>
 </header>
+<div id="cloudbar" class="warnbar" hidden></div>
 <div id="layout">
   <aside id="left"><div class="pad small muted"><span id="count"></span> patients</div><div id="patients"></div></aside>
   <div id="center">
     <div id="welcome">
       <h1>MASLD / MASH evaluation</h1>
-      <p>Complete clinical sheet, automatic scores, guideline-based assessment, printable report and a local registry. Every patient is one file in your data folder; nothing leaves this computer.</p>
+      <p>Complete clinical sheet, automatic scores, guideline-based assessment, printable report and a local registry. Works without internet. Every patient has a folder in "Fatty Liver Clinic" on the Desktop, and the registry updates itself.</p>
       <div class="row center"><button id="welcome-trak" class="btn primary">Paste patient banner from TrakCare</button><button id="welcome-new" class="btn">New patient by hand</button></div>
       <p class="muted small">Sheet order: personal history → complaint → present illness → past, drug and social history → family history → examination → laboratory → imaging → assessment and plan → TrakCare → report.</p>
     </div>
@@ -41,6 +43,7 @@
 <script src="rules.js"></script>
 <script src="report.js"></script>
 <script src="emr.js"></script>
+<script src="registry.js"></script>
 <script src="storage.js"></script>
 <script src="app.js"></script>
 </body>
