@@ -21,7 +21,7 @@ SERIES = {
                    "marks where every drug acts, and ends at the prescription.",
         "lead_ar": "برنامج تدريبي من اثنتي عشرة وحدة يتتبّع استقلاب الدهون من الأمعاء إلى جدار الشريان، "
                    "ويحدّد موضع عمل كل دواء، وينتهي بالوصفة العلاجية.",
-        "live": False,
+        "live": True,
     },
     "bowel": {
         "en": "Bowel Health series",
@@ -45,7 +45,20 @@ SERIES = {
 
 UPDATED = "2026-11-12"
 NEXT_REVIEW = "2027-11"
-REVIEWED = {}
+REVIEWED = {  # signed off by the author
+    "lipids-language": "2026-11-12",
+    "lipids-exogenous": "2026-11-12",
+    "lipids-endogenous": "2026-11-12",
+    "lipids-ldlr-pcsk9": "2026-11-12",
+    "lipids-hdl-cetp": "2026-11-12",
+    "lipids-lpa": "2026-11-12",
+    "lipids-risk": "2026-11-12",
+    "lipids-targets": "2026-11-12",
+    "lipids-statins": "2026-11-12",
+    "lipids-toolbox": "2026-11-12",
+    "lipids-fh-special": "2026-11-12",
+    "lipids-clinic": "2026-11-12",
+}
 VERSIONS = {}
 PEER = {}
 
@@ -118,6 +131,8 @@ SOURCES = {
     'lomitapide2013': ('Cuchel M, Meagher EA, et al. Efficacy and safety of a microsomal triglyceride transfer protein inhibitor in patients with homozygous familial hypercholesterolaemia: a single-arm, open-label, phase 3 study. Lancet 2013;381(9860):40–46.', 'https://doi.org/10.1016/S0140-6736(12)61731-0'),
     'muvalaplin2025': ('Hooper AJ, Fernando PMS, Burnett JR. Assessing the clinical progress of muvalaplin for reducing lipoprotein(a). Expert Opin Investig Drugs 2025;34(11):825–830.', 'https://doi.org/10.1080/13543784.2025.2588651'),
     'olpasiran2026': ('Tweneboah C, Kaur G. Lowering of lipoprotein(a) with olpasiran. Cardiovasc Hematol Disord Drug Targets 2026;26(3):219–226.', 'https://doi.org/10.2174/011871529X428489260113103704'),
+    'garba2026': ('Garba DL, Zahid S, Blumenthal RS, Barouch LA. Dyslipidemia management in athletes: a comparative commentary on the 2026 ACC/AHA/Multisociety Guideline and contemporary sports cardiology recommendations. Am J Prev Cardiol 2026;30:101735.', 'https://doi.org/10.1016/j.ajpc.2026.101735'),
+    'carlson2026': ('Carlson A, Zayyad ZA, et al. Beyond LDL-C: modern lipid management for ASCVD prevention in primary care. Cardiol Ther 2026;15(3):481–501.', 'https://doi.org/10.1007/s40119-026-00473-5'),
     'gulfaction2026': ('Alhabib KF, et al. Demographics, clinical characteristics, and barriers to care in patients with dyslipidaemia in the Arabian Gulf region: the Gulf ACTION registry. Curr Vasc Pharmacol 2026.', 'https://doi.org/10.2174/0115701611397165260302054720'),
     'hicc2026': ('Schonck WAM, et al. Homozygous familial hypercholesterolaemia: insights from the Global HICC Registry. Eur Heart J 2026;47:5979–5990.', 'https://doi.org/10.1093/eurheartj/ehag357'),
 }
