@@ -339,7 +339,7 @@ fieldset { border: 0; padding: 0; margin: 0; }
 fieldset[disabled] { opacity: 0.45; }
 .q { padding: 12px 0; border-bottom: 1px solid var(--line); display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
 .q p { margin: 0; flex: 1 1 280px; }
-.yn { display: flex; gap: 6px; }
+.yn { display: flex; flex-wrap: wrap; gap: 6px; }
 .yn label { border: 1px solid var(--line); border-radius: 999px; padding: 4px 14px; cursor: pointer; }
 .yn input { position: absolute; opacity: 0; pointer-events: none; }
 .yn input:checked + span { font-weight: 600; color: var(--pine); }

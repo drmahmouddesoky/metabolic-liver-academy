@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Physician Portal teaching modules (English + Arabic).
+Professional Portal teaching modules (English + Arabic).
 Each module becomes modules/<slug>.html and ar/modules/<slug>.html.
 Edit text here, then run:  python3 build.py
 
@@ -21,7 +21,7 @@ Cells are a plain string (same in both languages) or a pair.
 UPDATED = "2026-11-11"
 NEXT_REVIEW = "2027-11"
 REVIEWED = {"diabetes-clinic": "2026-11-11", "cirrhosis-care": "2026-11-11"}
-VERSIONS = {"drug-treatment": "1.1", "diabetes-clinic": "1.1", "cirrhosis-care": "1.1"}
+VERSIONS = {"drug-treatment": "1.1", "diabetes-clinic": "1.2", "cirrhosis-care": "1.1"}
 
 # Extra sources (checked on PubMed). Keys from learn.py and ref.py also work.
 SOURCES = {
@@ -159,7 +159,7 @@ MODULES = [
    ("Fibrosis stage, not steatosis or ALT, drives prognosis in MASLD.", "مرحلة التليّف، لا التشحّم ولا ALT، هي ما يحدد مآل MASLD."),
    ("Assess people with diabetes, obesity plus a metabolic risk factor, raised enzymes or steatosis on imaging. Do not screen everyone.", "قيّم المصابين بالسكري، أو السمنة مع عامل خطر أيضي، أو ارتفاع الإنزيمات، أو التشحّم في التصوير، ولا تفحص الجميع."),
    ("FIB-4 first (<1.3, or <2.0 at age 65+, is low risk), then elastography (<8 low, 8–12 grey, ≥12 kPa high) or ELF.", "FIB-4 أولًا (أقل من 1.3، أو أقل من 2.0 لمن 65 فأكثر، خطر منخفض)، ثم قياس المرونة (<8 منخفض، و8–12 رمادي، و≥12 مرتفع) أو ELF."),
-   ("Do not use FIB-4 or NFS under age 35; beware of false-high stiffness.", "لا تستخدم FIB-4 أو NFS تحت سن 35، واحذر من الصلابة المرتفعة كذبًا."),
+   ("FIB-4 and NFS are not validated under age 35: use elastography if concerned; beware of false-high stiffness.", "مؤشرا FIB-4 وNFS غير مُعتمدين تحت سن 35؛ استخدم قياس مرونة الكبد عند القلق، واحذر من الصلابة المرتفعة كذبًا."),
    ("Repeat low-risk tests every 1–3 years; refer high-risk patients.", "أعد الفحوص منخفضة الخطورة كل 1–3 سنوات، وأحِل المرضى عاليي الخطورة."),
   ]),
  ],

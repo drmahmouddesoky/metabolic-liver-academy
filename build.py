@@ -157,6 +157,16 @@ def learn_page(it):
         for en, ar in zip(it["bullets"]["en"], it["bullets"]["ar"]):
             out.append("<li>%s</li>" % bi(esc(en), esc(ar)))
         out.append("</ul>")
+    nxt = it.get("next", {"en": [], "ar": []})
+    out.append('<div class="shortbox mt-20"><p><strong>%s</strong></p><ul class="ticks">' % bi("What can I do next?", "ما الذي يمكنني فعله الآن؟"))
+    for en, ar in list(zip(nxt["en"], nxt["ar"])) + [
+            ("Write down your questions and take this page to your next appointment with your doctor, nurse or pharmacist.",
+             "اكتب أسئلتك واحمل هذه الصفحة إلى موعدك القادم مع طبيبك أو ممرضك أو الصيدلي."),
+            ("Whatever your results, the steps that protect the liver are in your hands: losing weight if you are overweight, moving more, eating well and avoiding alcohol.",
+             "أيًّا كانت نتائجك، فالخطوات التي تحمي الكبد بين يديك: خسارة الوزن عند زيادته، والحركة أكثر، والأكل الصحي، وتجنّب الكحول.")]:
+        out.append("<li>%s</li>" % bi(esc(en), esc(ar)))
+    out.append('</ul><p class="small"><a href="../patients.html#next">%s</a></p></div>' % bi(
+        "More on what to do next, including when tests are hard to get", "المزيد عن الخطوة التالية، حتى عندما يصعب الوصول إلى الفحوص"))
     if it.get("see"):
         out.append('<h2 class="h-small">%s</h2><ul class="qlist">' % bi("Related questions", "أسئلة ذات صلة"))
         for s in it["see"]:
@@ -487,7 +497,7 @@ def course_modules(series):
 
 
 def series_ctx(series):
-    """Labels, anchor on the Physician Portal, module count and record-keeping module for a series."""
+    """Labels, anchor on the Professional Portal, module count and record-keeping module for a series."""
     if series == "gi":
         return {"S": G, "en": G.SERIES["en"], "ar": G.SERIES["ar"], "anchor": "gi-series",
                 "total": len(G.MODULES), "src": "content/gi_modules.py"}
@@ -667,7 +677,7 @@ def module_page(mod, locked=False):
     rev = S.REVIEWED.get(mod["slug"])
     out.append('<header class="mod-head"><div class="wrap">')
     out.append('<nav class="crumbs small" aria-label="Breadcrumb"><a href="../academy.html">%s</a> › <a href="../academy.html#%s">%s</a></nav>'
-               % (bi("Physician Portal", "بوابة الأطباء"), ctx["anchor"], bi(ctx["en"], ctx["ar"])))
+               % (bi("Professional Portal", "بوابة المهنيين الصحيين"), ctx["anchor"], bi(ctx["en"], ctx["ar"])))
     out.append('<p class="mod-no">%s</p>' % bi("%s · Module %d of %d" % (ctx["en"], mod["number"], ctx["total"]),
                                                "%s · الوحدة %d من %d" % (ctx["ar"], mod["number"], ctx["total"])))
     out.append("<h1>%s</h1>" % bi(esc(mod["title"]["en"]), esc(mod["title"]["ar"])))
@@ -992,7 +1002,7 @@ def split(src_html, rel, lang):
 
 
 def courses_listing(live):
-    """Physician Portal sections for the courses that are live (none while they are hidden)."""
+    """Professional Portal sections for the courses that are live (none while they are hidden)."""
     out = []
     for series in live:
         c = C.SERIES[series]

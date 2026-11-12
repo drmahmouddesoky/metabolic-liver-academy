@@ -267,7 +267,7 @@
   });
 
   /* ---------- Videos ----------
-     Home and Physician Portal: cards that open the video on YouTube.
+     Home and Professional Portal: cards that open the video on YouTube.
      Lectures page (data-embed): the video plays on the page, but only
      after the visitor presses play (nothing loads from YouTube before). */
   var PLAY = '<svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="currentColor"/><path d="M19 15l15 9-15 9z" fill="#fff"/></svg>';
@@ -500,31 +500,59 @@
     checklist.addEventListener('submit', function (e) {
       e.preventDefault();
       var out = document.getElementById('risk-result');
-      var names = ['weight', 'sugar', 'pressure', 'fats'];
+      var names = ['weight', 'sugar', 'pressure', 'fats', 'liver'];
       var answered = names.every(function (n) { return checklist.querySelector('input[name="' + n + '"]:checked'); });
       if (!answered) {
         out.hidden = false; out.className = 'result';
-        out.innerHTML = '<p class="error">' + bi('Please answer all four questions.', 'يرجى الإجابة عن الأسئلة الأربعة.') + '</p>';
+        out.innerHTML = '<p class="error">' + bi('Please answer the first five questions. You can choose "I don\'t know".', 'يرجى الإجابة عن الأسئلة الخمسة الأولى، ويمكنك اختيار "لا أعرف".') + '</p>';
         out.focus();
         return;
       }
-      var yes = names.filter(function (n) { return checklist.querySelector('input[name="' + n + '"]:checked').value === 'yes'; }).length;
+      function val(n) { return checklist.querySelector('input[name="' + n + '"]:checked').value; }
+      function y(n) { return val(n) === 'yes'; }
+      var yes = names.filter(y).length;
+      var unknown = names.filter(function (n) { return val(n) === 'unknown'; });
       var alcohol = (checklist.querySelector('input[name="alcohol"]:checked') || {}).value === 'yes';
+      /* Who should be checked, as on the Guidance page: type 2 diabetes or prediabetes, abnormal liver
+         tests or fatty liver on a scan, or excess weight with at least one other metabolic risk factor. */
+      var checkNow = y('sugar') || y('liver') || (y('weight') && (y('pressure') || y('fats')));
+      var ask = {
+        sugar: bi('"Could you check my blood sugar (for example HbA1c) for diabetes or prediabetes?"', '"هل يمكن فحص السكر في دمي (مثل السكر التراكمي HbA1c) للتأكد من السكري أو مرحلة ما قبل السكري؟"'),
+        pressure: bi('"Could you check my blood pressure?"', '"هل يمكن قياس ضغط دمي؟"'),
+        fats: bi('"Could you check my cholesterol and triglycerides?"', '"هل يمكن فحص الكوليسترول والدهون الثلاثية؟"'),
+        liver: bi('"Could you check my liver blood tests and platelet count, so my FIB-4 score can be worked out?"', '"هل يمكن إجراء تحاليل الكبد وعدد الصفائح الدموية لحساب مؤشر FIB-4؟"')
+      };
       var html2;
-      if (yes > 0) {
+      if (checkNow) {
         out.className = 'result mid';
         html2 = '<h3>' + bi('You may be at higher risk of fatty liver.', 'قد تكون أكثر عرضة لمرض الكبد الدهني.') + '</h3>' +
-          '<p>' + bi('You have ' + yes + ' of the common risk factors. Ask your doctor about a liver check. It often starts with a simple blood-test score called FIB-4.',
-            'لديك ' + yes + ' من عوامل الخطر الشائعة. اسأل طبيبك عن فحص الكبد. غالبًا يبدأ بحساب بسيط من تحليل الدم اسمه FIB-4.') + '</p>';
+          '<p>' + bi('Your answers match the groups that guidelines suggest should be checked. Ask your doctor about a liver check. It usually starts with a simple blood-test score called FIB-4.',
+            'إجاباتك تطابق الفئات التي توصي الإرشادات بفحصها. اسأل طبيبك عن فحص الكبد، وهو يبدأ عادةً بحساب بسيط من تحليل الدم اسمه FIB-4.') + '</p>';
+      } else if (yes > 0) {
+        out.className = 'result';
+        html2 = '<h3>' + bi('You have ' + (yes === 1 ? 'one risk factor' : yes + ' risk factors') + ' for fatty liver.', 'لديك ' + (yes === 1 ? 'عامل خطر واحد' : yes + ' من عوامل الخطر') + ' للكبد الدهني.') + '</h3>' +
+          '<p>' + bi('On its own this does not mean you need a liver check now. Mention it at your next routine check-up, keep your weight, blood pressure and cholesterol checked, and ask again if anything changes.',
+            'هذا وحده لا يعني أنك تحتاج إلى فحص الكبد الآن. اذكره في فحصك الروتيني القادم، وواظب على متابعة وزنك وضغط دمك والكوليسترول، واسأل مجددًا إذا تغيّر شيء.') + '</p>';
+      } else if (unknown.length) {
+        out.className = 'result mid';
+        html2 = '<h3>' + bi('We cannot tell yet: some simple checks may be missing.', 'لا يمكننا الحكم بعد: قد تنقصك بعض الفحوص البسيطة.') + '</h3>' +
+          '<p>' + bi('That is common. These are routine, inexpensive checks that your family doctor, primary care clinic or pharmacy can usually arrange.',
+            'هذا أمر شائع. فهذه فحوص روتينية غير مكلفة يستطيع عادة طبيب الأسرة أو مركز الرعاية الأولية أو الصيدلية ترتيبها.') + '</p>';
       } else {
         out.className = 'result low';
         html2 = '<h3>' + bi('Your answers do not show the common risk factors.', 'إجاباتك لا تُظهر عوامل الخطر الشائعة.') + '</h3>' +
           '<p>' + bi('Keep up healthy habits. If you have symptoms or worries, talk to your doctor.', 'حافظ على عاداتك الصحية. إذا كانت لديك أعراض أو مخاوف، تحدّث مع طبيبك.') + '</p>';
       }
+      if (unknown.length) {
+        var qs = unknown.filter(function (n) { return ask[n]; });
+        html2 += '<p><strong>' + bi('Questions to take to your next appointment:', 'أسئلة تحملها إلى موعدك القادم:') + '</strong></p><ul class="ticks">' +
+          qs.map(function (n) { return '<li>' + ask[n] + '</li>'; }).join('') + '</ul>';
+      }
       if (alcohol) {
         html2 += '<p>' + bi('You said you drink alcohol regularly. Tell your doctor, because alcohol and metabolic risk together can harm the liver faster.',
           'ذكرت أنك تتناول الكحول بانتظام. أخبر طبيبك، لأن اجتماع الكحول مع عوامل الخطر الأيضية قد يضرّ الكبد أسرع.') + '</p>';
       }
+      html2 += '<p><a href="#next">' + bi('What can I do next?', 'ما الذي يمكنني فعله الآن؟') + '</a></p>';
       html2 += '<p class="fine">' + bi('This is an education tool, not a diagnosis. It does not replace your doctor.', 'هذه أداة تثقيفية وليست تشخيصًا، ولا تُغني عن طبيبك.') + '</p>';
       out.hidden = false;
       out.innerHTML = html2;
@@ -586,7 +614,7 @@
           'توصي الإرشادات بفحص من الخط الثاني: قياس مرونة الكبد العابر (مثل فيبروسكان) أو اختبار ELF.');
       }
       var notes = [];
-      if (age < 35) notes.push(t('FIB-4 is not reliable under age 35. Interpret with care.', 'مؤشر FIB-4 غير موثوق تحت سن 35. فسّر النتيجة بحذر.'));
+      if (age < 35) notes.push(t('FIB-4 is not validated under age 35: do not rely on this result; use elastography if concerned.', 'مؤشر FIB-4 غير مُعتمد تحت سن 35: لا تعتمد على هذه النتيجة، واستخدم قياس مرونة الكبد عند القلق.'));
       if (ast > 200 || alt > 200) notes.push(t('AST or ALT is very high. Acute liver injury can make FIB-4 misleading; repeat when stable.', 'قيمة AST أو ALT مرتفعة جدًا. قد تجعل إصابة الكبد الحادة FIB-4 مضلّلًا، فأعد الحساب عند الاستقرار.'));
       if (age >= 65) notes.push(t('Age 65 or over: lower cut-off of 2.0 used.', 'العمر 65 سنة أو أكثر: استُخدم الحد الأدنى 2.0.'));
       out.className = 'result ' + cls;
@@ -650,7 +678,7 @@
           'توصي الإرشادات بفحص من الخط الثاني: قياس مرونة الكبد العابر (مثل فيبروسكان) أو اختبار ELF.');
       }
       var notes = [t('BMI used: ' + bmi.toFixed(1) + ' kg/m².', 'مؤشر كتلة الجسم المستخدم: ' + bmi.toFixed(1) + ' كغ/م².')];
-      if (age < 35) notes.push(t('NFS is not reliable under age 35. Interpret with care.', 'مؤشر NFS غير موثوق تحت سن 35. فسّر النتيجة بحذر.'));
+      if (age < 35) notes.push(t('NFS is not validated under age 35: do not rely on this result; use elastography if concerned.', 'مؤشر NFS غير مُعتمد تحت سن 35: لا تعتمد على هذه النتيجة، واستخدم قياس مرونة الكبد عند القلق.'));
       if (age >= 65) notes.push(t('Age 65 or over: lower cut-off of 0.12 used.', 'العمر 65 سنة أو أكثر: استُخدم الحد الأدنى 0.12.'));
       if (bmi >= 35 || dm === '1') notes.push(t('Severe obesity or diabetes raises NFS; a high score may overestimate risk. Confirm with a second-line test.', 'السمنة الشديدة أو السكري ترفع NFS، وقد تبالغ النتيجة المرتفعة في تقدير الخطر. أكّدها بفحص من الخط الثاني.'));
       out.className = 'result ' + cls;
