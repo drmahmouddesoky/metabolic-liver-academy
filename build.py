@@ -567,6 +567,8 @@ def module_page(mod, locked=False):
         texts = [x for x in b[1:] if isinstance(x, tuple)]
         if b[0] == "ul":
             texts += b[1]  # bullet lists can carry citations too
+        if b[0] == "case":
+            texts += [t for _, t in b[1]["parts"]]  # and the steps of a case
         for txt in texts:
             for m in CITE.finditer(txt[0]):
                 note(m.group(1).split(","))
