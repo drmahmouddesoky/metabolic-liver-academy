@@ -456,6 +456,8 @@ def figure_svg(key):
     raise KeyError("unknown figure " + key)
 
 
+GRADE_STRENGTH = ("Strong", "Conditional", "Qualified")
+
 BOXES = {
     "pharm": ("For the pharmacist", "للصيدلي"),
     "adv": ("Advanced", "للمستوى المتقدّم"),
@@ -617,10 +619,15 @@ def module_page(mod, locked=False):
         elif kind == "gl":
             _, text, soc, cls, loe, key = b
             tags = ['<span class="g-loe">%s</span>' % esc(soc)]
-            if cls:
-                tags.append("<span>%s</span>" % A("Class " + cls, "الفئة " + cls))
-            if loe:
-                tags.append("<span>%s</span>" % A("Level " + loe, "المستوى " + loe))
+            if cls in GRADE_STRENGTH:  # GRADE: strength of recommendation and certainty of evidence
+                tags.append("<span>%s</span>" % A(cls + " recommendation", cls + " recommendation"))
+                if loe:
+                    tags.append("<span>%s</span>" % A(loe + " certainty", loe + " certainty"))
+            else:
+                if cls:
+                    tags.append("<span>%s</span>" % A("Class " + cls, "الفئة " + cls))
+                if loe:
+                    tags.append("<span>%s</span>" % A("Level " + loe, "المستوى " + loe))
             num = order.index(key) + 1
             body.append('<div class="rec"><p class="rec-tags"><a href="#grading">%s</a></p><p class="rec-text">%s <sup class="cite">[<a href="#ref-%d">%d</a>]</sup></p></div>'
                         % ("".join(tags), cites(text[0]) if mod.get("en_only") else A(cites(text[0]), cites(text[1])), num, num))
@@ -696,9 +703,15 @@ def module_page(mod, locked=False):
         A("Learning objectives", "أهداف التعلّم"), A("After this module you should be able to:", "بعد هذه الوحدة ستكون قادرًا على:"),
         "".join("<li>%s</li>" % A(esc(o[0]), esc(o[1])) for o in mod["objectives"])))
     if any(b[0] == "gl" for b in mod["blocks"]):
+        gls = [b for b in mod["blocks"] if b[0] == "gl"]
+        note = ["Boxed recommendations are paraphrased from the guideline named on each box, with that guideline's own grades."]
+        if any(b[3] in GRADE_STRENGTH for b in gls):
+            note.append("GRADE (used by AGA, ACG and the British Dietetic Association): a strong recommendation means most patients should receive the intervention; a conditional (or qualified) one means the choice depends on the patient's values, preferences and circumstances. Certainty of evidence is high, moderate, low or very low.")
+        if any(b[3] and b[3] not in GRADE_STRENGTH for b in gls):
+            note.append("ESC/EAS and ACC/AHA: Class I = recommended, IIa = should be considered (reasonable), IIb = may be considered, III = not recommended or harmful; Level A = several randomised trials or meta-analyses, B = one trial or large non-randomised studies, C = expert opinion or small studies.")
+        note.append("Always read the full guideline before applying a recommendation.")
         out.append('<p class="small" id="grading">%s</p></section>' % A(
-            "Boxed recommendations are paraphrased from the guideline named on each box, with that guideline's own grades. ESC/EAS and ACC/AHA: Class I = recommended, IIa = should be considered (reasonable), IIb = may be considered, III = not recommended or harmful; Level A = several randomised trials or meta-analyses, B = one trial or large non-randomised studies, C = expert opinion or small studies. Always read the full guideline before applying a recommendation.",
-            "التوصيات المؤطّرة مُعاد صياغتها من الإرشادات المذكورة على كل إطار مع درجاتها."))
+            " ".join(note), "التوصيات المؤطّرة مُعاد صياغتها من الإرشادات المذكورة على كل إطار مع درجاتها."))
     elif not any(b[0] == "rec" for b in mod["blocks"]):
         out.append("</section>")
     else:

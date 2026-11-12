@@ -24,13 +24,15 @@ SERIES = {
         "live": True,
     },
     "bowel": {
-        "en": "Bowel Health series",
-        "ar": "سلسلة صحة الأمعاء",
+        "en": "Bowel Health series · Course 1: Chronic constipation in adults",
+        "ar": "سلسلة صحة الأمعاء · الدورة الأولى: الإمساك المزمن لدى البالغين",
         "anchor": "bowel-series",
-        "lead_en": "Four courses: chronic constipation, IBS-C, refractory and evacuation disorders, "
-                   "and neurogenic bowel with special populations.",
-        "lead_ar": "أربع دورات: الإمساك المزمن، والقولون العصبي مع الإمساك، والإمساك المعنّد واضطرابات الإخراج، "
-                   "والأمعاء العصبية والفئات الخاصة.",
+        "lead_en": "Six modules for primary care, internal medicine and pharmacists: making the diagnosis safely, "
+                   "treatment that works from diet to prescription drugs, and when to refer. The first of four "
+                   "courses (then neurogenic bowel, IBS-C, and refractory and evacuation disorders).",
+        "lead_ar": "ست وحدات لأطباء الرعاية الأولية والباطنة والصيادلة: التشخيص الآمن، والعلاج الفعّال من الغذاء إلى "
+                   "الأدوية الموصوفة، ومتى تُحال الحالة. وهي الأولى من أربع دورات (تليها الأمعاء العصبية، والقولون "
+                   "العصبي مع الإمساك، والإمساك المعنّد واضطرابات الإخراج).",
         "live": False,
     },
     "obesity": {
@@ -133,14 +135,36 @@ SOURCES = {
     'olpasiran2026': ('Tweneboah C, Kaur G. Lowering of lipoprotein(a) with olpasiran. Cardiovasc Hematol Disord Drug Targets 2026;26(3):219–226.', 'https://doi.org/10.2174/011871529X428489260113103704'),
     'garba2026': ('Garba DL, Zahid S, Blumenthal RS, Barouch LA. Dyslipidemia management in athletes: a comparative commentary on the 2026 ACC/AHA/Multisociety Guideline and contemporary sports cardiology recommendations. Am J Prev Cardiol 2026;30:101735.', 'https://doi.org/10.1016/j.ajpc.2026.101735'),
     'carlson2026': ('Carlson A, Zayyad ZA, et al. Beyond LDL-C: modern lipid management for ASCVD prevention in primary care. Cardiol Ther 2026;15(3):481–501.', 'https://doi.org/10.1007/s40119-026-00473-5'),
+    # Bowel Health series, Course 1 (chronic constipation in adults)
+    'agaacg2023': ('Chang L, Chey WD, Imdad A, et al. American Gastroenterological Association–American College of Gastroenterology clinical practice guideline: pharmacological management of chronic idiopathic constipation. Gastroenterology 2023;164(7):1086–1106.', 'https://doi.org/10.1053/j.gastro.2023.03.214'),
+    'bda2025': ('Dimidi E, van der Schoot A, Barrett K, et al. British Dietetic Association guidelines for the dietary management of chronic constipation in adults. J Hum Nutr Diet 2025;38(5):e70133.', 'https://doi.org/10.1111/jhn.70133'),
+    'esnm2020': ('Serra J, Pohl D, Azpiroz F, et al. European Society of Neurogastroenterology and Motility guidelines on functional constipation in adults. Neurogastroenterol Motil 2020;32(2):e13762.', 'https://doi.org/10.1111/nmo.13762'),
+    'romeiv2016': ('Mearin F, Lacy BE, Chang L, et al. Bowel disorders (Rome IV). Gastroenterology 2016;150(6):1393–1407.', 'https://doi.org/10.1053/j.gastro.2016.02.031'),
+    'agatech2013': ('Bharucha AE, Pemberton JH, Locke GR. American Gastroenterological Association technical review on constipation. Gastroenterology 2013;144(1):218–238.', 'https://doi.org/10.1053/j.gastro.2012.10.028'),
+    'acganorectal2021': ('Wald A, Bharucha AE, Limketkai B, et al. ACG clinical guidelines: management of benign anorectal disorders. Am J Gastroenterol 2021;116(10):1987–2008.', 'https://doi.org/10.14309/ajg.0000000000001507'),
+    'barberio2021': ('Barberio B, Judge C, Savarino EV, Ford AC. Global prevalence of functional constipation according to the Rome criteria: a systematic review and meta-analysis. Lancet Gastroenterol Hepatol 2021;6(8):638–648.', 'https://doi.org/10.1016/S2468-1253(21)00111-4'),
+    'sperber2021': ('Sperber AD, Bangdiwala SI, Drossman DA, et al. Worldwide prevalence and burden of functional gastrointestinal disorders: results of Rome Foundation Global Study. Gastroenterology 2021;160(1):99–114.', 'https://doi.org/10.1053/j.gastro.2020.04.014'),
+    'prucalopride2008': ('Camilleri M, Kerstens R, Rykx A, Vandeplassche L. A placebo-controlled trial of prucalopride for severe chronic constipation. N Engl J Med 2008;358(22):2344–2354.', 'https://doi.org/10.1056/NEJMoa0800670'),
+    'linaclotide2011': ('Lembo AJ, Schneier HA, Shiff SJ, et al. Two randomized trials of linaclotide for chronic constipation. N Engl J Med 2011;365(6):527–536.', 'https://doi.org/10.1056/NEJMoa1010863'),
+    'elobixibat2018': ('Nakajima A, Seki M, Taniguchi S, et al. Safety and efficacy of elobixibat for chronic constipation: results from a randomised, double-blind, placebo-controlled, phase 3 trial and an open-label, single-arm, phase 3 trial. Lancet Gastroenterol Hepatol 2018;3(8):537–547.', 'https://doi.org/10.1016/S2468-1253(18)30123-7'),
+    'step1': ('Wilding JPH, Batterham RL, Calanna S, et al. Once-weekly semaglutide in adults with overweight or obesity (STEP 1). N Engl J Med 2021;384(11):989–1002.', 'https://doi.org/10.1056/NEJMoa2032183'),
+    'moiz2025': ('Moiz A, Filion KB, Toutounchi H, et al. Efficacy and safety of glucagon-like peptide-1 receptor agonists for weight loss among adults without diabetes: a systematic review of randomized controlled trials. Ann Intern Med 2025;178(2):199–217.', 'https://doi.org/10.7326/ANNALS-24-01590'),
+    'cochranepreg2015': ('Rungsiprakarn P, Laopaiboon M, Sangkomkamhang US, et al. Interventions for treating constipation in pregnancy. Cochrane Database Syst Rev 2015;(9):CD011448.', 'https://doi.org/10.1002/14651858.CD011448.pub2'),
+    'saudiibs2026': ('Baig M, Alhammad MA, Alghamdi WA, et al. Association of irritable bowel syndrome with depression, anxiety, stress, and sociodemographic factors in Saudi Arabia: a cross-sectional survey. Front Public Health 2026;14:1866985.', 'https://doi.org/10.3389/fpubh.2026.1866985'),
+    'saudibariatric2026': ('Alratrout HA, Alqadoum HA, Almutairi SS, et al. New-onset anorectal symptoms and disorders after bariatric surgery: an overlooked entity. Obes Surg 2026;36(5):2087–2093.', 'https://doi.org/10.1007/s11695-026-08614-4'),
+    'saudihd2025': ('Fatani A, Shafi RW, Alhozali H, et al. Evaluation of constipation and quality of life among individuals undergoing hemodialysis: a single-center cross-sectional study. Healthcare (Basel) 2025;13(23):3095.', 'https://doi.org/10.3390/healthcare13233095'),
+    'qassimpharm2026': ("Anaam MS, Alfadly SO, Alqasoumi A, et al. Community pharmacists' preparedness in irritable bowel syndrome management: a descriptive, community-based study on awareness, perceptions, and clinical support practices in Qassim, Saudi Arabia. Medicine (Baltimore) 2026;105(27):e49312.", 'https://doi.org/10.1097/MD.0000000000049312'),
+    'usmortality2026': ('Atif E, Das V, Awais AM, et al. Temporal trends and demographic disparities in constipation-associated mortality in the United States, 1999–2024. BMC Gastroenterol 2026;26(1).', 'https://doi.org/10.1186/s12876-026-05229-y'),
     'gulfaction2026': ('Alhabib KF, et al. Demographics, clinical characteristics, and barriers to care in patients with dyslipidaemia in the Arabian Gulf region: the Gulf ACTION registry. Curr Vasc Pharmacol 2026.', 'https://doi.org/10.2174/0115701611397165260302054720'),
     'hicc2026': ('Schonck WAM, et al. Homozygous familial hypercholesterolaemia: insights from the Global HICC Registry. Eur Heart J 2026;47:5979–5990.', 'https://doi.org/10.1093/eurheartj/ehag357'),
 }
 
 # Drawings used by the courses (private modules may use these keys too).
 from lipid_map import LIPID_MAP  # noqa: E402
-FIGURES = {"lipidmap": LIPID_MAP}
+from bowel_figs import CARE_LADDER  # noqa: E402
+FIGURES = {"lipidmap": LIPID_MAP, "careladder": CARE_LADDER}
 
 # Module 1 of each course, in full (open to everyone).
 from lipids_m1 import MODULE as _LIPIDS_1  # noqa: E402
-PUBLIC_MODULES = [_LIPIDS_1]
+from bowel_m1 import MODULE as _BOWEL_1  # noqa: E402
+PUBLIC_MODULES = [_LIPIDS_1, _BOWEL_1]
