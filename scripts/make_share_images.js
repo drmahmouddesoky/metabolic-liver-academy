@@ -19,8 +19,8 @@ const PAGES = {
   patients: ['Patient Portal', 'بوابة المرضى'],
   learn: ['Questions and answers about fatty liver', 'أسئلة وأجوبة عن الكبد الدهني'],
   guides: ['Printable guides for patients', 'أدلة للمرضى قابلة للطباعة'],
-  academy: ['Physician Portal', 'بوابة الأطباء'],
-  ref: ['Reference library for doctors', 'المكتبة المرجعية للأطباء'],
+  academy: ['Professional Portal', 'بوابة المهنيين الصحيين'],
+  ref: ['Reference library for healthcare professionals', 'المكتبة المرجعية للعاملين في الصحة'],
   guidance: ['MASLD guidance for clinicians', 'إرشادات MASLD للأطباء'],
   calculators: ['MASLD calculators for clinicians', 'حاسبات MASLD للأطباء'],
   lectures: ['Lectures', 'المحاضرات'],
@@ -56,7 +56,9 @@ p{font-size:30px;color:#4F6275;line-height:1.4}
 (async () => {
   const b = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {});
   const p = await b.newPage({ viewport: { width: 1200, height: 630 } });
-  await p.goto(BASE + 'legal.html');   /* same address as the fonts, so they load */
+  /* same address as the fonts, so they load; a plain file, because site pages carry a
+     Content Security Policy that would block this template's inline styles */
+  await p.goto(BASE + 'robots.txt');
   async function shot(lang, title, file) {
     await p.setContent(html(lang, title), { waitUntil: 'networkidle' });
     await p.evaluate(() => document.fonts.ready);
