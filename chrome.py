@@ -152,6 +152,7 @@ def header(rel):
         '<a class="brand" href="%sindex.html">%s<span class="brand-text">'
         '<span class="brand-name">%s</span><span class="brand-tag">%s</span></span></a>'
         '<div class="bar-tools">'
+        '<a class="ask-btn" href="%sask.html">%s<span>%s</span></a>'
         '<button class="theme-btn" type="button" aria-pressed="false"><span class="visually-hidden">%s</span>%s</button>'
         '%s</div></div></header>\n'
         '<nav class="site-nav" id="site-nav" aria-label="%s">'
@@ -166,6 +167,7 @@ def header(rel):
         up, mark(up),
         bi("Metabolic Liver Academy", "أكاديمية الكبد والتمثيل الغذائي"),
         bi("Healthy liver. Healthy life.", "كبد سليم. حياة صحية."),
+        up, icon("spark"), bi("Ask AI", "اسأل الذكاء الاصطناعي"),
         bi("Dark mode", "الوضع الداكن"), ICON_THEME,
         bi(lang_en, lang_ar),
         "Main",

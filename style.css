@@ -888,3 +888,8 @@ html[dir="rtl"] .qcard-foot { padding: 8px 18px 10px 12px; }
 .site-nav .nav-top.nav-ai { background: linear-gradient(90deg, var(--pine-tint), transparent); border: 1px solid var(--line); font-weight: 600; color: var(--pine); margin: 4px 0; }
 .site-nav .nav-top.nav-ai .nav-ico { color: var(--coral); }
 html[dir="rtl"] .site-nav .nav-top.nav-ai { background: linear-gradient(270deg, var(--pine-tint), transparent); }
+/* "Ask AI" button in the top bar, next to the language switch */
+.ask-btn { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font: inherit; font-size: 0.92rem; font-weight: 600; color: var(--on-pine); background: var(--pine); padding: 6px 14px; border-radius: 999px; white-space: nowrap; }
+.ask-btn:hover { background: var(--pine-2); color: var(--on-pine); text-decoration: none; }
+.ask-btn .nav-ico { width: 18px; height: 18px; color: inherit; }
+@media (max-width: 480px) { .ask-btn { padding: 6px 10px; } .ask-btn > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } .ask-btn .nav-ico { width: 20px; height: 20px; } }
