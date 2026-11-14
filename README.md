@@ -161,6 +161,11 @@ How it was set up:
 
 To switch it off again, empty the quotes.
 
+Shortcut to the numbers: https://metabolicliveracademy.org/stats forwards to the
+GoatCounter dashboard (`stats/index.html`, hand-written, not touched by `build.py`).
+It is not in the menu, sitemap or search engines, and the dashboard still asks for
+the GoatCounter login, so the numbers stay private.
+
 ## Mailing list (beehiiv)
 
 Every page has a "Stay in touch" strip above the footer with **Join our mailing list** and
