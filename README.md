@@ -214,3 +214,18 @@ The site lives at https://metabolicliveracademy.org/ (bought on Cloudflare, host
 - GitHub sends visitors from the old github.io address to the new domain, so old links keep working.
   Your personal page at drmahmouddesoky.github.io is not affected.
 - Google Search Console: the sitemap to submit is https://metabolicliveracademy.org/sitemap.xml.
+
+## Ask the Academy (AI helper, test version)
+
+`ask.html` (built from `src/ask.html`) with `ask.js`. Questions go to the Academy's own
+Cloudflare AI Search instance **mla-site** (dashboard: AI Search > mla-site), which has read
+the site's pages (sitemap crawl, `main` content only, re-read every 24 hours) and answers only
+from them. Its rules (education only, no personal advice, same language, short answers) are the
+instance's **system prompt** in Settings > Generation.
+
+- Public address: `https://2aca7004-64b6-4a4e-ac76-5622b96cca54.search.ai.cloudflare.com`
+  (`ASK_ID` in `build.py` and `ASK_HOST` in `ask.js` must match).
+- Only the ask page may connect there (its Content Security Policy); no outside code runs.
+- Answers are shown as plain text; source links are kept to this site only.
+- The page is `noindex`, not in the menu and not in the sitemap while it is being tested.
+- To switch it off: Cloudflare > AI Search > mla-site > Public endpoint.

@@ -817,10 +817,18 @@ def structured_data(soup, rel, lang):
 # a pasted onclick= cannot run. See SECURITY.md.
 COUNTER_HOST = "https://drmahmouddesoky.goatcounter.com"  # the visit-counter pixel (main.js)
 VIDEO_HOST = "https://www.youtube-nocookie.com"            # videos play here after the visitor presses play
+# "Ask the Academy" (ask.html + ask.js): the Academy's own Cloudflare AI Search, which answers
+# only from this website's pages. Only the ask page may connect to it. Keep in step with ask.js.
+ASK_ID = "2aca7004-64b6-4a4e-ac76-5622b96cca54"
+ASK_HOST = "https://%s.search.ai.cloudflare.com" % ASK_ID
 
 
 def sha256_src(text):
     return "'sha256-%s'" % base64.b64encode(hashlib.sha256(text.encode("utf-8")).digest()).decode("ascii")
+
+
+def is_ask_page(soup):
+    return soup.body is not None and soup.body.get("data-page") == "ask"
 
 
 def csp_for(soup):
@@ -844,7 +852,7 @@ def csp_for(soup):
         "style-src 'self' " + " ".join(style_hashes),
         "img-src 'self' data: " + COUNTER_HOST,
         "font-src 'self'",
-        "connect-src 'self'",
+        "connect-src 'self'" + (" " + ASK_HOST if is_ask_page(soup) else ""),
         "frame-src " + VIDEO_HOST,
         "media-src 'self'",
         "manifest-src 'self'",
@@ -900,6 +908,12 @@ def split(src_html, rel, lang):
             d["content"] = d["data-ar"]
         if "data-ar" in d.attrs:
             del d["data-ar"]
+
+    # form hints: placeholder="English" data-placeholder-ar="Arabic"
+    for el in soup.select("[data-placeholder-ar]"):
+        if lang == "ar":
+            el["placeholder"] = el["data-placeholder-ar"]
+        del el["data-placeholder-ar"]
 
     # Arabic pages live one folder deeper: shared files need "../"
     if lang == "ar":
@@ -1062,8 +1076,8 @@ def main():
 
     urls = []
     for rel in sorted(pages):
-        if rel == "expert.html":
-            continue  # a template filled from data/experts.js (expert.html?id=...)
+        if rel in ("expert.html", "ask.html"):
+            continue  # expert.html: a template filled from data/experts.js; ask.html: the AI helper, not content
         loc = "" if rel == "index.html" else rel
         urls.append(
             "  <url><loc>%s%s</loc>"
