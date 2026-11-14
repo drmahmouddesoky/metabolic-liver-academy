@@ -884,3 +884,7 @@ html[dir="rtl"] .qcard-foot { padding: 8px 18px 10px 12px; }
 .ask-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .ask-bar .btn { margin-top: 10px; }
 .ask-form.busy .btn { opacity: 0.6; cursor: wait; }
+/* the AI helper in the side menu stands out a little */
+.site-nav .nav-top.nav-ai { background: linear-gradient(90deg, var(--pine-tint), transparent); border: 1px solid var(--line); font-weight: 600; color: var(--pine); margin: 4px 0; }
+.site-nav .nav-top.nav-ai .nav-ico { color: var(--coral); }
+html[dir="rtl"] .site-nav .nav-top.nav-ai { background: linear-gradient(270deg, var(--pine-tint), transparent); }

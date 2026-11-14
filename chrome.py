@@ -23,6 +23,8 @@ SUBSCRIBE_MAILTO = "mailto:%s?subject=Subscribe%%20to%%20the%%20Metabolic%%20Liv
 
 MENU = [
     {"en": "Home", "ar": "الرئيسية", "href": "index.html", "key": "home", "icon": "home"},
+    # the AI helper (ask.html): highlighted so visitors notice it
+    {"en": "AI Ask the Academy", "ar": "اسأل الأكاديمية بالذكاء الاصطناعي", "href": "ask.html", "key": "ask", "icon": "spark", "cls": "nav-ai"},
     {"en": "Public & patients", "ar": "الجمهور والمرضى", "key": "patients", "icon": "heart", "items": [
         ("Patient Portal", "بوابة المرضى", "patients.html"),
         ("Am I at risk?", "هل أنا معرّض للخطر؟", "patients.html#risk"),
@@ -54,7 +56,7 @@ MENU = [
 
 # Which menu item is highlighted for each page (by file name or folder).
 SECTION = {
-    "index.html": "home",
+    "index.html": "home", "ask.html": "ask",
     "patients.html": "patients", "learn.html": "patients", "learn/": "patients", "guides.html": "patients",
     "academy.html": "physicians", "modules/": "physicians", "ref.html": "physicians", "ref/": "physicians",
     "guidance.html": "physicians", "calculators.html": "physicians", "links.html": "physicians",
@@ -85,6 +87,7 @@ ICONS = {
     "steth": '<path d="M6 3v6a4 4 0 0 0 8 0V3"/><path d="M10 13v2a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="11" r="2"/>',
     "play": '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/>',
     "people": '<circle cx="9" cy="8" r="3.2"/><path d="M3 20c.8-3.6 3.3-5.5 6-5.5s5.2 1.9 6 5.5"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.6c2.4.2 4.2 1.9 5 5.4"/>',
+    "spark": '<path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',
     "radar": '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12l6-6"/>',
     "cal": '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
     "info": '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
@@ -128,8 +131,8 @@ def header(rel):
     for i, m in enumerate(MENU):
         active = " is-active" if m["key"] == here else ""
         if "items" not in m:
-            items.append('<li class="nav-item%s"><a class="nav-top" href="%s%s"%s>%s%s</a></li>' % (
-                active, up, m["href"], ' aria-current="page"' if m["href"] == page else "", icon(m["icon"]), bi(m["en"], m["ar"])))
+            items.append('<li class="nav-item%s"><a class="nav-top%s" href="%s%s"%s>%s%s</a></li>' % (
+                active, " " + m["cls"] if m.get("cls") else "", up, m["href"], ' aria-current="page"' if m["href"] == page else "", icon(m["icon"]), bi(m["en"], m["ar"])))
             continue
         sub = "".join("<li>%s</li>" % link(en, ar, href) for en, ar, href in m["items"])
         items.append(

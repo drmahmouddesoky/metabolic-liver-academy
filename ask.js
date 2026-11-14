@@ -17,6 +17,8 @@
   var SITE = 'https://metabolicliveracademy.org/';
   var MAX_LEN = 500;          /* longest question accepted */
   var MAX_TURNS = 6;          /* earlier messages sent along for context */
+  /* Writes clean Arabic and English (the default model mixed in stray foreign words). */
+  var MODEL = '@cf/deepseek-ai/deepseek-v4-flash-0731';
 
   var html = document.documentElement;
   var AR = html.lang === 'ar';
@@ -139,7 +141,7 @@
       headers: { 'Content-Type': 'application/json' },
       credentials: 'omit',
       referrerPolicy: 'no-referrer',
-      body: JSON.stringify({ messages: msgs, stream: false })
+      body: JSON.stringify({ model: MODEL, messages: msgs, stream: false })
     }).then(function (r) {
       if (r.status === 429) throw new Error('busy');
       if (!r.ok) throw new Error('http ' + r.status);
