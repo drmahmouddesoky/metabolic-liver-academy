@@ -23,8 +23,8 @@ SUBSCRIBE_MAILTO = "mailto:%s?subject=Subscribe%%20to%%20the%%20Metabolic%%20Liv
 
 MENU = [
     {"en": "Home", "ar": "الرئيسية", "href": "index.html", "key": "home", "icon": "home"},
-    # the AI helper (ask.html): highlighted so visitors notice it
-    {"en": "AI Ask the Academy", "ar": "اسأل الأكاديمية بالذكاء الاصطناعي", "href": "ask.html", "key": "ask", "icon": "spark", "cls": "nav-ai"},
+    # the AI helper (ask.html), "Ask Mr. Livo": highlighted with his picture so visitors notice it
+    {"en": "AI (Ask Mr. Livo)", "ar": "الذكاء الاصطناعي (اسأل مستر ليفو)", "href": "ask.html", "key": "ask", "icon": "livo", "cls": "nav-ai"},
     {"en": "Public & patients", "ar": "الجمهور والمرضى", "key": "patients", "icon": "heart", "items": [
         ("Patient Portal", "بوابة المرضى", "patients.html"),
         ("Am I at risk?", "هل أنا معرّض للخطر؟", "patients.html#risk"),
@@ -95,6 +95,12 @@ ICONS = {
 }
 
 
+def livo(up, cls="livo-ava"):
+    """Mr. Livo, the Academy's liver mascot, as a small round picture (the AI helper's face)."""
+    return ('<img class="%s" src="%simages/livo/livo-avatar-64.webp" '
+            'srcset="%simages/livo/livo-avatar-128.webp 2x" alt="" width="32" height="32">' % (cls, up, up))
+
+
 def icon(name):
     return ('<svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" '
             'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">%s</svg>' % ICONS[name])
@@ -132,7 +138,8 @@ def header(rel):
         active = " is-active" if m["key"] == here else ""
         if "items" not in m:
             items.append('<li class="nav-item%s"><a class="nav-top%s" href="%s%s"%s>%s%s</a></li>' % (
-                active, " " + m["cls"] if m.get("cls") else "", up, m["href"], ' aria-current="page"' if m["href"] == page else "", icon(m["icon"]), bi(m["en"], m["ar"])))
+                active, " " + m["cls"] if m.get("cls") else "", up, m["href"], ' aria-current="page"' if m["href"] == page else "",
+                livo(up, "nav-ico livo-ava") if m["icon"] == "livo" else icon(m["icon"]), bi(m["en"], m["ar"])))
             continue
         sub = "".join("<li>%s</li>" % link(en, ar, href) for en, ar, href in m["items"])
         items.append(
@@ -167,7 +174,7 @@ def header(rel):
         up, mark(up),
         bi("Metabolic Liver Academy", "أكاديمية الكبد والتمثيل الغذائي"),
         bi("Healthy liver. Healthy life.", "كبد سليم. حياة صحية."),
-        up, icon("spark"), bi("Ask AI", "اسأل الذكاء الاصطناعي"),
+        up, livo(up), bi("Ask Mr. Livo", "اسأل مستر ليفو"),
         bi("Dark mode", "الوضع الداكن"), ICON_THEME,
         bi(lang_en, lang_ar),
         "Main",

@@ -817,7 +817,7 @@ def structured_data(soup, rel, lang):
 # a pasted onclick= cannot run. See SECURITY.md.
 COUNTER_HOST = "https://drmahmouddesoky.goatcounter.com"  # the visit-counter pixel (main.js)
 VIDEO_HOST = "https://www.youtube-nocookie.com"            # videos play here after the visitor presses play
-# "Ask the Academy" (ask.html + ask.js): the Academy's own Cloudflare AI Search, which answers
+# "AI (Ask Mr. Livo)" (ask.html + ask.js): the Academy's own Cloudflare AI Search, which answers
 # only from this website's pages. Only the ask page may connect to it. Keep in step with ask.js.
 ASK_ID = "2aca7004-64b6-4a4e-ac76-5622b96cca54"
 ASK_HOST = "https://%s.search.ai.cloudflare.com" % ASK_ID
@@ -914,6 +914,12 @@ def split(src_html, rel, lang):
         if lang == "ar":
             el["placeholder"] = el["data-placeholder-ar"]
         del el["data-placeholder-ar"]
+
+    # picture descriptions: alt="English" data-alt-ar="Arabic"
+    for el in soup.select("[data-alt-ar]"):
+        if lang == "ar":
+            el["alt"] = el["data-alt-ar"]
+        del el["data-alt-ar"]
 
     # Arabic pages live one folder deeper: shared files need "../"
     if lang == "ar":

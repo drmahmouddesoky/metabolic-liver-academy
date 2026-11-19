@@ -1,5 +1,5 @@
 /* ============================================================
-   "Ask the Academy" – the AI helper on ask.html
+   "AI (Ask Mr. Livo)" – the AI helper on ask.html
    - Sends the visitor's question to the Academy's own Cloudflare
      AI Search, which has read the pages of this website and answers
      only from them (rules are set in the Cloudflare dashboard).
@@ -59,8 +59,17 @@
     return p.charAt(0).toUpperCase() + p.slice(1);
   }
 
+  /* Mr. Livo's face next to each of his answers */
+  var LIVO = (AR ? '../' : '') + 'images/livo/livo-avatar-64.webp';
+
   function addBubble(who, text) {
     var b = el('div', 'ask-msg ' + who);
+    if (/\bbot\b/.test(who)) {
+      var face = el('img', 'livo-ava ask-face');
+      face.src = LIVO; face.alt = ''; face.width = 32; face.height = 32;
+      b.appendChild(face);
+      b.appendChild(el('span', 'visually-hidden', t('Mr. Livo: ', 'مستر ليفو: ')));
+    }
     var lines = String(text || '').split(/\n{2,}/);
     for (var i = 0; i < lines.length; i++) {
       if (lines[i].trim()) b.appendChild(el('p', null, lines[i].trim()));
@@ -156,7 +165,7 @@
       wait.remove();
       addBubble('bot err', e && e.message === 'busy'
         ? t('Many people are asking right now. Please try again in a minute.', 'هناك أسئلة كثيرة الآن. من فضلك حاول مرة أخرى بعد دقيقة.')
-        : t('Sorry, the helper is not available right now. Please try again later, or browse our pages.', 'عذرًا، المساعد غير متاح الآن. حاول لاحقًا، أو تصفّح صفحاتنا.'));
+        : t('Sorry, Mr. Livo is not available right now. Please try again later, or browse our pages.', 'عذرًا، مستر ليفو غير متاح الآن. حاول لاحقًا، أو تصفّح صفحاتنا.'));
     }).then(function () {
       setBusy(false);
       input.focus();

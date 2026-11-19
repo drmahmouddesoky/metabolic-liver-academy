@@ -874,7 +874,14 @@ html[dir="rtl"] .qcard-foot { padding: 8px 18px 10px 12px; }
 .ask-msg p { margin: 0 0 0.6em; }
 .ask-msg p:last-of-type { margin-bottom: 0; }
 .ask-msg.me { align-self: flex-end; background: var(--pine-tint); border-color: transparent; }
-.ask-msg.bot { align-self: flex-start; }
+.ask-msg.bot { align-self: flex-start; position: relative; padding-inline-start: 56px; }
+.ask-face { position: absolute; inset-inline-start: 12px; top: 10px; }
+.livo-ava { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex: none; box-shadow: 0 0 0 2px var(--white); background: var(--pine-tint); }
+.ask-btn .livo-ava { width: 24px; height: 24px; margin-inline-start: -8px; }
+.site-nav .nav-top.nav-ai .livo-ava { width: 28px; height: 28px; }
+.livo-head { display: flex; align-items: center; gap: 24px; }
+.livo-hero { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; flex: none; box-shadow: 0 6px 24px rgba(0,0,0,0.12); }
+@media (max-width: 600px) { .livo-head { gap: 16px; } .livo-hero { width: 96px; height: 96px; } }
 .ask-msg.wait { color: var(--muted); font-style: italic; }
 .ask-msg.err { border-color: var(--danger); background: var(--danger-tint); }
 .ask-sources { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
@@ -892,4 +899,4 @@ html[dir="rtl"] .site-nav .nav-top.nav-ai { background: linear-gradient(270deg, 
 .ask-btn { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font: inherit; font-size: 0.92rem; font-weight: 600; color: var(--on-pine); background: var(--pine); padding: 6px 14px; border-radius: 999px; white-space: nowrap; }
 .ask-btn:hover { background: var(--pine-2); color: var(--on-pine); text-decoration: none; }
 .ask-btn .nav-ico { width: 18px; height: 18px; color: inherit; }
-@media (max-width: 480px) { .ask-btn { padding: 6px 10px; } .ask-btn > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } .ask-btn .nav-ico { width: 20px; height: 20px; } }
+@media (max-width: 480px) { .ask-btn { padding: 4px 8px; } .ask-btn .livo-ava { margin-inline-start: 0; } .ask-btn > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } .ask-btn .nav-ico { width: 20px; height: 20px; } }
