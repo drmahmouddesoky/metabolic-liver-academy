@@ -39,8 +39,10 @@ SERIES = {
         "en": "Obesity Medicine course",
         "ar": "دورة طب السمنة",
         "anchor": "obesity-series",
-        "lead_en": "Fourteen modules mapped to the OMEC competencies, SCOPE, EASO, the SCFHS curriculum and NICE.",
-        "lead_ar": "أربع عشرة وحدة مرتبطة بكفاءات OMEC وبرنامج SCOPE وEASO ومنهج الهيئة السعودية وإرشادات NICE.",
+        "lead_en": "Fourteen modules in four parts (foundations; assessment and the conversation; treatment; populations and services), "
+                   "each mapped to the OMEC competencies, the SCOPE core curriculum, the SCFHS fellowship, EASO, NICE and the Saudi guideline.",
+        "lead_ar": "أربع عشرة وحدة في أربعة أجزاء (الأسس؛ والتقييم والحوار؛ والعلاج؛ والفئات والخدمات)، "
+                   "مرتبطة كل منها بكفاءات OMEC ومنهج SCOPE الأساسي وزمالة الهيئة السعودية وEASO وNICE والإرشاد السعودي.",
         "live": False,
     },
 }
@@ -155,6 +157,46 @@ SOURCES = {
     'saudihd2025': ('Fatani A, Shafi RW, Alhozali H, et al. Evaluation of constipation and quality of life among individuals undergoing hemodialysis: a single-center cross-sectional study. Healthcare (Basel) 2025;13(23):3095.', 'https://doi.org/10.3390/healthcare13233095'),
     'qassimpharm2026': ("Anaam MS, Alfadly SO, Alqasoumi A, et al. Community pharmacists' preparedness in irritable bowel syndrome management: a descriptive, community-based study on awareness, perceptions, and clinical support practices in Qassim, Saudi Arabia. Medicine (Baltimore) 2026;105(27):e49312.", 'https://doi.org/10.1097/MD.0000000000049312'),
     'usmortality2026': ('Atif E, Das V, Awais AM, et al. Temporal trends and demographic disparities in constipation-associated mortality in the United States, 1999–2024. BMC Gastroenterol 2026;26(1).', 'https://doi.org/10.1186/s12876-026-05229-y'),
+    # Obesity Medicine course
+    'lancetcomm2025': ('Rubino F, Cummings DE, Eckel RH, et al. Definition and diagnostic criteria of clinical obesity (Lancet Diabetes & Endocrinology Commission). Lancet Diabetes Endocrinol 2025;13(3):221–262.', 'https://doi.org/10.1016/S2213-8587(24)00316-4'),
+    'easo2024': ('Busetto L, Dicker D, Frühbeck G, et al. A new framework for the diagnosis, staging and management of obesity in adults. Nat Med 2024;30(9):2395–2399.', 'https://doi.org/10.1038/s41591-024-03095-3'),
+    'nice2025': ('National Institute for Health and Care Excellence. Overweight and obesity management. NICE guideline NG246. London: NICE, January 2025 (last updated September 2026).', 'https://www.nice.org.uk/guidance/ng246'),
+    'scope2026': ('World Obesity Federation. SCOPE certification and e-learning (Core Learning Path, examination, renewal). Accessed 12 November 2026.', 'https://www.worldobesity.org/training-and-events/scope/certification'),
+    'omec2019': ('Kushner RF, Horn DB, Butsch WS, et al. Development of obesity competencies for medical education: a report from the Obesity Medicine Education Collaborative. Obesity (Silver Spring) 2019;27(7):1063–1067.', 'https://doi.org/10.1002/oby.22471'),
+    'stigma2020': ('Rubino F, Puhl RM, Cummings DE, et al. Joint international consensus statement for ending stigma of obesity. Nat Med 2020;26(4):485–497.', 'https://doi.org/10.1038/s41591-020-0803-x'),
+    'canada2020': ('Wharton S, Lau DCW, Vallis M, et al. Obesity in adults: a clinical practice guideline. CMAJ 2020;192(31):E875–E891.', 'https://doi.org/10.1503/cmaj.191707'),
+    'saudiobesity2016': ('Alfadda AA, Al-Dhwayan MM, Alharbi AA, et al. The Saudi clinical practice guideline for the management of overweight and obesity in adults. Saudi Med J 2016;37(10):1151–1162.', 'https://doi.org/10.15537/smj.2016.10.14353'),
+    'ncdrisc2024': ('NCD Risk Factor Collaboration (NCD-RisC). Worldwide trends in underweight and obesity from 1990 to 2022: a pooled analysis of 3663 population-representative studies with 222 million children, adolescents, and adults. Lancet 2024;403(10431):1027–1050.', 'https://doi.org/10.1016/S0140-6736(23)02750-2'),
+    'gbdobesity2025': ('GBD 2021 Adult BMI Collaborators. Global, regional, and national prevalence of adult overweight and obesity, 1990–2021, with forecasts to 2050: a forecasting study for the Global Burden of Disease Study 2021. Lancet 2025;405(10481):813–838.', 'https://doi.org/10.1016/S0140-6736(25)00355-1'),
+    'eoss2009': ('Sharma AM, Kushner RF. A proposed clinical staging system for obesity. Int J Obes (Lond) 2009;33(3):289–295.', 'https://doi.org/10.1038/ijo.2009.2'),
+    'surmount1': ('Jastreboff AM, Aronne LJ, Ahmad NN, et al. Tirzepatide once weekly for the treatment of obesity (SURMOUNT-1). N Engl J Med 2022;387(3):205–216.', 'https://doi.org/10.1056/NEJMoa2206038'),
+    'surmount5': ('Aronne LJ, Horn DB, le Roux CW, et al. Tirzepatide as compared with semaglutide for the treatment of obesity (SURMOUNT-5). N Engl J Med 2025;393(1):26–36.', 'https://doi.org/10.1056/NEJMoa2416394'),
+    'select2023': ('Lincoff AM, Brown-Frandsen K, Colhoun HM, et al. Semaglutide and cardiovascular outcomes in obesity without diabetes (SELECT). N Engl J Med 2023;389(24):2221–2232.', 'https://doi.org/10.1056/NEJMoa2307563'),
+    'step4': ('Rubino D, Abrahamsson N, Davies M, et al. Effect of continued weekly subcutaneous semaglutide vs placebo on weight loss maintenance in adults with overweight or obesity: the STEP 4 randomized clinical trial. JAMA 2021;325(14):1414–1425.', 'https://doi.org/10.1001/jama.2021.3224'),
+    'surmount4': ('Aronne LJ, Sattar N, Horn DB, et al. Continued treatment with tirzepatide for maintenance of weight reduction in adults with obesity: the SURMOUNT-4 randomized clinical trial. JAMA 2024;331(1):38–48.', 'https://doi.org/10.1001/jama.2023.24945'),
+    'step1ext': ('Wilding JPH, Batterham RL, Davies M, et al. Weight regain and cardiometabolic effects after withdrawal of semaglutide: the STEP 1 trial extension. Diabetes Obes Metab 2022;24(8):1553–1564.', 'https://doi.org/10.1111/dom.14725'),
+    'stephfpef': ('Kosiborod MN, Abildstrøm SZ, Borlaug BA, et al. Semaglutide in patients with heart failure with preserved ejection fraction and obesity (STEP-HFpEF). N Engl J Med 2023;389(12):1069–1084.', 'https://doi.org/10.1056/NEJMoa2306963'),
+    'surmountosa': ('Malhotra A, Grunstein RR, Fietze I, et al. Tirzepatide for the treatment of obstructive sleep apnea and obesity (SURMOUNT-OSA). N Engl J Med 2024;391(13):1193–1205.', 'https://doi.org/10.1056/NEJMoa2404881'),
+    'attain1': ('Wharton S, Aronne LJ, Stefanski A, et al. Orforglipron, an oral small-molecule GLP-1 receptor agonist for obesity treatment (ATTAIN-1). N Engl J Med 2025;393(18):1796–1806.', 'https://doi.org/10.1056/NEJMoa2511774'),
+    'oasis4': ('Wharton S, Lingvay I, Bogdanski P, et al. Oral semaglutide at a dose of 25 mg in adults with overweight or obesity (OASIS 4). N Engl J Med 2025;393(11):1077–1087.', 'https://doi.org/10.1056/NEJMoa2500969'),
+    'redefine1': ('Garvey WT, Blüher M, Osorto Contreras CK, et al. Coadministered cagrilintide and semaglutide in adults with overweight or obesity (REDEFINE 1). N Engl J Med 2025;393(7):635–647.', 'https://doi.org/10.1056/NEJMoa2502081'),
+    'retatrutide2023': ('Jastreboff AM, Kaplan LM, Frías JP, et al. Triple-hormone-receptor agonist retatrutide for obesity: a phase 2 trial. N Engl J Med 2023;389(6):514–526.', 'https://doi.org/10.1056/NEJMoa2301972'),
+    'scale2015': ('Pi-Sunyer X, Astrup A, Fujioka K, et al. A randomized, controlled trial of 3.0 mg of liraglutide in weight management (SCALE). N Engl J Med 2015;373(1):11–22.', 'https://doi.org/10.1056/NEJMoa1411892'),
+    'cor1': ('Greenway FL, Fujioka K, Plodkowski RA, et al. Effect of naltrexone plus bupropion on weight loss in overweight and obese adults (COR-I). Lancet 2010;376(9741):595–605.', 'https://doi.org/10.1016/S0140-6736(10)60888-4'),
+    'conquer': ('Gadde KM, Allison DB, Ryan DH, et al. Effects of low-dose, controlled-release, phentermine plus topiramate combination on weight and associated comorbidities in overweight and obese adults (CONQUER). Lancet 2011;377(9774):1341–1352.', 'https://doi.org/10.1016/S0140-6736(11)60205-5'),
+    'xendos': ('Torgerson JS, Hauptman J, Boldrin MN, Sjöström L. XENical in the prevention of diabetes in obese subjects (XENDOS) study. Diabetes Care 2004;27(1):155–161.', 'https://doi.org/10.2337/diacare.27.1.155'),
+    'stepteens': ('Weghuber D, Barrett T, Barrientos-Pérez M, et al. Once-weekly semaglutide in adolescents with obesity (STEP TEENS). N Engl J Med 2022;387(24):2245–2257.', 'https://doi.org/10.1056/NEJMoa2208601'),
+    'aap2023': ('Hampl SE, Hassink SG, Skinner AC, et al. Clinical practice guideline for the evaluation and treatment of children and adolescents with obesity. Pediatrics 2023;151(2):e2022060640.', 'https://doi.org/10.1542/peds.2022-060640'),
+    'pcos2023': ('Teede HJ, Tay CT, Laven JJE, et al. Recommendations from the 2023 international evidence-based guideline for the assessment and management of polycystic ovary syndrome. J Clin Endocrinol Metab 2023;108(10):2447–2469.', 'https://doi.org/10.1210/clinem/dgad463'),
+    'sarcopenic2022': ('Donini LM, Busetto L, Bischoff SC, et al. Definition and diagnostic criteria for sarcopenic obesity: ESPEN and EASO consensus statement. Obes Facts 2022;15(3):321–335.', 'https://doi.org/10.1159/000521241'),
+    'direct2018': ('Lean ME, Leslie WS, Barnes AC, et al. Primary care-led weight management for remission of type 2 diabetes (DiRECT): an open-label, cluster-randomised trial. Lancet 2018;391(10120):541–551.', 'https://doi.org/10.1016/S0140-6736(17)33102-1'),
+    'lookahead2013': ('Look AHEAD Research Group. Cardiovascular effects of intensive lifestyle intervention in type 2 diabetes. N Engl J Med 2013;369(2):145–154.', 'https://doi.org/10.1056/NEJMoa1212914'),
+    'sos2007': ('Sjöström L, Narbro K, Sjöström CD, et al. Effects of bariatric surgery on mortality in Swedish obese subjects. N Engl J Med 2007;357(8):741–752.', 'https://doi.org/10.1056/NEJMoa066254'),
+    'stampede2017': ('Schauer PR, Bhatt DL, Kirwan JP, et al. Bariatric surgery versus intensive medical therapy for diabetes: 5-year outcomes (STAMPEDE). N Engl J Med 2017;376(7):641–651.', 'https://doi.org/10.1056/NEJMoa1600869'),
+    'merit2022': ('Abu Dayyeh BK, Bazerbachi F, Vargas EJ, et al. Endoscopic sleeve gastroplasty for treatment of class 1 and 2 obesity (MERIT): a prospective, multicentre, randomised trial. Lancet 2022;400(10350):441–451.', 'https://doi.org/10.1016/S0140-6736(22)01280-6'),
+    'mbs2024': ('De Luca M, Shikora S, Eisenberg D, et al. Scientific evidence for the updated guidelines on indications for metabolic and bariatric surgery (IFSO/ASMBS). Surg Obes Relat Dis 2024;20(11):991–1025.', 'https://doi.org/10.1016/j.soard.2024.05.009'),
+    'glp1nutrition2025': ('Mozaffarian D, Agarwal M, Aggarwal M, et al. Nutritional priorities to support GLP-1 therapy for obesity: a joint advisory from the American College of Lifestyle Medicine, the American Society for Nutrition, the Obesity Medicine Association, and The Obesity Society. Am J Clin Nutr 2025;122(1):344–367.', 'https://doi.org/10.1016/j.ajcnut.2025.04.023'),
+    'pachronic2020': ('Dempsey PC, Friedenreich CM, Leitzmann MF, et al. Global public health guidelines on physical activity and sedentary behavior for people living with chronic conditions: a call to action. J Phys Act Health 2020;18(1):76–85.', 'https://doi.org/10.1123/jpah.2020-0525'),
     'gulfaction2026': ('Alhabib KF, et al. Demographics, clinical characteristics, and barriers to care in patients with dyslipidaemia in the Arabian Gulf region: the Gulf ACTION registry. Curr Vasc Pharmacol 2026.', 'https://doi.org/10.2174/0115701611397165260302054720'),
     'hicc2026': ('Schonck WAM, et al. Homozygous familial hypercholesterolaemia: insights from the Global HICC Registry. Eur Heart J 2026;47:5979–5990.', 'https://doi.org/10.1093/eurheartj/ehag357'),
 }
@@ -162,9 +204,11 @@ SOURCES = {
 # Drawings used by the courses (private modules may use these keys too).
 from lipid_map import LIPID_MAP  # noqa: E402
 from bowel_figs import CARE_LADDER  # noqa: E402
-FIGURES = {"lipidmap": LIPID_MAP, "careladder": CARE_LADDER}
+from obesity_figs import OBESITY_DIAGNOSIS  # noqa: E402
+FIGURES = {"lipidmap": LIPID_MAP, "careladder": CARE_LADDER, "obesitydx": OBESITY_DIAGNOSIS}
 
 # Module 1 of each course, in full (open to everyone).
 from lipids_m1 import MODULE as _LIPIDS_1  # noqa: E402
 from bowel_m1 import MODULE as _BOWEL_1  # noqa: E402
-PUBLIC_MODULES = [_LIPIDS_1, _BOWEL_1]
+from obesity_m1 import MODULE as _OBESITY_1  # noqa: E402
+PUBLIC_MODULES = [_LIPIDS_1, _BOWEL_1, _OBESITY_1]
