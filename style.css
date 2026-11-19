@@ -841,6 +841,13 @@ html[dir="rtl"] .qcard-foot { padding: 8px 18px 10px 12px; }
 .lock-request { margin-top: 18px; }
 .lock-request summary { cursor: pointer; font-weight: 600; color: var(--pine); }
 .lock-panel .check { display: flex; gap: 8px; align-items: flex-start; font-size: 0.92rem; }
+.hb-box { margin: 22px 0; padding: 16px 20px; border: 1.5px solid var(--pine); border-radius: var(--radius-l); background: var(--pine-tint); }
+.hb-box p { margin: 0 0 8px; }
+.hb-box .hb-h { font-weight: 600; color: var(--pine-2); font-size: 1.02rem; }
+.hb-box .hb-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+.hb-box .hb-actions .btn { margin-top: 4px; }
+.hb-box .hb-msg { margin: 8px 0 0; font-size: 0.9rem; color: var(--muted); }
+.hb-box .hb-msg:empty { display: none; }
 .lock-again .linkish { background: none; border: 0; padding: 0; font: inherit; color: var(--pine); text-decoration: underline; cursor: pointer; }
 .mod-layout.is-locked { display: block; }
 

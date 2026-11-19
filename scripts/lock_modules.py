@@ -15,6 +15,10 @@ Private repository layout:
                             UPDATED = "YYYY-MM-DD"
     access/<course>.json    the course key and the access codes (SECRET: never copy
                             this file into the public repository)
+    handbooks/<course>.<lang>.pdf
+                            optional pocket handbook (lang = en or ar), encrypted with
+                            the course key and offered for download once a learner
+                            has unlocked the course
 
 Commands (run from this repository):
     python3 scripts/lock_modules.py --source ../mla-courses
@@ -32,6 +36,7 @@ Cryptography (matches unlock.js):
     per code        PBKDF2-HMAC-SHA256(code, course salt, 600 000 rounds) -> 48 bytes:
                     first 16 = public code id, last 32 = key that wraps the course key
     module file     AES-GCM(course key, nonce, aad = "mla-mod:<course>/<slug>/<lang>")
+    handbook file   AES-GCM(course key, nonce, aad = "mla-file:<course>/handbook.<lang>.pdf")
     wrapped key     AES-GCM(code key,  nonce, aad = "mla-key:<course>")
     Nonces are derived with HMAC-SHA256 from the key and the content (synthetic IV),
     so re-running the tool on unchanged text gives byte-identical files.
@@ -183,9 +188,25 @@ def publish(source, series, out=ROOT, quiet=False):
             raise SystemExit("Module %s: set \"series\": \"%s\"" % (m.get("slug"), series))
     folder = os.path.join(out, "locked", series)
     os.makedirs(folder, exist_ok=True)
+    handbooks = {}
+    for lang in LANGS:
+        pdf = os.path.join(source, "handbooks", "%s.%s.pdf" % (series, lang))
+        if os.path.isfile(pdf):
+            with open(pdf, "rb") as f:
+                handbooks[lang] = f.read()
+            if not handbooks[lang].startswith(b"%PDF-"):
+                raise SystemExit("Not a PDF: %s" % pdf)
     # titles first: the page header counts the modules of the course
-    write_json(os.path.join(folder, "index.json"), {"course": series, "modules": [index_entry(m, updated) for m in mods]})
+    index = {"course": series, "modules": [index_entry(m, updated) for m in mods]}
+    if handbooks:  # only the size is public, so the page can label the download button
+        index["handbook"] = {lang: max(1, round(len(b) / 1024)) for lang, b in handbooks.items()}
+    write_json(os.path.join(folder, "index.json"), index)
     keep = {"index.json", "keys.json"}
+    for lang, plain in handbooks.items():
+        name = "handbook.%s.json" % lang
+        aad = ("mla-file:%s/handbook.%s.pdf" % (series, lang)).encode("utf-8")
+        write_json(os.path.join(folder, name), {"v": 1, "data": b64(seal(key, plain, aad))})
+        keep.add(name)
     for m in mods:
         m = dict(m, updated=m.get("updated", updated))
         for lang in LANGS:
@@ -206,7 +227,8 @@ def publish(source, series, out=ROOT, quiet=False):
     entries.sort(key=lambda e: e["id"])  # order says nothing about who received which code
     write_json(os.path.join(folder, "keys.json"), {"v": 1, "course": series, "iter": ITERATIONS, "salt": acc["salt"], "codes": entries})
     if not quiet:
-        print("%s: %d locked modules, %d active codes" % (series, len(mods), len(entries)))
+        print("%s: %d locked modules, %d active codes%s" % (series, len(mods), len(entries),
+              "".join(", handbook (%s)" % l for l in sorted(handbooks))))
 
 
 def find_code(source, code):

@@ -74,6 +74,11 @@ keep Module 1 open to everyone and lock the others.
   email it to them. `--list lipids` shows who holds which code.
 - Withdrawing access: `--revoke CODE`. The course key changes, the code stops working on
   every device, and other learners simply type their own code once more.
+- Pocket handbook (optional): put `handbooks/<course>.en.pdf` and/or `handbooks/<course>.ar.pdf`
+  in the private repository and run the tool. Each PDF is encrypted with the course key
+  (`locked/<course>/handbook.<lang>.json`); once a learner unlocks the course, a
+  **Pocket handbook** box with download buttons appears under the learning objectives.
+  Withdrawing a code re-encrypts the handbook too.
 - A course stays hidden (no pages, no links) until `"live": True` in `content/courses.py`.
 - `tests/test_locked.py` checks all of this end to end in a real browser.
 

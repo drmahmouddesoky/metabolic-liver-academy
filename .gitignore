@@ -5,3 +5,4 @@ __pycache__/
 # repository only (see README "Locked courses"). Never commit them here.
 access/
 courses/
+handbooks/

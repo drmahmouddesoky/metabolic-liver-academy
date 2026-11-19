@@ -12,6 +12,8 @@ changes), encrypts it, serves it on port 8766 and drives a real browser:
   - withdrawing another code changes the course key: the stored key stops working
     and the learner's own code opens the module again
   - re-running the tool on unchanged text gives byte-identical files
+  - the pocket handbook (PDF, English and Arabic) is published only encrypted; once the
+    course is unlocked the learner can download it, byte for byte, in either language
   - no Content Security Policy violations and no script errors
 
   python3 tests/test_locked.py
@@ -35,6 +37,8 @@ import build  # noqa: E402
 import chrome  # noqa: E402
 
 MARKER = "Secret teaching text 7Q4ZX"
+HB_MARKER = "Secret handbook text 3RW8P"
+HANDBOOK = {lang: ("%%PDF-1.4\n%% demo %s %s\n%%%%EOF\n" % (HB_MARKER, lang)).encode("utf-8") for lang in ("en", "ar")}
 PORT = 8766
 COURSE = '''
 SOURCES = {}
@@ -101,7 +105,8 @@ async def run(site, private, codes):
     good, revoked, other = codes
     async with async_playwright() as p:
         b = await p.chromium.launch()
-        pg = await b.new_page()
+        ctx = await b.new_context(accept_downloads=True)
+        pg = await ctx.new_page()
         errors = []
         pg.on("pageerror", lambda e: errors.append(str(e)))
         await pg.add_init_script("window.__v=[];document.addEventListener('securitypolicyviolation',e=>window.__v.push(e.violatedDirective+' '+e.blockedURI))")
@@ -126,12 +131,33 @@ async def run(site, private, codes):
         await pg.click(".mcq .opt[data-i='1']")
         check(await pg.is_visible(".mcq .why") and "Correct" in await pg.inner_text(".mcq .why"), "quiz works after unlocking")
 
+        await pg.wait_for_selector(".hb-box button", timeout=20000)
+        if os.environ.get("SHOT_DIR"):  # optional: screenshots of the handbook box for a visual check
+            await pg.set_viewport_size({"width": 390, "height": 844})
+            await pg.locator(".hb-box").scroll_into_view_if_needed()
+            await pg.screenshot(path=os.path.join(os.environ["SHOT_DIR"], "hb-light.png"))
+            await pg.emulate_media(color_scheme="dark")
+            await pg.screenshot(path=os.path.join(os.environ["SHOT_DIR"], "hb-dark.png"))
+            await pg.emulate_media(color_scheme="light")
+            await pg.set_viewport_size({"width": 1280, "height": 720})
+        hb_langs = await pg.evaluate("[...document.querySelectorAll('.hb-box button')].map(b => b.getAttribute('data-hb'))")
+        check(hb_langs == ["en", "ar"], "handbook box offers the page's language first (%s)" % hb_langs)
+        for lang in ("en", "ar"):
+            async with pg.expect_download() as dl:
+                await pg.click(".hb-box button[data-hb='%s']" % lang)
+            d = await dl.value
+            got = open(await d.path(), "rb").read()
+            check(got == HANDBOOK[lang] and d.suggested_filename == "MLA-demo-pocket-handbook-%s.pdf" % lang,
+                  "handbook downloads intact in %s" % lang)
+
         await pg.reload(wait_until="load")
         await pg.wait_for_selector("text=" + MARKER, timeout=20000)
         check(True, "reload opens the module without the code")
         await pg.goto("http://127.0.0.1:%d/ar/modules/demo-locked.html" % PORT, wait_until="load")
         await pg.wait_for_selector("text=" + MARKER, timeout=20000)
         check(await pg.evaluate("document.documentElement.lang") == "ar", "Arabic page opens with the same access")
+        await pg.wait_for_selector(".hb-box button", timeout=20000)
+        check(await pg.evaluate("document.querySelector('.hb-box button').getAttribute('data-hb')") == "ar", "Arabic page offers the Arabic handbook first")
 
         # request form, on a fresh browser profile so the module stays locked
         ctx2 = await b.new_context()
@@ -163,6 +189,11 @@ async def run(site, private, codes):
         after = snapshot(os.path.join(site, "locked", "demo"))
         check(before["index.json"] == after["index.json"] and before["demo-locked.en.json"] != after["demo-locked.en.json"],
               "withdrawing a code re-encrypts the module with a new key")
+        check(before["handbook.en.json"] != after["handbook.en.json"], "withdrawing a code re-encrypts the handbook too")
+        await pg.wait_for_selector(".hb-box button", timeout=20000)
+        async with pg.expect_download() as dl:
+            await pg.click(".hb-box button[data-hb='en']")
+        check(open(await (await dl.value).path(), "rb").read() == HANDBOOK["en"], "handbook still downloads after the key changes")
 
         v = await pg.evaluate("window.__v")
         check(not v and not errors, "no policy violations or script errors (%s %s)" % (v, errors))
@@ -176,6 +207,10 @@ def main():
         os.makedirs(os.path.join(private, "courses"))
         with open(os.path.join(private, "courses", "demo.py"), "w", encoding="utf-8") as f:
             f.write(COURSE)
+        os.makedirs(os.path.join(private, "handbooks"))
+        for lang, data in HANDBOOK.items():
+            with open(os.path.join(private, "handbooks", "demo.%s.pdf" % lang), "wb") as f:
+                f.write(data)
         build.C.SERIES["demo"] = {"en": "Demo course", "ar": "دورة تجريبية", "anchor": "demo-series",
                                   "lead_en": "Test.", "lead_ar": "اختبار.", "live": False}
         LM.ITERATIONS = 600_000
@@ -190,6 +225,9 @@ def main():
         folder = os.path.join(site, "locked", "demo")
         published = b"".join(snapshot(folder).values())
         check(MARKER.encode() not in published, "published files contain no readable module text")
+        check(HB_MARKER.encode() not in published, "published files contain no readable handbook text")
+        with open(os.path.join(folder, "index.json"), encoding="utf-8") as f:
+            check(json.load(f).get("handbook") == {"en": 1, "ar": 1}, "index.json lists the handbook languages and sizes only")
         check(all(c["code"].encode() not in published for c in acc["codes"]), "published files contain no access code")
         first = snapshot(folder)
         tool(private, site)

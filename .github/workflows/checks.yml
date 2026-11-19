@@ -54,8 +54,8 @@ jobs:
 
       - name: No access codes or readable locked text in this public repository
         run: |
-          if [ -d access ] || [ -d courses ]; then
-            echo "::error::access/ or courses/ belongs in the private repository only."
+          if [ -d access ] || [ -d courses ] || [ -d handbooks ]; then
+            echo "::error::access/, courses/ or handbooks/ belongs in the private repository only."
             exit 1
           fi
 

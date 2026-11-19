@@ -58,7 +58,58 @@
       lockBtn.querySelector('button').addEventListener('click', function () { store(null); location.reload(); });
       document.dispatchEvent(new CustomEvent('mla:unlocked', { detail: { root: root } }));
       if (location.hash) { var el = document.getElementById(location.hash.slice(1)); if (el) el.scrollIntoView(); }
+      offerHandbook(courseKeyB64);
     });
+  }
+
+  /* Pocket handbook: a PDF encrypted with the same course key (locked/<course>/handbook.<lang>.json).
+     The course's index.json says which languages exist; the PDF is opened here and saved by the browser. */
+  function offerHandbook(courseKeyB64) {
+    getJSON(base + 'index.json').then(function (ix) {
+      var hb = ix && ix.handbook;
+      if (!hb) return;
+      var langs = [lang, lang === 'ar' ? 'en' : 'ar'].filter(function (l) { return hb[l]; });
+      if (!langs.length) return;
+      var box = document.createElement('aside');
+      box.className = 'hb-box';
+      box.innerHTML = '<p class="hb-h">' + t('Pocket handbook', 'الدليل المختصر للجيب') + '</p>' +
+        '<p>' + t('The key tables, numbers and decisions from this course in a pocket-size PDF (A6). For your own use: please do not share it.',
+                  'أهم الجداول والأرقام والقرارات في هذه الدورة في ملف PDF بحجم الجيب (A6). للاستخدام الشخصي: يُرجى عدم مشاركته.') + '</p>' +
+        '<p class="hb-actions"></p><p class="hb-msg" role="status" aria-live="polite"></p>';
+      var actions = box.querySelector('.hb-actions'), note = box.querySelector('.hb-msg');
+      langs.forEach(function (l, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = i === 0 ? 'btn' : 'btn ghost';
+        b.setAttribute('data-hb', l);
+        b.textContent = (l === 'ar' ? t('Download in Arabic', 'تنزيل بالعربية') : t('Download in English', 'تنزيل بالإنجليزية')) + ' (PDF, ' + hb[l] + ' KB)';
+        b.addEventListener('click', function () { saveHandbook(courseKeyB64, l, b, note); });
+        actions.appendChild(b);
+      });
+      var after = root.querySelector('.objectives');
+      if (after && after.parentNode) after.parentNode.insertBefore(box, after.nextSibling);
+      else root.querySelector('.mod-body').appendChild(box);
+    }).catch(function () { /* no handbook for this course */ });
+  }
+
+  function saveHandbook(courseKeyB64, l, btn, note) {
+    btn.disabled = true;
+    note.textContent = t('Preparing your download…', 'جارٍ تجهيز الملف…');
+    getJSON(base + 'handbook.' + l + '.json').then(function (doc) {
+      return gcmOpen(b64d(courseKeyB64), b64d(doc.data), 'mla-file:' + series + '/handbook.' + l + '.pdf');
+    }).then(function (plain) {
+      var url = URL.createObjectURL(new Blob([plain], { type: 'application/pdf' }));
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'MLA-' + series + '-pocket-handbook-' + l + '.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+      note.textContent = t('Downloaded. Check your downloads folder.', 'تم التنزيل. ابحث عنه في مجلد التنزيلات.');
+    }).catch(function () {
+      note.textContent = t('The handbook could not be opened. Please reload the page and try again.', 'تعذّر فتح الدليل. يُرجى إعادة تحميل الصفحة والمحاولة مرة أخرى.');
+    }).then(function () { btn.disabled = false; });
   }
 
   /* Turn a typed code into the course key, using this course's keys.json. */
