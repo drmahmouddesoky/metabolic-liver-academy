@@ -55,6 +55,29 @@ Fonts are self-hosted in `fonts/` (IBM Plex, SIL Open Font License), so pages ma
 | `src/contact.html` | Contact: email and LinkedIn only |
 | `src/legal.html` | Disclaimer, privacy, conflicts of interest, editorial policy, terms |
 
+## Backing up everything to your Desktop
+
+Keep one folder on your Desktop for all Academy work, for example `MLA`, with the site and the
+private courses side by side, plus a `Sources` folder for papers and guidelines:
+
+    MLA/metabolic-liver-academy/   MLA/mla-courses/   MLA/Sources/   MLA/Backups/
+
+From the site folder, run:
+
+    python3 scripts/backup.py ~/Desktop/MLA
+
+Each run writes `MLA/Backups/YYYY-MM-DD/`: a zip and a full Git history of the site, the same
+for the private courses (module text, access codes, presentations), a zip of `Sources/`, and a
+`README.txt` explaining how to restore. The courses files contain the access codes: keep the
+Backups folder on your own computer or an encrypted drive.
+
+## Professional Portal index
+
+The top of `academy.html` lists every live programme (MASLD & MASH, GI & Microbiome, and each
+course in `content/courses.py` with `"live": True`) with its module count, total time and
+access. It is built by `programmes_index()` in `build.py`, so a new course appears there
+automatically the day it goes live.
+
 ## Locked courses (access codes)
 
 The newer physician courses (lipids, bowel health, obesity; registry in `content/courses.py`)

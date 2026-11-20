@@ -893,3 +893,13 @@ html[dir="rtl"] .site-nav .nav-top.nav-ai { background: linear-gradient(270deg, 
 .ask-btn:hover { background: var(--pine-2); color: var(--on-pine); text-decoration: none; }
 .ask-btn .nav-ico { width: 18px; height: 18px; color: inherit; }
 @media (max-width: 480px) { .ask-btn { padding: 6px 10px; } .ask-btn > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } .ask-btn .nav-ico { width: 20px; height: 20px; } }
+
+/* Programme index at the top of the Professional Portal (build.py: programmes_index) */
+.prog-index { padding-bottom: 8px; }
+.prog-grid { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+.prog-grid li { margin: 0; }
+.prog-card { height: 100%; border-inline-start: 4px solid var(--pine); }
+.prog-card h3 { font-size: 1.12rem; }
+.prog-stats { margin: 0 0 4px; color: var(--ink); line-height: 1.35; }
+.prog-stats strong { font-size: 1.5rem; color: var(--pine); }
+section[id] { scroll-margin-top: 80px; }

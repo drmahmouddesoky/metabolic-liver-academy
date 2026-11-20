@@ -1031,6 +1031,45 @@ def courses_listing(live):
     return "\n".join(out)
 
 
+def programmes_index(live):
+    """The index at the top of the Professional Portal: one card per programme that is live
+    (MASLD & MASH, GI & Microbiome, and every live course in content/courses.py), with its
+    module count, total reading time, access, and a link to its section further down.
+    Hidden courses ("live": False) stay out of it, as they stay out of the rest of the site."""
+    progs = [
+        ("modules", "MASLD &amp; MASH", "الكبد الدهني MASLD وMASH", M.MODULES),
+        ("gi-series", esc(G.SERIES["en"]), esc(G.SERIES["ar"]), G.MODULES),
+    ]
+    for series in live:
+        c = C.SERIES[series]
+        progs.append((c["anchor"], esc(c["en"]), esc(c["ar"]), course_modules(series)))
+    cards = []
+    for anchor, en, ar, mods in progs:
+        n = len(mods)
+        mins = sum(m.get("minutes", 0) for m in mods)
+        hrs = ("%.1f" % (mins / 60.0)).rstrip("0").rstrip(".")
+        n_locked = sum(1 for m in mods if m.get("locked"))
+        if n_locked:
+            access = bi("%d open · %d with an access code" % (n - n_locked, n_locked),
+                        "%d متاحة · %d برمز دخول" % (n - n_locked, n_locked))
+            tag = '<span class="tag pro">%s</span>' % bi("Access code", "برمز دخول")
+        else:
+            access = bi("All modules open, no login", "كل الوحدات متاحة دون تسجيل")
+            tag = '<span class="tag">%s</span>' % bi("Free", "مجانية")
+        cards.append(
+            '<li><a class="panel prog-card" href="#%s">%s<h3>%s</h3>'
+            '<p class="prog-stats"><strong>%d</strong> %s · %s</p><p class="muted small">%s</p></a></li>'
+            % (anchor, tag, bi(en, ar), n, bi("modules", "وحدات"),
+               bi("about %s hours" % hrs, "نحو %s ساعات" % hrs), access))
+    total = sum(len(p[3]) for p in progs)
+    return ('<section class="section prog-index" id="programmes" aria-labelledby="programmes-h"><div class="wrap">'
+            '<h2 id="programmes-h">%s</h2><p class="read muted">%s</p><ul class="prog-grid">%s</ul></div></section>'
+            % (bi("Programmes and modules", "البرامج والوحدات"),
+               bi("%d programmes, %d modules. Choose a programme to see its modules." % (len(progs), total),
+                  "%d برامج، %d وحدة. اختر برنامجًا لتظهر وحداته." % (len(progs), total)),
+               "".join(cards)))
+
+
 def write(path, text):
     full = os.path.join(ROOT, path)
     os.makedirs(os.path.dirname(full) or ROOT, exist_ok=True)
@@ -1056,6 +1095,7 @@ def main():
             pages["modules/%s.html" % mod["slug"]] = module_page(mod, locked=mod.get("locked", False))
             n_course += 1
     pages["academy.html"] = pages["academy.html"].replace("%%COURSES%%", courses_listing(live))
+    pages["academy.html"] = pages["academy.html"].replace("%%INDEX%%", programmes_index(live))
     pages["ref.html"] = ref_index()
     for pg in R.PAGES:
         pages["ref/%s.html" % pg["slug"]] = ref_page(pg)
