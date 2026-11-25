@@ -18,13 +18,15 @@ Blocks (all text as (English, Arabic) pairs):
 Cells are a plain string (same in both languages) or a pair.
 """
 
-UPDATED = "2026-11-11"
+UPDATED = "2026-11-25"
 NEXT_REVIEW = "2027-11"
-REVIEWED = {"diabetes-clinic": "2026-11-11", "cirrhosis-care": "2026-11-11"}
-VERSIONS = {"drug-treatment": "1.1", "diabetes-clinic": "1.2", "cirrhosis-care": "1.1"}
+REVIEWED = {"fibrosis-assessment": "2026-11-25", "diabetes-clinic": "2026-11-25", "cirrhosis-care": "2026-11-25"}
+VERSIONS = {"fibrosis-assessment": "1.1", "drug-treatment": "1.1", "diabetes-clinic": "1.3", "cirrhosis-care": "1.2"}
 
 # Extra sources (checked on PubMed). Keys from learn.py and ref.py also work.
 SOURCES = {
+    "aga2026": ("Kanwal F, et al. Clinical care pathway for the risk stratification and management of patients with metabolic dysfunction-associated steatotic liver disease (AGA, 2026 update). Gastroenterology 2026;171:164–83.", "https://doi.org/10.1053/j.gastro.2026.01.047"),
+    "nice2026": ("National Institute for Health and Care Excellence. Metabolic dysfunction-associated steatotic liver disease (MASLD): assessment and management. NICE guideline NG49 (last updated July 2026).", "https://www.nice.org.uk/guidance/ng49"),
     "angulo2015": ("Angulo P, et al. Liver fibrosis, but no other histologic features, is associated with long-term outcomes of patients with NAFLD. Gastroenterology 2015;149(2):389–97.", "https://doi.org/10.1053/j.gastro.2015.04.043"),
     "dulai2017": ("Dulai PS, et al. Increased risk of mortality by fibrosis stage in NAFLD: systematic review and meta-analysis. Hepatology 2017;65(5):1557–65.", "https://doi.org/10.1002/hep.29085"),
     "sanyal2021": ("Sanyal AJ, et al. Prospective study of outcomes in adults with NAFLD. N Engl J Med 2021;385(17):1559–69.", "https://doi.org/10.1056/NEJMoa2029349"),
@@ -67,6 +69,8 @@ MODULES = [
   ("rec", ("Case-finding for MASLD with fibrosis can be considered in people with cardiometabolic risk factors, abnormal liver enzymes or steatosis on imaging.", "يمكن النظر في البحث عن حالات MASLD المصحوبة بتليّف لدى من لديهم عوامل خطر قلبية أيضية، أو إنزيمات كبد غير طبيعية، أو تشحّم في التصوير."), 3, "weak", "consensus", "easl2024"),
   ("p", ("The highest-yield groups are adults with type 2 diabetes, obesity with at least one other metabolic risk factor, persistently raised aminotransferases, or steatosis found on imaging [[easl2024,aasld2023]]. In the Middle East, where about 7 in 10 people with type 2 diabetes have MASLD, diabetes clinics are the natural starting point [[mena2024]].",
          "أعلى الفئات مردودًا هي البالغون المصابون بالسكري من النوع الثاني، أو السمنة مع عامل خطر أيضي آخر على الأقل، أو ارتفاع مستمر في إنزيمات الكبد، أو تشحّم ظاهر في التصوير [[easl2024,aasld2023]]. وفي الشرق الأوسط، حيث يصاب نحو 7 من كل 10 مرضى سكري بـ MASLD، تُعد عيادات السكري نقطة البداية الطبيعية [[mena2024]].")),
+  ("p", ("Always ask about alcohol, because it changes both the diagnosis (MASLD, MetALD or alcohol-related liver disease) and the risk. Use a short questionnaire such as AUDIT-C: a score of 4 or more in men, or 3 or more in women, is a positive screen [[aga2026]]. Patients often under-report drinking. A blood test for phosphatidylethanol (PEth), a direct alcohol marker, can help when the history is unclear [[easl2024]]. It is used more and more in specialist care but still needs validation in primary care [[aga2026]], and EASL 2026 suggests rechecking alcohol with PEth when fibrosis worsens on treatment [[easl2026]].",
+         "اسأل دائمًا عن الكحول، لأنه يغيّر التشخيص (MASLD أو MetALD أو مرض الكبد الكحولي) ويغيّر الخطر. استخدم استبيانًا قصيرًا مثل AUDIT-C: الدرجة 4 فأكثر لدى الرجال، أو 3 فأكثر لدى النساء، تعني فحصًا إيجابيًا [[aga2026]]. وكثيرًا ما يقلّل المرضى من ذكر ما يشربون. ويمكن أن يساعد فحص الدم للفوسفاتيديل إيثانول (PEth)، وهو مؤشر مباشر لتناول الكحول، عندما يكون التاريخ غير واضح [[easl2024]]. ويزداد استخدامه في الرعاية التخصصية لكنه ما زال يحتاج إلى تحقق في الرعاية الأولية [[aga2026]]، وتقترح EASL 2026 إعادة تقييم الكحول بفحص PEth إذا تفاقم التليّف أثناء العلاج [[easl2026]].")),
 
   ("h2", ("Step 1: blood-based scores", "الخطوة 1: مؤشرات الدم"), "step1"),
   ("rec", ("Use non-invasive scores, not ALT and AST alone, to detect fibrosis.", "استخدم المؤشرات غير الجراحية، لا ALT وAST وحدهما، لكشف التليّف."), 2, "strong", "strong", "easl2024"),
@@ -98,6 +102,8 @@ MODULES = [
              ]}),
   ("aside", ("Liver stiffness is falsely raised by a recent meal, ALT above about five times normal, heart failure, cholestasis and recent heavy drinking. Repeat the scan when the cause has settled.",
              "ترتفع صلابة الكبد كذبًا بعد وجبة حديثة، أو مع ALT أعلى من نحو خمسة أضعاف الطبيعي، أو قصور القلب، أو الركود الصفراوي، أو تناول كحول كثير مؤخرًا. أعد الفحص بعد زوال السبب.")),
+  ("p", ("The 2026 AGA pathway simplifies these cut-offs: below 8 kPa is low risk, 8–9.9 kPa should be confirmed with ELF or MR elastography, and 10 kPa or more indicates at least F2 fibrosis [[aga2026]]. To select candidates for the new MASH drugs without a biopsy, EASL 2026 suggests liver stiffness of 10–20 kPa, MR elastography of 3.1–5.0 kPa or ELF of 9.8–11.3, with no signs of cirrhosis; a high stiffness should be repeated on another day, and two tests that agree add confidence [[easl2026]]. NICE relies on ELF alone: 10.51 or more diagnoses advanced fibrosis, and below that it suggests retesting every 3 years [[nice2026]].",
+         "ويبسّط مسار AGA لعام 2026 هذه الحدود: أقل من 8 كيلوباسكال منخفض الخطورة، و8–9.9 كيلوباسكال يحتاج إلى تأكيد بـ ELF أو المرونة بالرنين، و10 كيلوباسكال أو أكثر يدل على تليّف F2 على الأقل [[aga2026]]. ولاختيار المرشحين لأدوية MASH الجديدة دون خزعة، تقترح EASL 2026 صلابة كبد بين 10 و20 كيلوباسكال، أو مرونة بالرنين بين 3.1 و5.0 كيلوباسكال، أو ELF بين 9.8 و11.3، مع غياب علامات التشمّع؛ وتُعاد القراءة المرتفعة في يوم آخر، ويزيد توافق فحصين الثقة في النتيجة [[easl2026]]. أما NICE فتعتمد ELF وحده: 10.51 أو أكثر يشخّص التليّف المتقدّم، وتحت ذلك تقترح إعادة الفحص كل 3 سنوات [[nice2026]].")),
 
   ("h2", ("The pathway in practice", "المسار عمليًا"), "pathway"),
   ("figure", "pathway", ("Figure 1. Two-step fibrosis pathway for adults with MASLD, based on EASL–EASD–EASO 2024 and AASLD 2023.", "الشكل 1. مسار تقييم التليّف على خطوتين للبالغين المصابين بـ MASLD، وفق EASL–EASD–EASO 2024 وAASLD 2023.")),
@@ -152,13 +158,18 @@ MODULES = [
     "options": [("It is more accurate than elastography", "لأنه أدق من قياس المرونة"), ("It is cheap, available everywhere and reliably rules out advanced fibrosis", "لأنه رخيص ومتوفر في كل مكان وينفي التليّف المتقدّم بموثوقية"), ("It stages steatohepatitis", "لأنه يحدد مرحلة التهاب الكبد الدهني"), ("It replaces the need for follow-up", "لأنه يغني عن المتابعة")],
     "answer": 1,
     "why": ("FIB-4 is less accurate than elastography but costs almost nothing and has a high negative predictive value, so it filters out most low-risk patients.", "FIB-4 أقل دقة من قياس المرونة، لكنه لا يكلف شيئًا تقريبًا وقيمته التنبؤية السلبية مرتفعة، لذا يستبعد معظم المرضى منخفضي الخطورة.")},
+   {"q": ("A man with MASLD says he drinks “only rarely”, but his fibrosis is getting worse on treatment. Which test can best clarify his recent alcohol intake?", "رجل مصاب بـ MASLD يقول إنه يشرب الكحول «نادرًا فقط»، لكن تليّفه يتفاقم أثناء العلاج. أي فحص يوضح تناوله الحديث للكحول على نحو أفضل؟"),
+    "options": [("Phosphatidylethanol (PEth) in blood", "الفوسفاتيديل إيثانول (PEth) في الدم"), ("ALT alone", "ALT وحده"), ("Liver ultrasound", "الأشعة الصوتية للكبد"), ("Serum ferritin", "الفيريتين في الدم")],
+    "answer": 0,
+    "why": ("PEth is a direct alcohol marker. EASL 2026 suggests rechecking alcohol with PEth and a questionnaire when fibrosis worsens on treatment. ALT, ultrasound and ferritin cannot measure drinking.", "PEth مؤشر مباشر لتناول الكحول. وتقترح EASL 2026 إعادة تقييم الكحول بفحص PEth واستبيان عندما يتفاقم التليّف أثناء العلاج. أما ALT والأشعة الصوتية والفيريتين فلا تقيس الشرب.")},
   ]),
 
   ("h2", ("Key messages", "الرسائل الأساسية"), "summary"),
   ("ul", [
    ("Fibrosis stage, not steatosis or ALT, drives prognosis in MASLD.", "مرحلة التليّف، لا التشحّم ولا ALT، هي ما يحدد مآل MASLD."),
    ("Assess people with diabetes, obesity plus a metabolic risk factor, raised enzymes or steatosis on imaging. Do not screen everyone.", "قيّم المصابين بالسكري، أو السمنة مع عامل خطر أيضي، أو ارتفاع الإنزيمات، أو التشحّم في التصوير، ولا تفحص الجميع."),
-   ("FIB-4 first (<1.3, or <2.0 at age 65+, is low risk), then elastography (<8 low, 8–12 grey, ≥12 kPa high) or ELF.", "FIB-4 أولًا (أقل من 1.3، أو أقل من 2.0 لمن 65 فأكثر، خطر منخفض)، ثم قياس المرونة (<8 منخفض، و8–12 رمادي، و≥12 مرتفع) أو ELF."),
+   ("FIB-4 first (<1.3, or <2.0 at age 65+, is low risk), then elastography (<8 kPa low; grey zone 8–12 by EASL 2024 or 8–9.9 by AGA 2026; ≥10–12 kPa high) or ELF.", "FIB-4 أولًا (أقل من 1.3، أو أقل من 2.0 لمن 65 فأكثر، خطر منخفض)، ثم قياس المرونة (<8 منخفض؛ والمنطقة الرمادية 8–12 حسب EASL 2024 أو 8–9.9 حسب AGA 2026؛ و≥10–12 مرتفع) أو ELF."),
+   ("Always ask about alcohol: AUDIT-C for everyone, and PEth when the history is unclear.", "اسأل دائمًا عن الكحول: AUDIT-C للجميع، وPEth عندما يكون التاريخ غير واضح."),
    ("FIB-4 and NFS are not validated under age 35: use elastography if concerned; beware of false-high stiffness.", "مؤشرا FIB-4 وNFS غير مُعتمدين تحت سن 35؛ استخدم قياس مرونة الكبد عند القلق، واحذر من الصلابة المرتفعة كذبًا."),
    ("Repeat low-risk tests every 1–3 years; refer high-risk patients.", "أعد الفحوص منخفضة الخطورة كل 1–3 سنوات، وأحِل المرضى عاليي الخطورة."),
   ]),
