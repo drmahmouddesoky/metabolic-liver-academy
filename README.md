@@ -161,10 +161,12 @@ How it was set up:
 
 To switch it off again, empty the quotes.
 
-Shortcut to the numbers: https://metabolicliveracademy.org/stats forwards to the
-GoatCounter dashboard (`stats/index.html`, hand-written, not touched by `build.py`).
-It is not in the menu, sitemap or search engines, and the dashboard still asks for
-the GoatCounter login, so the numbers stay private.
+Founder's desk: https://metabolicliveracademy.org/stats is a private page with two buttons,
+**Visitors** (the GoatCounter dashboard) and **Mailing list** (beehiiv), and a switch
+"Don't count my visits on this device" (sets `mla-no-count` in that browser; `main.js` then
+skips the count). Files: `stats/index.html`, `stats/desk.css`, `stats/desk.js`, hand-written,
+not touched by `build.py`. It is not in the menu, sitemap or search engines, and both
+dashboards ask for their own login, so the numbers stay private.
 
 ## Mailing list (beehiiv)
 

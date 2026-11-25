@@ -1,22 +1,46 @@
 <!DOCTYPE html>
 <!--
-  Private shortcut for the founder: metabolicliveracademy.org/stats
-  It only forwards to the GoatCounter dashboard. The numbers stay private,
-  because the dashboard asks for the GoatCounter login. This page is not in
-  the menu, the sitemap or search engines. Hand-written: build.py does not
-  create or change it.
+  Private page for the founder: metabolicliveracademy.org/stats
+  Two buttons (visit numbers on GoatCounter, mailing list on beehiiv) and a
+  switch so the founder's own visits are not counted on this device.
+  It is not in the menu, the sitemap or search engines. Both services ask
+  for their own login, so the numbers stay private even if someone finds
+  this page. Hand-written: build.py does not create or change it.
 -->
 <html dir="ltr" lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="default-src 'none'; style-src 'none'; script-src 'none'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'" http-equiv="Content-Security-Policy"/>
+<meta content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" http-equiv="Content-Security-Policy"/>
 <meta content="no-referrer" name="referrer"/>
 <meta content="noindex, nofollow" name="robots"/>
-<meta content="0; url=https://drmahmouddesoky.goatcounter.com/" http-equiv="refresh"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Visit statistics</title>
+<title>Founder's desk · MLA</title>
+<link href="desk.css" rel="stylesheet"/>
 </head>
 <body>
-<p>Opening the visit statistics… If nothing happens, <a href="https://drmahmouddesoky.goatcounter.com/">open them here</a>.</p>
+<main>
+  <p class="eyebrow">Metabolic Liver Academy · private</p>
+  <h1>Founder's desk</h1>
+  <p class="lead">Your two dashboards in one place. Each one asks for its own login, so nobody else can see your numbers.</p>
+
+  <a class="btn" href="https://drmahmouddesoky.goatcounter.com/" rel="noopener noreferrer" target="_blank">
+    <span class="t">Visitors</span>
+    <span class="s">GoatCounter: visits, top pages, countries</span>
+  </a>
+  <a class="btn" href="https://app.beehiiv.com/" rel="noopener noreferrer" target="_blank">
+    <span class="t">Mailing list</span>
+    <span class="s">beehiiv: subscribers and newsletters</span>
+  </a>
+
+  <section class="me">
+    <h2>Your own visits</h2>
+    <p id="count-state">Checking this device…</p>
+    <button id="count-toggle" type="button" hidden>Don't count my visits on this device</button>
+    <p class="small">Do this once on each phone and computer you use. It keeps your own clicks out of the visitor numbers.</p>
+  </section>
+
+  <p class="small"><a href="../index.html">Back to the Academy</a></p>
+</main>
+<script src="desk.js"></script>
 </body>
 </html>

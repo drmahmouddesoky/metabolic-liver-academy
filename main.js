@@ -146,6 +146,9 @@
      Leave it empty ('') to switch it off. */
   var GOATCOUNTER = 'drmahmouddesoky';
   var dnt = navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.globalPrivacyControl === true;
+  /* The founder can switch off counting of their own visits on a device
+     (button on the private page /stats). */
+  try { if (localStorage.getItem('mla-no-count') === '1') dnt = true; } catch (e) { /* private mode */ }
   if (GOATCOUNTER && !dnt && location.protocol === 'https:' && location.hostname !== 'localhost') {
     /* One tiny image request carries the page path, title, referrer and
        screen size. No code from GoatCounter runs on the site, so its
