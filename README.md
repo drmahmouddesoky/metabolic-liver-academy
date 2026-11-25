@@ -161,7 +161,7 @@ How it was set up:
 
 To switch it off again, empty the quotes.
 
-Founder's desk: https://metabolicliveracademy.org/stats is a private page with two buttons,
+Founder's desk: https://metabolicliveracademy.org/stats is a private page of control buttons (also Google Search Console, Cloudflare, GitHub, pull requests, Actions and Claude Code),
 **Visitors** (the GoatCounter dashboard) and **Mailing list** (beehiiv), and a switch
 "Don't count my visits on this device" (sets `mla-no-count` in that browser; `main.js` then
 skips the count). Files: `stats/index.html`, `stats/desk.css`, `stats/desk.js`, hand-written,
