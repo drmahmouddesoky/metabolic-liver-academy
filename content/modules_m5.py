@@ -3,6 +3,8 @@
 
 # New sources (checked on PubMed). Existing keys (easl2024, aasld2023, global2025, baveno7, saudi2026) are reused.
 SOURCES = {
+    "dwyer2014": ("Dwyer JP, Jayasekera C, Nicoll A. Analgesia for the cirrhotic patient: a literature review and recommendations. J Gastroenterol Hepatol 2014;29(7):1356–60.", "https://doi.org/10.1111/jgh.12560"),
+    "chandok2010": ("Chandok N, Watt KDS. Pain management in the cirrhotic patient: the clinical challenge. Mayo Clin Proc 2010;85(5):451–8.", "https://doi.org/10.4065/mcp.2009.0534"),
     "sema2025": ("Bansal MB, et al. Semaglutide therapy for metabolic dysfunction-associated steatohepatitis: November 2025 updates to AASLD Practice Guidance. Hepatology 2026;83(5):1326–40.", "https://doi.org/10.1097/HEP.0000000000001608"),
 }
 
@@ -140,6 +142,18 @@ MODULE = {
          "تبقى منبّهات مستقبل GLP-1 مناسبة في التشمّع المعاوَض لدواعيها الأصلية [[easl2024]]. وفي تجربة صغيرة شملت 71 مريضًا بتشمّع معاوَض ناتج عن MASH، كان السيماغلوتايد 2.4 ملغ أسبوعيًا جيد التحمّل، وحسّن دهون الكبد والإنزيمات والوزن وHbA1c، لكنه لم يحسّن النسيج [[easl2024]]. تحقّق دائمًا من الاعتماد المحلي (الهيئة العامة للغذاء والدواء) والنشرة قبل وصف أي دواء لـ MASH، ويشير الإجماع السعودي إلى أن الريسميتيروم لم يكن معتمدًا في السعودية وقت كتابته [[saudi2026]].")),
 
   # 8 ---------------------------------------------------------------- decompensation, transplant, general care
+  ("h2", ("Safe pain relief", "تسكين الألم بأمان"), "pain"),
+  ("p", ("Pain is common in cirrhosis, and the wrong painkiller can tip a stable patient into kidney failure, bleeding or encephalopathy [[chandok2010,dwyer2014]].",
+         "الألم شائع في التشمّع، وقد يدفع المسكّن الخاطئ مريضًا مستقرًا إلى قصور كلوي أو نزف أو اعتلال دماغي [[chandok2010,dwyer2014]].")),
+  ("ul", [
+   ("Paracetamol is the first choice. It is safe in chronic liver disease; for long-term use, keep to a reduced dose of 2–3 g a day [[dwyer2014,chandok2010]].", "الباراسيتامول هو الخيار الأول، وهو آمن في أمراض الكبد المزمنة؛ وللاستخدام الطويل التزم بجرعة مخفّضة قدرها 2–3 غرامات يوميًا [[dwyer2014,chandok2010]]."),
+   ("Avoid NSAIDs such as ibuprofen, diclofenac and naproxen. They can cause kidney injury, hepatorenal syndrome and gastrointestinal bleeding [[dwyer2014,chandok2010]].", "تجنّب مضادات الالتهاب غير الستيرويدية مثل الإيبوبروفين والديكلوفيناك والنابروكسين، فقد تسبب إصابة كلوية ومتلازمة كبدية كلوية ونزفًا هضميًا [[dwyer2014,chandok2010]]."),
+   ("Use opioids sparingly: low doses, immediate-release forms, and always a laxative to prevent constipation and encephalopathy [[dwyer2014,chandok2010]].", "استخدم الأفيونات بحذر: جرعات منخفضة، وأشكال فورية الإطلاق، ومليّن دائمًا لمنع الإمساك والاعتلال الدماغي [[dwyer2014,chandok2010]]."),
+   ("For nerve pain, gabapentin or pregabalin may be better tolerated, because the liver does not clear them [[dwyer2014]].", "لألم الأعصاب، قد يكون الغابابنتين أو البريغابالين أفضل تحمّلًا لأن الكبد لا يتخلص منهما [[dwyer2014]]."),
+  ]),
+  ("aside", ("Many patients buy painkillers without a prescription. Ask about over-the-counter anti-inflammatory drugs at every visit, and tell patients clearly which painkiller to use at home.",
+             "يشتري كثير من المرضى المسكّنات دون وصفة. اسأل في كل زيارة عن مضادات الالتهاب التي تُصرف دون وصفة، وأخبر المريض بوضوح أي مسكّن يستخدم في البيت.")),
+
   ("h2", ("Decompensation, transplant and general care", "عدم المعاوضة والزراعة والرعاية العامة"), "transplant"),
   ("p", ("Watch at every visit for ascites, variceal bleeding and hepatic encephalopathy, and follow standard cirrhosis guidelines when they appear [[global2025]]. Baveno VII advises that every patient with decompensated cirrhosis be considered for liver transplantation [[baveno7]]. MASLD candidates differ from others: in 68,950 European transplant recipients, those transplanted for MASH were older, heavier and more often had HCC [[easl2024]].",
          "راقب في كل زيارة الاستسقاء ونزف الدوالي والاعتلال الدماغي الكبدي، واتبع إرشادات التشمّع المعيارية عند ظهورها [[global2025]]. وينصح Baveno VII بالنظر في زراعة الكبد لكل مريض بتشمّع غير معاوَض [[baveno7]]. ويختلف مرشحو الزراعة من مرضى MASLD عن غيرهم: ففي 68,950 متلقيًا أوروبيًا لزراعة الكبد، كان من زُرع لهم بسبب MASH أكبر سنًا وأثقل وزنًا وأكثر إصابة بـ HCC [[easl2024]].")),
@@ -204,6 +218,10 @@ MODULE = {
     "options": [("Resmetirom is first-line in compensated cirrhosis", "الريسميتيروم خط أول في التشمّع المعاوَض"), ("None is recommended; GLP-1 RAs may be used for their own indications in Child-Pugh A", "لا يوصى بأي منها؛ ويمكن استخدام منبّهات GLP-1 لدواعيها في Child-Pugh A"), ("Semaglutide is approved for decompensated MASH cirrhosis", "السيماغلوتايد معتمد للتشمّع غير المعاوَض الناتج عن MASH"), ("Vitamin E is preferred", "فيتامين E هو المفضّل")],
     "answer": 1,
     "why": ("EASL does not recommend any MASH-targeted therapy at the cirrhotic stage. GLP-1 receptor agonists remain usable in Child-Pugh A for diabetes or obesity.", "لا توصي EASL بأي علاج موجّه لـ MASH في مرحلة التشمّع. وتبقى منبّهات مستقبل GLP-1 صالحة في Child-Pugh A للسكري أو السمنة.")},
+   {"q": ("A man with compensated MASLD cirrhosis has painful knee osteoarthritis. What is the best first choice for pain relief?", "رجل مصاب بتشمّع معاوَض ناتج عن MASLD ويعاني ألمًا من خشونة الركبة. ما أفضل خيار أول لتسكين الألم؟"),
+    "options": [("Ibuprofen 400 mg three times a day", "إيبوبروفين 400 ملغ ثلاث مرات يوميًا"), ("Paracetamol, up to 2–3 g a day", "باراسيتامول حتى 2–3 غرامات يوميًا"), ("Long-acting oxycodone", "أوكسيكودون طويل المفعول"), ("Naproxen with omeprazole", "نابروكسين مع أوميبرازول")],
+    "answer": 1,
+    "why": ("Paracetamol at a reduced dose is safe in cirrhosis. NSAIDs risk kidney injury and bleeding, and opioids risk encephalopathy.", "الباراسيتامول بجرعة مخفّضة آمن في التشمّع. أما مضادات الالتهاب غير الستيرويدية فتعرّض لإصابة الكلى والنزف، والأفيونات تعرّض للاعتلال الدماغي.")},
   ]),
 
   # 12 --------------------------------------------------------------- key messages
@@ -213,6 +231,7 @@ MODULE = {
    ("≤15 kPa with platelets ≥150 rules out CSPH; ≥25 kPa rules it in only if BMI is below 30. Carvedilol is the preferred beta-blocker when CSPH is present.", "صلابة ≤15 مع صفائح ≥150 تنفي CSPH، و≥25 تُثبته فقط إذا كان مؤشر الكتلة أقل من 30. والكارفيديلول هو حاصر بيتا المفضّل عند وجود CSPH."),
    ("Enrol every patient with cirrhosis in 6-monthly HCC surveillance; add AFP, and MRI if ultrasound views are poor. Saudi 2026 extends surveillance to F3.", "راقب كل مريض تشمّع لـ HCC كل 6 أشهر، وأضف AFP، والرنين إذا كانت رؤية الأشعة الصوتية ضعيفة. ويوسّع الإجماع السعودي 2026 المراقبة لتشمل F3."),
    ("Keep statins, metformin, GLP-1 RAs and SGLT2 inhibitors in compensated disease; adapt or stop them with decompensation. Stop all alcohol.", "استمر في الستاتينات والميتفورمين ومنبّهات GLP-1 ومثبطات SGLT2 في المرض المعاوَض، وكيّفها أو أوقفها مع عدم المعاوضة. وامنع الكحول كليًا."),
+   ("For pain, use paracetamol (2–3 g a day for long-term use); avoid NSAIDs; use opioids sparingly, with a laxative.", "للألم استخدم الباراسيتامول (2–3 غرامات يوميًا للاستخدام الطويل)، وتجنّب مضادات الالتهاب غير الستيرويدية، واستخدم الأفيونات بحذر مع مليّن."),
    ("Protect muscle with 1.2–1.5 g/kg protein and a late-evening snack. No MASH drug is recommended in cirrhosis; consider transplant once decompensation occurs.", "احمِ العضلات ببروتين 1.2–1.5 غ/كغ ووجبة خفيفة في آخر المساء. ولا يوصى بأي دواء لـ MASH في التشمّع، وفكّر في الزراعة عند حدوث عدم المعاوضة."),
   ]),
  ],

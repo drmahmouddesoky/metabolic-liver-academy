@@ -3,6 +3,7 @@
 
 # New sources (each confirmed on PubMed: title, journal, year, volume, pages, DOI).
 SOURCES = {
+    "dwyer2014": ("Dwyer JP, Jayasekera C, Nicoll A. Analgesia for the cirrhotic patient: a literature review and recommendations. J Gastroenterol Hepatol 2014;29(7):1356–60.", "https://doi.org/10.1111/jgh.12560"),
     "encho2023": ("En Li Cho E, et al. Global prevalence of non-alcoholic fatty liver disease in type 2 diabetes mellitus: an updated systematic review and meta-analysis. Gut 2023;72(11):2138–48.", "https://doi.org/10.1136/gutjnl-2023-330110"),
     "cjd2025": ("Diabetes Canada Clinical Practice Guidelines Expert Working Group; Kim J, et al. Diabetes and metabolic dysfunction-associated steatotic liver disease in adults: a clinical practice guideline. Can J Diabetes 2025;49(4):222–36.", "https://doi.org/10.1016/j.jcjd.2025.04.003"),
     "ada2026": ("American Diabetes Association Professional Practice Committee. 4. Comprehensive medical evaluation and assessment of comorbidities: Standards of Care in Diabetes—2026. Diabetes Care 2026;49(Suppl 1):S61–88.", "https://doi.org/10.2337/dc26-S004"),
@@ -121,6 +122,8 @@ MODULE = {
   ("rec", ("Statins can be used in chronic liver disease, including compensated cirrhosis, and should be prescribed according to cardiovascular risk guidelines.", "يمكن استخدام الستاتينات في أمراض الكبد المزمنة، بما فيها التشمّع المعاوَض، وينبغي وصفها وفق إرشادات الخطر القلبي الوعائي."), 1, "strong", "strong", "easl2024"),
   ("p", ("Check blood pressure, creatinine, eGFR and urine albumin at baseline and follow-up [[easl2024]], and use a formal cardiovascular risk tool [[global2025]]. Prefer drugs that protect heart and kidney: SGLT2 inhibitors [[easl2024]], and semaglutide, which at 1.0 mg weekly cut major kidney and cardiovascular events by 24% in type 2 diabetes with chronic kidney disease (FLOW) [[sema2025]]. Evidence is too thin to give ACE inhibitors or ARBs for the liver itself; use them for standard kidney and blood pressure indications [[cjd2025]].",
          "افحص ضغط الدم والكرياتينين وeGFR والألبومين في البول عند البداية وفي المتابعة [[easl2024]]، واستخدم أداة رسمية لتقدير الخطر القلبي [[global2025]]. وفضّل الأدوية التي تحمي القلب والكلى: مثبطات SGLT2 [[easl2024]]، والسيماجلوتايد الذي خفّض بجرعة 1.0 ملغ أسبوعيًا الأحداث الكلوية والقلبية الكبرى بنسبة 24% في السكري من النوع الثاني مع مرض الكلى المزمن (تجربة FLOW) [[sema2025]]. والأدلة أضعف من أن تُعطى مثبطات ACE أو ARBs من أجل الكبد نفسه، فاستخدمها لدواعيها المعتادة في الكلى والضغط [[cjd2025]].")),
+  ("aside", ("Painkillers matter in the diabetes clinic too. In anyone with cirrhosis, avoid NSAIDs and use paracetamol at a reduced dose (2–3 g a day for long-term use); see Module 5 [[dwyer2014]].",
+             "للمسكّنات أهمية في عيادة السكري أيضًا. لدى أي مريض بالتشمّع تجنّب مضادات الالتهاب غير الستيرويدية واستخدم الباراسيتامول بجرعة مخفّضة (2–3 غرامات يوميًا للاستخدام الطويل)؛ انظر الوحدة 5 [[dwyer2014]].")),
 
   # 7 ------------------------------------------------------------------
   ("h2", ("Monitoring and referral", "المتابعة والإحالة"), "referral"),
