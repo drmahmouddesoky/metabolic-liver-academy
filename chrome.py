@@ -23,8 +23,8 @@ SUBSCRIBE_MAILTO = "mailto:%s?subject=Subscribe%%20to%%20the%%20Metabolic%%20Liv
 
 MENU = [
     {"en": "Home", "ar": "الرئيسية", "href": "index.html", "key": "home", "icon": "home"},
-    # the AI helper (ask.html): highlighted so visitors notice it
-    {"en": "AI Ask the Academy", "ar": "اسأل الأكاديمية بالذكاء الاصطناعي", "href": "ask.html", "key": "ask", "icon": "spark", "cls": "nav-ai"},
+    # the AI helper "Mr. Livo" (ask.html): highlighted so visitors notice it
+    {"en": "Ask Mr. Livo (AI)", "ar": "اسأل مستر ليفو (ذكاء اصطناعي)", "href": "ask.html", "key": "ask", "icon": "spark", "cls": "nav-ai"},
     {"en": "Public & patients", "ar": "الجمهور والمرضى", "key": "patients", "icon": "heart", "items": [
         ("Patient Portal", "بوابة المرضى", "patients.html"),
         ("Am I at risk?", "هل أنا معرّض للخطر؟", "patients.html#risk"),
@@ -152,7 +152,7 @@ def header(rel):
         '<a class="brand" href="%sindex.html">%s<span class="brand-text">'
         '<span class="brand-name">%s</span><span class="brand-tag">%s</span></span></a>'
         '<div class="bar-tools">'
-        '<a class="ask-btn" href="%sask.html">%s<span>%s</span></a>'
+        '<a class="ask-btn" href="%sask.html"><img class="ask-livo" src="%simages/livo/mr-livo-face-96.webp" alt="" width="26" height="26"><span>%s</span></a>'
         '<button class="theme-btn" type="button" aria-pressed="false"><span class="visually-hidden">%s</span>%s</button>'
         '%s</div></div></header>\n'
         '<nav class="site-nav" id="site-nav" aria-label="%s">'
@@ -167,7 +167,7 @@ def header(rel):
         up, mark(up),
         bi("Metabolic Liver Academy", "أكاديمية الكبد والتمثيل الغذائي"),
         bi("Healthy liver. Healthy life.", "كبد سليم. حياة صحية."),
-        up, icon("spark"), bi("Ask AI", "اسأل الذكاء الاصطناعي"),
+        up, up, bi("Ask Mr. Livo (AI)", "اسأل مستر ليفو (ذكاء اصطناعي)"),
         bi("Dark mode", "الوضع الداكن"), ICON_THEME,
         bi(lang_en, lang_ar),
         "Main",
