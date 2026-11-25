@@ -167,7 +167,7 @@ def header(rel):
         up, mark(up),
         bi("Metabolic Liver Academy", "أكاديمية الكبد والتمثيل الغذائي"),
         bi("Healthy liver. Healthy life.", "كبد سليم. حياة صحية."),
-        up, up, bi("Ask Mr. Livo", "اسأل مستر ليفو"),
+        up, up, bi("Ask Mr. Livo (AI)", "اسأل مستر ليفو (ذكاء اصطناعي)"),
         bi("Dark mode", "الوضع الداكن"), ICON_THEME,
         bi(lang_en, lang_ar),
         "Main",
