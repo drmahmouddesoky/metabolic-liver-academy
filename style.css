@@ -893,3 +893,15 @@ html[dir="rtl"] .site-nav .nav-top.nav-ai { background: linear-gradient(270deg, 
 .ask-btn:hover { background: var(--pine-2); color: var(--on-pine); text-decoration: none; }
 .ask-btn .nav-ico { width: 18px; height: 18px; color: inherit; }
 @media (max-width: 480px) { .ask-btn { padding: 6px 10px; } .ask-btn > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } .ask-btn .nav-ico { width: 20px; height: 20px; } }
+
+/* Mr. Livo, the AI helper's character (ask.html, top-bar button, his answers) */
+.ask-btn { padding-left: 6px; }
+html[dir="rtl"] .ask-btn { padding-left: 14px; padding-right: 6px; }
+.ask-livo { width: 26px; height: 26px; border-radius: 50%; background: var(--white); object-fit: cover; flex: none; }
+.livo-head { display: flex; align-items: center; gap: 24px; }
+.livo-head > div { min-width: 0; }
+.livo-hero { width: 180px; height: 180px; border-radius: 50%; flex: none; box-shadow: 0 6px 20px rgba(14, 34, 56, 0.15); }
+@media (max-width: 600px) { .livo-head { flex-direction: column; align-items: flex-start; gap: 14px; } .livo-hero { width: 132px; height: 132px; } }
+.ask-msg.bot { position: relative; margin-inline-start: 44px; }
+.ask-msg.bot::before { content: ""; position: absolute; top: 2px; inset-inline-start: -44px; width: 34px; height: 34px; border-radius: 50%; background: var(--white) url("images/livo/mr-livo-face-96.webp") center / cover no-repeat; border: 1px solid var(--line); }
+@media (max-width: 480px) { .ask-btn, html[dir="rtl"] .ask-btn { padding: 4px 6px; } }

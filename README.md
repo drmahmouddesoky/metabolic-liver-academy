@@ -217,7 +217,7 @@ The site lives at https://metabolicliveracademy.org/ (bought on Cloudflare, host
   Your personal page at drmahmouddesoky.github.io is not affected.
 - Google Search Console: the sitemap to submit is https://metabolicliveracademy.org/sitemap.xml.
 
-## AI Ask the Academy (AI helper)
+## Ask Mr. Livo (AI helper)
 
 `ask.html` (built from `src/ask.html`) with `ask.js`. Questions go to the Academy's own
 Cloudflare AI Search instance **mla-site** (dashboard: AI Search > mla-site), which has read
@@ -229,6 +229,6 @@ instance's **system prompt** in Settings > Generation.
   (`ASK_ID` in `build.py` and `ASK_HOST` in `ask.js` must match).
 - Only the ask page may connect there (its Content Security Policy); no outside code runs.
 - Answers are shown as plain text; source links are kept to this site only.
-- In the side menu as "AI Ask the Academy" (chrome.py, `nav-ai`). The page itself is `noindex` and not in the sitemap (it has no content of its own).
+- Named **Mr. Livo** (the Academy's cartoon liver, `images/livo/`): "Ask Mr. Livo" in the side menu (chrome.py, `nav-ai`) and the top-bar button; his face also marks each answer (`style.css`, `.ask-msg.bot`). The page itself is `noindex` and not in the sitemap (it has no content of its own).
 - Model: `MODEL` in ask.js (DeepSeek V4 Flash; the default model mixed stray foreign words into Arabic).
 - To switch it off: Cloudflare > AI Search > mla-site > Public endpoint.
